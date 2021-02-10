@@ -1,0 +1,47 @@
+.header__container{
+    border-bottom-color: rgb(211, 224, 233);
+    border-left-color: rgb(211, 224, 233);
+    border-right-color: rgb(211, 224, 233);
+    border-top-color: rgb(211, 224, 233);
+    background-color: white;
+    border-top-style: none;
+    border-top-width: 0px;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: rgb(99, 107, 111);
+    display: block;
+    font-family: Quicksand, sans-serif;
+    font-size: 14px;
+    height: 50px;
+    line-height: 22.4px;
+    margin-left: 0px;
+    margin-right: 0px;
+    overflow-x: visible;
+    overflow-y: visible;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    text-size-adjust: 100%;
+    width: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.headerRight__container{
+    float:right;
+    width: 250px;
+}
+
+img{
+    width: 150px;
+    padding-bottom: 0px;
+    padding-top: 2px;
+    float: left;
+}
+
+
+
+.icapp__image{
+    width: 65px;
+    float:left;
+    margin-top: 0px;
+}

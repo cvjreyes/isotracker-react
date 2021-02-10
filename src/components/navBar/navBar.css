@@ -1,0 +1,17 @@
+.icapp__button{
+    font-size: 13px;
+    box-sizing: border-box;
+    font-family: 'Quicksand',sans-serif;
+    line-height: 1.6;
+    color: #636b6f;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    float: left;
+    padding-top: 2px;
+    padding-right: 30px;
+    list-style-type: none;
+}
+
+.icapp__text{
+    color: #636b6f;
+}
