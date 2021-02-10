@@ -63,3 +63,10 @@ body{
     text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+.progress__text{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color:rgb(99, 107, 111);
+}
