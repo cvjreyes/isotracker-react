@@ -6,11 +6,12 @@ import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./styles.css"
 import React, { useState } from 'react';
 import ActionButtons from "../../components/actionBtns/actionBtns"
+import ActionExtra from "../../components/actionExtra/actionExtra"
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState()
     console.log(currentTab)
-    var uploadButton, uploadDefButton, progressText, progressISOText, actionButtons
+    var uploadButton, uploadDefButton, progressText, progressISOText, actionButtons, actionText, actionExtra
     var currentTabText = currentTab
     var tableContent = <DataTable/>
 
@@ -20,13 +21,17 @@ const IsoCtrl = () => {
         uploadDefButton = <button class="btn btn-info btn-lg" style={{width: "100%"}}>Click here to upload</button>
     }if(currentTab === "Design"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
-        actionButtons = <ActionButtons currentTab = {currentTab}/>
     }if(currentTab === "Status"){
         progressText = <h4 className = "progress__text">Progress: 0%  / Real Progress: 0%</h4>
         progressISOText = <h4 className = "progress__text">Progress ISO: 45%  / Real Progress ISO: 45%</h4>
+    }if(currentTab === "LDE/IsoControl"){
+        actionExtra = <ActionExtra/>
     }
 
-
+    if(currentTab && currentTab !== "Upload IsoFiles"){
+        actionText = <b className="progress__text">Click and action for selected IsoFiles:</b>
+        actionButtons = <ActionButtons currentTab = {currentTab}/>
+    }
 
     return (
         <body>
@@ -64,9 +69,9 @@ const IsoCtrl = () => {
                 <br></br>
                 {uploadDefButton}
                 {tableContent}
-                <center>
-                    
-                    <b className="progress__text">Click and action for selected IsoFiles: </b>
+                <center className="actionBtns__container">
+                    {actionText}
+                    {actionExtra}
                     {actionButtons}
                 </center>
                 

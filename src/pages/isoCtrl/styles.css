@@ -70,3 +70,10 @@ body{
     font-weight: 500;
     color:rgb(99, 107, 111);
 }
+
+.actionBtns__container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
