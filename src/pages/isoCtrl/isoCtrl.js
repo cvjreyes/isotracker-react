@@ -9,7 +9,7 @@ import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
 
 const IsoCtrl = () => {
-    const [currentTab, setCurrentTab] = useState()
+    const [currentTab, setCurrentTab] = useState("History")
     console.log(currentTab)
     var uploadButton, uploadDefButton, progressText, progressISOText, actionButtons, actionText, actionExtra
     var currentTabText = currentTab
@@ -28,7 +28,7 @@ const IsoCtrl = () => {
         actionExtra = <ActionExtra/>
     }
 
-    if(currentTab && currentTab !== "Upload IsoFiles"){
+    if(currentTab !== "Upload IsoFiles"){
         actionText = <b className="progress__text">Click and action for selected IsoFiles:</b>
         actionButtons = <ActionButtons currentTab = {currentTab}/>
     }
@@ -69,17 +69,19 @@ const IsoCtrl = () => {
                 <br></br>
                 {uploadDefButton}
                 {tableContent}
-                <center className="actionBtns__container">
-                    {actionText}
-                    {actionExtra}
-                    {actionButtons}
-                </center>
-                
-                <center className="navBtns__center">
+                <div className="bottom__container">
+                    <center className="actionBtns__container">
+                        {actionText}
+                        {actionExtra}
+                        {actionButtons}
+                    </center>
                     
-                    <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
-                    
-                </center>
+                    <center className="navBtns__center">
+                        
+                        <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                        
+                    </center>
+                </div>
             </div>
         </body>
 
