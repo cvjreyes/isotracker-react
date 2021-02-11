@@ -12,10 +12,26 @@ const ProgressTable = props =>{
         </tr>
         progress = 
         <tr>
-            <td className="progressTable__value">40%</td>
-            <td className="progressTable__value">50%</td>
-            <td className="progressTable__value">60%</td>
-            <td className="progressTable__value">70%</td>                        
+            <td style={{textAlign:"center"}}>
+                <div style={{color:"black", fontSize: "15px",width:"40%",backgroundColor: "#A0AFD9"}}>
+                    <span class="sr-only"></span>40%
+                </div>
+            </td>
+            <td style={{textAlign:"center"}}>
+                <div style={{color:"black", fontSize: "15px",width:"50%",backgroundColor: "#A0AFD9"}}>
+                    <span class="sr-only"></span>50%
+                </div>
+            </td>
+            <td style={{textAlign:"center"}}>
+                <div style={{color:"black", fontSize: "15px",width:"80%",backgroundColor: "#A0AFD9"}}>
+                    <span class="sr-only"></span>80%
+                </div>
+            </td>
+            <td style={{textAlign:"center"}}>
+                <div style={{color:"black", fontSize: "15px",width:"60%",backgroundColor: "#A0AFD9"}}>
+                    <span class="sr-only"></span>60%
+                </div>
+            </td>                        
         </tr>
     }else{
         headers = 
@@ -25,8 +41,16 @@ const ProgressTable = props =>{
         </tr>
         progress = 
         <tr>
-            <td className="progressTable__value">40%</td>
-            <td className="progressTable__value">50%</td>                        
+            <td style={{textAlign:"center"}}>
+                <div style={{color:"black", fontSize: "15px",width:"40%",backgroundColor: "#A0AFD9"}}>
+                    <span class="sr-only"></span>40%
+                </div>
+            </td>
+            <td style={{textAlign:"center"}}>
+                <div style={{color:"black", fontSize: "15px",width:"50%",backgroundColor: "#A0AFD9"}}>
+                    <span class="sr-only"></span>50%
+                </div>
+            </td>                      
         </tr>
     }
     return (

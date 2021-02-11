@@ -84,9 +84,7 @@ body{
 }
 
 .progressTable__container{
-    padding-top: 10px;
-    padding-right: 10px;
+    padding-right: 15px;
     display: block;
     float:right;
-    width: 25%;
 }

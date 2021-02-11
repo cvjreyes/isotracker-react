@@ -12,9 +12,9 @@ import ProgressTable from "../../components/progressTable/progressTable"
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
-    const user = "noadmin"
+    const user = "admin"
     console.log(currentTab)
-    var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox
+    var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
     var tableContent = <DataTable/>
 
@@ -34,11 +34,17 @@ const IsoCtrl = () => {
         commentBox = <CommentBox/>
     }
 
+    if (user === "admin"){
+        progressTableWidth = "30%";
+    }else{
+        progressTableWidth = "15%";
+    }
+
     return (
         <body>
-            <div className="progressTable__container">
+            <td className="progressTable__container" style={{width: progressTableWidth}}>
                     <ProgressTable user = {user} />
-            </div>
+            </td>
             <br></br>
             <br></br>
             <br></br>
