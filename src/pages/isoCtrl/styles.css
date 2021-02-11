@@ -72,15 +72,14 @@ body{
 }
 
 .actionBtns__container{
+    height: 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;;
 }
 
-.bottom__container{
-    position:absolute;
-    bottom:50px;
-    right:20%;
-    left:20%;
+.commentBox__container{
+    height: 10px;
 }
+

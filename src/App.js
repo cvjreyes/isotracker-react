@@ -1,10 +1,8 @@
 import './App.css';
-import Header from './components/header/header';
 import IsoCtrl from './pages/isoCtrl/isoCtrl';
-import UploadFiles from './pages/uploadFiles/uploadFiles';
 import NavBar from './components/navBar/navBar'
-import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
-import NotFound from './pages/notFound/notFound';
+
+
 
 function App() {
   return (

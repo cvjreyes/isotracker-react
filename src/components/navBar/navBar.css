@@ -15,3 +15,16 @@
 .icapp__text{
     color: #636b6f;
 }
+
+img{
+    width: 150px;
+    padding-bottom: 0px;
+    padding-top: 2px;
+    float: left;
+}
+
+.icapp__image{
+    width: 65px;
+    float:left;
+    margin-top: 0px;
+}

@@ -7,11 +7,12 @@ import "./styles.css"
 import React, { useState } from 'react';
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
+import CommentBox from "../../components/commentBox/commentBox"
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
     console.log(currentTab)
-    var uploadButton, uploadDefButton, progressText, progressISOText, actionButtons, actionText, actionExtra
+    var uploadButton, uploadDefButton, progressText, progressISOText, actionButtons, actionText, actionExtra, commentBox
     var currentTabText = currentTab
     var tableContent = <DataTable/>
 
@@ -28,9 +29,10 @@ const IsoCtrl = () => {
         actionExtra = <ActionExtra/>
     }
 
-    if(currentTab !== "Upload IsoFiles"){
+    if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History"){
         actionText = <b className="progress__text">Click and action for selected IsoFiles:</b>
         actionButtons = <ActionButtons currentTab = {currentTab}/>
+        commentBox = <CommentBox/>
     }
 
     return (
@@ -68,20 +70,28 @@ const IsoCtrl = () => {
                 <br></br>
                 <br></br>
                 {uploadDefButton}
-                {tableContent}
+                <div style={{height: "400px"}}>
+                    {tableContent}
+                </div>
                 <div className="bottom__container">
                     <center className="actionBtns__container">
                         {actionText}
                         {actionExtra}
                         {actionButtons}
                     </center>
-                    
+                    <br></br>
+                    <center className="commentBox__container">
+                        {commentBox}
+                    </center>
+                 
                     <center className="navBtns__center">
                         
                         <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                         
                     </center>
                 </div>
+                <br></br>
+                <br></br>
             </div>
         </body>
 

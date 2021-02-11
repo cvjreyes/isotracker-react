@@ -1,6 +1,5 @@
 import "./navBtns.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
 
 const NavBtns = props =>{
     var designButton, stressButton, supportsButton, materialsButton, issuerButton, ldeIsocontrolButton

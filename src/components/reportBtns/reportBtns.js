@@ -1,6 +1,5 @@
 import "./reportBtns.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
 
 const Report_btns = props => {
     var StatusButton, HistoryButton
