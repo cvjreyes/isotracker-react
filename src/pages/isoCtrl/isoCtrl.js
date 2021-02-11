@@ -8,11 +8,13 @@ import React, { useState } from 'react';
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CommentBox from "../../components/commentBox/commentBox"
+import ProgressTable from "../../components/progressTable/progressTable"
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
+    const user = "noadmin"
     console.log(currentTab)
-    var uploadButton, uploadDefButton, progressText, progressISOText, actionButtons, actionText, actionExtra, commentBox
+    var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox
     var currentTabText = currentTab
     var tableContent = <DataTable/>
 
@@ -22,9 +24,6 @@ const IsoCtrl = () => {
         uploadDefButton = <button class="btn btn-info btn-lg" style={{width: "100%"}}>Click here to upload</button>
     }if(currentTab === "Design"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
-    }if(currentTab === "Status"){
-        progressText = <h4 className = "progress__text">Progress: 0%  / Real Progress: 0%</h4>
-        progressISOText = <h4 className = "progress__text">Progress ISO: 45%  / Real Progress ISO: 45%</h4>
     }if(currentTab === "LDE/IsoControl"){
         actionExtra = <ActionExtra/>
     }
@@ -37,7 +36,13 @@ const IsoCtrl = () => {
 
     return (
         <body>
-            <div className="container">
+            <div className="progressTable__container">
+                    <ProgressTable user = {user} />
+            </div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <div className="container">      
                 <center>
                     <br></br>
                     <h2 className="title__container">
@@ -46,9 +51,6 @@ const IsoCtrl = () => {
                         </b>
                     </h2>
                     <h3 className="iso__subtitle">{currentTabText}</h3>
-
-                    {progressText}
-                    {progressISOText}
                 </center>
                 <br></br>
                 <table style={{width: "100%"}}>

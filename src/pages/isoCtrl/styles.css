@@ -83,3 +83,10 @@ body{
     height: 10px;
 }
 
+.progressTable__container{
+    padding-top: 10px;
+    padding-right: 10px;
+    display: block;
+    float:right;
+    width: 25%;
+}
