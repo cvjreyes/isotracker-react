@@ -4,16 +4,17 @@ import StateTable from "../../components/stateTable/stateTable"
 import NavBtns from "../../components/navBtns/navBtns"
 import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./styles.css"
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CommentBox from "../../components/commentBox/commentBox"
 import ProgressTable from "../../components/progressTable/progressTable"
+import Select from 'react-select'
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
+    const[pagination, setPagination] = useState(10)
     const user = "admin"
-    console.log(currentTab)
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
     var tableContent = <DataTable/>
@@ -39,15 +40,12 @@ const IsoCtrl = () => {
     }else{
         progressTableWidth = "15%";
     }
-
+    
     return (
         <body>
             <td className="progressTable__container" style={{width: progressTableWidth}}>
                     <ProgressTable user = {user} />
             </td>
-            <br></br>
-            <br></br>
-            <br></br>
             <div className="container">      
                 <center>
                     <br></br>
@@ -78,7 +76,8 @@ const IsoCtrl = () => {
                 <br></br>
                 <br></br>
                 {uploadDefButton}
-                <div style={{height: "400px"}}>
+
+                <div style={{height: "670px"}}>
                     {tableContent}
                 </div>
                 <div className="bottom__container">
