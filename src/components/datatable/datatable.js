@@ -3,6 +3,8 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment';
+
 
 const data = [
     { key:1, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:null },
@@ -121,6 +123,9 @@ class DataTable extends React.Component{
         key: 'id',
         width: '20%',
         ...this.getColumnSearchProps('id'),
+        sorter: {
+          compare: (a, b) => a.id - b.id,
+        },
       },
       {
         title: 'Date',
@@ -128,37 +133,52 @@ class DataTable extends React.Component{
         key: 'date',
         width: '20%',
         ...this.getColumnSearchProps('date'),
+        sorter: {
+          compare: (a, b) => moment(a.date, 'DD/MM/YYYY') - moment(b.date, 'DD/MM/YYYY'),
+        },
       },
       {
         title: 'From',
         dataIndex: 'from',
         key: 'from',
         ...this.getColumnSearchProps('from'),
+        sorter: {
+          compare: (a, b) => { return a.from.localeCompare(b.from)},
+        },
       },
       {
         title: 'To',
         dataIndex: 'to',
         key: 'to',
         ...this.getColumnSearchProps('to'),
+        sorter: {
+          compare: (a, b) => { return a.to.localeCompare(b.to)},
+        },
       },
       {
         title: 'User',
         dataIndex: 'user',
         key: 'user',
         ...this.getColumnSearchProps('user'),
+        sorter: {
+          compare: (a, b) => { return a.user.localeCompare(b.user)},
+        },
       },
       {
         title: 'Actions',
         dataIndex: 'actions',
         key: 'actions',
         ...this.getColumnSearchProps('actions'),
+        sorter: {
+          compare: (a, b) => a.actions - b.actions,
+        },
       },
     ];
 
     return (
       <div>
         <div style={{position: "relative"}}>
-        <Table  rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
             <b>Showing {this.props.pagination} of {data.length} elements</b>
           </div>

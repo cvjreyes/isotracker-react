@@ -34,7 +34,7 @@ const SelectPag = (props) => {
         value={pag}
         onChange={handleChange}
       >
-        <MenuItem value={6}>6</MenuItem>
+        <MenuItem value={8}>8</MenuItem>
         <MenuItem value={25}>25</MenuItem>
         <MenuItem value={50}>50</MenuItem>
         <MenuItem value={100}>100</MenuItem>

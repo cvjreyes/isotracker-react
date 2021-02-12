@@ -13,13 +13,13 @@ import SelectPag from "../../components/selectPag/selectPag"
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
-    const[pagination, setPagination] = useState(6)
+    const[pagination, setPagination] = useState(8)
     const user = "admin"
 
-    var dataTableHeight = 6
+    var dataTableHeight = 8
 
-    if (pagination === 6){
-        dataTableHeight = "320px"
+    if (pagination === 8){
+        dataTableHeight = "380px"
     }if(pagination === 25){
         dataTableHeight = "1250px"
     }if(pagination == 50){
@@ -43,7 +43,7 @@ const IsoCtrl = () => {
     }
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History"){
-        actionText = <b className="progress__text">Click and action for selected IsoFiles:</b>
+        actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons currentTab = {currentTab}/>
         commentBox = <CommentBox/>
     }
