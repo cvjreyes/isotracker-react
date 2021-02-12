@@ -13,13 +13,13 @@ import SelectPag from "../../components/selectPag/selectPag"
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
-    const[pagination, setPagination] = useState(10)
+    const[pagination, setPagination] = useState(6)
     const user = "admin"
 
-    var dataTableHeight = 10
+    var dataTableHeight = 6
 
-    if (pagination === 10){
-        dataTableHeight = "500px"
+    if (pagination === 6){
+        dataTableHeight = "320px"
     }if(pagination === 25){
         dataTableHeight = "1250px"
     }if(pagination == 50){
@@ -30,7 +30,7 @@ const IsoCtrl = () => {
 
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
-    var tableContent = <DataTable pagination = {pagination}/>
+    var tableContent = <DataTable pagination = {pagination} />
 
     if(currentTab === "Upload IsoFiles"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8"}}><b>Upload</b></button>
@@ -49,21 +49,19 @@ const IsoCtrl = () => {
     }
 
     if (user === "admin"){
-        progressTableWidth = "30%";
+        progressTableWidth = "40%";
     }else{
         progressTableWidth = "15%";
     }
-
-    console.log(pagination)
     
     return (
         <body>
-            <td className="progressTable__container" style={{width: progressTableWidth}}>
-                    <ProgressTable user = {user} />
-            </td>
-            <div className="container">      
+            <div className="container">   
+                <td className="progressTable__container" style={{width: progressTableWidth}}>
+                        <ProgressTable user = {user} />
+                </td>   
                 <center>
-                    <br></br>
+                    
                     <h2 className="title__container">
                         <b>
                             <i className="iso__title">IsoTracker</i>
@@ -71,7 +69,7 @@ const IsoCtrl = () => {
                     </h2>
                     <h3 className="iso__subtitle">{currentTabText}</h3>
                 </center>
-                <br></br>
+                
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
@@ -105,15 +103,13 @@ const IsoCtrl = () => {
                         {commentBox}
                     </center>
                  
-                    <center className="navBtns__center">
-                        
-                        <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
-                        
-                    </center>
+                    
                 </div>
-                <br></br>
-                <br></br>
             </div>
+            <center className="navBtns__center">              
+                <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>               
+            </center>
+            <br></br>
         </body>
 
         

@@ -6,6 +6,7 @@
     padding-right: 15px;
     box-sizing: border-box;
     display: block;
+    position: relative;
 }
 
 .iso__title{
@@ -84,7 +85,6 @@ body{
 }
 
 .progressTable__container{
-    padding-right: 15px;
     position:absolute;
-    right: 0%;
+    right: 0;
 }
