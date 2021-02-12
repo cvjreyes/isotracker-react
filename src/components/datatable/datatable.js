@@ -30,7 +30,7 @@ const rowSelection = {
     }),
   };
 
-class DataTable extends React.Component {
+class DataTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
@@ -156,7 +156,7 @@ class DataTable extends React.Component {
         ...this.getColumnSearchProps('actions'),
       },
     ];
-    return <Table rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: 10  }}/>;
+    return <Table rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>;
   }
 }
 

@@ -16,17 +16,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleSelect() {
+const SelectPag = (props) => {
     const classes = useStyles();
     const [pag, setPag] = React.useState('');
-  
+
     const handleChange = (event) => {
-      setAge(event.target.value);
+      setPag(event.target.value);
+      props.onChange(event.target.value)
     };
     
     return(
     <FormControl className={classes.formControl}>
-      <InputLabel id="selectPageLabel">Page</InputLabel>
+      <InputLabel id="selectPageLabel">Nº of entries</InputLabel>
       <Select
         labelId="selectPage"
         id="selectPage"
@@ -41,3 +42,5 @@ export default function SimpleSelect() {
     </FormControl>
     );
 };
+
+export default SelectPag;

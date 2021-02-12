@@ -9,15 +9,28 @@ import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CommentBox from "../../components/commentBox/commentBox"
 import ProgressTable from "../../components/progressTable/progressTable"
-import Select from 'react-select'
+import SelectPag from "../../components/selectPag/selectPag"
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
     const[pagination, setPagination] = useState(10)
     const user = "admin"
+
+    var dataTableHeight = 10
+
+    if (pagination === 10){
+        dataTableHeight = "500px"
+    }if(pagination === 25){
+        dataTableHeight = "1250px"
+    }if(pagination == 50){
+        dataTableHeight = "2500px"
+    }if(pagination === 100){
+        dataTableHeight = "5000px"
+    }
+
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
-    var tableContent = <DataTable/>
+    var tableContent = <DataTable pagination = {pagination}/>
 
     if(currentTab === "Upload IsoFiles"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8"}}><b>Upload</b></button>
@@ -40,6 +53,8 @@ const IsoCtrl = () => {
     }else{
         progressTableWidth = "15%";
     }
+
+    console.log(pagination)
     
     return (
         <body>
@@ -73,11 +88,10 @@ const IsoCtrl = () => {
                         </tr>
                     </tbody>
                 </table>
-                <br></br>
-                <br></br>
-                {uploadDefButton}
 
-                <div style={{height: "670px"}}>
+                {uploadDefButton}
+                <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+                <div style={{height: dataTableHeight}}>
                     {tableContent}
                 </div>
                 <div className="bottom__container">
