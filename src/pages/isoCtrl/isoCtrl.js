@@ -13,16 +13,17 @@ import SelectPag from "../../components/selectPag/selectPag"
 import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
 
+
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
-    const[pagination, setPagination] = useState(8)
+    const[pagination, setPagination] = useState(7)
     const user = "admin"
 
     console.log(currentTab)
 
-    var dataTableHeight = 8
+    var dataTableHeight = 7
 
-    if (pagination === 8){
+    if (pagination === 7){
         dataTableHeight = "380px"
     }if(pagination === 25){
         dataTableHeight = "1250px"
@@ -56,7 +57,7 @@ const IsoCtrl = () => {
     }
 
     if (user === "admin"){
-        progressTableWidth = "33%";
+        progressTableWidth = "35%";
     }else{
         progressTableWidth = "15%";
     }
@@ -65,10 +66,7 @@ const IsoCtrl = () => {
         
         <body>
             <NavBar onChange={value => setCurrentTab(value)}/>
-            <div className="isoCtrl__container">   
-                <td className="progressTable__container" style={{width: progressTableWidth}}>
-                        <ProgressTable user = {user} />
-                </td>   
+            <div className="isoCtrl__container">     
                 <center>
                     
                     <h2 className="title__container">
@@ -82,22 +80,33 @@ const IsoCtrl = () => {
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
-                            <td style={{paddingRight:"0px"}}>
+                            <td style={{paddingRight:"0px", width:"320px"}}>
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                                 
                             </td>
                             <td>
                                 {uploadButton}
-                            </td>
-                            <td style={{width: "75 %", float: "right"}}>
-                                <StateTable/>
-                            </td>
+                            </td>                   
+                            <td style={{width: progressTableWidth,position:"inline-block", righ: "0"}}>
+                                <ProgressTable user = {user} />
+                            </td>      
                         </tr>
                     </tbody>
                 </table>
 
                 {uploadDefButton}
+
                 {pageSelector}
+
+                
+                
+                <div style={{float:"right", right: "0"}}>
+                <td style={{width: "75 %"}}>
+                    <StateTable/>
+                </td>
+                </div>
+                    
+                
                 <div style={{height: dataTableHeight}}>
                     {tableContent}
                 </div>

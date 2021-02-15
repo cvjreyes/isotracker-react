@@ -84,7 +84,6 @@ body{
     height: 10px;
 }
 
-.progressTable__container{
-    position:absolute;
-    right: 0;
+.progressAndState__container{
+    
 }
