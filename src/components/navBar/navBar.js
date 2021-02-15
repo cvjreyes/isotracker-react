@@ -41,7 +41,7 @@ const NavBar = (props) =>{
 
     const handleCloseIso = (selectedTab) => {
         setAnchorElIso(null);
-        props.onChange("CheckBy");
+        props.onChange(selectedTab);
     };
     return(
         <div className={classes.root}>
@@ -53,8 +53,8 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
-                    <Button aria-controls="simple-menu-iso" aria-haspopup="true" onClick={handleClickIso} style={{marginRight:"25px", fontFamily: 'sans-serif'}}>
-                        Iso Tracker ▼
+                    <Button onClick={handleClickIso} style={{marginRight:"25px"}}>
+                        <i style={{fontFamily:"Quicksand", textTransform:"none", fontSize:"19px"}}>IsoTracker ▼</i>
                     </Button>
                     <Menu
                         id="simple-menu-iso"
@@ -63,17 +63,17 @@ const NavBar = (props) =>{
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                         transformOrigin={{ vertical: "top", horizontal: "center" }}
                         open={Boolean(anchorElIso)}
-                        onClose={handleCloseIso}
+                        onClose={(event) => setAnchorElIso(null)}
                     >
-                    <MenuItem onClick={handleCloseIso}>Status</MenuItem>
-                    <MenuItem onClick={handleCloseIso}>History</MenuItem>
-                    <MenuItem onClick={handleCloseIso}>Design</MenuItem>
-                    <MenuItem onClick={handleCloseIso}>Stress</MenuItem>
-                    <MenuItem onClick={handleCloseIso}>Support</MenuItem>
-                    <MenuItem onClick={handleCloseIso}>Materials</MenuItem>
-                    <MenuItem onClick={handleCloseIso}>Issuer</MenuItem>
-                    <MenuItem onClick={handleCloseIso}>Controls</MenuItem>
-                    <MenuItem onClick={(event) => handleCloseIso("CheckBy")}><b>CHECK BY_</b></MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={(event) => handleCloseIso("Status")}>Status</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={(event) => handleCloseIso("History")}>History</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={(event) => handleCloseIso("Design")}>Design</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={(event) => handleCloseIso("Stress")}>Stress</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={(event) => handleCloseIso("Support")}>Support</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={(event) => handleCloseIso("Materials")}>Materials</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={(event) => handleCloseIso("Issuer")}>Issuer</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={(event) => handleCloseIso("LDE/IsoControl")}>Controls</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand", fontWeight:"bold"}} onClick={(event) => handleCloseIso("CheckBy")}>CHECK BY_</MenuItem>
                     </Menu>
                     <li className="icapp__button"><a href="/"><strong className="icapp__text">ICApp</strong></a></li>
                     <a class="navbar-brand" href="/">
@@ -81,7 +81,7 @@ const NavBar = (props) =>{
                     </a>
                     
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickUser}>
-                        User ▼
+                    <i style={{fontFamily:"Quicksand", textTransform:"none", fontSize:"19px"}}>User ▼</i>
                     </Button>
                     <Menu
                         id="simple-menu"
@@ -92,9 +92,9 @@ const NavBar = (props) =>{
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUser}
                     >
-                    <MenuItem onClick={handleCloseUser}>Home</MenuItem>
-                    <MenuItem onClick={handleCloseUser}>Change password</MenuItem>
-                    <MenuItem onClick={handleCloseUser}><b>Logout</b></MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={handleCloseUser}>Home</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={handleCloseUser}>Change password</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand"}} onClick={handleCloseUser}><b>Logout</b></MenuItem>
                     </Menu>
  
                     

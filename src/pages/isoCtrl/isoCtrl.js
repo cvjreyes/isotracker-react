@@ -3,7 +3,7 @@ import ReportBtns from "../../components/reportBtns/reportBtns"
 import StateTable from "../../components/stateTable/stateTable"
 import NavBtns from "../../components/navBtns/navBtns"
 import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
-import "./styles.css"
+import "./isoCtrl.css"
 import React, { useState } from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
@@ -24,7 +24,7 @@ const IsoCtrl = () => {
     var dataTableHeight = 7
 
     if (pagination === 7){
-        dataTableHeight = "380px"
+        dataTableHeight = "430px"
     }if(pagination === 25){
         dataTableHeight = "1250px"
     }if(pagination === 50){
@@ -38,12 +38,12 @@ const IsoCtrl = () => {
     var tableContent = <DataTable pagination = {pagination} />
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     if(currentTab === "Upload IsoFiles"){
-        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8"}}><b>Upload</b></button>
+        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
         tableContent = <DragAndDrop/>
         pageSelector = null
         uploadDefButton = <div><br></br><button class="btn btn-info btn-lg" style={{width: "100%"}}>Click here to upload</button></div>
     }if(currentTab === "Design"){
-        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
+        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "LDE/IsoControl"){
         actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
@@ -80,24 +80,26 @@ const IsoCtrl = () => {
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
-                            <td style={{paddingRight:"0px", width:"320px"}}>
+                            <td style={{paddingRight:"0px", width:"380px"}}>
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                                 
                             </td>
                             <td>
                                 {uploadButton}
-                            </td>                   
-                            <td style={{width: progressTableWidth,position:"inline-block", righ: "0"}}>
+                            </td>   
+                                           
+                            <td style={{width: progressTableWidth,position:"inline-block", right: "0"}}>
                                 <ProgressTable user = {user} />
-                            </td>      
+                            </td>    
+                            
                         </tr>
                     </tbody>
                 </table>
+                <div>
 
-                {uploadDefButton}
-
-                {pageSelector}
-
+                </div>
+                          
+                
                 
                 
                 <div style={{float:"right", right: "0"}}>
@@ -105,9 +107,15 @@ const IsoCtrl = () => {
                     <StateTable/>
                 </td>
                 </div>
+                <div style={{position: "absolute"}}>
+                  {pageSelector}
+                </div>
                     
                 
                 <div style={{height: dataTableHeight}}>
+                    <br></br>
+                    <br></br>
+                    {uploadDefButton}   
                     {tableContent}
                 </div>
                 <div className="bottom__container">
