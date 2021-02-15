@@ -6,7 +6,7 @@ const Report_btns = props => {
     if(props.currentTab === "Status"){
         StatusButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", marginRight:"40px"}}><b>Status</b></button>
     }else{
-        StatusButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue", marginRight:"40px"}} onClick={() => {props.onChange("Status")}}><b>Status</b></button>
+        StatusButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue", marginRight:"60px"}} onClick={() => {props.onChange("Status")}}><b>Status</b></button>
     }
     if(props.currentTab === "History"){
         HistoryButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8"}}><b>History</b></button>

@@ -1,13 +1,11 @@
 import './App.css';
 import IsoCtrl from './pages/isoCtrl/isoCtrl';
-import NavBar from './components/navBar/navBar'
 
 
 
 function App() {
   return (
     <div className="App">
-      <NavBar/>
       <IsoCtrl/>
       {/*}
       <Router>

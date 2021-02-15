@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const NavBar = () =>{
+const NavBar = (props) =>{
     const classes = useStyles();
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElIso, setAnchorElIso] = React.useState(null);
@@ -39,8 +39,9 @@ const NavBar = () =>{
         setAnchorElIso(event.currentTarget);
     };
 
-    const handleCloseIso = () => {
+    const handleCloseIso = (selectedTab) => {
         setAnchorElIso(null);
+        props.onChange("CheckBy");
     };
     return(
         <div className={classes.root}>
@@ -72,7 +73,7 @@ const NavBar = () =>{
                     <MenuItem onClick={handleCloseIso}>Materials</MenuItem>
                     <MenuItem onClick={handleCloseIso}>Issuer</MenuItem>
                     <MenuItem onClick={handleCloseIso}>Controls</MenuItem>
-                    <MenuItem onClick={handleCloseIso}><b>CHECK BY_</b></MenuItem>
+                    <MenuItem onClick={(event) => handleCloseIso("CheckBy")}><b>CHECK BY_</b></MenuItem>
                     </Menu>
                     <li className="icapp__button"><a href="/"><strong className="icapp__text">ICApp</strong></a></li>
                     <a class="navbar-brand" href="/">

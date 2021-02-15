@@ -7,16 +7,16 @@ import moment from 'moment';
 
 
 const data = [
-    { key:1, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:null },
-    { key:2, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:null },
-    { key:3, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:null },
-    { key:4, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:null },
-    { key:5, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:null },
-    { key:6, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carl', user: 'tec_Michael', actions:null },
-    { key:7, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:null },
-    { key:8, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:null },
-    { key:9, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:null },
-    { key:10, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:null },
+    { key:1, id: 1, date: '01/02/2021', check: 'Jon', tray: 'Adrian', actions:null },
+    { key:2, id: 3, date: '02/02/2021', check: 'Jon', tray: 'Laura', actions:null },
+    { key:3, id: 23, date: '07/02/2021', check: 'Rick', tray: 'Adrian', actions:null },
+    { key:4, id: 12, date: '23/01/2021', check: 'Maria', tray: 'Laura', actions:null },
+    { key:5, id: 3, date: '01/02/2021', check: 'Carl', tray: 'Bob', actions:null },
+    { key:6, id: 41, date: '05/02/2021', check: 'Michael', tray: 'Carl', actions:null },
+    { key:7, id: 1, date: '01/02/2021', check: 'Jon', tray: 'Adrian', actions:null },
+    { key:8, id: 3, date: '02/02/2021', check: 'Jon', tray: 'Laura', actions:null },
+    { key:9, id: 23, date: '07/02/2021', check: 'Rick', tray: 'Adrian', actions:null },
+    { key:10, id: 12, date: '23/01/2021', check: 'Maria', tray: 'Laura', actions:null },
 ];
 
 const rowSelection = {
@@ -30,7 +30,7 @@ const rowSelection = {
     }),
   };
 
-class DataTable extends React.Component{
+class CheckInTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
@@ -129,6 +129,24 @@ class DataTable extends React.Component{
         },
       },
       {
+        title: 'Check',
+        dataIndex: 'check',
+        key: 'check',
+        ...this.getColumnSearchProps('check'),
+        sorter: {
+          compare: (a, b) => { return a.check.localeCompare(b.check)},
+        },
+      },
+      {
+        title: 'Tray',
+        dataIndex: 'tray',
+        key: 'tray',
+        ...this.getColumnSearchProps('tray'),
+        sorter: {
+          compare: (a, b) => { return a.tray.localeCompare(b.tray)},
+        },
+      },
+      {
         title: 'Date',
         dataIndex: 'date',
         key: 'date',
@@ -136,33 +154,6 @@ class DataTable extends React.Component{
         ...this.getColumnSearchProps('date'),
         sorter: {
           compare: (a, b) => moment(a.date, 'DD/MM/YYYY') - moment(b.date, 'DD/MM/YYYY'),
-        },
-      },
-      {
-        title: 'From',
-        dataIndex: 'from',
-        key: 'from',
-        ...this.getColumnSearchProps('from'),
-        sorter: {
-          compare: (a, b) => { return a.from.localeCompare(b.from)},
-        },
-      },
-      {
-        title: 'To',
-        dataIndex: 'to',
-        key: 'to',
-        ...this.getColumnSearchProps('to'),
-        sorter: {
-          compare: (a, b) => { return a.to.localeCompare(b.to)},
-        },
-      },
-      {
-        title: 'User',
-        dataIndex: 'user',
-        key: 'user',
-        ...this.getColumnSearchProps('user'),
-        sorter: {
-          compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
       },
       {
@@ -193,4 +184,4 @@ class DataTable extends React.Component{
   }
 }
 
-export default DataTable;
+export default CheckInTable ;

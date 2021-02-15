@@ -10,11 +10,15 @@ import ActionExtra from "../../components/actionExtra/actionExtra"
 import CommentBox from "../../components/commentBox/commentBox"
 import ProgressTable from "../../components/progressTable/progressTable"
 import SelectPag from "../../components/selectPag/selectPag"
+import CheckInTable from "../../components/checkInTable/checkInTable"
+import NavBar from '../../components/navBar/navBar'
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
     const[pagination, setPagination] = useState(8)
     const user = "admin"
+
+    console.log(currentTab)
 
     var dataTableHeight = 8
 
@@ -22,7 +26,7 @@ const IsoCtrl = () => {
         dataTableHeight = "380px"
     }if(pagination === 25){
         dataTableHeight = "1250px"
-    }if(pagination == 50){
+    }if(pagination === 50){
         dataTableHeight = "2500px"
     }if(pagination === 100){
         dataTableHeight = "5000px"
@@ -31,32 +35,37 @@ const IsoCtrl = () => {
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
     var tableContent = <DataTable pagination = {pagination} />
-
+    var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     if(currentTab === "Upload IsoFiles"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8"}}><b>Upload</b></button>
         tableContent = <DragAndDrop/>
-        uploadDefButton = <button class="btn btn-info btn-lg" style={{width: "100%"}}>Click here to upload</button>
+        pageSelector = null
+        uploadDefButton = <div><br></br><button class="btn btn-info btn-lg" style={{width: "100%"}}>Click here to upload</button></div>
     }if(currentTab === "Design"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "LDE/IsoControl"){
         actionExtra = <ActionExtra/>
+    }if(currentTab === "CheckBy"){
+        tableContent = <CheckInTable/>
     }
 
-    if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History"){
+    if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons currentTab = {currentTab}/>
         commentBox = <CommentBox/>
     }
 
     if (user === "admin"){
-        progressTableWidth = "40%";
+        progressTableWidth = "33%";
     }else{
         progressTableWidth = "15%";
     }
     
     return (
+        
         <body>
-            <div className="container">   
+            <NavBar onChange={value => setCurrentTab(value)}/>
+            <div className="isoCtrl__container">   
                 <td className="progressTable__container" style={{width: progressTableWidth}}>
                         <ProgressTable user = {user} />
                 </td>   
@@ -77,10 +86,10 @@ const IsoCtrl = () => {
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                                 
                             </td>
-                            <td style={{marginLeft:"5px"}}>
+                            <td>
                                 {uploadButton}
                             </td>
-                            <td style={{width: "64%"}}>
+                            <td style={{width: "75 %", float: "right"}}>
                                 <StateTable/>
                             </td>
                         </tr>
@@ -88,7 +97,7 @@ const IsoCtrl = () => {
                 </table>
 
                 {uploadDefButton}
-                <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+                {pageSelector}
                 <div style={{height: dataTableHeight}}>
                     {tableContent}
                 </div>
