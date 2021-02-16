@@ -8,7 +8,7 @@ import Select from '@material-ui/core/Select';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 100,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -26,17 +26,18 @@ const SelectPag = (props) => {
     
     return(
     <FormControl className={classes.formControl}>
-      <InputLabel id="selectPageLabel">Nº of entries</InputLabel>
+      <InputLabel id="selectPageLabel" style={{fontSize:"13.33px",  fontFamily:"Quicksand"}}>Nº of entries</InputLabel>
       <Select
         labelId="selectPage"
         id="selectPage"
         value={pag}
         onChange={handleChange}
+        style={{fontSize:"13.33px", fontFamily:"Quicksand"}}
       >
-        <MenuItem value={8}>8</MenuItem>
-        <MenuItem value={25}>25</MenuItem>
-        <MenuItem value={50}>50</MenuItem>
-        <MenuItem value={100}>100</MenuItem>
+        <MenuItem value={8} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>8</MenuItem>
+        <MenuItem value={25} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>25</MenuItem>
+        <MenuItem value={50} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>50</MenuItem>
+        <MenuItem value={100} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>100</MenuItem>
       </Select>
     </FormControl>
     );

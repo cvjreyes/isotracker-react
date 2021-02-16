@@ -24,13 +24,13 @@ const IsoCtrl = () => {
     var dataTableHeight = 8
 
     if (pagination === 8){
-        dataTableHeight = "460px"
+        dataTableHeight = "490px"
     }if(pagination === 25){
-        dataTableHeight = "1130px"
+        dataTableHeight = "1160px"
     }if(pagination === 50){
-        dataTableHeight = "2100px"
+        dataTableHeight = "2130px"
     }if(pagination === 100){
-        dataTableHeight = "4030px"
+        dataTableHeight = "4070px"
     }
 
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth

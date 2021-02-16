@@ -4,6 +4,7 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import './datatable.css'
 
 
 const data = [
@@ -219,17 +220,17 @@ class DataTable extends React.Component{
   render() {
     const columns = [
       {
-        title: 'ISO ID',
+        title: <center style={{fontWeight:"bold", margin: "auto", align:"center"}}>ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
         width: '20%',
         ...this.getColumnSearchProps('id'),
-        sorter: {
+        sorter:{
           compare: (a, b) => a.id - b.id,
         },
       },
       {
-        title: 'Date',
+        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>Date</div>,
         dataIndex: 'date',
         key: 'date',
         width: '20%',
@@ -239,7 +240,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: 'From',
+        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>From</div>,
         dataIndex: 'from',
         key: 'from',
         ...this.getColumnSearchProps('from'),
@@ -248,7 +249,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: 'To',
+        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>To</div>,
         dataIndex: 'to',
         key: 'to',
         ...this.getColumnSearchProps('to'),
@@ -257,7 +258,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: 'User',
+        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>User</div>,
         dataIndex: 'user',
         key: 'user',
         ...this.getColumnSearchProps('user'),
@@ -266,7 +267,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: 'Actions',
+        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>Actions</div>,
         dataIndex: 'actions',
         key: 'actions',
         ...this.getColumnSearchProps('actions'),
@@ -281,7 +282,7 @@ class DataTable extends React.Component{
     return (
       <div>
         <div style={{position: "relative"}}>
-        <Table rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
             <b>Total elements: {data.length}</b>
           </div>

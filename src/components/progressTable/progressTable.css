@@ -1,6 +1,5 @@
 .progressTable__body{
     border-bottom-color: rgb(128, 128, 128);
-    border-collapse: collapse;
     border-left-color: rgb(128, 128, 128);
     border-right-color: rgb(128, 128, 128);
     border-top-color: rgb(128, 128, 128);
@@ -22,11 +21,11 @@
 }
 
 .progressTable__table{
-    border: 1px solid black;
+    border: 1px solid rgb(99, 107, 111);
     background-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgb(128, 128, 128);
     border-bottom-width: 1px;
-    border-collapse: collapse;
+
     border-left-color: rgb(128, 128, 128);
     border-left-width: 1px;
     border-right-color: rgb(128, 128, 128);
@@ -50,7 +49,7 @@
 }
 
 .progressTable__td{
-    border-collapse: collapse;
+
     box-sizing: border-box;
     color: rgb(99, 107, 111);
     display: table-cell;
@@ -73,7 +72,7 @@
 }
 
 .progressTable__header{
-    border: 1px solid black;
+    border: 1px solid rgb(99, 107, 111);
     background-attachment: scroll;
     background-clip: border-box;
     background-color: rgb(107, 157, 187);
@@ -82,7 +81,7 @@
     background-position-x: 0%;
     background-position-y: 0%;
     background-size: auto;
-    border-collapse: collapse;
+
     box-sizing: border-box;
     color: rgb(255, 255, 255);
     display: table-cell;
@@ -106,8 +105,8 @@
 }
 
 .progressTable__state{
-    border: 1px solid black;
-    border-collapse: collapse;
+    border: 1px solid rgb(99, 107, 111);
+
     box-sizing: border-box;
     color: rgb(99, 107, 111);
     display: table-cell;
@@ -130,7 +129,7 @@
 }
 
 .progressTable__value{
-    border: 1px solid black;
+    border: 1px solid rgb(99, 107, 111);
     background-attachment: scroll;
     background-clip: border-box;
     background-image: none;
@@ -138,7 +137,7 @@
     background-position-x: 0%;
     background-position-y: 0%;
     background-size: auto;
-    border-collapse: collapse;
+
     box-sizing: border-box;
     color: rgb(99, 107, 111);
     display: table-cell;

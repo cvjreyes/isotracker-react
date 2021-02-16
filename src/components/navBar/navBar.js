@@ -54,7 +54,7 @@ const NavBar = (props) =>{
                     
                     </Typography>
                     <Button onClick={handleClickIso} style={{marginRight:"25px"}}>
-                        <i style={{fontFamily:"Quicksand", textTransform:"none", fontSize:"15px"}}>IsoTracker ▼</i>
+                        <i style={{fontFamily:"Quicksand", textTransform:"none", fontSize:"13.33px", fontWeight:"bold,"}}>IsoTracker </i><b style={{fontSize:"9px", fontFamily:"Quicksand"}}>▼</b>
                     </Button>
                     <Menu
                         id="simple-menu-iso"
@@ -81,7 +81,7 @@ const NavBar = (props) =>{
                     </a>
                     
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickUser}>
-                    <i style={{fontFamily:"Quicksand", textTransform:"none", fontSize:"15px"}}>User ▼</i>
+                    <i style={{fontFamily:"Quicksand", textTransform:"none", fontSize:"13.33px"}}>User</i><b style={{fontSize:"9px", fontFamily:"Quicksand"}}>▼</b>
                     </Button>
                     <Menu
                         id="simple-menu"

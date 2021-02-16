@@ -73,7 +73,7 @@
 }
 
 .statusTable__header{
-    border: 1px solid black;
+    border: 1px solid rgb(99, 107, 111);
     background-attachment: scroll;
     background-clip: border-box;
     background-color: rgb(107, 157, 187);
@@ -106,7 +106,7 @@
 }
 
 .statusTable__state{
-    border: 1px solid black;
+    border: 1px solid rgb(99, 107, 111);
     border-collapse: collapse;
     box-sizing: border-box;
     color: rgb(99, 107, 111);
@@ -130,7 +130,7 @@
 }
 
 .statusTable__value{
-    border: 1px solid black;
+    border: 1px solid rgb(99, 107, 111);
     background-attachment: scroll;
     background-clip: border-box;
     background-color: rgb(255, 255, 255);

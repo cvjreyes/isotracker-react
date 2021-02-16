@@ -1,18 +1,3 @@
-/*const columns = [
-  { field: 'id', headerName: 'ISO id', width: 110 },
-  { field: 'date', headerName: 'Date', type: 'date', width: 130 },
-  { field: 'from', headerName: 'From', width: 130 },
-  { field: 'to', headerName: 'To', width: 90 },
-  { field: 'user', headerName: 'User', width: 130 },
-  { field: 'actions', headerName: 'Actions', width: 130 }
-];
-
-const rows = [
-  { id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:null },
-  { id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:null },
-  { id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:null },
-  { id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:null },
-  { id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:null },
-  { id: 41, date: '05/02/2021', from: 'Michael', to: 'Carl', user: 'tec_Michael', actions:null }
-];
-*/
+.dataTable__header{
+  font-weight: bold;
+}
