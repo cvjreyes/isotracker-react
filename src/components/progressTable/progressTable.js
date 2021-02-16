@@ -12,23 +12,23 @@ const ProgressTable = props =>{
         </tr>
         progress = 
         <tr>
-            <td style={{textAlign:"center"}}>
-                <div style={{color:"black", fontSize: "15px",width:"40%",backgroundColor: "#A0AFD9"}}>
+            <td style={{textAlign:"center", height: "19px"}}>
+                <div style={{color:"black", fontSize: "13px",width:"40%",backgroundColor: "#A0AFD9", height: "19px"}}>
                     <span class="sr-only"></span>40%
                 </div>
             </td>
-            <td style={{textAlign:"center"}}>
-                <div style={{color:"black", fontSize: "15px",width:"50%",backgroundColor: "#A0AFD9"}}>
+            <td style={{textAlign:"center", height: "19px"}}>
+                <div style={{color:"black", fontSize: "13px",width:"50%",backgroundColor: "#A0AFD9", height: "19px"}}>
                     <span class="sr-only"></span>50%
                 </div>
             </td>
-            <td style={{textAlign:"center"}}>
-                <div style={{color:"black", fontSize: "15px",width:"80%",backgroundColor: "#A0AFD9"}}>
+            <td style={{textAlign:"center", height: "19px"}}>
+                <div style={{color:"black", fontSize: "13px",width:"80%",backgroundColor: "#A0AFD9", height: "19px"}}>
                     <span class="sr-only"></span>80%
                 </div>
             </td>
-            <td style={{textAlign:"center"}}>
-                <div style={{color:"black", fontSize: "15px",width:"60%",backgroundColor: "#A0AFD9"}}>
+            <td style={{textAlign:"center", height: "19px"}}>
+                <div style={{color:"black", fontSize: "13px",width:"60%",backgroundColor: "#A0AFD9", height: "19px"}}>
                     <span class="sr-only"></span>60%
                 </div>
             </td>                        
@@ -42,12 +42,12 @@ const ProgressTable = props =>{
         progress = 
         <tr>
             <td style={{textAlign:"center"}}>
-                <div style={{color:"black", fontSize: "15px",width:"40%",backgroundColor: "#A0AFD9"}}>
+                <div style={{color:"black", fontSize: "15px",width:"40%",backgroundColor: "#A0AFD9", height: "21px"}}>
                     <span class="sr-only"></span>40%
                 </div>
             </td>
             <td style={{textAlign:"center"}}>
-                <div style={{color:"black", fontSize: "15px",width:"50%",backgroundColor: "#A0AFD9"}}>
+                <div style={{color:"black", fontSize: "15px",width:"50%",backgroundColor: "#A0AFD9", height: "21px"}}>
                     <span class="sr-only"></span>50%
                 </div>
             </td>                      

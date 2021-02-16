@@ -16,21 +16,21 @@ import NavBar from '../../components/navBar/navBar'
 
 const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("History")
-    const[pagination, setPagination] = useState(7)
+    const[pagination, setPagination] = useState(8)
     const user = "admin"
 
     console.log(currentTab)
 
-    var dataTableHeight = 7
+    var dataTableHeight = 8
 
-    if (pagination === 7){
-        dataTableHeight = "430px"
+    if (pagination === 8){
+        dataTableHeight = "460px"
     }if(pagination === 25){
-        dataTableHeight = "1250px"
+        dataTableHeight = "1130px"
     }if(pagination === 50){
-        dataTableHeight = "2500px"
+        dataTableHeight = "2100px"
     }if(pagination === 100){
-        dataTableHeight = "5000px"
+        dataTableHeight = "4030px"
     }
 
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
@@ -103,9 +103,9 @@ const IsoCtrl = () => {
                 
                 
                 <div style={{float:"right", right: "0"}}>
-                <td style={{width: "75 %"}}>
-                    <StateTable/>
-                </td>
+                    <td style={{width: "75 %"}}>
+                        <StateTable/>
+                    </td>
                 </div>
                 <div style={{position: "absolute"}}>
                   {pageSelector}
