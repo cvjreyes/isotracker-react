@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import TechnipLogo from "../../assets/images/tpfmc_logo.svg"
+import TechnipLogo from "../../assets/images/tpenr_logo.svg"
 import Icapp from "../../assets/images/icapp.png"
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -48,7 +48,7 @@ const NavBar = (props) =>{
             <AppBar position="static" className="navBar__container" style={{borderBbottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
                 <Toolbar>
                     <a class="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/">
-                        <img src={TechnipLogo} alt="technipLogo"/>
+                        <img src={TechnipLogo} alt="technipLogo" style={{height:"55px"}}/>
                     </a>
                     <Typography variant="h6" className={classes.title}>
                     
