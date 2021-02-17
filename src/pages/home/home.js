@@ -9,9 +9,8 @@ const Home = () =>{
         
         <div className="home__background">
             <NavBar/>
-            <div style={{textAlign:"center"}}>
-                <MenuList/>
-            </div>
+            <MenuList/>
+
         </div>
         </body>
     );

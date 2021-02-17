@@ -48,7 +48,7 @@ const NavBar = (props) =>{
             <AppBar position="static" className="navBar__container" style={{borderBbottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
                 <Toolbar>
                     <a class="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/">
-                        <img src={TechnipLogo} alt="technipLogo" style={{height:"55px"}}/>
+                        <img src={TechnipLogo} alt="technipLogo" style={{height:"50px"}}/>
                     </a>
                     <Typography variant="h6" className={classes.title}>
                     
