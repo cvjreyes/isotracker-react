@@ -220,7 +220,7 @@ class DataTable extends React.Component{
   render() {
     const columns = [
       {
-        title: <center style={{fontWeight:"bold", margin: "auto", align:"center"}}>ISO ID</center>,
+        title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
         width: '20%',
@@ -230,7 +230,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>Date</div>,
+        title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'date',
         key: 'date',
         width: '20%',
@@ -240,7 +240,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>From</div>,
+        title: <div className="dataTable__header__text">From</div>,
         dataIndex: 'from',
         key: 'from',
         ...this.getColumnSearchProps('from'),
@@ -249,7 +249,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>To</div>,
+        title: <div className="dataTable__header__text">To</div>,
         dataIndex: 'to',
         key: 'to',
         ...this.getColumnSearchProps('to'),
@@ -258,7 +258,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>User</div>,
+        title: <div className="dataTable__header__text">User</div>,
         dataIndex: 'user',
         key: 'user',
         ...this.getColumnSearchProps('user'),
@@ -267,7 +267,7 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: <div style={{fontWeight:"bold", margin: "auto", align:"center"}}>Actions</div>,
+        title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',
         key: 'actions',
         ...this.getColumnSearchProps('actions'),
@@ -282,7 +282,7 @@ class DataTable extends React.Component{
     return (
       <div>
         <div style={{position: "relative"}}>
-        <Table bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
             <b>Total elements: {data.length}</b>
           </div>

@@ -1,3 +1,6 @@
-.dataTable__header{
-  font-weight: bold;
+.dataTable__header__text{  
+  font-weight : bold;
+  margin : auto;
+  text-align: center;
 }
+
