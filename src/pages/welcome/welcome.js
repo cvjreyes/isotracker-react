@@ -1,7 +1,7 @@
 import React from "react";
-import './cover.css'
+import './welcome.css'
 
-const Cover = () =>{
+const Welcome = () =>{
     return(
         <body>
         <div className="cover__background">
@@ -19,4 +19,4 @@ const Cover = () =>{
     );
 };
 
-export default Cover;
+export default Welcome;
