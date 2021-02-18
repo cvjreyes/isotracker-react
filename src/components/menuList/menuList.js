@@ -85,7 +85,7 @@ const MenuList = () =>{
             <div className="panel__content__container">
                 <div>
                     <a href="/" style={{textDecoration: "none"}}>
-                        <h4 style={{backgroundColor: instIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setInstIsShown(true)} onMouseLeave={() => setInstIsShown(false)}><img src={InstIcon} className="panel__icon"/>&nbsp;&nbsp;&nbsp;Instrumentation (Weight: 1886 | 3.96%)</h4>         
+                        <h4 style={{backgroundColor: instIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setInstIsShown(true)} onMouseLeave={() => setInstIsShown(false)}><img src={InstIcon} alt= "inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Instrumentation (Weight: 1886 | 3.96%)</h4>         
                     </a>
                     <div class="progress" style={{height: "25px"}}>
                         <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: "27.36%", backgroundColor: "#A0AFD9",textAlign: "center"}}>
@@ -97,7 +97,7 @@ const MenuList = () =>{
             <div className="panel__content__container__last">
                 <div>
                     <a href="/" style={{textDecoration: "none"}}>
-                        <h4 style={{backgroundColor: elecIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setElecIsShown(true)} onMouseLeave={() => setElecIsShown(false)}><img src={ElecIcon} className="panel__icon"/>&nbsp;&nbsp;&nbsp;Electrical (Weight: 4245 | 8.91%)</h4>
+                        <h4 style={{backgroundColor: elecIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setElecIsShown(true)} onMouseLeave={() => setElecIsShown(false)}><img src={ElecIcon} alt="inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Electrical (Weight: 4245 | 8.91%)</h4>
                     </a>
                     <div class="progress" style={{height: "25px"}}>
                         <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: "62.4%", backgroundColor: "#A0AFD9",textAlign: "center"}}>

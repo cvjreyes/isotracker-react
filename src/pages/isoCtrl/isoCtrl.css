@@ -6,7 +6,8 @@
     padding-right: 15px;
     box-sizing: border-box;
     display: block;
-    position: relative;
+    position: static;
+    margin-top: 85px;
 }
 
 .iso__title{

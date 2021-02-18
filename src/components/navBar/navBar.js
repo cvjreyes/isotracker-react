@@ -45,7 +45,7 @@ const NavBar = (props) =>{
     };
     return(
         <div className={classes.root}>
-            <AppBar position="static" className="navBar__container" style={{borderBbottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
+            <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
                 <Toolbar>
                     <a class="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/">
                         <img src={TechnipLogo} alt="technipLogo" style={{height:"50px"}}/>
