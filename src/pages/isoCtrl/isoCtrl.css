@@ -85,6 +85,12 @@ body{
     height: 10px;
 }
 
-.progressAndState__container{
-    
+.reportBtns__container{
+    padding-right:"0px";
+    width:"380px";
+}
+
+.stateTable__container{
+    float: right;
+    right: 0;
 }

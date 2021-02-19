@@ -29,3 +29,15 @@ img{
     float:left;
     margin-top: 0px;
 }
+
+.dropdown__text{
+    font-family: 'Quicksand', sans-serif;
+    text-transform: none;
+    font-size: 13.33px;
+    font-weight: bold;
+}
+
+.dropdown__arrow{
+    font-size: 9px;
+    font-family: 'Quicksand', sans-serif;
+}

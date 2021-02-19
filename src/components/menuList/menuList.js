@@ -1,3 +1,5 @@
+//Lista que muestra las diferentes aplicaciones de IsoTracker y su progreso
+
 import './menuList.css'
 import FileIcon from "../../assets/images/file-icon.png"
 import ChartColorIcon from "../../assets/images/chart-color-icon.png"
@@ -9,6 +11,8 @@ import InstIcon from "../../assets/images/inst-icon.png"
 import React, { useState } from 'react';
 
 const MenuList = () =>{
+
+    //Existe un estado para cada opción del menu
     const [isoIsShown, setIsoIsShown] = useState(false);
     const [progIsShown, setProgIsShown] = useState(false);
     const [pipeIsShown, setPipeIsShown] = useState(false);

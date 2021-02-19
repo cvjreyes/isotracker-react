@@ -1,3 +1,5 @@
+//Cabecera de IsoTracker con diferentes desplegables y botones
+
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -54,7 +56,7 @@ const NavBar = (props) =>{
                     
                     </Typography>
                     <Button onClick={handleClickIso} style={{marginRight:"25px"}}>
-                        <i style={{fontFamily:"Quicksand", textTransform:"none", fontSize:"13.33px", fontWeight:"bold,"}}>IsoTracker </i>&nbsp;<b style={{fontSize:"9px", fontFamily:"Quicksand"}}>▼</b>
+                        <i className="dropdown__text">IsoTracker </i>&nbsp;<b className="dropdown__arrow">▼</b>
                     </Button>
                     <Menu
                         id="simple-menu-iso"
@@ -81,7 +83,7 @@ const NavBar = (props) =>{
                     </a>
                     
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickUser}>
-                    <i style={{fontFamily:"Quicksand", textTransform:"none", fontSize:"13.33px"}}>User</i>&nbsp;<b style={{fontSize:"9px", fontFamily:"Quicksand"}}>▼</b>
+                    <i className="dropdown__text">User</i>&nbsp;<b className="dropdown__arrow">▼</b>
                     </Button>
                     <Menu
                         id="simple-menu"

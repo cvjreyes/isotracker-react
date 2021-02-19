@@ -1,3 +1,5 @@
+//En la seccion de LDE/Isocontrol se requieren algunos campos extra para tratar los archivos
+
 import './actionExtra.css'
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';

@@ -15,12 +15,14 @@ import NavBar from '../../components/navBar/navBar'
 
 
 const IsoCtrl = () => {
-    const [currentTab, setCurrentTab] = useState("History")
-    const[pagination, setPagination] = useState(8)
-    const user = "admin"
+
+    const [currentTab, setCurrentTab] = useState("History") //Controla la tabla y botones que se muestran
+    const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
+    const user = "admin" //De momento esta variable controla el tipo de user
 
     console.log(currentTab)
 
+    //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
     var dataTableHeight = 8
 
     if (pagination === 8){
@@ -33,10 +35,12 @@ const IsoCtrl = () => {
         dataTableHeight = "4070px"
     }
 
+    //Componentes de la pagina que varian en funcion del estado
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
     var tableContent = <DataTable pagination = {pagination} />
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+
     if(currentTab === "Upload IsoFiles"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
         tableContent = <DragAndDrop/>
@@ -56,6 +60,7 @@ const IsoCtrl = () => {
         commentBox = <CommentBox/>
     }
 
+    //El usuario admin ve mas parte de la tabla de progreso
     if (user === "admin"){
         progressTableWidth = "35%";
     }else{
@@ -80,7 +85,7 @@ const IsoCtrl = () => {
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
-                            <td style={{paddingRight:"0px", width:"380px"}}>
+                            <td className="reportBtns__container">
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                                 
                             </td>
@@ -94,15 +99,9 @@ const IsoCtrl = () => {
                             
                         </tr>
                     </tbody>
-                </table>
-                <div>
-
-                </div>
-                          
+                </table>              
                 
-                
-                
-                <div style={{float:"right", right: "0"}}>
+                <div className="stateTable__container">
                     <td style={{width: "75 %"}}>
                         <StateTable/>
                     </td>

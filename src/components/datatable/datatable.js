@@ -277,11 +277,9 @@ class DataTable extends React.Component{
       },
     ];
 
-    console.log(this.props)
-
     return (
       <div>
-        <div style={{position: "relative"}}>
+        <div className="dataTable__container">
         <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
             <b>Total elements: {data.length}</b>
@@ -290,7 +288,6 @@ class DataTable extends React.Component{
         
       </div>
     );
-
   }
 }
 

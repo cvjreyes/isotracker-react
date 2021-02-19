@@ -1,3 +1,5 @@
+//Drag and drop para subir isometricas
+
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Upload, message } from 'antd';
@@ -27,11 +29,11 @@ const DragAndDrop = () =>{
         <div>
             <Dragger {...props}>
                 <p className="ant-upload-drag-icon">
-                <InboxOutlined />
+                  <InboxOutlined />
                 </p>
                 <p className="ant-upload-text">Click or drag the isometrics to this area to upload</p>
                 <p className="ant-upload-hint">
-                You can drop single or multiple isometrics
+                  You can drop single or multiple isometrics
                 </p>
             </Dragger>,
         </div>

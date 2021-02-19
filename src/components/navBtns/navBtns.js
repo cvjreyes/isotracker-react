@@ -1,3 +1,5 @@
+//Botones inferiores para navegar por isoControl
+
 import "./navBtns.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 

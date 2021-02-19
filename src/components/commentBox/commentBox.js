@@ -1,3 +1,5 @@
+//Caja de comentarios donde se escribe información referente al tratamiento de un archivo
+
 const CommentBox = () =>{
     return(
         <div>

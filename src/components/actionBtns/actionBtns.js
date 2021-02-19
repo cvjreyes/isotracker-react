@@ -1,3 +1,5 @@
+//Botones de accion que aparecen en cada fase de isotracker para tratar los archivos
+
 const ActionBtns = props =>{
     var actionBtn1, actionBtn2
     if (props.currentTab === "Design"){

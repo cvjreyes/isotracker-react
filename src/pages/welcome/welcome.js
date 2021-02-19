@@ -1,10 +1,12 @@
 import React from "react";
 import './welcome.css'
 
+//Página de welcome que actua como portada
+
 const Welcome = () =>{
     return(
         <body>
-        <div className="cover__background">
+        <div className="cover__background"> 
             <div className="cover__login__container">
                 <a href="/home" className="cover__login__text">LOGIN</a>
             </div>

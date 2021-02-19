@@ -1,18 +1,21 @@
+//Tabla que muestra el progreso de isoTracker
+
 import "./progressTable.css"
 
 const ProgressTable = props =>{
     var headers, progress
+    //Si el user es admin muestra mas informacion
     if (props.user === "admin"){
         headers = 
         <tr>
-            <td  style={{width: "11%"}} className="progressTable__header">Progress</td>
-            <td  style={{width: "11%"}} className="progressTable__header">Progress ISO</td>
-            <td  style={{width: "11%"}} className="progressTable__header">Real progress</td>
-            <td  style={{width: "11%"}} className="progressTable__header">Real progress ISO</td>
+            <td className="progressTable__header">Progress</td>
+            <td className="progressTable__header">Progress ISO</td>
+            <td className="progressTable__header">Real progress</td>
+            <td className="progressTable__header">Real progress ISO</td>
         </tr>
         progress = 
         <tr>
-            <td style={{textAlign:"center", height: "19px"}}>
+            <td className="progressTable__content__td">
                 <div style={{color:"black", fontSize: "13px",width:"40%",backgroundColor: "#A0AFD9", height: "19px"}}>
                     <span class="sr-only"></span>40%
                 </div>
@@ -55,7 +58,7 @@ const ProgressTable = props =>{
     }
     return (
         <td className="progressTable__td">
-            <table style={{width: "100%"}} className="progressTable__table">
+            <table className="progressTable__table">
                 <tbody className="progressTable__body">
                     {headers}
                     {progress}

@@ -1,3 +1,5 @@
+//Tabla de la sección de CHECK_IN. Componente igual que el resto de datatables pero con diferentes columnas
+
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';

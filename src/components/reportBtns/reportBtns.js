@@ -1,3 +1,5 @@
+//Botones de historial y status
+
 import "./reportBtns.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
