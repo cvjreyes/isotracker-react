@@ -55,7 +55,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "MyTray"){
-        tableContent = <MyTrayTable pagination = {pagination}/>
+        tableContent = <MyTrayTable/>
     }
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
@@ -89,7 +89,7 @@ const IsoCtrl = () => {
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
-                            <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                        <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                             <td className="reportBtns__container" style={{width:"380px"}}>
                                 
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
