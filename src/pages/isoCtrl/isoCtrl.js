@@ -12,6 +12,8 @@ import ProgressTable from "../../components/progressTable/progressTable"
 import SelectPag from "../../components/selectPag/selectPag"
 import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
+import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"
+import MyTrayTable from "../../components/myTrayTable/myTrayTable"
 
 
 const IsoCtrl = () => {
@@ -52,6 +54,8 @@ const IsoCtrl = () => {
         actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
+    }if(currentTab === "MyTray"){
+        tableContent = <MyTrayTable pagination = {pagination}/>
     }
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
@@ -75,7 +79,7 @@ const IsoCtrl = () => {
                 <center>
                     
                     <h2 className="title__container">
-                        <b>
+                        <b >      
                             <i className="iso__title">IsoTracker</i>
                         </b>
                     </h2>
@@ -85,7 +89,9 @@ const IsoCtrl = () => {
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
-                            <td className="reportBtns__container">
+                            <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                            <td className="reportBtns__container" style={{width:"380px"}}>
+                                
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                                 
                             </td>
