@@ -85,7 +85,7 @@ const IsoCtrl = () => {
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
-                            <td className="reportBtns__container">
+                            <td className="reportBtns__container" style={{width:"380px"}}>
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                                 
                             </td>
