@@ -14,6 +14,8 @@ import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
 import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"
 import MyTrayTable from "../../components/myTrayTable/myTrayTable"
+import BinBtn from '../../components/binBtn/binBtn'
+import BinTable from "../../components/binTable/binTable"
 
 
 const IsoCtrl = () => {
@@ -54,8 +56,10 @@ const IsoCtrl = () => {
         actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
-    }if(currentTab === "MyTray"){
+    }if(currentTab === "My Tray"){
         tableContent = <MyTrayTable pagination = {pagination}/>
+    }if(currentTab === "Recycle bin"){
+        tableContent = <BinTable pagination = {pagination}/>
     }
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
@@ -112,8 +116,9 @@ const IsoCtrl = () => {
                         <StateTable/>
                     </td>
                 </div>
-                <div style={{position: "absolute"}}>
+                <div style={{position: "absolute", width:"300px", overflow:"hidden"}}>
                   {pageSelector}
+                  <BinBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                 </div>
                     
                 
