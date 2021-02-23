@@ -8,21 +8,21 @@ import './myTrayTable.css'
 
 
 const data = [
-    { key:2, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:1, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:3, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:4, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:5, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:6, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:7, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:8, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:9, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:10, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<button className="unclaim__button">UNCLAIM</button>},
-    { key:11, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<button className="unclaim__button">UNCLAIM</button>},
-    { key:12, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:13, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:14, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carlos', user: 'tec_Michael', actions:<button className="unclaim__button">UNCLAIM</button> }
+    { key:2, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:null },
+    { key:1, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:null },
+    { key:3, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:null },
+    { key:4, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:null },
+    { key:5, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:null },
+    { key:6, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:null },
+    { key:7, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:null },
+    { key:8, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:null },
+    { key:9, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:null },
+    { key:10, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:null},
+    { key:11, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:null},
+    { key:12, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:null },
+    { key:13, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:null },
+    { key:14, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:null },
+    { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carlos', user: 'tec_Michael', actions:null }
 ];
 
 const rowSelection = {
