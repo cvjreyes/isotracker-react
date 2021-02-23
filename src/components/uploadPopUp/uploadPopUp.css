@@ -1,0 +1,34 @@
+.upload__button{
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: #6B9DBB;
+}
+.popUp__container{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.popUp__title{
+    margin-top: 10px;
+}
+
+.popUp__label{
+    float: left;
+    padding: 3px 3px 3px 3px;
+    background-color: teal;
+    border: 1px solid black;
+    border-radius: 3px 3px 3px 3px;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.chooseFile__container{
+    padding-top: 7px;
+    padding-left: 7px;
+    border: 1px solid black;
+    float: left;
+    width:350px;
+
+}
+
