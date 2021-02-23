@@ -20,9 +20,11 @@ const ActionBtns = props =>{
     }if (props.currentTab === "LDE/IsoControl"){
         actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>To Issue</button>
         actionBtn2 = <button class="btn btn-sm btn-danger" >With Comments</button>
-    }if (props.currentTab === "MyTray"){
+    }if (props.currentTab === "My Tray"){
         actionBtn1 = <button class="btn btn-sm btn-warning" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Unclaim</button>
         actionBtn2 = <button class="btn btn-sm btn-success" >Verify</button>
+    }if (props.currentTab === "Recycle bin"){
+        actionBtn2 = <button class="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px"}} >Restore</button>
     }
     return(
         <div>
