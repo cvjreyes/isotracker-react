@@ -16,11 +16,12 @@ import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"
 import MyTrayTable from "../../components/myTrayTable/myTrayTable"
 import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
+import StatusDataTable from "../../components/statusDataTable/statusDataTable"
 
 
 const IsoCtrl = () => {
 
-    const [currentTab, setCurrentTab] = useState("History") //Controla la tabla y botones que se muestran
+    const [currentTab, setCurrentTab] = useState("Status") //Controla la tabla y botones que se muestran
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
 
@@ -60,6 +61,8 @@ const IsoCtrl = () => {
         tableContent = <MyTrayTable pagination = {pagination}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable pagination = {pagination}/>
+    }if(currentTab === "Status"){
+        tableContent = <StatusDataTable pagination = {pagination}/>
     }
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
