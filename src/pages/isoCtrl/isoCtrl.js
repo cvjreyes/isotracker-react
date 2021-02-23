@@ -55,7 +55,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "MyTray"){
-        tableContent = <MyTrayTable/>
+        tableContent = <MyTrayTable pagination = {pagination}/>
     }
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
