@@ -22,7 +22,7 @@ const data = [
     { key:12, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<button className="unclaim__button">UNCLAIM</button> },
     { key:13, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<button className="unclaim__button">UNCLAIM</button> },
     { key:14, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<button className="unclaim__button">UNCLAIM</button> },
-    { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carl', user: 'tec_Michael', actions:<button className="unclaim__button">UNCLAIM</button> }
+    { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carlos', user: 'tec_Michael', actions:<button className="unclaim__button">UNCLAIM</button> }
 ];
 
 const rowSelection = {
