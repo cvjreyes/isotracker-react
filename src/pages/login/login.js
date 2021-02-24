@@ -1,27 +1,17 @@
 import React from "react";
 import NavBar from '../../components/navBar/navBar';
-import './register.css';
+import './login.css';
 //Página de home con el menú para ir a las aplicaciones de isotracker
 
-const Register = () =>{
+const Login = () =>{
     return(
         <body>
             <div className="home__background">
                 <NavBar/>
                 
-                <div className="register__form__container">
+                <div className="login__form__container">
                     <form>
-                        <center><h3>Register</h3></center>
-
-                        <div className="form-group">
-                            <label>First name</label>
-                            <input type="text" className="form-control" placeholder="First name" />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Last name</label>
-                            <input type="text" className="form-control" placeholder="Last name" />
-                        </div>
+                        <center><h3>Login</h3></center>
 
                         <div className="form-group">
                             <label>Email</label>
@@ -35,7 +25,7 @@ const Register = () =>{
 
                         <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px"}}>Register</button>
                         <p className="forgot-password text-right">
-                            Already registered <a href="/login">log in?</a>
+                            Don't have an account? <a href="/register">register</a>
                         </p>
                     </form>
                 </div>
@@ -46,4 +36,4 @@ const Register = () =>{
     );
 };
 
-export default Register;
+export default Login;
