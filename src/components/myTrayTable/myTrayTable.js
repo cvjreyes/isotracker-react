@@ -9,21 +9,21 @@ import UploadPopUp from '../uploadPopUp/uploadPopUp';
 
 
 const data = [
-    { key:2, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp/> },
-    { key:1, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp/> },
-    { key:3, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp/> },
-    { key:4, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp/> },
-    { key:5, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp/> },
-    { key:6, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp/> },
-    { key:7, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp/> },
-    { key:8, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp/> },
-    { key:9, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp/> },
-    { key:10, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp/>},
-    { key:11, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp/>},
-    { key:12, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp/> },
-    { key:13, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp/> },
-    { key:14, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp/> },
-    { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carlos', user: 'tec_Michael', actions:<UploadPopUp/> }
+    { key:2, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={1} /> },
+    { key:1, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={3}/> },
+    { key:3, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
+    { key:4, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
+    { key:5, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={1}/> },
+    { key:6, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={3}/> },
+    { key:7, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
+    { key:8, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
+    { key:9, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp id={1}/> },
+    { key:10, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={3}/>},
+    { key:11, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={12}/>},
+    { key:12, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
+    { key:13, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
+    { key:14, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp id={3}/> },
+    { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carlos', user: 'tec_Michael', actions:<UploadPopUp id={41}/> }
 ];
 
 const rowSelection = {

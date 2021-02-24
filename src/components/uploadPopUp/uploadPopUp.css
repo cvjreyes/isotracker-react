@@ -10,17 +10,46 @@
 }
 
 .popUp__title{
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
-.popUp__label{
+.popUp__subtitle{
+    margin-top:130px;
+    font-size: 18px;
+}
+
+.popUp__label_master{
     float: left;
     padding: 3px 3px 3px 3px;
-    background-color: teal;
+    background-color: #17A2B8;
     border: 1px solid black;
     border-radius: 3px 3px 3px 3px;
     margin-top: 10px;
     margin-right: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.popUp__label_clean{
+    float: left;
+    padding: 3px 3px 3px 3px;
+    background-color: lightblue;
+    border: 1px solid black;
+    border-radius: 3px 3px 3px 3px;
+    margin-top: 10px;
+    margin-right: 30px;
+    font-weight: bold
+}
+
+.popUp__label_zip{
+    float: left;
+    padding: 3px 3px 3px 3px;
+    background-color: lightblue;
+    border: 1px solid black;
+    border-radius: 3px 3px 3px 3px;
+    margin-top: 10px;
+    margin-right: 76px;
+    font-weight: bold
 }
 
 .chooseFile__container{
@@ -32,3 +61,47 @@
 
 }
 
+.popUp__superior__container{
+    margin-left: 70px;
+    margin-top: 40px;
+
+}
+
+.popUp__inferior__container{
+    margin-top: 5px;
+    margin-left: 70px;
+    float: center;
+}
+
+.popUp__inferior__container2{
+    margin-left: 70px;
+    margin-top: 65px;
+    float: center;
+}
+
+.popUp__warning__title{
+    margin-top: 150px;
+    font-size: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: yellow;
+    font-weight: bold;
+}
+
+.popUp__warning__subtitle{
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: yellow;
+}
+
+.popUp__buttons__container{
+    margin-top: 60px;
+}
+
+.popUp__uploadButton{
+
+}
+
+.popUp__cancelButton{
+
+}

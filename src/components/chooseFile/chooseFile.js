@@ -37,7 +37,7 @@ class ChooseFile extends React.Component {
           <i className="fa fa-cloud-upload" /> Choose file
         </label>
         {this.state.files.map(x => 
-           <div className="file-preview" onClick={this.removeFile.bind(this, x)}>{x.name}</div>
+           <div className="file-preview"  onClick={this.removeFile.bind(this, x)}>{x.name}</div>
          )}
       </div>
     );
