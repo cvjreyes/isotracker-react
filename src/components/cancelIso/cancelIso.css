@@ -14,11 +14,11 @@
 
 .cancel__header__tray{
     float:left;
-    margin-right:15%;
 }
 
 .cancel__header__comments{
     float:left;
+    margin-left: 11%;
 
 }
 
@@ -33,14 +33,14 @@
 
 .isometric__name{
     float: left;
-    margin: 10px 195px 10px 10px;
+    margin: 10px 205px 10px 10px;
     
 }
 
 .destination__select{
     position: relative;
     float:left;
-    margin: 10px 95px 10px 10px;
+    margin: 10px 0px 0px 0px;
 }
 
 .buttons__container{
