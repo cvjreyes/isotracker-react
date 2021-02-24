@@ -67,7 +67,7 @@ const IsoCtrl = () => {
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons currentTab = {currentTab}/>
+        actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={user}/>
         commentBox = <CommentBox/>
     }
 
