@@ -1,0 +1,48 @@
+.header__container{
+    margin-right: 5%;
+    margin-top: 50px;
+    margin-left: 5%;
+    font-weight: bold;
+    position: fixed;
+    width: 1100px;
+}
+
+.cancel__header__id{
+    float:left;
+    margin-right:30%;
+}
+
+.cancel__header__tray{
+    float:left;
+}
+
+.cancel__header__comments{
+    float:left;
+    margin-left: 11%;
+
+}
+
+.body__container{
+    background-color:#F5F8FA;
+    border-top: 1px solid gray;
+    margin-top: 85px;
+    margin-right: 5%;
+    margin-left: 5%;
+    height:70%;
+}
+
+.isometric__name{
+    float: left;
+    margin: 10px 205px 10px 10px;
+    
+}
+
+.destination__select{
+    position: relative;
+    float:left;
+    margin: 10px 0px 0px 0px;
+}
+
+.buttons__container{
+    margin-top: 15px;
+}
