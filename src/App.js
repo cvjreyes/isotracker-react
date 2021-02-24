@@ -4,6 +4,7 @@ import Welcome from './pages/welcome/welcome';
 import { Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router} from 'react-router-dom';
 import Home from './pages/home/home';
+import Register from './pages/register/register'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route exact path="/" component={IsoCtrl}></Route>
           <Route exact path="/home" component={Home}></Route>
           <Route exact path="/welcome" component={Welcome}></Route>
+          <Route exact path="/register" component={Register}></Route>
         </Switch>
       </Router>
   
