@@ -11,7 +11,7 @@ const Login = () =>{
                 
                 <div className="login__form__container">
                     <form>
-                        <center><h3>Login</h3></center>
+                        <center><h3>Log in</h3></center>
 
                         <div className="form-group">
                             <label>Email</label>
@@ -23,10 +23,7 @@ const Login = () =>{
                             <input type="password" className="form-control" placeholder="Enter password" />
                         </div>
 
-                        <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px"}}>Register</button>
-                        <p className="forgot-password text-right">
-                            Don't have an account? <a href="/register">register</a>
-                        </p>
+                        <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px", backgroundColor: "#17a2b8"}}>Log in</button>
                     </form>
                 </div>
   );

@@ -19,3 +19,11 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.destination__select{
+    position: relative;
+    float:left;
+    margin: 0px 0px 0px 0px;
+    font-size: 17px;
+    padding: 4px 4px 4px 8px;
+}

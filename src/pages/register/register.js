@@ -13,13 +13,13 @@ const Register = () =>{
                     <form>
                         <center><h3>Register</h3></center>
 
-                        <div className="form-group">
-                            <label>First name</label>
-                            <input type="text" className="form-control" placeholder="First name" />
+                        <div className="form-group" style={{display:"flex", alignItems:"left"}}>
+                            <label style={{position:"absolute"}}>Role</label>
+                            <select className="destination__select" style={{position:"relative", marginTop:"30px"}}><option disabled selected>Select a role</option><option value="Design">Design</option><option value="LDesign">Leader Design</option><option value="Stress">Stress</option><option value="LStress">Leader Stress</option><option value="Support">Support</option><option value="LSupport">Leader Support</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
                         </div>
 
                         <div className="form-group">
-                            <label>Last name</label>
+                            <label>Usename</label>
                             <input type="text" className="form-control" placeholder="Last name" />
                         </div>
 
@@ -28,15 +28,7 @@ const Register = () =>{
                             <input type="email" className="form-control" placeholder="Enter email" />
                         </div>
 
-                        <div className="form-group">
-                            <label>Password</label>
-                            <input type="password" className="form-control" placeholder="Enter password" />
-                        </div>
-
-                        <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px"}}>Register</button>
-                        <p className="forgot-password text-right">
-                            Already registered <a href="/login">log in?</a>
-                        </p>
+                        <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px", backgroundColor: "#17a2b8", marginBottom:"10px"}}>Register</button>
                     </form>
                 </div>
   );
