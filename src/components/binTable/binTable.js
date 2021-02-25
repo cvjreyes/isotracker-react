@@ -9,9 +9,9 @@ import './binTable.css'
 
 const data = [
 
-    { key:17, id: 1, date: '01/02/2021', deletedBy: 'Jon', from: 'Design', actions:null },
-    { key:18, id: 3, date: '02/02/2021', deletedBy: 'Jon', from: 'Stress', user: 'tec_Jon', actions:null },
-    { key:19, id: 23, date: '07/02/2021', deletedBy: 'Rick', from: 'Stress', user: 'tec_Rick', actions:null }
+    { key:17, id: 1, date: '01/02/2021', deletedBy: 'Jon', from: 'Design'},
+    { key:18, id: 3, date: '02/02/2021', deletedBy: 'Jon', from: 'Stress', user: 'tec_Jon'},
+    { key:19, id: 23, date: '07/02/2021', deletedBy: 'Rick', from: 'Stress', user: 'tec_Rick'}
 ];
 
 const rowSelection = {
@@ -117,7 +117,6 @@ class DataTable extends React.Component{
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
-        width: '20%',
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id - b.id,
@@ -127,7 +126,6 @@ class DataTable extends React.Component{
         title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'date',
         key: 'date',
-        width: '20%',
         ...this.getColumnSearchProps('date'),
         sorter: {
           compare: (a, b) => moment(a.date, 'DD/MM/YYYY') - moment(b.date, 'DD/MM/YYYY'),
@@ -151,15 +149,7 @@ class DataTable extends React.Component{
           compare: (a, b) => { return a.deletedBy.localeCompare(b.deletedBy)},
         },
       },
-      {
-        title: <div className="dataTable__header__text">Actions</div>,
-        dataIndex: 'actions',
-        key: 'actions',
-        ...this.getColumnSearchProps('actions'),
-        sorter: {
-          compare: (a, b) => a.actions - b.actions,
-        },
-      },
+       
     ];
 
     return (
