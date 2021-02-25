@@ -138,6 +138,15 @@ class DataTable extends React.Component{
     this.state={apiResponse:""};
   }
 
+  datax = [
+    { key:1, id: this.state.apiResponse[0], date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:null },
+    { key:2, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:null },
+    { key:3, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:null },
+    { key:4, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:null },
+    { key:5, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:null },
+    { key:6, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carl', user: 'tec_Michael', actions:null },
+];
+
   callAPI(){
     fetch("http://localhost:3001/testAPI")
       .then(res => res.text())
@@ -297,7 +306,7 @@ class DataTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.datax} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
             <b>Total elements: {data.length} {this.state.apiResponse}</b>
           </div> 
