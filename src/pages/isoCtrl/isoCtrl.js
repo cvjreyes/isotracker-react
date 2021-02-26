@@ -12,11 +12,16 @@ import ProgressTable from "../../components/progressTable/progressTable"
 import SelectPag from "../../components/selectPag/selectPag"
 import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
+import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"
+import MyTrayTable from "../../components/myTrayTable/myTrayTable"
+import BinBtn from '../../components/binBtn/binBtn'
+import BinTable from "../../components/binTable/binTable"
+import StatusDataTable from "../../components/statusDataTable/statusDataTable"
 
 
 const IsoCtrl = () => {
 
-    const [currentTab, setCurrentTab] = useState("History") //Controla la tabla y botones que se muestran
+    const [currentTab, setCurrentTab] = useState("Status") //Controla la tabla y botones que se muestran
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
 
@@ -52,11 +57,17 @@ const IsoCtrl = () => {
         actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
+    }if(currentTab === "My Tray"){
+        tableContent = <MyTrayTable pagination = {pagination}/>
+    }if(currentTab === "Recycle bin"){
+        tableContent = <BinTable pagination = {pagination}/>
+    }if(currentTab === "Status"){
+        tableContent = <StatusDataTable pagination = {pagination}/>
     }
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons currentTab = {currentTab}/>
+        actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={user}/>
         commentBox = <CommentBox/>
     }
 
@@ -75,7 +86,7 @@ const IsoCtrl = () => {
                 <center>
                     
                     <h2 className="title__container">
-                        <b>
+                        <b >      
                             <i className="iso__title">IsoTracker</i>
                         </b>
                     </h2>
@@ -85,7 +96,9 @@ const IsoCtrl = () => {
                 <table style={{width: "100%"}}>
                     <tbody>
                         <tr>
-                            <td className="reportBtns__container">
+                        <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                            <td className="reportBtns__container" style={{width:"380px"}}>
+                                
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                                 
                             </td>
@@ -106,8 +119,9 @@ const IsoCtrl = () => {
                         <StateTable/>
                     </td>
                 </div>
-                <div style={{position: "absolute"}}>
+                <div style={{position: "absolute", width:"300px", overflow:"hidden"}}>
                   {pageSelector}
+                  <BinBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                 </div>
                     
                 
