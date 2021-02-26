@@ -49,7 +49,7 @@ const NavBar = (props) =>{
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
                 <Toolbar>
-                    <a class="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/">
+                    <a class="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/home">
                         <img src={TechnipLogo} alt="technipLogo" style={{height:"50px"}}/>
                     </a>
                     <Typography variant="h6" className={classes.title}>

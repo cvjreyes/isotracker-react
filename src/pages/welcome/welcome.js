@@ -8,7 +8,7 @@ const Welcome = () =>{
         <body>
         <div className="cover__background"> 
             <div className="cover__login__container">
-                <a href="/home" className="cover__login__text">LOGIN</a>
+                <a href="/login" className="cover__login__text">LOGIN</a>
             </div>
             <div class="content">
                 <div className="cover__main__container">
