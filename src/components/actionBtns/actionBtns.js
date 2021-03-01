@@ -3,7 +3,7 @@
 import CancelIso from "../cancelIso/cancelIso";
 
 const ActionBtns = props =>{
-    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6
+    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5
     if (props.currentTab === "Design"){
         actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
     }if (props.currentTab === "Stress"){
