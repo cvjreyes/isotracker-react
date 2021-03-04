@@ -25,9 +25,10 @@ const Login = props =>{
         fetch("http://localhost:5000/login", options)
             .then(response => response.json())
             .then(json => {
+                
                     localStorage.setItem('token', json.token)
                     localStorage.setItem('user', JSON.stringify(json.user))
-                    history.replace('/user')
+                    history.replace('/')
                     window.location.reload(false);
                 }
             )
