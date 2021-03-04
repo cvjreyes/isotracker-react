@@ -27,7 +27,7 @@ const Login = props =>{
             .then(json => {
                     localStorage.setItem('token', json.token)
                     localStorage.setItem('user', JSON.stringify(json.user))
-                    history.replace('/user')
+                    history.replace('/')
                     window.location.reload(false);
                 }
             )
