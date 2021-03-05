@@ -11,6 +11,7 @@ import Icapp from "../../assets/images/icapp.png"
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import './navBar.css';
+import {useHistory} from "react-router";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,6 +29,7 @@ const NavBar = (props) =>{
     const classes = useStyles();
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElIso, setAnchorElIso] = React.useState(null);
+    const history = useHistory();
 
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -44,6 +46,10 @@ const NavBar = (props) =>{
     const handleCloseIso = (selectedTab) => {
         setAnchorElIso(null);
         props.onChange(selectedTab);
+    };
+    const handleLogOut = () => {
+        localStorage.clear();
+        history.replace("/welcome");
     };
     return(
         <div className={classes.root}>
@@ -96,7 +102,7 @@ const NavBar = (props) =>{
                     >
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}>Home</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}>Change password</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}><b>Logout</b></MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleLogOut}><b>Logout</b></MenuItem>
                     </Menu>
  
                     

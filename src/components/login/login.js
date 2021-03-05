@@ -25,10 +25,11 @@ const Login = props =>{
         fetch("http://localhost:5000/login", options)
             .then(response => response.json())
             .then(json => {
+
                     localStorage.setItem('token', json.token)
                     localStorage.setItem('user', JSON.stringify(json.user))
-                    history.replace('/')
-                    window.location.reload(false);
+                    history.replace('/');
+                    
                 }
             )
             .catch(error => {
@@ -50,7 +51,7 @@ const Login = props =>{
                             <label>Password</label>
                             <input type="password" className="form-control" placeholder="Enter password" onChange={(e) => setPassword(e.target.value)}/>
                         </div>
-                        {error && <p className="error__message">Something went wrong...</p>}
+                        {error && <p className="error__message" style={{color: "red"}}>Email or password incorrect. Try again.</p>}
                         <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px", backgroundColor: "#17a2b8"}}  onClick={handleLogin}>Log in</button>
                     </form>
         </div>

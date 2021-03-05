@@ -1,9 +1,57 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from '../../components/navBar/navBar';
 import './register.css';
+import {useHistory} from "react-router";
+import { useState } from 'react';
 //Página de home con el menú para ir a las aplicaciones de isotracker
 
 const Register = () =>{
+    const [role, setRole] = useState();
+    const [email, setEmail] = useState();
+    const [userName, setUserName] = useState();
+    const [error, setError] = useState();
+    const history = useHistory();
+    const [roleItems, setRoleItems] = useState([]);
+
+    const body = {
+        email: email,
+        userName: userName,
+        role: role
+    }
+
+    useEffect(()=>{
+        fetch("http://localhost:5000/api/roles")
+        .then(response => response.json())
+        .then(json => {
+                setRoleItems(json);
+            }
+        )
+        .catch(error => {
+            setError(true);
+        })
+    },[]);
+
+
+    const handleRegister = () => {
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://localhost:5000/register", options)
+            .then(response => response.json())
+            .then(json => {
+                    window.location.reload(false);                
+                }
+            )
+            .catch(error => {
+                window.location.reload(false);
+                setError(true);
+            })
+    }
+
     return(
         <body>
             <div className="home__background">
@@ -15,20 +63,26 @@ const Register = () =>{
 
                         <div className="form-group" style={{display:"flex", alignItems:"left"}}>
                             <label style={{position:"absolute"}}>Role</label>
-                            <select className="destination__select" style={{position:"relative", marginTop:"30px"}}><option disabled selected>Select a role</option><option value="Design">Design</option><option value="LDesign">Leader Design</option><option value="Stress">Stress</option><option value="LStress">Leader Stress</option><option value="Support">Support</option><option value="LSupport">Leader Support</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
+                            <select type="select" className="destination__select" style={{position:"relative", marginTop:"30px"}} onChange={(e) => setRole(e.target.value)}>
+                                <option>Select a role..</option>
+                                {roleItems.map((role)=>(
+                                    <option value={role.name}>{role.name}</option>
+                                )
+                                )}
+                            </select>
                         </div>
 
                         <div className="form-group">
-                            <label>Usename</label>
-                            <input type="text" className="form-control" placeholder="Last name" />
+                            <label>Username</label>
+                            <input type="text" className="form-control" placeholder="Last name" onChange={(e) => setUserName(e.target.value)}/>
                         </div>
 
                         <div className="form-group">
                             <label>Email</label>
-                            <input type="email" className="form-control" placeholder="Enter email" />
+                            <input type="email" className="form-control" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
                         </div>
-
-                        <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px", backgroundColor: "#17a2b8", marginBottom:"10px"}}>Register</button>
+                        {error && <p className="error__message" style={{color: "red"}}>Email or password incorrect. Try again.</p>}
+                        <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px", backgroundColor: "#17a2b8", marginBottom:"10px"}} onClick={handleRegister}>Register</button>
                     </form>
                 </div>
   );
