@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import NavBar from '../../components/navBar/navBar';
 import './register.css';
-import {useHistory} from "react-router";
 import { useState } from 'react';
 //Página de home con el menú para ir a las aplicaciones de isotracker
 
@@ -10,7 +9,6 @@ const Register = () =>{
     const [email, setEmail] = useState();
     const [userName, setUserName] = useState();
     const [error, setError] = useState();
-    const history = useHistory();   
     const [roleItems, setRoleItems] = useState([]);
 
     const body = {

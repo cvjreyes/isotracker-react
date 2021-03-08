@@ -4,7 +4,7 @@ import StateTable from "../../components/stateTable/stateTable"
 import NavBtns from "../../components/navBtns/navBtns"
 import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./isoCtrl.css"
-import React, { useState } from 'react'
+import React, { useState , useContext} from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CommentBox from "../../components/commentBox/commentBox"
@@ -17,6 +17,8 @@ import MyTrayTable from "../../components/myTrayTable/myTrayTable"
 import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
+import { UserContext } from "../../components/userContext/userContext"
+
 
 
 const IsoCtrl = () => {
@@ -24,6 +26,7 @@ const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("Status") //Controla la tabla y botones que se muestran
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
+    const {roles, setRoles} = useContext(UserContext);
 
     console.log(currentTab)
 
@@ -86,6 +89,7 @@ const IsoCtrl = () => {
                 <center>
                     
                     <h2 className="title__container">
+                        <p>{JSON.stringify(roles)}</p>
                         <b >      
                             <i className="iso__title">IsoTracker</i>
                         </b>

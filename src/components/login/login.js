@@ -1,12 +1,16 @@
 import './login.css'
-import React, { useState } from 'react'
+import React, { useState, useContext} from 'react'
 import {useHistory} from "react-router";
+import { UserContext } from '../userContext/userContext';
+
+
 
 const Login = props =>{
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState();
     const history = useHistory();
+    const {roles, setRoles} = useContext(UserContext);
 
     const body = {
         email: email,
@@ -26,8 +30,9 @@ const Login = props =>{
             .then(response => response.json())
             .then(json => {
                     
-                    localStorage.setItem('token', json.token)
-                    localStorage.setItem('user', JSON.stringify(json.user))
+                    localStorage.setItem('token', json.token);
+                    localStorage.setItem('user', JSON.stringify(json.user));
+                    setRoles(json.roles);
                     history.replace('/');
                     window.location.reload(false);
                     
