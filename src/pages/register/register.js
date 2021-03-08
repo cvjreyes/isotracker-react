@@ -10,7 +10,7 @@ const Register = () =>{
     const [email, setEmail] = useState();
     const [userName, setUserName] = useState();
     const [error, setError] = useState();
-    const history = useHistory();
+    const history = useHistory();   
     const [roleItems, setRoleItems] = useState([]);
 
     const body = {
