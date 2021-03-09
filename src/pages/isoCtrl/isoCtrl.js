@@ -4,7 +4,7 @@ import StateTable from "../../components/stateTable/stateTable"
 import NavBtns from "../../components/navBtns/navBtns"
 import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./isoCtrl.css"
-import React, { useState , useContext} from 'react'
+import React, { useState , useContext, useEffect} from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CommentBox from "../../components/commentBox/commentBox"
@@ -17,7 +17,8 @@ import MyTrayTable from "../../components/myTrayTable/myTrayTable"
 import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
-import { UserContext } from "../../components/userContext/userContext"
+import { UserContext} from "../../components/userContext/userContext"
+import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 
 
 
@@ -27,9 +28,8 @@ const IsoCtrl = () => {
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
     const {roles, setRoles} = useContext(UserContext);
-
-    console.log(currentTab)
-
+    const [currentRole, setCurrentRole] = useState();
+    
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
     var dataTableHeight = 8
 
@@ -90,6 +90,9 @@ const IsoCtrl = () => {
                     
                     <h2 className="title__container">
                         <p>{JSON.stringify(roles)}</p>
+                        <div className="roleSelector__container">
+                            <RoleDropDown onChange={value => setCurrentRole(value)} roles = {roles}/>
+                         </div>
                         <b >      
                             <i className="iso__title">IsoTracker</i>
                         </b>

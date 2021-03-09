@@ -12,6 +12,7 @@
     "antd": "^4.12.2",
     "bootstrap": "^4.6.0",
     "locale-compare": "^1.0.0",
+    "material-ui-nested-menu-item": "^1.0.2",
     "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-awesome-modal": "^2.0.5",

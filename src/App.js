@@ -7,12 +7,13 @@ import Home from './pages/home/home';
 import Register from './pages/register/register';
 import LoginPage from './pages/loginPage/loginPage';
 import { UserContext } from './components/userContext/userContext';
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 
+var prevRoles = "vacio";
 
 function App() {
 
-  const [roles, setRoles] = useState("vacio");
+  const [roles, setRoles] = useState();
   const value = useMemo(()=> ({roles, setRoles}), [roles, setRoles]);
 
   return (

@@ -1,14 +1,15 @@
 import './login.css'
-import React, { useState, useContext} from 'react'
+import React, { useState, useContext, useEffect} from 'react'
 import {useHistory} from "react-router";
 import { UserContext } from '../userContext/userContext';
+import { CssBaseline } from '@material-ui/core';
 
 
 
 const Login = props =>{
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [error, setError] = useState();
+    const [error, setError] = useState(false);
     const history = useHistory();
     const {roles, setRoles} = useContext(UserContext);
 
@@ -17,8 +18,8 @@ const Login = props =>{
         password: password
     }
 
-
     const handleLogin = () => {
+        
         const options = {
             method: "POST",
             headers: {
@@ -29,10 +30,10 @@ const Login = props =>{
         fetch("http://localhost:5000/login", options)
             .then(response => response.json())
             .then(json => {
-                    
                     localStorage.setItem('token', json.token);
-                    localStorage.setItem('user', JSON.stringify(json.user));
-                    setRoles(json.roles);
+                    localStorage.setItem('user', JSON.stringify(json.user));  
+                    localStorage.setItem('roles', json.roles)
+                    setRoles(json.roles);                 
                     history.replace('/');
                     window.location.reload(false);
                     
@@ -40,8 +41,12 @@ const Login = props =>{
             )
             .catch(error => {
                 setError(true);
-            })
+            })          
+            
+        
     }
+
+
 
     return(
         <div className="login__form__container">
