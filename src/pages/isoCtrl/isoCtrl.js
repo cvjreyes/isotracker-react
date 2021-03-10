@@ -4,7 +4,7 @@ import StateTable from "../../components/stateTable/stateTable"
 import NavBtns from "../../components/navBtns/navBtns"
 import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./isoCtrl.css"
-import React, { useState , useContext, useEffect} from 'react'
+import React, { useState , useEffect} from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CommentBox from "../../components/commentBox/commentBox"
@@ -17,7 +17,6 @@ import MyTrayTable from "../../components/myTrayTable/myTrayTable"
 import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
-import { UserContext} from "../../components/userContext/userContext"
 import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 
 
@@ -113,7 +112,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable pagination = {pagination}/>
+        tableContent = <MyTrayTable pagination = {pagination} currentRole = {currentRole}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable pagination = {pagination}/>
     }if(currentTab === "Status"){
@@ -121,9 +120,17 @@ const IsoCtrl = () => {
     }
 
     if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
+        commentBox = <CommentBox/>
+    }
+
+    if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
+    ((currentRole === "Stress" || currentRole === "StressLead") && currentTab === "Stress") ||
+    ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Support") ||
+    ((currentRole === "Materials") && currentTab === "Materials") ||
+    ((currentRole === "Issuer") && currentTab === "Issuer") ||
+    ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead"))){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={user}/>
-        commentBox = <CommentBox/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
@@ -139,10 +146,9 @@ const IsoCtrl = () => {
             <NavBar onChange={value => setCurrentTab(value)}/>
             <div className="isoCtrl__container">     
                 <center>
-                    
                     <h2 className="title__container">
                         <div className="roleSelector__container">
-                            <RoleDropDown onChange={value => setCurrentRole(value)} roles = {roles}/>
+                            <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
                          </div>
                         <b >      
                             <i className="iso__title">IsoTracker</i>

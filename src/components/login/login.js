@@ -1,8 +1,6 @@
 import './login.css'
-import React, { useState, useContext, useEffect} from 'react'
+import React, { useState} from 'react'
 import {useHistory} from "react-router";
-import { UserContext } from '../userContext/userContext';
-import { CssBaseline } from '@material-ui/core';
 
 const CryptoJS = require("crypto-js");
 const SecureStorage = require("secure-web-storage");
@@ -36,7 +34,6 @@ const Login = props =>{
     const [password, setPassword] = useState();
     const [error, setError] = useState(false);
     const history = useHistory();
-    const {roles, setRoles} = useContext(UserContext);
 
     const body = {
         email: email,
