@@ -27,8 +27,34 @@ const IsoCtrl = () => {
     const [currentTab, setCurrentTab] = useState("Status") //Controla la tabla y botones que se muestran
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
-    const {roles, setRoles} = useContext(UserContext);
     const [currentRole, setCurrentRole] = useState();
+    const [roles, setRoles] = useState();
+
+    const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+    
+    var secureStorage = new SecureStorage(localStorage, {
+        hash: function hash(key) {
+            key = CryptoJS.SHA256(key, SECRET_KEY);
+    
+            return key.toString();
+        },
+        encrypt: function encrypt(data) {
+            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+    
+            data = data.toString();
+    
+            return data;
+        },
+        decrypt: function decrypt(data) {
+            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+    
+            data = data.toString(CryptoJS.enc.Utf8);
+    
+            return data;
+        }
+    });
     
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
     var dataTableHeight = 8
@@ -48,6 +74,32 @@ const IsoCtrl = () => {
     var currentTabText = currentTab
     var tableContent = <DataTable pagination = {pagination} />
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+    var currentUser = secureStorage.getItem('user')
+
+    const body = {
+        user: currentUser,
+    }
+    
+    useEffect(()=>{
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://localhost:5000/api/roles/user", options)
+            .then(response => response.json())
+            .then(json => {
+                
+                setRoles(json.roles);
+                }
+            )
+            .catch(error => {
+                console.log(error);
+            })              
+    },[]);
+
 
     if(currentTab === "Upload IsoFiles"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
@@ -89,7 +141,6 @@ const IsoCtrl = () => {
                 <center>
                     
                     <h2 className="title__container">
-                        <p>{JSON.stringify(roles)}</p>
                         <div className="roleSelector__container">
                             <RoleDropDown onChange={value => setCurrentRole(value)} roles = {roles}/>
                          </div>

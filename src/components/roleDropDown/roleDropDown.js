@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -25,6 +25,10 @@ const RoleDropDown = (props) => {
   if (props.roles){
     options = props.roles;
   }
+
+  useEffect(()=> {
+    props.onChange(options[0])
+  }, [options])
   
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);

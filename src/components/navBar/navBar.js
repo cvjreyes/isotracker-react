@@ -51,6 +51,11 @@ const NavBar = (props) =>{
         localStorage.clear();
         history.replace("/welcome");
     };
+    const handleHome = () =>{
+        setAnchorElUser(null);
+        setAnchorElIso(null);
+        history.replace("/home");
+    }
     return(
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
@@ -100,7 +105,7 @@ const NavBar = (props) =>{
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUser}
                     >
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}>Home</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleHome}>Home</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}>Change password</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleLogOut}><b>Logout</b></MenuItem>
                     </Menu>
