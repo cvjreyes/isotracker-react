@@ -39,16 +39,17 @@ const rowSelection = {
   };
 
 class MyTrayTable extends React.Component{
-   
-  state = {
-    searchText: '',
-    searchedColumn: '',
-    data: []
-  };
-
+  constructor(props){
+    super(props);
+    this.state = {
+      searchText: '',
+      searchedColumn: '',
+      data: [],
+      role: this.props.currentRole
+    };
+  }
   
-  
-  componentWillMount(){
+  componentDidMount(){
     const body ={
       currentRole : this.props.currentRole.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0]
     }
@@ -62,15 +63,47 @@ class MyTrayTable extends React.Component{
     fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
         .then(response => response.json())
         .then(json => {
-                this.setState({data : json.files});
-                console.log(this.state.data)
+                var rows = []
+                for(let i = 0; i < json.files.length; i++){
+                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={json.files[i]} /> }
+                  rows.push(row)
+                }
+                console.log(rows)
+                this.setState({data : rows});
+
             }
         )
         .catch(error => {
             console.log(error);
         })
+  }
 
-        
+  componentDidUpdate(){
+    const body ={
+      currentRole : this.props.currentRole.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0]
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+        .then(response => response.json())
+        .then(json => {
+                var rows = []
+                for(let i = 0; i < json.files.length; i++){
+                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={json.files[i]} /> }
+                  rows.push(row)
+                }
+                this.setState({data : rows});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
   }
   
   getColumnSearchProps = dataIndex => ({
