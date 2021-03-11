@@ -51,7 +51,7 @@ class MyTrayTable extends React.Component{
   
   componentDidMount(){
     const body ={
-      currentRole : this.props.currentRole.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0]
+      currentRole : this.props.currentRole
     }
     const options = {
       method: "POST",
