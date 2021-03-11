@@ -93,6 +93,13 @@ const IsoCtrl = () => {
             .then(json => {
                 
                 setRoles(json.roles);
+                console.log(secureStorage.getItem('role'))
+                if(secureStorage.getItem('role') !== null){
+                    setCurrentRole(secureStorage.getItem('role'))
+                }else{
+                    secureStorage.setItem('role', json.roles[0])
+                    setCurrentRole(secureStorage.getItem('role'))
+                }
                 }
             )
             .catch(error => {
