@@ -70,7 +70,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
+    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
     var tableContent = <DataTable pagination = {pagination} />
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
@@ -110,9 +110,8 @@ const IsoCtrl = () => {
 
     if(currentTab === "Upload IsoFiles"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
-        tableContent = <DragAndDrop/>
+        tableContent = <DragAndDrop onChange={value => setCurrentTab("Design")}/>
         pageSelector = null
-        uploadDefButton = <div><br></br><button class="btn btn-info btn-lg" style={{width: "100%"}}>Click here to upload</button></div>
     }if(currentTab === "Design"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "LDE/IsoControl"){
@@ -199,8 +198,7 @@ const IsoCtrl = () => {
                 
                 <div style={{height: dataTableHeight}}>
                     <br></br>
-                    <br></br>
-                    {uploadDefButton}   
+                    <br></br> 
                     {tableContent}
                 </div>
                 <div className="bottom__container">
