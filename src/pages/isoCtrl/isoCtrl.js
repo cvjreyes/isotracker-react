@@ -110,7 +110,7 @@ const IsoCtrl = () => {
 
     if(currentTab === "Upload IsoFiles"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
-        tableContent = <DragAndDrop onChange={value => setCurrentTab("Design")}/>
+        tableContent = <DragAndDrop/>
         pageSelector = null
     }if(currentTab === "Design"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>

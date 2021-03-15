@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Upload, message , Button} from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import {useHistory} from "react-router";
+import {Redirect} from "react-router-dom";
 
 
 class DragAndDrop extends React.Component{
@@ -12,30 +12,10 @@ class DragAndDrop extends React.Component{
   state = {
     fileList: [],
     uploading: false,
+    clear: false
   };
 
-render (){
-  
-  const { Dragger } = Upload;
-
-  const handleUpload = () =>{
-    
-    this.state.fileList.forEach(file => {
-      const formData  = new FormData();
-      formData.append('file', file)
-      uploadFile(formData);
-    });
-    console.log(this.state.fileList)
-    this.setState({ fileList: [] }, () => {
-      console.log(this.state.fileList);
-    }); 
-    console.log(this.state.fileList);
-  }
-
-  
-
-
-  function uploadFile(file) {
+  uploadFile(file) {
     fetch('http://localhost:5000/upload', {
       // content-type header should not be specified!
       method: 'POST',
@@ -45,10 +25,28 @@ render (){
       .then(success => {
         // Do something with the successful response
         message.success('Files uploaded successfully.');
+        this.setState({
+          fileList: []
+        });
       })
       .catch(error => console.log(error)
     );
   }
+
+
+  handleUpload = () =>{
+    
+    this.state.fileList.forEach(file => {
+      const formData  = new FormData();
+      formData.append('file', file);
+      this.uploadFile(formData);
+    });    
+  }
+
+render (){
+  
+  const fileList = this.state.fileList;
+  const { Dragger } = Upload;
 
   const props = {
     name: 'file',
@@ -68,13 +66,15 @@ render (){
       this.setState(state => ({
         fileList: [...state.fileList, file],
       }));
+
       return false;
       },
+      fileList
     };
 
       return(
           <div>
-            <button onClick={handleUpload} class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"100%"}}>Upload files</button>
+            <button onClick={this.handleUpload} class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"100%"}}>Upload files</button>
               <Dragger {...props}>
                 
                   <p className="ant-upload-drag-icon">
