@@ -4,7 +4,8 @@ import React, { useEffect } from 'react';
 import 'antd/dist/antd.css';
 import { Upload, message , Button} from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import {Redirect} from "react-router-dom";
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 
 class DragAndDrop extends React.Component{
@@ -12,7 +13,10 @@ class DragAndDrop extends React.Component{
   state = {
     fileList: [],
     uploading: false,
-    clear: false
+    clear: false,
+    success: false,
+    error: false,
+    errorAlerts: [],
   };
 
   uploadFile(file) {
@@ -21,32 +25,67 @@ class DragAndDrop extends React.Component{
       method: 'POST',
       body: file,
     })
-      .then(response => response.json())
-      .then(success => {
+      .then(response => {
         // Do something with the successful response
-        message.success('Files uploaded successfully.');
+        if (response.status === 200){
+          for (var value of file.values()) {
+            this.setState({
+              success : true,
+            })
+          }
+        }else{
+          for (var value of file.values()) {
+            var joined = this.state.errorAlerts.concat(value.name);
+            this.setState({
+              errorAlerts : joined,
+              error: true
+            })
+          }
+          console.log(this.state.errorAlerts)
+        }
         this.setState({
           fileList: []
         });
       })
-      .catch(error => console.log(error)
+      .catch(error => message.error(error)
     );
   }
 
 
   handleUpload = () =>{
-    
+    this.setState({
+      success: false,
+      error: false,
+      errorAlerts: []
+    })
     this.state.fileList.forEach(file => {
+      
       const formData  = new FormData();
       formData.append('file', file);
-      this.uploadFile(formData);
+
+      if (file.name.endsWith(".pdf")){
+        console.log("Si")
+        this.uploadFile(formData);
+      }
     });    
   }
 
 render (){
   
   const fileList = this.state.fileList;
+  const errorAlerts = this.state.errorAlerts;
   const { Dragger } = Upload;
+
+  var errors = []
+  for(let i = 0; i < errorAlerts.length; i++){
+    errors.push(<Alert severity="error"
+    >
+      The file {errorAlerts[i]} already exists!
+
+    </Alert>)
+  }
+
+  console.log(errors)
 
   const props = {
     name: 'file',
@@ -69,6 +108,7 @@ render (){
 
       return false;
       },
+    accept: ".pdf,.zip",
       fileList
     };
 
@@ -85,6 +125,16 @@ render (){
                     You can drop single or multiple isometrics
                   </p>
               </Dragger>,
+              <Collapse in={this.state.success}>
+              <Alert
+              >
+                The files have been uploaded!
+
+              </Alert>
+            </Collapse>
+            <Collapse in={this.state.error}>
+              {errors}
+            </Collapse>
           </div>
       );
       }
