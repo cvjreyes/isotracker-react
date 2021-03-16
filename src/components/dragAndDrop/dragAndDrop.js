@@ -62,11 +62,8 @@ class DragAndDrop extends React.Component{
       
       const formData  = new FormData();
       formData.append('file', file);
+      this.uploadFile(formData);
 
-      if (file.name.endsWith(".pdf")){
-        console.log("Si")
-        this.uploadFile(formData);
-      }
     });    
   }
 
@@ -78,11 +75,24 @@ render (){
 
   var errors = []
   for(let i = 0; i < errorAlerts.length; i++){
-    errors.push(<Alert severity="error"
-    >
-      The file {errorAlerts[i]} already exists!
+    var extension = "";
+    var j = errorAlerts[i].lastIndexOf('.');
+    if (j > 0) {
+      extension = errorAlerts[i].substring(j+1);
+    }
+    if (extension == 'zip' || extension == 'pdf' ){
+      errors.push(<Alert severity="error"
+      >
+        The file {errorAlerts[i]} already exists!
 
-    </Alert>)
+      </Alert>)
+    }else{
+      errors.push(<Alert severity="error"
+      >
+        The file {errorAlerts[i]} has an invalid format!
+
+      </Alert>)
+    }
   }
 
   console.log(errors)
