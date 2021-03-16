@@ -1,6 +1,6 @@
 //Drag and drop para subir isometricas
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
 import { Upload, message , Button} from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
@@ -43,8 +43,10 @@ class DragAndDrop extends React.Component{
           }
           console.log(this.state.errorAlerts)
         }
+        var aux = this.state.fileList;
+        aux.splice(0,10)
         this.setState({
-          fileList: []
+          fileList: aux
         });
       })
       .catch(error => message.error(error)

@@ -28,7 +28,6 @@ const IsoCtrl = () => {
     const user = "admin" //De momento esta variable controla el tipo de user
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-    const [update, setUpdate] = useState(false);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
