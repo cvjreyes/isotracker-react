@@ -60,7 +60,7 @@ const NavBar = (props) =>{
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
                 <Toolbar>
-                    <a class="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/home">
+                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/home">
                         <img src={TechnipLogo} alt="technipLogo" style={{height:"50px"}}/>
                     </a>
                     <Typography variant="h6" className={classes.title}>
@@ -89,7 +89,7 @@ const NavBar = (props) =>{
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px", fontWeight:"bold"}} onClick={(event) => handleCloseIso("CheckBy")}>CHECK BY_</MenuItem>
                     </Menu>
                     <li className="icapp__button"><a href="/"><strong className="icapp__text">ICApp</strong></a></li>
-                    <a class="navbar-brand" href="/">
+                    <a className="navbar-brand" href="/">
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>
                     </a>
                     

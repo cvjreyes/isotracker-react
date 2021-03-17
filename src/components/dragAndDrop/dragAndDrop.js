@@ -2,7 +2,7 @@
 
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Upload, message , Button} from 'antd';
+import { Upload, message} from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
@@ -12,15 +12,14 @@ class DragAndDrop extends React.Component{
 
   state = {
     fileList: [],
-    uploading: false,
-    clear: false,
     success: false,
     error: false,
+    uploaded: false,
     errorAlerts: [],
   };
 
-  uploadFile(file) {
-    fetch('http://localhost:5000/upload', {
+  async uploadFile(file) {
+    await fetch('http://localhost:5000/upload', {
       // content-type header should not be specified!
       method: 'POST',
       body: file,
@@ -28,40 +27,74 @@ class DragAndDrop extends React.Component{
       .then(response => {
         // Do something with the successful response
         if (response.status === 200){
-          for (var value of file.values()) {
-            this.setState({
-              success : true,
-            })
+          if(!this.state.success){
+              this.setState({
+                success : true,
+              })
+          }
+
+          let filename = null;
+          for (let value of file.values()){
+            filename = value.name
+          }
+          let extension = "";
+          let i = filename.lastIndexOf('.');
+          if (i > 0) {
+            extension = filename.substring(i+1);
+          }
+          if(extension === "pdf"){
+            let body =  {
+              fileName: filename,
+              user: this.props.user,
+            }
+            fetch('http://localhost:5000/uploadHis', {
+              // content-type header should not be specified!
+              method: 'POST',
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(body)
+            }).then(response => console.log(response.json()))
+            .catch(error => message.error(error))
           }
         }else{
-          for (var value of file.values()) {
-            var joined = this.state.errorAlerts.concat(value.name);
+          for (let value of file.values()) {
+            let joined = this.state.errorAlerts.concat(value.name);
             this.setState({
               errorAlerts : joined,
               error: true
             })
           }
-          console.log(this.state.errorAlerts)
         }
-        var aux = this.state.fileList;
-        aux.splice(0,10)
+        let aux = this.state.fileList;
+        aux.splice(0,1)
         this.setState({
-          fileList: aux
+          fileList: aux,
         });
+        let max = this.state.fileList.length;
+        console.log(max)
+        if (max === 0){
+          this.setState({
+            uploaded: true
+          })
+        }
+
       })
       .catch(error => message.error(error)
     );
   }
 
-
   handleUpload = () =>{
     this.setState({
       success: false,
+      uploaded: false,
       error: false,
-      errorAlerts: []
+      errorAlerts: [],
+      counter: 0
     })
+
     this.state.fileList.forEach(file => {
-      
+
       const formData  = new FormData();
       formData.append('file', file);
       this.uploadFile(formData);
@@ -75,14 +108,14 @@ render (){
   const errorAlerts = this.state.errorAlerts;
   const { Dragger } = Upload;
 
-  var errors = []
+  let errors = []
   for(let i = 0; i < errorAlerts.length; i++){
-    var extension = "";
-    var j = errorAlerts[i].lastIndexOf('.');
+    let extension = "";
+    let j = errorAlerts[i].lastIndexOf('.');
     if (j > 0) {
       extension = errorAlerts[i].substring(j+1);
     }
-    if (extension == 'zip' || extension == 'pdf' ){
+    if (extension === 'zip' || extension === 'pdf' ){
       errors.push(<Alert severity="error"
       >
         The file {errorAlerts[i]} already exists!
@@ -96,8 +129,6 @@ render (){
       </Alert>)
     }
   }
-
-  console.log(errors)
 
   const props = {
     name: 'file',
@@ -116,6 +147,9 @@ render (){
     beforeUpload: file => {
       this.setState(state => ({
         fileList: [...state.fileList, file],
+        success: false,
+        error: 0,
+        uploaded: false
       }));
 
       return false;
@@ -138,14 +172,18 @@ render (){
                   </p>
               </Dragger>,
               <Collapse in={this.state.success}>
-              <Alert
-              >
-                The files have been uploaded!
+                <Collapse in={this.state.uploaded}>
+                  <Alert
+                  >
+                    The files have been uploaded!
 
-              </Alert>
+                  </Alert>
+              </Collapse>
             </Collapse>
             <Collapse in={this.state.error}>
-              {errors}
+              <Collapse in={this.state.uploaded}>
+                {errors}
+              </Collapse>
             </Collapse>
           </div>
       );

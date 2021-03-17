@@ -60,7 +60,8 @@ const RoleDropDown = (props) => {
     }else{
       setSelectedIndex(0)
     }
-  })
+    // eslint-disable-next-line
+  },[])
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);

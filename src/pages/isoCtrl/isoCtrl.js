@@ -103,16 +103,17 @@ const IsoCtrl = () => {
             )
             .catch(error => {
                 console.log(error);
-            })    
+            })  
+            // eslint-disable-next-line  
     },[]);
 
 
     if(currentTab === "Upload IsoFiles"){
-        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
-        tableContent = <DragAndDrop/>
+        uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
+        tableContent = <DragAndDrop user = {currentUser}/>
         pageSelector = null
     }if(currentTab === "Design"){
-        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
+        uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "LDE/IsoControl"){
         actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
