@@ -1,12 +1,26 @@
-//Drag and drop para subir isometricas
-
-import React from 'react';
-import 'antd/dist/antd.css';
-import { Upload, message} from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+import 'react-dropzone-uploader/dist/styles.css'
+import Dropzone from 'react-dropzone-uploader'
+import React from 'react'
+import {message} from'antd'
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
 
+const Layout = ({ input, previews, submitButton, dropzoneProps, files, extra: { maxFiles } }) => {
+  return (
+    <div>
+      
+      {submitButton}
+      <div {...dropzoneProps}>
+      
+      {previews}
+      {files.length < maxFiles && input}
+        
+      </div>
+
+      
+    </div>
+  )
+}
 
 class DragAndDrop extends React.Component{
 
@@ -16,9 +30,13 @@ class DragAndDrop extends React.Component{
     error: false,
     uploaded: false,
     errorAlerts: [],
+    max: 0,
+    uploadingPreview: false,
+    uploading: false
   };
 
   async uploadFile(file) {
+
     await fetch('http://localhost:5000/upload', {
       // content-type header should not be specified!
       method: 'POST',
@@ -27,6 +45,7 @@ class DragAndDrop extends React.Component{
       .then(response => {
         // Do something with the successful response
         if (response.status === 200){
+          console.log("ADSAD")
           if(!this.state.success){
               this.setState({
                 success : true,
@@ -66,130 +85,105 @@ class DragAndDrop extends React.Component{
             })
           }
         }
-        let aux = this.state.fileList;
-        aux.splice(0,1)
+        let max = this.state.max - 1
         this.setState({
-          fileList: aux,
-        });
-        let max = this.state.fileList.length;
+          max: max
+        })
         console.log(max)
         if (max === 0){
           this.setState({
-            uploaded: true
+            uploaded: true,
+            uploading: false
           })
         }
-
+        
       })
       .catch(error => message.error(error)
     );
   }
 
-  handleUpload = () =>{
+  handleSubmit = async (files, allFiles) => {
+
     this.setState({
       success: false,
       uploaded: false,
       error: false,
       errorAlerts: [],
-      counter: 0
+      counter: 0,
+      max: files.length,
+      uploading: true
     })
 
-    this.state.fileList.forEach(file => {
-
+    await allFiles.forEach(file => {
+      
       const formData  = new FormData();
-      formData.append('file', file);
+      formData.append('file', file.file);      
       this.uploadFile(formData);
+      file.remove();
 
     });    
+
   }
 
-render (){
-  
-  const fileList = this.state.fileList;
-  const errorAlerts = this.state.errorAlerts;
-  const { Dragger } = Upload;
+  render(){
+    const errorAlerts = this.state.errorAlerts;
+    let errors = []
+    if(errorAlerts.length > 0){
+      for(let i = 0; i < errorAlerts.length; i++){
+        let extension = "";
+        let j = errorAlerts[i].lastIndexOf('.');
+        if (j > 0) {
+          extension = errorAlerts[i].substring(j+1);
+        }
+        if (extension === 'zip' || extension === 'pdf' ){
+          errors.push(<Alert severity="error"
+          >
+            The file {errorAlerts[i]} already exists!
 
-  let errors = []
-  for(let i = 0; i < errorAlerts.length; i++){
-    let extension = "";
-    let j = errorAlerts[i].lastIndexOf('.');
-    if (j > 0) {
-      extension = errorAlerts[i].substring(j+1);
-    }
-    if (extension === 'zip' || extension === 'pdf' ){
-      errors.push(<Alert severity="error"
-      >
-        The file {errorAlerts[i]} already exists!
+          </Alert>)
+        }else{
+          errors.push(<Alert severity="error"
+          >
+            The file {errorAlerts[i]} has an invalid format!
 
-      </Alert>)
-    }else{
-      errors.push(<Alert severity="error"
-      >
-        The file {errorAlerts[i]} has an invalid format!
-
-      </Alert>)
-    }
-  }
-
-  const props = {
-    name: 'file',
-    multiple: true,
-    action: 'http://localhost:5000/upload',
-    onRemove: file => {
-      this.setState(state => {
-        const index = state.fileList.indexOf(file);
-        const newFileList = state.fileList.slice();
-        newFileList.splice(index, 1);
-        return {
-          fileList: newFileList,
-        };
-      });
-    },
-    beforeUpload: file => {
-      this.setState(state => ({
-        fileList: [...state.fileList, file],
-        success: false,
-        error: 0,
-        uploaded: false
-      }));
-
-      return false;
-      },
-    accept: ".pdf,.zip",
-      fileList
-    };
-
-      return(
-          <div>
-            <button onClick={this.handleUpload} class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"100%"}}>Upload files</button>
-              <Dragger {...props}>
-                
-                  <p className="ant-upload-drag-icon">
-                    <InboxOutlined />
-                  </p>
-                  <p className="ant-upload-text">Click or drag the isometrics to this area to upload</p>
-                  <p className="ant-upload-hint">
-                    You can drop single or multiple isometrics
-                  </p>
-              </Dragger>,
-              <Collapse in={this.state.success}>
-                <Collapse in={this.state.uploaded}>
-                  <Alert
-                  >
-                    The files have been uploaded!
-
-                  </Alert>
-              </Collapse>
-            </Collapse>
-            <Collapse in={this.state.error}>
-              <Collapse in={this.state.uploaded}>
-                {errors}
-              </Collapse>
-            </Collapse>
-          </div>
-      );
+          </Alert>)
+        }
       }
+    }
+    return (
+      <div>
+        <Dropzone
+          LayoutComponent={Layout}
+          onSubmit={this.handleSubmit}
+          inputContent="Drop isometrics here"
+        />
+
+        <Collapse in={this.state.success}>
+          <Collapse in={this.state.uploaded}>
+            <Alert
+            >
+              The files have been uploaded!
+
+            </Alert>
+          </Collapse>
+        </Collapse>
+        <Collapse in={this.state.error}>
+          <Collapse in={this.state.uploaded}>
+            {errors}
+          </Collapse>
+          
+        </Collapse>
+        <Collapse in={this.state.uploading}>
+          <Alert severity="info"
+            >
+              The files are uploading...
+
+            </Alert>
+        </Collapse>
+        
+      </div>
+    )
+  }
 }
 
 export default DragAndDrop;
-
-
