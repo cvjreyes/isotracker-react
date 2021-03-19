@@ -110,7 +110,8 @@ const IsoCtrl = () => {
 
     useEffect(()=>{
         console.log(selected)
-        actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
+        actionButtons = <ActionButtons onChange={value => setSelected(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
+        tableContent = <DataTable onChange={value=> setSelected(value)} pagination = {pagination} currentTab = {currentTab}/>
         }, [selected])
 
 
@@ -144,7 +145,7 @@ const IsoCtrl = () => {
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead"))){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
+        actionButtons = <ActionButtons onChange={value => setSelected(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso

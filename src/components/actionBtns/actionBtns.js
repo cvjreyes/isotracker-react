@@ -21,6 +21,7 @@ const ActionBtns = props =>{
                 fetch("http://localhost:5000/claim", options)
                     .then(response => response.json())
             }
+            props.onChange([])
         }
     }
 
