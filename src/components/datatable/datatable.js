@@ -135,7 +135,67 @@ class DataTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
+    data: [],
+    tab: this.props.currentTab
   };
+
+  componentDidMount(){
+    console.log(this.props.currentTab)
+    const body ={
+      currentTab : this.props.currentTab
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://localhost:5000/files", options)
+        .then(response => response.json())
+        .then(json => {
+                var rows = []
+                for(let i = 0; i < json.files.length; i++){
+                  var row = {key:i, id: json.files[i] , date: json.updated_at, from: json.from, to: json.to, user: json.user, actions:{} }
+                  rows.push(row)
+                }
+                console.log(rows)
+                this.setState({data : rows});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
+  }
+  /*
+  componentDidUpdate(){
+    const body ={
+      currentRole : this.props.currentRole.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0]
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+        .then(response => response.json())
+        .then(json => {
+                var rows = []
+                for(let i = 0; i < json.files.length; i++){
+                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:{}}
+                  rows.push(row)
+                }
+                this.setState({data : rows});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
+  }*/
   
   
   getColumnSearchProps = dataIndex => ({

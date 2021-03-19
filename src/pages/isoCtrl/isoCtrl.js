@@ -72,7 +72,7 @@ const IsoCtrl = () => {
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
-    var tableContent = <DataTable pagination = {pagination} />
+    var tableContent = <DataTable pagination = {pagination} currentTab = {currentTab}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
 
