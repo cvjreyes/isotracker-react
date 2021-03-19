@@ -51,7 +51,8 @@ class MyTrayTable extends React.Component{
   
   componentDidMount(){
     const body ={
-      currentRole : this.props.currentRole
+      currentRole : this.props.currentRole,
+      currentUser: this.props.currentUser
     }
     const options = {
       method: "POST",
@@ -63,13 +64,13 @@ class MyTrayTable extends React.Component{
     fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
         .then(response => response.json())
         .then(json => {
-                var rows = []
-                for(let i = 0; i < json.files.length; i++){
-                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={json.files[i]} /> }
-                  rows.push(row)
-                }
-                console.log(rows)
-                this.setState({data : rows});
+            var rows = []
+            for(let i = 0; i < json.rows.length; i++){
+              var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{} }
+              rows.push(row)
+            }
+            //console.log(rows)
+            this.setState({data : rows});
 
             }
         )
@@ -77,10 +78,12 @@ class MyTrayTable extends React.Component{
             console.log(error);
         })
   }
+  /*
 
   componentDidUpdate(){
     const body ={
-      currentRole : this.props.currentRole.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0]
+      currentRole : this.props.currentRole.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0],
+      currentUser : this.props.user
     }
     const options = {
       method: "POST",
@@ -92,12 +95,14 @@ class MyTrayTable extends React.Component{
     fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
         .then(response => response.json())
         .then(json => {
-                var rows = []
-                for(let i = 0; i < json.files.length; i++){
-                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={json.files[i]} /> }
-                  rows.push(row)
-                }
-                this.setState({data : rows});
+            var rows = []
+            for(let i = 0; i < json.rows.length; i++){
+              console.log(json.rows[i].id)
+              var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{} }
+              rows.push(row)
+            }
+            //console.log(rows)
+            this.setState({data : rows});
 
             }
         )
@@ -105,6 +110,7 @@ class MyTrayTable extends React.Component{
             console.log(error);
         })
   }
+  */
   
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (

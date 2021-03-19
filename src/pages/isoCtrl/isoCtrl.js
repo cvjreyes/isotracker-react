@@ -29,6 +29,7 @@ const IsoCtrl = () => {
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
     const [update, setUpdate] = useState(false);
+    const [selected, setSelected] = useState();
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -72,7 +73,7 @@ const IsoCtrl = () => {
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
     var currentTabText = currentTab
-    var tableContent = <DataTable pagination = {pagination} currentTab = {currentTab}/>
+    var tableContent = <DataTable onChange={value=> setSelected(value)} pagination = {pagination} currentTab = {currentTab}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
 
@@ -107,6 +108,11 @@ const IsoCtrl = () => {
             })    
     },[]);
 
+    useEffect(()=>{
+        console.log(selected)
+        actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
+        }, [selected])
+
 
     if(currentTab === "Upload IsoFiles"){
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
@@ -120,7 +126,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable pagination = {pagination} currentRole = {currentRole}/>
+        tableContent = <MyTrayTable pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable pagination = {pagination}/>
     }if(currentTab === "Status"){
@@ -138,7 +144,7 @@ const IsoCtrl = () => {
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead"))){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={user}/>
+        actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
