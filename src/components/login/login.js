@@ -1,11 +1,38 @@
 import './login.css'
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import {useHistory} from "react-router";
+
+const CryptoJS = require("crypto-js");
+const SecureStorage = require("secure-web-storage");
+var SECRET_KEY = 'sanud2ha8shd72h';
+ 
+var secureStorage = new SecureStorage(localStorage, {
+    hash: function hash(key) {
+        key = CryptoJS.SHA256(key, SECRET_KEY);
+ 
+        return key.toString();
+    },
+    encrypt: function encrypt(data) {
+        data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+ 
+        data = data.toString();
+ 
+        return data;
+    },
+    decrypt: function decrypt(data) {
+        data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+ 
+        data = data.toString(CryptoJS.enc.Utf8);
+ 
+        return data;
+    }
+});
+
 
 const Login = props =>{
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [error, setError] = useState();
+    const [error, setError] = useState(false);
     const history = useHistory();
 
     const body = {
@@ -13,8 +40,8 @@ const Login = props =>{
         password: password
     }
 
-
     const handleLogin = () => {
+        
         const options = {
             method: "POST",
             headers: {
@@ -25,9 +52,8 @@ const Login = props =>{
         fetch("http://localhost:5000/login", options)
             .then(response => response.json())
             .then(json => {
-                    
-                    localStorage.setItem('token', json.token)
-                    localStorage.setItem('user', JSON.stringify(json.user))
+                    localStorage.setItem('token', json.token);
+                    secureStorage.setItem('user', json.user)         
                     history.replace('/');
                     window.location.reload(false);
                     
@@ -35,8 +61,11 @@ const Login = props =>{
             )
             .catch(error => {
                 setError(true);
-            })
+            })               
+        
     }
+
+
 
     return(
         <div className="login__form__container">

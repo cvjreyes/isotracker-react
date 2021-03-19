@@ -8,16 +8,19 @@ import Register from './pages/register/register';
 import LoginPage from './pages/loginPage/loginPage';
 
 
+
+
 function App() {
+
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/" component={IsoCtrl}></Route>
-          <Route exact path="/home" component={Home}></Route>
-          <Route exact path="/welcome" component={Welcome}></Route>
-          <Route exact path="/register" component={Register}></Route>
-          <Route exact path="/login" component={LoginPage}></Route>
+            <Route exact path="/" component={IsoCtrl}></Route>
+            <Route exact path="/home" component={Home}></Route>
+            <Route exact path="/welcome" component={Welcome}></Route>
+            <Route exact path="/register" component={Register}></Route>
+            <Route exact path="/login" component={LoginPage}></Route>
         </Switch>
       </Router>
   

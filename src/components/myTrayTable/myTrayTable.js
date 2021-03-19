@@ -6,8 +6,9 @@ import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './myTrayTable.css'
 import UploadPopUp from '../uploadPopUp/uploadPopUp';
+import { useState } from 'react';
 
-
+/*
 const data = [
     { key:2, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={1} /> },
     { key:1, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={3}/> },
@@ -25,7 +26,7 @@ const data = [
     { key:14, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp id={3}/> },
     { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carlos', user: 'tec_Michael', actions:<UploadPopUp id={41}/> }
 ];
-
+*/
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -37,14 +38,73 @@ const rowSelection = {
     }),
   };
 
-
 class MyTrayTable extends React.Component{
-  state = {
-    searchText: '',
-    searchedColumn: '',
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      searchText: '',
+      searchedColumn: '',
+      data: [],
+      role: this.props.currentRole
+    };
+  }
   
-  
+  componentDidMount(){
+    const body ={
+      currentRole : this.props.currentRole
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+        .then(response => response.json())
+        .then(json => {
+                var rows = []
+                for(let i = 0; i < json.files.length; i++){
+                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={json.files[i]} /> }
+                  rows.push(row)
+                }
+                console.log(rows)
+                this.setState({data : rows});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
+  }
+
+  componentDidUpdate(){
+    const body ={
+      currentRole : this.props.currentRole.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0]
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+        .then(response => response.json())
+        .then(json => {
+                var rows = []
+                for(let i = 0; i < json.files.length; i++){
+                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={json.files[i]} /> }
+                  rows.push(row)
+                }
+                this.setState({data : rows});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
+  }
   
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -188,9 +248,9 @@ class MyTrayTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
-            <b>Total elements: {data.length}</b>
+            <b>Total elements: {this.state.data.length}</b>
           </div>
         </div>
         
