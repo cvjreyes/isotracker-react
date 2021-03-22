@@ -12,7 +12,9 @@ class DataTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
-    tab: this.props.currentTab
+    tab: this.props.currentTab,
+    selectedRows: [],
+    update: this.props.update
   };
 
   componentDidMount(){
@@ -50,9 +52,9 @@ class DataTable extends React.Component{
         })
   }
 
-  componentDidUpdate(){
-
-    console.log()
+  componentDidUpdate(prevProps, prevState){
+    
+    if(prevProps !== this.props){
     const body ={
       currentTab : this.props.currentTab
     }
@@ -77,14 +79,22 @@ class DataTable extends React.Component{
                   rows.push(row)
                 }
                 //console.log(rows)
-                this.setState({data : rows});
+                this.setState({
+                  data : rows,
+                  selectedRows: []
+                });
+
 
             }
         )
         .catch(error => {
             console.log(error);
         })
+    }else{
+      console.log("no cambios")
+    }
   }
+
 
   
   getColumnSearchProps = dataIndex => ({
@@ -171,17 +181,20 @@ class DataTable extends React.Component{
     for(let i = 0; i < selectedRows.length; i++){
       ids.push(selectedRows[i].id)
     }
-    this.setState({ selectedRows });
+    this.setState({ selectedRows: selectedRows });
     this.props.onChange(ids);
   };
 
   render() {
+
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRows);
       },
-      getCheckboxProps: (record) => ({
-        disabled: record.name === 'Disabled User',
+      getCheckboxProps: (record) => (      
+        {
+        
+        disabled: record.actions === 'CLAIMED',
         // Column configuration not to be checked
         name: record.name,
       }),

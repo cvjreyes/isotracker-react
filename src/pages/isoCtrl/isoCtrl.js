@@ -22,14 +22,14 @@ import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 
 
 const IsoCtrl = () => {
-
-    const [currentTab, setCurrentTab] = useState("Status") //Controla la tabla y botones que se muestran
+   
+    
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
     const [update, setUpdate] = useState(false);
-    const [selected, setSelected] = useState();
+    const [selected, setSelected] = useState([]);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -56,7 +56,12 @@ const IsoCtrl = () => {
             return data;
         }
     });
-    
+
+    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) //Controla la tabla y botones que se muestran
+    console.log(currentTab)
+        
+
+        
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
     var dataTableHeight = 8
 
@@ -71,9 +76,9 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
+    var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent
     var currentTabText = currentTab
-    var tableContent = <DataTable onChange={value=> setSelected(value)} pagination = {pagination} currentTab = {currentTab}/>
+    tableContent = <DataTable onChange={value=> setSelected(value)} pagination = {pagination} currentTab = {currentTab} update={false}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
 
@@ -110,12 +115,17 @@ const IsoCtrl = () => {
 
     useEffect(()=>{
         console.log(selected)
+        if(currentTab !== "My Tray"){
+            tableContent = <DataTable onChange={value=> setSelected(value)} pagination = {pagination} currentTab = {currentTab} update = {true}/>
+        }else{
+            tableContent = <MyTrayTable  onChange={value=> setSelected(value)} currentTab = {currentTab} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} update = {true}/>
+        }
         actionButtons = <ActionButtons onChange={value => setSelected(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
-        tableContent = <DataTable onChange={value=> setSelected(value)} pagination = {pagination} currentTab = {currentTab}/>
-        }, [selected])
+    }, [selected])
 
 
     if(currentTab === "Upload IsoFiles"){
+        secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
         tableContent = <DragAndDrop/>
         pageSelector = null
@@ -127,7 +137,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser}/>
+        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} update = {false}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable pagination = {pagination}/>
     }if(currentTab === "Status"){
@@ -143,7 +153,8 @@ const IsoCtrl = () => {
     ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Support") ||
     ((currentRole === "Materials") && currentTab === "Materials") ||
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
-    ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead"))){
+    ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
+    (currentTab=== "My Tray"))){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons onChange={value => setSelected(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
     }
