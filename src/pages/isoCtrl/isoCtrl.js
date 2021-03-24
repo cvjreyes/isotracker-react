@@ -28,8 +28,8 @@ const IsoCtrl = () => {
     const user = "admin" //De momento esta variable controla el tipo de user
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-    const [update, setUpdate] = useState(false);
     const [selected, setSelected] = useState([]);
+    const [updateData, setUpdateData] = useState();
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -58,10 +58,7 @@ const IsoCtrl = () => {
     });
 
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) //Controla la tabla y botones que se muestran
-    console.log(currentTab)
-        
-
-        
+                
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
     var dataTableHeight = 8
 
@@ -78,7 +75,7 @@ const IsoCtrl = () => {
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent
     var currentTabText = currentTab
-    tableContent = <DataTable onChange={value=> setSelected(value)} pagination = {pagination} currentTab = {currentTab} update={false}/>
+    tableContent = <DataTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
 
@@ -99,7 +96,6 @@ const IsoCtrl = () => {
             .then(json => {
                 
                 setRoles(json.roles);
-                console.log(secureStorage.getItem('role'))
                 if(secureStorage.getItem('role') !== null){
                     setCurrentRole(secureStorage.getItem('role'))
                 }else{
@@ -113,15 +109,61 @@ const IsoCtrl = () => {
             })    
     },[]);
 
-    useEffect(()=>{
-        console.log(selected)
-        if(currentTab !== "My Tray"){
-            tableContent = <DataTable onChange={value=> setSelected(value)} pagination = {pagination} currentTab = {currentTab} update = {true}/>
-        }else{
-            tableContent = <MyTrayTable  onChange={value=> setSelected(value)} currentTab = {currentTab} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} update = {true}/>
+    const claim = (event) => {
+        console.log(selected.length)
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                
+                const body ={
+                    user : currentUser,
+                    file: selected[i]
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                fetch("http://localhost:5000/claim", options)
+                    .then(response => response.json())
+            }
+            console.log(updateData);
+            setUpdateData(!updateData)
+
         }
-        actionButtons = <ActionButtons onChange={value => setSelected(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
-    }, [selected])
+        
+        
+    }
+    
+
+    const unclaim = (event) =>{
+        console.log(selected)
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            console.log(localStorage.getItem("update"))
+            for (let i = 0; i < selected.length; i++){
+                const body ={
+                    user : currentUser,
+                    file: selected[i]
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                console.log(body)
+                fetch("http://localhost:5000/unclaim", options)
+                    .then(response => response.json())
+            }
+            console.log(updateData);
+            setUpdateData(!updateData)
+        }
+        
+    }
 
 
     if(currentTab === "Upload IsoFiles"){
@@ -137,7 +179,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} update = {false}/>
+        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable pagination = {pagination}/>
     }if(currentTab === "Status"){
@@ -156,7 +198,7 @@ const IsoCtrl = () => {
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
     (currentTab=== "My Tray"))){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons onChange={value => setSelected(value)} currentTab = {currentTab} user={currentUser} selected={selected}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} unclaimClick={unclaim.bind(this)} currentTab = {currentTab} user={currentUser}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso

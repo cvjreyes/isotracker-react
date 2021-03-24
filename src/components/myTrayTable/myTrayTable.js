@@ -42,15 +42,19 @@ class MyTrayTable extends React.Component{
       data: [],
       role: secureStorage.getItem("role"),
       user: secureStorage.getItem("user"),
+      tab: this.props.currentTab,
       selectedRows: [],
-      tab: this.props.currentTab
+      selectedRowsKeys: [],
+      updateData: this.props.updateData,
     };
 
   componentDidMount(){
+
     const body ={
       currentRole : this.state.role,
       currentUser: this.state.user
     }
+    console.log(body)
     const options = {
       method: "POST",
       headers: {
@@ -61,6 +65,7 @@ class MyTrayTable extends React.Component{
     fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
         .then(response => response.json())
         .then(json => {
+            console.log(json.rows)
             var rows = []
             for(let i = 0; i < json.rows.length; i++){
               var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{} }
@@ -80,6 +85,7 @@ class MyTrayTable extends React.Component{
   componentDidUpdate(prevProps, prevState){
 
     if(prevProps !== this.props){
+      
       const body ={
         currentRole : this.state.role.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0],
         currentUser : this.state.user
@@ -91,9 +97,11 @@ class MyTrayTable extends React.Component{
         },
         body: JSON.stringify(body)
     }
+      console.log("hago unclaim ", body)
       fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
           .then(response => response.json())
           .then(json => {
+              console.log("recibo respuesta")
               var rows = []
               for(let i = 0; i < json.rows.length; i++){
                 console.log(json.rows[i].id)
@@ -190,29 +198,56 @@ class MyTrayTable extends React.Component{
     this.setState({ searchText: '' });
   };
 
-  onSelectChange = selectedRows => {
+  onSelectChange = (selectedRowKeys, selectedRows) => {
     //console.log('selectedRowKeys changed: ', selectedRowKeys);
     let ids = []
     for(let i = 0; i < selectedRows.length; i++){
       ids.push(selectedRows[i].id)
+      console.log(selectedRowKeys)
     }
-    this.setState({ selectedRows: selectedRows });
+    this.setState({
+      selectedRowsKeys: selectedRowKeys,
+      selectedRows: selectedRows
+    })
+    //this.setState({ selectedRows: selectedRows });
     this.props.onChange(ids);
+    
   };
 
 
   render() {
 
+    const update = this.state.updateData;
+    console.log(localStorage.getItem("update"));
+    const selectedRows = this.state.selectedRows;
+    const selectedRowsKeys = this.state.selectedRowsKeys;
+
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
-        this.onSelectChange(selectedRows);
+        this.onSelectChange(selectedRowKeys, selectedRows);
       },
-      getCheckboxProps: (record) => ({
-        disabled: record.name === 'Disabled User',
+      getCheckboxProps: (record) => (      
+        {
+        
+        disabled: record.actions === 'CLAIMED',
         // Column configuration not to be checked
         name: record.name,
       }),
     };
+
+    if(localStorage.getItem("update") === "true"){
+      this.setState({
+        selectedRows: [],
+        selectedRowsKeys: []
+      })
+      rowSelection.selectedRowKeys = []
+      rowSelection.selectedRows = []
+      localStorage.setItem("update", false)
+    }else{
+      rowSelection.selectedRowKeys = selectedRowsKeys 
+      rowSelection.selectedRows = selectedRows;
+    }
+
     const columns = [
       {
         title: <center className="dataTable__header__text">ISO ID</center>,

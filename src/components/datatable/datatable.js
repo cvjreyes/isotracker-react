@@ -14,8 +14,11 @@ class DataTable extends React.Component{
     data: [],
     tab: this.props.currentTab,
     selectedRows: [],
-    update: this.props.update
+    selectedRowsKeys: [],
+    updateData: this.props.updateData,
   };
+
+  
 
   componentDidMount(){
     
@@ -34,7 +37,6 @@ class DataTable extends React.Component{
         .then(json => {
                 var rows = []
                 for(let i = 0; i < json.rows.length; i++){
-                  console.log(json.rows[i].id)
                   if(json.rows[i].claimed === 1){
                     var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: "CLAIMED" }
                   }else{
@@ -43,7 +45,7 @@ class DataTable extends React.Component{
                   rows.push(row)
                 }
                 //console.log(rows)
-                this.setState({data : rows});
+                this.setState({data : rows, selectedRows: []});
 
             }
         )
@@ -53,46 +55,44 @@ class DataTable extends React.Component{
   }
 
   componentDidUpdate(prevProps, prevState){
-    
+
     if(prevProps !== this.props){
-    const body ={
-      currentTab : this.props.currentTab
+  
+      const body ={
+        currentTab : this.props.currentTab
+      }
+      const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
     }
-    const options = {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-  }
-    fetch("http://localhost:5000/files", options)
-        .then(response => response.json())
-        .then(json => {
-                var rows = []
-                for(let i = 0; i < json.rows.length; i++){
-                  console.log(json.rows[i].id)
-                  if(json.rows[i].claimed === 1){
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: "CLAIMED" }
-                  }else{
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
+      fetch("http://localhost:5000/files", options)
+          .then(response => response.json())
+          .then(json => {
+                  var rows = []
+                  for(let i = 0; i < json.rows.length; i++){
+                    if(json.rows[i].claimed === 1){
+                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: "CLAIMED" }
+                    }else{
+                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
+                    }
+                    rows.push(row)
                   }
-                  rows.push(row)
-                }
-                //console.log(rows)
-                this.setState({
-                  data : rows,
-                  selectedRows: []
-                });
+                  //console.log(rows)
+                  this.setState({
+                    data : rows,
+                  });
 
 
-            }
-        )
-        .catch(error => {
-            console.log(error);
-        })
-    }else{
-      console.log("no cambios")
-    }
+              }
+          )
+          .catch(error => {
+              console.log(error);
+          })
+      }
+
   }
 
 
@@ -175,21 +175,35 @@ class DataTable extends React.Component{
     this.setState({ searchText: '' });
   };
 
-  onSelectChange = selectedRows => {
+  onSelectChange = (selectedRowKeys, selectedRows) => {
     //console.log('selectedRowKeys changed: ', selectedRowKeys);
     let ids = []
     for(let i = 0; i < selectedRows.length; i++){
       ids.push(selectedRows[i].id)
+      console.log(selectedRowKeys)
     }
-    this.setState({ selectedRows: selectedRows });
+    this.setState({
+      selectedRowsKeys: selectedRowKeys,
+      selectedRows: selectedRows
+    })
+    //this.setState({ selectedRows: selectedRows });
     this.props.onChange(ids);
+    
   };
+  
 
   render() {
+    const update = this.state.updateData;
+    const selectedRows = this.state.selectedRows;
+    const selectedRowsKeys = this.state.selectedRowsKeys;
 
+
+
+    
+    
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
-        this.onSelectChange(selectedRows);
+        this.onSelectChange(selectedRowKeys, selectedRows);
       },
       getCheckboxProps: (record) => (      
         {
@@ -199,6 +213,34 @@ class DataTable extends React.Component{
         name: record.name,
       }),
     };
+    if(localStorage.getItem("update") === "true"){
+      this.setState({
+        selectedRows: [],
+        selectedRowsKeys: []
+      })
+      rowSelection.selectedRowKeys = []
+      rowSelection.selectedRows = []
+      localStorage.setItem("update", false)
+    }else{
+      rowSelection.selectedRowKeys = selectedRowsKeys 
+      rowSelection.selectedRows = selectedRows;
+    }
+    /*
+    if(localStorage.getItem("update")){
+      this.setState({
+        selectedRows: [],
+        selectedRowsKeys: []
+      })
+      rowSelection.selectedRowKeys = []
+      rowSelection.selectedRows = []
+    }else{
+      rowSelection.selectedRowKeys = selectedRowsKeys 
+      rowSelection.selectedRows = selectedRows;
+    }
+*/
+    
+    
+    
     const columns = [
       {
         title: <center className="dataTable__header__text">ISO ID</center>,
@@ -260,6 +302,7 @@ class DataTable extends React.Component{
 
     return (
       <div>
+        {this.state.updateData}
         <div className="dataTable__container">
         <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
