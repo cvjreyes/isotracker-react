@@ -307,13 +307,21 @@ class MyTrayTable extends React.Component{
       },
     ];
 
+    if (this.state.data.length === 0){
+      var totalElements = null;
+    }else{
+      var totalElements = (<div style={{position: "absolute", bottom: 25, left:0}}>
+      <b>Total elements: {this.state.data.length}</b>
+     </div>);
+    }
+  
+
+
     return (
       <div>
         <div className="dataTable__container">
         <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
-          <div style={{position: "absolute", bottom:25, left:0}}>
-            <b>Total elements: {this.state.data.length}</b>
-          </div>
+          {totalElements}
         </div>
         
       </div>
