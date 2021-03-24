@@ -8,103 +8,117 @@ import './myTrayTable.css'
 import UploadPopUp from '../uploadPopUp/uploadPopUp';
 import { useState } from 'react';
 
-/*
-const data = [
-    { key:2, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={1} /> },
-    { key:1, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={3}/> },
-    { key:3, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
-    { key:4, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
-    { key:5, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={1}/> },
-    { key:6, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={3}/> },
-    { key:7, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
-    { key:8, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
-    { key:9, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp id={1}/> },
-    { key:10, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={3}/>},
-    { key:11, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={12}/>},
-    { key:12, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
-    { key:13, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
-    { key:14, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp id={3}/> },
-    { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carlos', user: 'tec_Michael', actions:<UploadPopUp id={41}/> }
-];
-*/
-const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
+
+const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+    
+  var secureStorage = new SecureStorage(localStorage, {
+      hash: function hash(key) {
+          key = CryptoJS.SHA256(key, SECRET_KEY);
+  
+          return key.toString();
+      },
+      encrypt: function encrypt(data) {
+          data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+  
+          data = data.toString();
+  
+          return data;
+      },
+      decrypt: function decrypt(data) {
+          data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+  
+          data = data.toString(CryptoJS.enc.Utf8);
+  
+          return data;
+      }
+  });
 
 class MyTrayTable extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {
+    state = {
       searchText: '',
       searchedColumn: '',
       data: [],
-      role: this.props.currentRole
+      role: secureStorage.getItem("role"),
+      user: secureStorage.getItem("user"),
+      tab: this.props.currentTab,
+      selectedRows: [],
+      selectedRowsKeys: [],
+      updateData: this.props.updateData,
     };
+
+  componentDidMount(){
+
+    const body ={
+      currentRole : this.state.role,
+      currentUser: this.state.user
+    }
+    console.log(body)
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+        .then(response => response.json())
+        .then(json => {
+            console.log(json.rows)
+            var rows = []
+            for(let i = 0; i < json.rows.length; i++){
+              var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{} }
+              rows.push(row)
+            }
+            //console.log(rows)
+            this.setState({data : rows});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
   }
   
-  componentDidMount(){
-    const body ={
-      currentRole : this.props.currentRole
+
+  componentDidUpdate(prevProps, prevState){
+
+    if(prevProps !== this.props){
+      
+      const body ={
+        currentRole : this.state.role.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0],
+        currentUser : this.state.user
+      }
+      const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
     }
-    const options = {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-  }
-    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
-        .then(response => response.json())
-        .then(json => {
-                var rows = []
-                for(let i = 0; i < json.files.length; i++){
-                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={json.files[i]} /> }
-                  rows.push(row)
-                }
-                console.log(rows)
-                this.setState({data : rows});
+      console.log("hago unclaim ", body)
+      fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+          .then(response => response.json())
+          .then(json => {
+              console.log("recibo respuesta")
+              var rows = []
+              for(let i = 0; i < json.rows.length; i++){
+                console.log(json.rows[i].id)
+                var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{} }
+                rows.push(row)
+              }
+              //console.log(rows)
+              this.setState({data : rows});
 
-            }
-        )
-        .catch(error => {
-            console.log(error);
-        })
-  }
-
-  componentDidUpdate(){
-    const body ={
-      currentRole : this.props.currentRole.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0]
+              }
+          )
+          .catch(error => {
+              console.log(error);
+          })
     }
-    const options = {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
   }
-    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
-        .then(response => response.json())
-        .then(json => {
-                var rows = []
-                for(let i = 0; i < json.files.length; i++){
-                  var row = {key:i, id: json.files[i] , date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={json.files[i]} /> }
-                  rows.push(row)
-                }
-                this.setState({data : rows});
-
-            }
-        )
-        .catch(error => {
-            console.log(error);
-        })
-  }
+  
   
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -184,8 +198,56 @@ class MyTrayTable extends React.Component{
     this.setState({ searchText: '' });
   };
 
+  onSelectChange = (selectedRowKeys, selectedRows) => {
+    //console.log('selectedRowKeys changed: ', selectedRowKeys);
+    let ids = []
+    for(let i = 0; i < selectedRows.length; i++){
+      ids.push(selectedRows[i].id)
+      console.log(selectedRowKeys)
+    }
+    this.setState({
+      selectedRowsKeys: selectedRowKeys,
+      selectedRows: selectedRows
+    })
+    //this.setState({ selectedRows: selectedRows });
+    this.props.onChange(ids);
+    
+  };
+
 
   render() {
+
+    const update = this.state.updateData;
+    console.log(localStorage.getItem("update"));
+    const selectedRows = this.state.selectedRows;
+    const selectedRowsKeys = this.state.selectedRowsKeys;
+
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.onSelectChange(selectedRowKeys, selectedRows);
+      },
+      getCheckboxProps: (record) => (      
+        {
+        
+        disabled: record.actions === 'CLAIMED',
+        // Column configuration not to be checked
+        name: record.name,
+      }),
+    };
+
+    if(localStorage.getItem("update") === "true"){
+      this.setState({
+        selectedRows: [],
+        selectedRowsKeys: []
+      })
+      rowSelection.selectedRowKeys = []
+      rowSelection.selectedRows = []
+      localStorage.setItem("update", false)
+    }else{
+      rowSelection.selectedRowKeys = selectedRowsKeys 
+      rowSelection.selectedRows = selectedRows;
+    }
+
     const columns = [
       {
         title: <center className="dataTable__header__text">ISO ID</center>,
@@ -245,13 +307,21 @@ class MyTrayTable extends React.Component{
       },
     ];
 
+    if (this.state.data.length === 0){
+      var totalElements = null;
+    }else{
+      var totalElements = (<div style={{position: "absolute", bottom: 25, left:0}}>
+      <b>Total elements: {this.state.data.length}</b>
+     </div>);
+    }
+  
+
+
     return (
       <div>
         <div className="dataTable__container">
         <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
-          <div style={{position: "absolute", bottom:25, left:0}}>
-            <b>Total elements: {this.state.data.length}</b>
-          </div>
+          {totalElements}
         </div>
         
       </div>
