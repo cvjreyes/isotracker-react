@@ -38,7 +38,7 @@ class DataTable extends React.Component{
                 var rows = []
                 for(let i = 0; i < json.rows.length; i++){
                   if(json.rows[i].claimed === 1){
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: "CLAIMED" }
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user+ " as " +json.rows[i].role, actions: "CLAIMED" }
                   }else{
                     var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
                   }
@@ -74,7 +74,7 @@ class DataTable extends React.Component{
                   var rows = []
                   for(let i = 0; i < json.rows.length; i++){
                     if(json.rows[i].claimed === 1){
-                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: "CLAIMED" }
+                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user+ " as " +json.rows[i].role, actions: "CLAIMED" }
                     }else{
                       var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
                     }
