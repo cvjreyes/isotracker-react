@@ -53,7 +53,6 @@ class MyTrayTable extends React.Component{
       currentRole : this.state.role,
       currentUser: this.state.user
     }
-    console.log(body)
     const options = {
       method: "POST",
       headers: {
@@ -64,13 +63,11 @@ class MyTrayTable extends React.Component{
     fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
         .then(response => response.json())
         .then(json => {
-            console.log(json.rows)
             var rows = []
             for(let i = 0; i < json.rows.length; i++){
               var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user + " as " +json.rows[i].role, actions:{} }
               rows.push(row)
             }
-            //console.log(rows)
             this.setState({data : rows});
 
             }
@@ -82,14 +79,12 @@ class MyTrayTable extends React.Component{
   
 
   componentDidUpdate(prevProps, prevState){
-    console.log(this.state.role)
     if(prevProps !== this.props){
       
       const body ={
-        currentRole : this.state.role,
+        currentRole : secureStorage.getItem("role"),
         currentUser : this.state.user
       }
-      console.log(body)
       const options = {
         method: "POST",
         headers: {
@@ -97,18 +92,14 @@ class MyTrayTable extends React.Component{
         },
         body: JSON.stringify(body)
     }
-      console.log("hago unclaim ", body)
       fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
           .then(response => response.json())
           .then(json => {
-              console.log("recibo respuesta")
               var rows = []
               for(let i = 0; i < json.rows.length; i++){
-                console.log(json.rows[i].id)
                 var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user + " as " + json.rows[i].role, actions:{} }
                 rows.push(row)
               }
-              //console.log(rows)
               this.setState({data : rows});
 
               }
@@ -199,17 +190,14 @@ class MyTrayTable extends React.Component{
   };
 
   onSelectChange = (selectedRowKeys, selectedRows) => {
-    //console.log('selectedRowKeys changed: ', selectedRowKeys);
     let ids = []
     for(let i = 0; i < selectedRows.length; i++){
       ids.push(selectedRows[i].id)
-      console.log(selectedRowKeys)
     }
     this.setState({
       selectedRowsKeys: selectedRowKeys,
       selectedRows: selectedRows
     })
-    //this.setState({ selectedRows: selectedRows });
     this.props.onChange(ids);
     
   };
@@ -218,7 +206,6 @@ class MyTrayTable extends React.Component{
   render() {
 
     const update = this.state.updateData;
-    console.log(localStorage.getItem("update"));
     const selectedRows = this.state.selectedRows;
     const selectedRowsKeys = this.state.selectedRowsKeys;
 

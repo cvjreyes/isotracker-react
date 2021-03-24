@@ -53,7 +53,7 @@ const Login = props =>{
             .then(response => response.json())
             .then(json => {
                     localStorage.setItem('token', json.token);
-                    localStorage.setItem('user', JSON.stringify(json.user))
+                    secureStorage.setItem('user', json.user)
                     secureStorage.setItem('tab', "Status")      
                     history.replace('/');
                     window.location.reload(false);

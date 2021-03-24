@@ -44,7 +44,6 @@ class DataTable extends React.Component{
                   }
                   rows.push(row)
                 }
-                //console.log(rows)
                 this.setState({data : rows, selectedRows: []});
 
             }
@@ -80,7 +79,6 @@ class DataTable extends React.Component{
                     }
                     rows.push(row)
                   }
-                  //console.log(rows)
                   this.setState({
                     data : rows,
                   });
@@ -176,11 +174,9 @@ class DataTable extends React.Component{
   };
 
   onSelectChange = (selectedRowKeys, selectedRows) => {
-    //console.log('selectedRowKeys changed: ', selectedRowKeys);
     let ids = []
     for(let i = 0; i < selectedRows.length; i++){
       ids.push(selectedRows[i].id)
-      console.log(selectedRowKeys)
     }
     this.setState({
       selectedRowsKeys: selectedRowKeys,

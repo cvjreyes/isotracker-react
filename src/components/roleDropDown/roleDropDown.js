@@ -54,14 +54,13 @@ const RoleDropDown = (props) => {
   }
 
   useEffect(()=>{
-
     if (options.indexOf(secureStorage.getItem('role')) !== -1){
       setSelectedIndex(options.indexOf(secureStorage.getItem('role')))
     }else{
       setSelectedIndex(0)
     }
     // eslint-disable-next-line
-  },[])
+  },[options])
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);

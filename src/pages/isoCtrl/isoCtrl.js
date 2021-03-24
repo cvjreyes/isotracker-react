@@ -18,6 +18,7 @@ import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
 import RoleDropDown from "../../components/roleDropDown/roleDropDown"
+import { StayCurrentPortraitRounded } from "@material-ui/icons"
 
 
 
@@ -84,6 +85,8 @@ const IsoCtrl = () => {
     }
     
     useEffect(()=>{
+        setUpdateData(!updateData)
+        console.log("cambio el rol")
         const options = {
             method: "POST",
             headers: {
@@ -94,7 +97,6 @@ const IsoCtrl = () => {
         fetch("http://localhost:5000/api/roles/user", options)
             .then(response => response.json())
             .then(json => {
-                
                 setRoles(json.roles);
                 if(secureStorage.getItem('role') !== null){
                     setCurrentRole(secureStorage.getItem('role'))
@@ -107,9 +109,9 @@ const IsoCtrl = () => {
             .catch(error => {
                 console.log(error);
             })  
-            //setUpdateData(!updateData)
+            
             // eslint-disable-next-line  
-    },[]);
+    },[currentRole]);
 
     const claim = async (event) => {
         console.log(selected.length)
