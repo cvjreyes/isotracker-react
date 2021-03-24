@@ -9,15 +9,15 @@ const ActionBtns = props =>{
     if (props.currentTab === "Design"){
         actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.claimClick()}>Claim</button>
     }if (props.currentTab === "Stress"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
+        actionBtn1 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
     }if (props.currentTab === "Support"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
+        actionBtn1 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
     }if (props.currentTab === "Materials"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
+        actionBtn1 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
     }if (props.currentTab === "Issuer"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
+        actionBtn1 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
     }if (props.currentTab === "LDE/IsoControl"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
+        actionBtn1 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
     }if (props.currentTab === "My Tray"){
         actionBtn1 = <button class="btn btn-sm btn-warning" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.unclaimClick()}>Unclaim</button>
         /*actionBtn2 = <button class="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px"}}>Verify</button>
@@ -25,7 +25,7 @@ const ActionBtns = props =>{
         actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px"}}>With Comments</button>
         actionBtn5=  <CancelIso user = {props.user} style={{marginRight:"5px", marginLeft:"5px"}}/>*/
     }if (props.currentTab === "Recycle bin"){
-        actionBtn2 = <button class="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px"}} >Restore</button>
+        actionBtn2 = <button className="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px"}} >Restore</button>
     }
     
 

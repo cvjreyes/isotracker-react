@@ -6,7 +6,6 @@ import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './myTrayTable.css'
 import UploadPopUp from '../uploadPopUp/uploadPopUp';
-import { useState } from 'react';
 
 
 const CryptoJS = require("crypto-js");

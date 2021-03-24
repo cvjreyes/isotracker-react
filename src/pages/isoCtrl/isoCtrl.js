@@ -106,7 +106,8 @@ const IsoCtrl = () => {
             )
             .catch(error => {
                 console.log(error);
-            })    
+            })  
+            // eslint-disable-next-line  
     },[]);
 
     const claim = (event) => {
@@ -171,9 +172,8 @@ const IsoCtrl = () => {
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
         tableContent = <DragAndDrop/>
         pageSelector = null
-        uploadDefButton = <div><br></br><button class="btn btn-info btn-lg" style={{width: "100%"}}>Click here to upload</button></div>
     }if(currentTab === "Design"){
-        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
+        uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "LDE/IsoControl"){
         actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
@@ -259,8 +259,7 @@ const IsoCtrl = () => {
                 
                 <div style={{height: dataTableHeight}}>
                     <br></br>
-                    <br></br>
-                    {uploadDefButton}   
+                    <br></br> 
                     {tableContent}
                 </div>
                 <div className="bottom__container">
