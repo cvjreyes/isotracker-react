@@ -67,7 +67,7 @@ class MyTrayTable extends React.Component{
             console.log(json.rows)
             var rows = []
             for(let i = 0; i < json.rows.length; i++){
-              var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{} }
+              var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user + " as " +json.rows[i].role, actions:{} }
               rows.push(row)
             }
             //console.log(rows)
@@ -82,13 +82,14 @@ class MyTrayTable extends React.Component{
   
 
   componentDidUpdate(prevProps, prevState){
-
+    console.log(this.state.role)
     if(prevProps !== this.props){
       
       const body ={
-        currentRole : this.state.role.match(/[A-Z]+[^A-Z]*|[^A-Z]+/g)[0],
+        currentRole : this.state.role,
         currentUser : this.state.user
       }
+      console.log(body)
       const options = {
         method: "POST",
         headers: {
@@ -104,7 +105,7 @@ class MyTrayTable extends React.Component{
               var rows = []
               for(let i = 0; i < json.rows.length; i++){
                 console.log(json.rows[i].id)
-                var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{} }
+                var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user + " as " + json.rows[i].role, actions:{} }
                 rows.push(row)
               }
               //console.log(rows)

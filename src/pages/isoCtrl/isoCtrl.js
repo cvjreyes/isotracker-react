@@ -107,10 +107,11 @@ const IsoCtrl = () => {
             .catch(error => {
                 console.log(error);
             })  
+            //setUpdateData(!updateData)
             // eslint-disable-next-line  
     },[]);
 
-    const claim = (event) => {
+    const claim = async (event) => {
         console.log(selected.length)
         if(selected.length > 0){
             localStorage.setItem("update", true)
@@ -118,7 +119,8 @@ const IsoCtrl = () => {
                 
                 const body ={
                     user : currentUser,
-                    file: selected[i]
+                    file: selected[i],
+                    role: currentRole
                 }
                 const options = {
                     method: "POST",
@@ -139,7 +141,7 @@ const IsoCtrl = () => {
     }
     
 
-    const unclaim = (event) =>{
+    const unclaim = async (event) =>{
         console.log(selected)
         if(selected.length > 0){
             localStorage.setItem("update", true)
