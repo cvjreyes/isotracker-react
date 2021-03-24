@@ -224,21 +224,7 @@ class DataTable extends React.Component{
     }else{
       rowSelection.selectedRowKeys = selectedRowsKeys 
       rowSelection.selectedRows = selectedRows;
-    }
-    /*
-    if(localStorage.getItem("update")){
-      this.setState({
-        selectedRows: [],
-        selectedRowsKeys: []
-      })
-      rowSelection.selectedRowKeys = []
-      rowSelection.selectedRows = []
-    }else{
-      rowSelection.selectedRowKeys = selectedRowsKeys 
-      rowSelection.selectedRows = selectedRows;
-    }
-*/
-    
+    }  
     
     
     const columns = [
