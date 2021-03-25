@@ -1,13 +1,16 @@
 //Botones de accion que aparecen en cada fase de isotracker para tratar los archivos
 
-import CancelIso from "../cancelIso/cancelIso";
-
 const ActionBtns = props =>{
-
+    
+    console.log(process.env.REACT_APP_IFC)
     
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5
     if (props.currentTab === "Design"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.claimClick()}>Claim</button>
+        if(process.env.REACT_APP_IFC === 1){
+            actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.claimClick()}>Claim</button>
+        }else{
+            actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.verifyClick()}>Verify</button>
+        }
     }if (props.currentTab === "Stress"){
         actionBtn1 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
     }if (props.currentTab === "Support"){

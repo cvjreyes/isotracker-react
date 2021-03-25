@@ -86,7 +86,6 @@ const IsoCtrl = () => {
     
     useEffect(()=>{
         setUpdateData(!updateData)
-        console.log("cambio el rol")
         const options = {
             method: "POST",
             headers: {
@@ -114,7 +113,6 @@ const IsoCtrl = () => {
     },[currentRole]);
 
     const claim = async (event) => {
-        console.log(selected.length)
         if(selected.length > 0){
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -132,14 +130,13 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 fetch("http://localhost:5000/claim", options)
-                    .then(response => response.json())
+                    .then(response => response.json(),                     )
             }
-            console.log(updateData);
             setUpdateData(!updateData)
-
+            console.log(updateData);
+            
         }
-        
-        
+        setUpdateData(!updateData)        
     }
     
 
@@ -168,6 +165,10 @@ const IsoCtrl = () => {
             setUpdateData(!updateData)
         }
         
+    }
+
+    const verifyClick = async(event) =>{
+        console.log("Envio a verify")
     }
 
 
@@ -202,7 +203,7 @@ const IsoCtrl = () => {
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
     (currentTab=== "My Tray"))){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} unclaimClick={unclaim.bind(this)} currentTab = {currentTab} user={currentUser}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} currentTab = {currentTab} user={currentUser}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
