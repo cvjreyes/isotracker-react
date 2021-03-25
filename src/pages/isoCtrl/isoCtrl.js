@@ -169,6 +169,29 @@ const IsoCtrl = () => {
 
     const verifyClick = async(event) =>{
         console.log("Envio a verify")
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                
+                const body ={
+                    user : currentUser,
+                    file: selected[i],
+                    role: currentRole
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                fetch("http://localhost:5000/verify", options)
+                    .then(response => response.json(),                     )
+            }
+            setUpdateData(!updateData)
+            console.log(updateData);
+            
+        }    
     }
 
 

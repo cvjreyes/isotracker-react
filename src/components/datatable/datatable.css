@@ -19,3 +19,9 @@
   font-weight: bold;
   background-color: green;
 }
+
+.pending__btn{
+  font-size: 12px;
+  font-weight: bold;
+  background-color: yellow;
+}
