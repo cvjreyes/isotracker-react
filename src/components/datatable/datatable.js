@@ -64,7 +64,9 @@ class DataTable extends React.Component{
         .then(json => {
                 var rows = []
                 for(let i = 0; i < json.rows.length; i++){
-                  if(json.rows[i].claimed === 1){
+                  if(json.rows[i].verifydesign === 1){
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user+ " as " +json.rows[i].role, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
+                  }else if(json.rows[i].claimed === 1){
                     var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user+ " as " +json.rows[i].role, actions: "CLAIMED" }
                   }else{
                       var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
@@ -103,7 +105,9 @@ class DataTable extends React.Component{
                   var rows = []
                   
                   for(let i = 0; i < json.rows.length; i++){
-                      if(json.rows[i].claimed === 1){
+                      if(json.rows[i].verifydesign === 1){
+                        var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user+ " as " +json.rows[i].role, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
+                      }else if(json.rows[i].claimed === 1){
                         var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user+ " as " +json.rows[i].role, actions: "CLAIMED" }
                       }else{
                         var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
@@ -221,7 +225,6 @@ class DataTable extends React.Component{
     const update = this.state.updateData;
     const selectedRows = this.state.selectedRows;
     const selectedRowsKeys = this.state.selectedRowsKeys;
-   
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);
@@ -229,7 +232,7 @@ class DataTable extends React.Component{
       getCheckboxProps: (record) => (      
         {
         
-        disabled: record.actions === 'CLAIMED' | record.actions.type === 'button',
+        disabled: record.actions === 'CLAIMED' | (record.actions.type === 'button' && secureStorage.getItem("role") !== "DesignLead") | (record.actions.type !== 'button' && secureStorage.getItem("role") === "DesignLead"),
         // Column configuration not to be checked
         name: record.name,
       }),

@@ -18,10 +18,10 @@ const ActionBtns = props =>{
     }if (props.currentTab === "LDE/IsoControl"){
         actionBtn1 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
     }if (props.currentTab === "My Tray"){
-        actionBtn1 = <button class="btn btn-sm btn-warning" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.unclaimClick()}>Unclaim</button>
+        actionBtn1 = <button className="btn btn-sm btn-warning" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.unclaimClick()}>Unclaim</button>
 
         if(process.env.REACT_APP_IFC === "0"){
-            actionBtn2 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.verifyClick()}>Verify</button>
+            actionBtn2 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}} onClick={() => props.verifyClick()}>Verify</button>
         }
         
         /*actionBtn2 = <button class="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px"}}>Verify</button>
