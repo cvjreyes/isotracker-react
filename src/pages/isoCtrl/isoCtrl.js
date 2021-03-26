@@ -194,6 +194,32 @@ const IsoCtrl = () => {
         }    
     }
 
+    function cancelVerifyClick(filename){
+        console.log(filename);
+        localStorage.setItem("update", true)
+            
+            const body ={
+                user : currentUser,
+                file: filename,
+                role: currentRole
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://localhost:5000/cancelVerify", options)
+                .then(response => response.json())
+        
+        setUpdateData(!updateData)
+        console.log(updateData);
+            
+    }
+
+    
+
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
@@ -207,7 +233,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
+        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable pagination = {pagination}/>
     }if(currentTab === "Status"){
