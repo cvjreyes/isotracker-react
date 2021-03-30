@@ -29,6 +29,7 @@ const IsoCtrl = () => {
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
     const [currentRole, setCurrentRole] = useState();
+    const [currentRoleAcr, setCurrentRoleAcr] = useState();
     const [roles, setRoles] = useState();
     const [selected, setSelected] = useState([]);
     const [updateData, setUpdateData] = useState();
@@ -110,9 +111,8 @@ const IsoCtrl = () => {
             )
             .catch(error => {
                 console.log(error);
-            })  
-            
-            // eslint-disable-next-line  
+            })       
+        
     },[currentRole]);
 
     const claim = async (event) => {
@@ -315,7 +315,6 @@ const IsoCtrl = () => {
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
     (currentTab=== "My Tray"))){
-        console.log("entrr")
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
