@@ -45,11 +45,11 @@ const NavBtns = props =>{
         stressButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "white"}} onClick={() => {props.onChange("Stress")}}><b>Stress</b></button>
         
     }
-    if(props.currentTab === "Support"){
-        secureStorage.setItem("tab", "Support")
+    if(props.currentTab === "Supports"){
+        secureStorage.setItem("tab", "Supports")
         supportsButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Support</b></button>
     }else{
-        supportsButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "white"}} onClick={() => {props.onChange("Support")}}><b>Support</b></button>
+        supportsButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "white"}} onClick={() => {props.onChange("Supports")}}><b>Support</b></button>
         
     }
     if(props.currentTab === "Materials"){
