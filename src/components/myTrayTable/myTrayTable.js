@@ -45,6 +45,7 @@ class MyTrayTable extends React.Component{
       selectedRows: [],
       selectedRowsKeys: [],
       updateData: this.props.updateData,
+      popup: false
     };
 
   componentDidMount(){
@@ -89,14 +90,14 @@ class MyTrayTable extends React.Component{
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                     var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>CANCEL VERIFY</button> }
                   }else{
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:{}}
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename}/>}
                   }             
                }else{
                 
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                     var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>CANCEL VERIFY</button> }
                   }else{
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:{}}
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename} />}
                   }
                 
                 }
@@ -156,14 +157,14 @@ class MyTrayTable extends React.Component{
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                     var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>CANCEL VERIFY</button> }
                   }else{
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:{}}
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename} />}
                   }         
                 }else{
                   
                     if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                       var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>CANCEL VERIFY</button> }
                     }else{
-                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:{}}
+                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename} />}
                     }
                   
                   }
@@ -179,6 +180,7 @@ class MyTrayTable extends React.Component{
           })
     }
   }
+
 
 
   getColumnSearchProps = dataIndex => ({
@@ -372,7 +374,6 @@ class MyTrayTable extends React.Component{
         <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           {totalElements}
         </div>
-        
       </div>
     );
   }

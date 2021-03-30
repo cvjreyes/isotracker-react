@@ -29,7 +29,7 @@ export default class UploadPopUp extends Component {
     render() {
         return (
             <section >
-                <input type="button"  value="UPLOAD" className="upload__button" onClick={() => this.openModal()} />
+                <input type="button"  value="UPLOAD" className="btn btn-warning"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"#B0E0E6", borderColor:"#B0E0E6"}} onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="650" height="600" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="popUp__container" >
