@@ -49,6 +49,26 @@ class MyTrayTable extends React.Component{
 
   componentDidMount(){
 
+    const bodyUsername = {
+      email: secureStorage.getItem("user")
+    }
+    const optionsUsername = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyUsername)
+    }
+
+    fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        username: json.name
+      })
+    })
+    
+
     const body ={
       currentRole : this.state.role,
       currentUser: this.state.user
@@ -65,7 +85,22 @@ class MyTrayTable extends React.Component{
         .then(json => {
             var rows = []
             for(let i = 0; i < json.rows.length; i++){
-              var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user + " as " +json.rows[i].role, actions:{} }
+              if(process.env.REACT_APP_IFC === "1"){
+                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>CANCEL VERIFY</button> }
+                  }else{
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:{}}
+                  }             
+               }else{
+                
+                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>CANCEL VERIFY</button> }
+                  }else{
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:{}}
+                  }
+                
+                }
+              
               rows.push(row)
             }
             this.setState({data : rows});
@@ -79,7 +114,27 @@ class MyTrayTable extends React.Component{
   
 
   componentDidUpdate(prevProps, prevState){
+
     if(prevProps !== this.props){
+
+      const bodyUsername = {
+        email: secureStorage.getItem("user")
+      }
+      const optionsUsername = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyUsername)
+      }
+  
+      fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          username: json.name
+        })
+      })  
       
       const body ={
         currentRole : secureStorage.getItem("role"),
@@ -97,7 +152,22 @@ class MyTrayTable extends React.Component{
           .then(json => {
               var rows = []
               for(let i = 0; i < json.rows.length; i++){
-                var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user + " as " + json.rows[i].role, actions:{} }
+                if(process.env.REACT_APP_IFC === "1"){
+                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>CANCEL VERIFY</button> }
+                  }else{
+                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:{}}
+                  }         
+                }else{
+                  
+                    if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>CANCEL VERIFY</button> }
+                    }else{
+                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:{}}
+                    }
+                  
+                  }
+                
                 rows.push(row)
               }
               this.setState({data : rows});
@@ -109,8 +179,8 @@ class MyTrayTable extends React.Component{
           })
     }
   }
-  
-  
+
+
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -216,7 +286,7 @@ class MyTrayTable extends React.Component{
       getCheckboxProps: (record) => (      
         {
         
-        disabled: record.actions === 'CLAIMED',
+        disabled: record.actions.type === 'button',
         // Column configuration not to be checked
         name: record.name,
       }),
@@ -274,15 +344,7 @@ class MyTrayTable extends React.Component{
           compare: (a, b) => { return a.to.localeCompare(b.to)},
         },
       },
-      {
-        title: <div className="dataTable__header__text">User</div>,
-        dataIndex: 'user',
-        key: 'user',
-        ...this.getColumnSearchProps('user'),
-        sorter: {
-          compare: (a, b) => { return a.user.localeCompare(b.user)},
-        },
-      },
+      
       {
         title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',

@@ -7,7 +7,6 @@ import "./isoCtrl.css"
 import React, { useState , useEffect} from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
-import CommentBox from "../../components/commentBox/commentBox"
 import ProgressTable from "../../components/progressTable/progressTable"
 import SelectPag from "../../components/selectPag/selectPag"
 import CheckInTable from "../../components/checkInTable/checkInTable"
@@ -18,7 +17,9 @@ import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
 import RoleDropDown from "../../components/roleDropDown/roleDropDown"
-import { StayCurrentPortraitRounded } from "@material-ui/icons"
+
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 
 
@@ -31,6 +32,8 @@ const IsoCtrl = () => {
     const [roles, setRoles] = useState();
     const [selected, setSelected] = useState([]);
     const [updateData, setUpdateData] = useState();
+    const [comment, setComment] = useState(" ");
+    const [commentAlert, setCommentAlert] = useState(false);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -169,41 +172,152 @@ const IsoCtrl = () => {
 
     const verifyClick = async(event) =>{
         console.log("Envio a verify")
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                
+                const body ={
+                    user : currentUser,
+                    file: selected[i],
+                    role: currentRole
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                fetch("http://localhost:5000/verify", options)
+                    .then(response => response.json(),                     )
+            }
+            setUpdateData(!updateData)
+            console.log(updateData);
+            
+        }    
     }
 
+    function cancelVerifyClick(filename){
+        console.log(filename);
+        localStorage.setItem("update", true)
+            
+            const body ={
+                user : currentUser,
+                file: filename,
+                role: currentRole
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://localhost:5000/cancelVerify", options)
+                .then(response => response.json())
+        
+        setUpdateData(!updateData)
+        console.log(updateData);
+            
+    }
+
+    function transaction(destiny){
+        if(selected.length > 0){
+            if(destiny === "Design"){
+                if(comment.length > 1){
+                    setComment(" ")
+                    setCommentAlert(false)
+                    localStorage.setItem("update", true)
+                    for (let i = 0; i < selected.length; i++){
+                        const body ={
+                            user : currentUser,
+                            fileName: selected[i],
+                            to: destiny,
+                            role: secureStorage.getItem("role"),
+                            comment: comment
+                        }
+                        const options = {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(body)
+                        }
+                        fetch("http://localhost:5000/api/transaction", options)
+                            .then(response => response.json(),                     )
+                    }
+                }else{
+                    console.log("vacio")
+                    setCommentAlert(true)
+                }
+            }else{
+                setCommentAlert(false)
+                localStorage.setItem("update", true)
+                for (let i = 0; i < selected.length; i++){
+                    
+                    const body ={
+                        user : currentUser,
+                        fileName: selected[i],
+                        to: destiny,
+                        role: secureStorage.getItem("role"),
+                        comment: null
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    fetch("http://localhost:5000/api/transaction", options)
+                        .then(response => response.json(),                     )
+                }
+            }
+            setUpdateData(!updateData)
+            
+        }    
+    }
+
+    function handleComment(event){
+        setComment(event.target.value)
+    }
+    
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
         tableContent = <DragAndDrop/>
         pageSelector = null
-    }if(currentTab === "Design"){
+    }if(currentTab === "Design" && currentRole === "Design"){
         uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "LDE/IsoControl"){
         actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
+        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable pagination = {pagination}/>
     }if(currentTab === "Status"){
         tableContent = <StatusDataTable pagination = {pagination}/>
     }
 
-    if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
-        commentBox = <CommentBox/>
+    if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
+        commentBox = <div>
+            <textarea placeholder="Comments" class="comments" cols="100" rows="2" required="" maxlength="400" name="comments" value={comment} onChange={handleComment}></textarea>
+        </div>
     }
 
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
     ((currentRole === "Stress" || currentRole === "StressLead") && currentTab === "Stress") ||
-    ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Support") ||
+    ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Supports") ||
     ((currentRole === "Materials") && currentTab === "Materials") ||
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
     (currentTab=== "My Tray"))){
+        console.log("entrr")
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} currentTab = {currentTab} user={currentUser}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
@@ -268,6 +382,13 @@ const IsoCtrl = () => {
                     {tableContent}
                 </div>
                 <div className="bottom__container">
+                    <Collapse in={commentAlert}>
+                        <Alert severity="error"
+                            >
+                            Add a comment before sending the isos back to design!
+
+                            </Alert>
+                    </Collapse>
                     <center className="actionBtns__container">
                         {actionText}
                         {actionExtra}

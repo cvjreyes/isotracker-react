@@ -1,6 +1,6 @@
 //Cabecera de IsoTracker con diferentes desplegables y botones
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,6 +12,33 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import './navBar.css';
 import {useHistory} from "react-router";
+
+const CryptoJS = require("crypto-js");
+const SecureStorage = require("secure-web-storage");
+var SECRET_KEY = 'sanud2ha8shd72h';
+
+var secureStorage = new SecureStorage(localStorage, {
+    hash: function hash(key) {
+        key = CryptoJS.SHA256(key, SECRET_KEY);
+
+        return key.toString();
+    },
+    encrypt: function encrypt(data) {
+        data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+
+        data = data.toString();
+
+        return data;
+    },
+    decrypt: function decrypt(data) {
+        data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+
+        data = data.toString(CryptoJS.enc.Utf8);
+
+        return data;
+    }
+});
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,6 +57,7 @@ const NavBar = (props) =>{
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElIso, setAnchorElIso] = React.useState(null);
     const history = useHistory();
+    const[username, setUsername] = React.useState("");
 
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -56,6 +84,23 @@ const NavBar = (props) =>{
         setAnchorElIso(null);
         history.replace("/home");
     }
+    useEffect(() =>{
+        const bodyUsername = {
+            email: secureStorage.getItem("user")
+          }
+        const optionsUsername = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyUsername)
+        }
+        fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+        .then(response => response.json())
+        .then(json => {
+            setUsername(json.name);
+        })
+    })
     return(
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
@@ -94,7 +139,7 @@ const NavBar = (props) =>{
                     </a>
                     
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickUser}>
-                    <i className="dropdown__text">User</i>&nbsp;<b className="dropdown__arrow">▼</b>
+                    <i className="dropdown__text">{username}</i>&nbsp;<b className="dropdown__arrow">▼</b>
                     </Button>
                     <Menu
                         id="simple-menu"
