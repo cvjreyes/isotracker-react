@@ -102,6 +102,73 @@ class DragAndDrop extends React.Component{
     );
   }
 
+  async updateFile(file) {
+
+    await fetch('http://localhost:5000/update', {
+      // content-type header should not be specified!
+      method: 'POST',
+      body: file,
+    })
+      .then(response => {
+        // Do something with the successful response
+        if (response.status === 200){
+          if(!this.state.success){
+              this.setState({
+                success : true,
+              })
+          }
+
+          let filename = null;
+          for (let value of file.values()){
+            filename = value.name
+          }
+          let extension = "";
+          let i = filename.lastIndexOf('.');
+          if (i > 0) {
+            extension = filename.substring(i+1);
+          }
+          if(extension === "pdf"){
+            let body =  {
+              file: filename,
+              user: this.props.user,
+            }
+            console.log(body)
+            fetch('http://localhost:5000/updateHis', {
+              // content-type header should not be specified!
+              method: 'POST',
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(body)
+            }).then(response => console.log(response.json()))
+            .catch(error => message.error(error))
+          }
+        }else{
+          for (let value of file.values()) {
+            let joined = this.state.errorAlerts.concat(value.name);
+            this.setState({
+              errorAlerts : joined,
+              error: true
+            })
+          }
+        }
+        let max = this.state.max - 1
+        this.setState({
+          max: max
+        })
+        if (max === 0){
+          this.setState({
+            uploaded: true,
+            uploading: false
+          })
+        }
+        
+      })
+      .catch(error => message.error(error)
+    );
+  }
+
+
   handleSubmit = async (files, allFiles) => {
 
     this.setState({
@@ -115,13 +182,32 @@ class DragAndDrop extends React.Component{
     })
 
     await allFiles.forEach(file => {
-      
-      const formData  = new FormData();
-      formData.append('file', file.file);      
-      this.uploadFile(formData);
-      file.remove();
 
+      
+      const formData  = new FormData(); 
+      formData.append('file', file.file);       
+      if(this.props.mode == "upload"){
+        this.uploadFile(formData);
+      }else{
+        if(String(this.props.iso).trim() === String(file.file.name.split('.').slice(0, -1)).trim()){
+          this.updateFile(formData);
+        }else{
+          let joined = this.state.errorAlerts.concat(file.file.name);
+            this.setState({
+              errorAlerts : joined,
+              error: true
+            })
+        }
+      }
+      file.remove();
     });    
+
+      if (!this.state.uploaded){
+        this.setState({
+          uploading: false,
+          uploaded: true
+        })
+      }
 
   }
 
@@ -135,7 +221,7 @@ class DragAndDrop extends React.Component{
         if (j > 0) {
           extension = errorAlerts[i].substring(j+1);
         }
-        if (extension === 'zip' || extension === 'pdf' ){
+        if (extension === 'zip' || extension === 'pdf' && this.props.mode == "upload"){
           errors.push(<Alert severity="error"
           >
             The file {errorAlerts[i]} already exists!
@@ -144,18 +230,52 @@ class DragAndDrop extends React.Component{
         }else{
           errors.push(<Alert severity="error"
           >
-            The file {errorAlerts[i]} has an invalid format!
+            The file {errorAlerts[i]} doesn't belong to this isometric!
 
           </Alert>)
         }
       }
     }
+
+    let inputContent = null
+    let styles = null
+
+    if(this.props.mode == "upload"){
+      inputContent = "Drop isometrics here"
+      styles = {
+        dropzone: {
+          maxHeight: '400px',
+        },
+      }
+    }else{
+      inputContent = "Drop the files to update"
+      styles = {
+        dropzone: {
+          height: '250px'
+        },
+        dropzoneActive: {
+          height: '300px'
+        },
+        previewContainer:{
+          height: '2px'
+        }
+    }
+
+    const dropzoneStyle = {
+      width  : "1%",
+      height : "20%",
+      border : "1px solid black"
+   };
+   
+  }
+
     return (
       <div>
         <Dropzone
           LayoutComponent={Layout}
           onSubmit={this.handleSubmit}
-          inputContent="Drop isometrics here"
+          inputContent= {inputContent}
+          styles={styles}
         />
 
         <Collapse in={this.state.success}>
