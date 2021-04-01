@@ -190,6 +190,7 @@ class DragAndDrop extends React.Component{
         this.uploadFile(formData);
       }else{
         if(String(this.props.iso).trim() === String(file.file.name.split('.').slice(0, -1)).trim()){
+          console.log("Pertenece " + file.file.name)
           this.updateFile(formData);
         }else{
           let joined = this.state.errorAlerts.concat(file.file.name);
@@ -212,16 +213,13 @@ class DragAndDrop extends React.Component{
   }
 
   render(){
+
     const errorAlerts = this.state.errorAlerts;
     let errors = []
     if(errorAlerts.length > 0){
       for(let i = 0; i < errorAlerts.length; i++){
-        let extension = "";
-        let j = errorAlerts[i].lastIndexOf('.');
-        if (j > 0) {
-          extension = errorAlerts[i].substring(j+1);
-        }
-        if (extension === 'zip' || extension === 'pdf' && this.props.mode == "upload"){
+        
+        if (this.props.mode == "upload"){
           errors.push(<Alert severity="error"
           >
             The file {errorAlerts[i]} already exists!
