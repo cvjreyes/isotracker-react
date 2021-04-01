@@ -189,7 +189,8 @@ class DragAndDrop extends React.Component{
       if(this.props.mode == "upload"){
         this.uploadFile(formData);
       }else{
-        if(String(this.props.iso).trim() === String(file.file.name.split('.').slice(0, -1)).trim()){
+        if(String(this.props.iso).trim() === String(file.file.name.split('.').slice(0, -1)).trim() || 
+           String(this.props.iso+'-CL').trim() === String(file.file.name.split('.').slice(0, -1)).trim() ){
           console.log("Pertenece " + file.file.name)
           this.updateFile(formData);
         }else{
