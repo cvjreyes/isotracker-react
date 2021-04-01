@@ -6,6 +6,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './myTrayTable.css'
 import UploadPopUp from '../uploadPopUp/uploadPopUp';
+import { Link } from 'react-router-dom';
 
 
 const CryptoJS = require("crypto-js");
@@ -88,16 +89,16 @@ class MyTrayTable extends React.Component{
             for(let i = 0; i < json.rows.length; i++){
               if(process.env.REACT_APP_IFC === "1"){
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
                   }else{
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user}/>}
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user}/>}
                   }             
                }else{
                 
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
                   }else{
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} />}
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} />}
                   }
                 
                 }
@@ -155,16 +156,16 @@ class MyTrayTable extends React.Component{
               for(let i = 0; i < json.rows.length; i++){
                 if(process.env.REACT_APP_IFC === "1"){
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
                   }else{
-                    var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/>}
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/>}
                   }         
                 }else{
                   
                     if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
-                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
                     }else{
-                      var row = {key:i, id: json.rows[i].filename , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/>}
+                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/>}
                     }
                   
                   }
@@ -181,7 +182,32 @@ class MyTrayTable extends React.Component{
     }
   }
 
-
+  getMaster(fileName){
+    const body ={
+      file: fileName
+    }
+    const options = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/pdf"
+      }
+    }
+    fetch("http://localhost:5000/getMaster/"+fileName, options)
+    .then(res => res.blob())
+    .then(response => {
+      console.log(response)
+      const file = new Blob([response], {
+        type: "application/pdf"
+      });
+      //Build a URL from the file
+      const fileURL = URL.createObjectURL(file);
+      //Open the URL on new Window
+      window.open(fileURL);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
 
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
