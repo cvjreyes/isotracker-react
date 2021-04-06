@@ -357,7 +357,7 @@ const IsoCtrl = () => {
                             </td>   
                                            
                             <td style={{width: progressTableWidth,position:"inline-block", right: "0"}}>
-                                <ProgressTable user = {user} />
+                                <ProgressTable user = {user} updateData = {updateData}/>
                             </td>    
                             
                         </tr>
