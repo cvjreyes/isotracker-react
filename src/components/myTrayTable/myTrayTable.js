@@ -290,7 +290,7 @@ class MyTrayTable extends React.Component{
   onSelectChange = (selectedRowKeys, selectedRows) => {
     let ids = []
     for(let i = 0; i < selectedRows.length; i++){
-      ids.push(selectedRows[i].id)
+      ids.push(selectedRows[i].id.props.children)
     }
     this.setState({
       selectedRowsKeys: selectedRowKeys,
