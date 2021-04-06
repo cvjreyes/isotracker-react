@@ -6,46 +6,209 @@ import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './myTrayTable.css'
 import UploadPopUp from '../uploadPopUp/uploadPopUp';
+import { Link } from 'react-router-dom';
 
 
-const data = [
-    { key:2, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={1} /> },
-    { key:1, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={3}/> },
-    { key:3, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
-    { key:4, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
-    { key:5, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={1}/> },
-    { key:6, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={3}/> },
-    { key:7, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
-    { key:8, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
-    { key:9, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp id={1}/> },
-    { key:10, id: 1, date: '01/02/2021', from: 'Jon', to: 'Adrian', user: 'tec_Jon', actions:<UploadPopUp id={3}/>},
-    { key:11, id: 3, date: '02/02/2021', from: 'Jon', to: 'Laura', user: 'tec_Jon', actions:<UploadPopUp id={12}/>},
-    { key:12, id: 23, date: '07/02/2021', from: 'Rick', to: 'Adrian', user: 'tec_Rick', actions:<UploadPopUp id={23}/> },
-    { key:13, id: 12, date: '23/01/2021', from: 'Maria', to: 'Laura', user: 'tec_Laura', actions:<UploadPopUp id={12}/> },
-    { key:14, id: 3, date: '01/02/2021', from: 'Carl', to: 'Bob', user: 'sup_Bob', actions:<UploadPopUp id={3}/> },
-    { key:15, id: 41, date: '05/02/2021', from: 'Michael', to: 'Carlos', user: 'tec_Michael', actions:<UploadPopUp id={41}/> }
-];
-
-const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
-
+const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+    
+  var secureStorage = new SecureStorage(localStorage, {
+      hash: function hash(key) {
+          key = CryptoJS.SHA256(key, SECRET_KEY);
+  
+          return key.toString();
+      },
+      encrypt: function encrypt(data) {
+          data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+  
+          data = data.toString();
+  
+          return data;
+      },
+      decrypt: function decrypt(data) {
+          data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+  
+          data = data.toString(CryptoJS.enc.Utf8);
+  
+          return data;
+      }
+  });
 
 class MyTrayTable extends React.Component{
-  state = {
-    searchText: '',
-    searchedColumn: '',
-  };
+    state = {
+      searchText: '',
+      searchedColumn: '',
+      data: [],
+      role: secureStorage.getItem("role"),
+      user: secureStorage.getItem("user"),
+      tab: this.props.currentTab,
+      selectedRows: [],
+      selectedRowsKeys: [],
+      updateData: this.props.updateData,
+      popup: false
+    };
+
+  componentDidMount(){
+
+    const bodyUsername = {
+      email: secureStorage.getItem("user")
+    }
+    const optionsUsername = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bodyUsername)
+    }
+
+    fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({
+        username: json.name
+      })
+    })
+    
+
+    const body ={
+      currentRole : this.state.role,
+      currentUser: this.state.user
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+        .then(response => response.json())
+        .then(json => {
+            var rows = []
+            for(let i = 0; i < json.rows.length; i++){
+              if(process.env.REACT_APP_IFC === "1"){
+                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                  }else{
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user}/>}
+                  }             
+               }else{
+                
+                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                  }else{
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} />}
+                  }
+                
+                }
+              
+              rows.push(row)
+            }
+            this.setState({data : rows});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
+  }
   
+
+  componentDidUpdate(prevProps, prevState){
+
+    if(prevProps !== this.props){
+
+      const bodyUsername = {
+        email: secureStorage.getItem("user")
+      }
+      const optionsUsername = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyUsername)
+      }
   
-  
+      fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          username: json.name
+        })
+      })  
+      
+      const body ={
+        currentRole : secureStorage.getItem("role"),
+        currentUser : this.state.user
+      }
+      const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+      fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+          .then(response => response.json())
+          .then(json => {
+              var rows = []
+              for(let i = 0; i < json.rows.length; i++){
+                if(process.env.REACT_APP_IFC === "1"){
+                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                  }else{
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/>}
+                  }         
+                }else{
+                  
+                    if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                    }else{
+                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/>}
+                    }
+                  
+                  }
+                
+                rows.push(row)
+              }
+              this.setState({data : rows});
+
+              }
+          )
+          .catch(error => {
+              console.log(error);
+          })
+    }
+  }
+
+  getMaster(fileName){
+    const body ={
+      file: fileName
+    }
+    const options = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/pdf"
+      }
+    }
+    fetch("http://localhost:5000/getMaster/"+fileName, options)
+    .then(res => res.blob())
+    .then(response => {
+      console.log(response)
+      const file = new Blob([response], {
+        type: "application/pdf"
+      });
+      //Build a URL from the file
+      const fileURL = URL.createObjectURL(file);
+      //Open the URL on new Window
+      window.open(fileURL);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -124,8 +287,52 @@ class MyTrayTable extends React.Component{
     this.setState({ searchText: '' });
   };
 
+  onSelectChange = (selectedRowKeys, selectedRows) => {
+    let ids = []
+    for(let i = 0; i < selectedRows.length; i++){
+      ids.push(selectedRows[i].id.props.children)
+    }
+    this.setState({
+      selectedRowsKeys: selectedRowKeys,
+      selectedRows: selectedRows
+    })
+    this.props.onChange(ids);
+    
+  };
+
 
   render() {
+
+    const update = this.state.updateData;
+    const selectedRows = this.state.selectedRows;
+    const selectedRowsKeys = this.state.selectedRowsKeys;
+
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.onSelectChange(selectedRowKeys, selectedRows);
+      },
+      getCheckboxProps: (record) => (      
+        {
+        
+        disabled: record.actions.type === 'button',
+        // Column configuration not to be checked
+        name: record.name,
+      }),
+    };
+
+    if(localStorage.getItem("update") === "true"){
+      this.setState({
+        selectedRows: [],
+        selectedRowsKeys: []
+      })
+      rowSelection.selectedRowKeys = []
+      rowSelection.selectedRows = []
+      localStorage.setItem("update", false)
+    }else{
+      rowSelection.selectedRowKeys = selectedRowsKeys 
+      rowSelection.selectedRows = selectedRows;
+    }
+
     const columns = [
       {
         title: <center className="dataTable__header__text">ISO ID</center>,
@@ -165,15 +372,7 @@ class MyTrayTable extends React.Component{
           compare: (a, b) => { return a.to.localeCompare(b.to)},
         },
       },
-      {
-        title: <div className="dataTable__header__text">User</div>,
-        dataIndex: 'user',
-        key: 'user',
-        ...this.getColumnSearchProps('user'),
-        sorter: {
-          compare: (a, b) => { return a.user.localeCompare(b.user)},
-        },
-      },
+      
       {
         title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',
@@ -185,15 +384,22 @@ class MyTrayTable extends React.Component{
       },
     ];
 
+    if (this.state.data.length === 0){
+      var totalElements = null;
+    }else{
+      var totalElements = (<div style={{position: "absolute", bottom: 25, left:0}}>
+      <b>Total elements: {this.state.data.length}</b>
+     </div>);
+    }
+  
+
+
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
-          <div style={{position: "absolute", bottom:25, left:0}}>
-            <b>Total elements: {data.length}</b>
-          </div>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+          {totalElements}
         </div>
-        
       </div>
     );
   }

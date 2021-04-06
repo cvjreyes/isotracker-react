@@ -94,3 +94,8 @@ body{
     float: right;
     right: 0;
 }
+
+.roleSelector__container{
+    width: 130px;
+    position: absolute;
+}
