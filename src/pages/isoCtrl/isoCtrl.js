@@ -234,7 +234,9 @@ const IsoCtrl = () => {
                             fileName: selected[i],
                             to: destiny,
                             role: secureStorage.getItem("role"),
-                            comment: comment
+                            comment: comment,
+                            deleted: 0,
+                            onhold: 0
                         }
                         const options = {
                             method: "POST",
@@ -253,6 +255,15 @@ const IsoCtrl = () => {
             }else{
                 setCommentAlert(false)
                 localStorage.setItem("update", true)
+                let deleted, hold = 0
+
+                if(destiny === "Recycle bin"){
+                    deleted = 1
+                }
+
+                if(destiny === "On hold"){
+                    hold = 1
+                }
                 for (let i = 0; i < selected.length; i++){
                     
                     const body ={
@@ -260,7 +271,9 @@ const IsoCtrl = () => {
                         fileName: selected[i],
                         to: destiny,
                         role: secureStorage.getItem("role"),
-                        comment: null
+                        comment: null,
+                        deleted: deleted,
+                        onhold: hold
                     }
                     const options = {
                         method: "POST",
@@ -281,7 +294,7 @@ const IsoCtrl = () => {
     function handleComment(event){
         setComment(event.target.value)
     }
-    
+
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
@@ -297,7 +310,7 @@ const IsoCtrl = () => {
     }if(currentTab === "My Tray"){
         tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
-        tableContent = <BinTable pagination = {pagination}/>
+        tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
         tableContent = <StatusDataTable pagination = {pagination}/>
     }
