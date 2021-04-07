@@ -295,9 +295,26 @@ const IsoCtrl = () => {
     }
 
     function restore(){
-        console.log(selected)
-    }
+        if(selected.length > 0){
 
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                const body ={
+                    fileName: selected[i]
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                fetch("http://localhost:5000/restore", options)
+                    .then(response => response.json())
+            }
+            setUpdateData(!updateData)
+        }
+    }
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
