@@ -110,7 +110,6 @@ class DataTable extends React.Component{
   componentDidUpdate(prevProps, prevState){
 
     if(prevProps !== this.props){
-  
       const body ={
         currentTab : this.props.currentTab
       }

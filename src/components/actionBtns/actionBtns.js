@@ -2,7 +2,7 @@
 
 const ActionBtns = props =>{
     
-    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5
+    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8
     if (props.currentTab !== "My Tray" && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold"){
         actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.claimClick()}>Claim</button>
    
@@ -34,12 +34,13 @@ const ActionBtns = props =>{
             }
         }
         
-        /*actionBtn2 = <button class="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}}>Verify</button>
-        actionBtn3 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}}>Cancel verify</button>
-        actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}}>With Comments</button>
-        actionBtn5=  <CancelIso user = {props.user} style={{marginRight:"5px", marginLeft:"5px", width:"98px"}}/>*/
-    }if (props.currentTab === "Recycle bin"){
-        actionBtn1 = <button className="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} >Restore</button>
+        if(props.role === "DesignLead" || props.role === "SpecialityLead"){
+            actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
+            actionBtn7 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("On hold")}>Hold</button>
+        }
+
+    }if (props.currentTab === "Recycle bin" && (props.role === "DesignLead" || props.role === "SpecialityLead")){
+        actionBtn8 = <button className="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.restoreClick()}>Restore</button>
     }
     
 
@@ -50,6 +51,9 @@ const ActionBtns = props =>{
             {actionBtn3}
             {actionBtn4}
             {actionBtn5}
+            {actionBtn6}
+            {actionBtn7}
+            {actionBtn8}
         </div>
     );
 };

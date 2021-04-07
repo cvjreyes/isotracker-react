@@ -63,7 +63,6 @@ const IsoCtrl = () => {
     });
 
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) //Controla la tabla y botones que se muestran
-                
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
     var dataTableHeight = 8
 
@@ -234,7 +233,9 @@ const IsoCtrl = () => {
                             fileName: selected[i],
                             to: destiny,
                             role: secureStorage.getItem("role"),
-                            comment: comment
+                            comment: comment,
+                            deleted: 0,
+                            onhold: 0
                         }
                         const options = {
                             method: "POST",
@@ -253,6 +254,15 @@ const IsoCtrl = () => {
             }else{
                 setCommentAlert(false)
                 localStorage.setItem("update", true)
+                let deleted, hold = 0
+
+                if(destiny === "Recycle bin"){
+                    deleted = 1
+                }
+
+                if(destiny === "On hold"){
+                    hold = 1
+                }
                 for (let i = 0; i < selected.length; i++){
                     
                     const body ={
@@ -260,7 +270,9 @@ const IsoCtrl = () => {
                         fileName: selected[i],
                         to: destiny,
                         role: secureStorage.getItem("role"),
-                        comment: null
+                        comment: null,
+                        deleted: deleted,
+                        onhold: hold
                     }
                     const options = {
                         method: "POST",
@@ -281,7 +293,11 @@ const IsoCtrl = () => {
     function handleComment(event){
         setComment(event.target.value)
     }
-    
+
+    function restore(){
+        console.log(selected)
+    }
+
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
@@ -297,7 +313,7 @@ const IsoCtrl = () => {
     }if(currentTab === "My Tray"){
         tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
-        tableContent = <BinTable pagination = {pagination}/>
+        tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
         tableContent = <StatusDataTable pagination = {pagination}/>
     }
@@ -314,9 +330,9 @@ const IsoCtrl = () => {
     ((currentRole === "Materials") && currentTab === "Materials") ||
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
-    (currentTab=== "My Tray"))){
+    (currentTab=== "My Tray")) || ((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead" || currentRole === "SpecialityLead")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
@@ -371,7 +387,7 @@ const IsoCtrl = () => {
                 </div>
                 <div style={{position: "absolute", width:"300px", overflow:"hidden"}}>
                   {pageSelector}
-                  <BinBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                  <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                 </div>
                     
                 

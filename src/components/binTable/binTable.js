@@ -5,32 +5,165 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './binTable.css'
+import { Link } from 'react-router-dom';
 
 
-const data = [
+const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+    
+    var secureStorage = new SecureStorage(localStorage, {
+        hash: function hash(key) {
+            key = CryptoJS.SHA256(key, SECRET_KEY);
+    
+            return key.toString();
+        },
+        encrypt: function encrypt(data) {
+            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+    
+            data = data.toString();
+    
+            return data;
+        },
+        decrypt: function decrypt(data) {
+            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+    
+            data = data.toString(CryptoJS.enc.Utf8);
+    
+            return data;
+        }
+    });
 
-    { key:17, id: 1, date: '01/02/2021', deletedBy: 'Jon', from: 'Design'},
-    { key:18, id: 3, date: '02/02/2021', deletedBy: 'Jon', from: 'Stress', user: 'tec_Jon'},
-    { key:19, id: 23, date: '07/02/2021', deletedBy: 'Rick', from: 'Stress', user: 'tec_Rick'}
-];
-
-const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
-
-class DataTable extends React.Component{
+class BinTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
+    data: [],
+    tab: this.props.currentTab,
+    selectedRows: [],
+    selectedRowsKeys: [],
+    updateData: this.props.updateData,
+    username: "",
+    acronyms : null
   };
+
   
+
+  componentDidMount(){
+
+    
+    fetch("http://localhost:5000/api/roles/acronyms")
+      .then(response => response.json())
+      .then(json => {
+        let dict = {}
+
+        for(let i = 0; i < json.length; i++){
+          dict[json[i].name] = json[i].code
+        }
+        this.setState({
+          acronyms: dict
+        })
+      })
+
+
+      
+    
+    const body ={
+      currentTab : this.props.currentTab
+    }
+    console.log(body)
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://localhost:5000/files", options)
+        .then(response => response.json())
+        .then(json => {
+                var rows = []
+                for(let i = 0; i < json.rows.length; i++){
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}
+                 
+                    rows.push(row)                
+                }
+                
+                this.setState({data : rows, selectedRows: []});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
+
+        
+  }
+
+  componentDidUpdate(prevProps, prevState){
+
+    if(prevProps !== this.props){
+      console.log(this.state.acronyms)
+      const body ={
+        currentTab : this.props.currentTab
+      }
+      const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+      fetch("http://localhost:5000/files", options)
+          .then(response => response.json())
+          .then(json => {
+                  var rows = []
+                  
+                  for(let i = 0; i < json.rows.length; i++){
+                      console.log(json.rows[i].role)
+                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}
+                   
+                      rows.push(row)                
+                  }
+                  this.setState({
+                    data : rows,
+                  });
+              }
+          )
+          .catch(error => {
+              console.log(error);
+          })
+      }
+
+  }
+
+  getMaster(fileName){
+    const body ={
+      file: fileName
+    }
+    const options = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/pdf"
+      }
+    }
+    fetch("http://localhost:5000/getMaster/"+fileName, options)
+    .then(res => res.blob())
+    .then(response => {
+      console.log(response)
+      const file = new Blob([response], {
+        type: "application/pdf"
+      });
+      //Build a URL from the file
+      const fileURL = URL.createObjectURL(file);
+      //Open the URL on new Window
+      window.open(fileURL);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
   
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -110,13 +243,56 @@ class DataTable extends React.Component{
     this.setState({ searchText: '' });
   };
 
+  onSelectChange = (selectedRowKeys, selectedRows) => {
+    let ids = []
+    for(let i = 0; i < selectedRows.length; i++){
+      ids.push(selectedRows[i].id.props.children)
+    }
+    this.setState({
+      selectedRowsKeys: selectedRowKeys,
+      selectedRows: selectedRows
+    })
+    //this.setState({ selectedRows: selectedRows });
+    this.props.onChange(ids);
+    
+  };
+  
 
   render() {
+    const update = this.state.updateData;
+    const selectedRows = this.state.selectedRows;
+    const selectedRowsKeys = this.state.selectedRowsKeys;
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.onSelectChange(selectedRowKeys, selectedRows);
+      },
+      getCheckboxProps: (record) => (      
+        {
+        
+        // Column configuration not to be checked
+        name: record.name,
+      }),
+    };
+    if(localStorage.getItem("update") === "true"){
+      this.setState({
+        selectedRows: [],
+        selectedRowsKeys: []
+      })
+      rowSelection.selectedRowKeys = []
+      rowSelection.selectedRows = []
+      localStorage.setItem("update", false)
+    }else{
+      rowSelection.selectedRowKeys = selectedRowsKeys 
+      rowSelection.selectedRows = selectedRows;
+    }  
+    
+    
     const columns = [
       {
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
+        width: '20%',
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id - b.id,
@@ -126,6 +302,7 @@ class DataTable extends React.Component{
         title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'date',
         key: 'date',
+        width: '20%',
         ...this.getColumnSearchProps('date'),
         sorter: {
           compare: (a, b) => moment(a.date, 'DD/MM/YYYY') - moment(b.date, 'DD/MM/YYYY'),
@@ -141,24 +318,30 @@ class DataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Deleted by</div>,
+        title: <div className="dataTable__header__text">User</div>,
         dataIndex: 'user',
         key: 'user',
-        ...this.getColumnSearchProps('deletedBy'),
+        ...this.getColumnSearchProps('user'),
         sorter: {
-          compare: (a, b) => { return a.deletedBy.localeCompare(b.deletedBy)},
+          compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
       },
-       
     ];
+
+    if (this.state.data.length === 0){
+      var totalElements = null;
+    }else{
+      var totalElements = (<div style={{position: "absolute", bottom: 25, left:0}}>
+      <b>Total elements: {this.state.data.length}</b>
+     </div>);
+    }
 
     return (
       <div>
+        {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
-          <div style={{position: "absolute", bottom:25, left:0}}>
-            <b>Total elements: {data.length}</b>
-          </div>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+          {totalElements}
         </div>
         
       </div>
@@ -166,4 +349,4 @@ class DataTable extends React.Component{
   }
 }
 
-export default DataTable;
+export default BinTable;
