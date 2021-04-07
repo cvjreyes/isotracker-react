@@ -63,7 +63,6 @@ const IsoCtrl = () => {
     });
 
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) //Controla la tabla y botones que se muestran
-                
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
     var dataTableHeight = 8
 
@@ -295,6 +294,10 @@ const IsoCtrl = () => {
         setComment(event.target.value)
     }
 
+    function restore(){
+        console.log(selected)
+    }
+
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
@@ -327,9 +330,9 @@ const IsoCtrl = () => {
     ((currentRole === "Materials") && currentTab === "Materials") ||
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
-    (currentTab=== "My Tray"))){
+    (currentTab=== "My Tray")) || ((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead" || currentRole === "SpecialityLead")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
@@ -384,7 +387,7 @@ const IsoCtrl = () => {
                 </div>
                 <div style={{position: "absolute", width:"300px", overflow:"hidden"}}>
                   {pageSelector}
-                  <BinBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                  <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                 </div>
                     
                 
