@@ -9,6 +9,7 @@ const StateTable = props =>{
     const [designProgressCount, setDesignProgessCount] = useState(0)
     const [stressCount, setStressCount] = useState(0)
     const [supportsCount, setSupportsCount] = useState(0)
+    const [onHoldCount, setOnHoldCount] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
 
     useEffect(()=>{
@@ -19,8 +20,9 @@ const StateTable = props =>{
             setDesignProgessCount(json["designProgress"])
             setStressCount(json["stress"])
             setSupportsCount(json["supports"])
+            setOnHoldCount(json["onHold"])
       }) 
-     setTotalCount(designUploadedCount+designProgressCount+stressCount+supportsCount)
+     setTotalCount(designUploadedCount+designProgressCount+stressCount+supportsCount+onHoldCount)
     },props.updateData)
 
     return (
@@ -54,7 +56,7 @@ const StateTable = props =>{
                         <td className="statusTable__state">-</td>      
                     </tr>
                     <tr>
-                        <td className="statusTable__value">4532</td>
+                        <td className="statusTable__value">0</td>
                         <td className="statusTable__value">{designUploadedCount}</td>
                         <td className="statusTable__value">{designProgressCount}</td>
                         <td className="statusTable__value">{stressCount}</td>
@@ -66,7 +68,7 @@ const StateTable = props =>{
                         <td className="statusTable__value"></td>
                         <td className="statusTable__value"></td>
                         <td className="statusTable__value">{totalCount}</td>   
-                        <td className="statusTable__value">0</td> 
+                        <td className="statusTable__value">{onHoldCount}</td> 
 
                         
                     </tr>
