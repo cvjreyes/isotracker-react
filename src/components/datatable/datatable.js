@@ -83,15 +83,18 @@ class DataTable extends React.Component{
         .then(response => response.json())
         .then(json => {
                 var rows = []
+                var row = null
                 for(let i = 0; i < json.rows.length; i++){
                   if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){
-                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
                   }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){
-                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
                   }else if(json.rows[i].claimed === 1){
-                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: "CLAIMED" }
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: "CLAIMED" }
+                  }else if(json.rows[i].user !== "None"){
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions:{}}
                   }else{
-                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
                   }
                     rows.push(row)
                   }
@@ -110,6 +113,7 @@ class DataTable extends React.Component{
   componentDidUpdate(prevProps, prevState){
 
     if(prevProps !== this.props){
+      
       const body ={
         currentTab : this.props.currentTab
       }
@@ -124,16 +128,18 @@ class DataTable extends React.Component{
           .then(response => response.json())
           .then(json => {
                   var rows = []
-                  
+                  let row = null
                   for(let i = 0; i < json.rows.length; i++){
                     if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){
-                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
                     }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){
-                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px"}}>PENDING</button> }
                     }else if(json.rows[i].claimed === 1){
-                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: "CLAIMED" }
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: "CLAIMED" }
+                    }else if(json.rows[i].user !== "None"){
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions:{}}
                     }else{
-                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions:{}}
                     }
                     rows.push(row)                
                   }
@@ -150,9 +156,6 @@ class DataTable extends React.Component{
   }
 
   getMaster(fileName){
-    const body ={
-      file: fileName
-    }
     const options = {
       method: "GET",
       headers: {
@@ -271,7 +274,6 @@ class DataTable extends React.Component{
   
 
   render() {
-    const update = this.state.updateData;
     const selectedRows = this.state.selectedRows;
     const selectedRowsKeys = this.state.selectedRowsKeys;
     const rowSelection = {
@@ -359,10 +361,11 @@ class DataTable extends React.Component{
       },
     ];
 
+    var totalElements = null;
     if (this.state.data.length === 0){
-      var totalElements = null;
+      totalElements = null;
     }else{
-      var totalElements = (<div style={{position: "absolute", bottom: 25, left:0}}>
+      totalElements = (<div style={{position: "absolute", bottom: 25, left:0}}>
       <b>Total elements: {this.state.data.length}</b>
      </div>);
     }

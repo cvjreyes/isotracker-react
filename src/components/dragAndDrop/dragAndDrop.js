@@ -186,7 +186,7 @@ class DragAndDrop extends React.Component{
       
       const formData  = new FormData(); 
       formData.append('file', file.file);       
-      if(this.props.mode == "upload"){
+      if(this.props.mode === "upload"){
         this.uploadFile(formData);
       }else{
         if(String(this.props.iso).trim() === String(file.file.name.split('.').slice(0, -1)).trim() || 
@@ -220,7 +220,7 @@ class DragAndDrop extends React.Component{
     if(errorAlerts.length > 0){
       for(let i = 0; i < errorAlerts.length; i++){
         
-        if (this.props.mode == "upload"){
+        if (this.props.mode === "upload"){
           errors.push(<Alert severity="error"
           >
             The file {errorAlerts[i]} already exists!
@@ -239,7 +239,7 @@ class DragAndDrop extends React.Component{
     let inputContent = null
     let styles = null
 
-    if(this.props.mode == "upload"){
+    if(this.props.mode === "upload"){
       inputContent = "Drop isometrics here"
       styles = {
         dropzone: {
@@ -259,12 +259,6 @@ class DragAndDrop extends React.Component{
           height: '2px'
         }
     }
-
-    const dropzoneStyle = {
-      width  : "1%",
-      height : "20%",
-      border : "1px solid black"
-   };
    
   }
 

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
-import ChooseFile from '../chooseFile/chooseFile';
 import './uploadPopUp.css'
 import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 

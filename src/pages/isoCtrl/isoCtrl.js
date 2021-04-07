@@ -15,11 +15,13 @@ import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"
 import MyTrayTable from "../../components/myTrayTable/myTrayTable"
 import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
+import OnHoldTable from "../../components/onHoldTable/onHoldTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
 import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
+import OnHoldBtn from "../../components/onHoldBtn/onHoldBtn"
 
 
 
@@ -29,7 +31,6 @@ const IsoCtrl = () => {
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
     const [currentRole, setCurrentRole] = useState();
-    const [currentRoleAcr, setCurrentRoleAcr] = useState();
     const [roles, setRoles] = useState();
     const [selected, setSelected] = useState([]);
     const [updateData, setUpdateData] = useState();
@@ -77,7 +78,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent
+    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent
     var currentTabText = currentTab
     tableContent = <DataTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
@@ -100,6 +101,7 @@ const IsoCtrl = () => {
             .then(response => response.json())
             .then(json => {
                 setRoles(json.roles);
+                console.log(json)
                 if(secureStorage.getItem('role') !== null){
                     setCurrentRole(secureStorage.getItem('role'))
                 }else{
@@ -300,7 +302,9 @@ const IsoCtrl = () => {
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
                 const body ={
-                    fileName: selected[i]
+                    fileName: selected[i],
+                    deleted: 0,
+                    onhold: 0
                 }
                 const options = {
                     method: "POST",
@@ -331,6 +335,8 @@ const IsoCtrl = () => {
         tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
+    }if(currentTab === "On hold"){
+        tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
         tableContent = <StatusDataTable pagination = {pagination}/>
     }
@@ -347,7 +353,7 @@ const IsoCtrl = () => {
     ((currentRole === "Materials") && currentTab === "Materials") ||
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
-    (currentTab=== "My Tray")) || ((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead" || currentRole === "SpecialityLead")){
+    (currentTab=== "My Tray")) || (((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead") || currentRole === "SpecialityLead" || currentRole === "Issuer")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
@@ -402,9 +408,10 @@ const IsoCtrl = () => {
                         <StateTable/>
                     </td>
                 </div>
-                <div style={{position: "absolute", width:"300px", overflow:"hidden"}}>
+                <div style={{position: "relative", width:"400px"}}>
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
+                  <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
                 </div>
                     
                 

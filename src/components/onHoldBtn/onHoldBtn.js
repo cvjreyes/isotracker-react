@@ -1,4 +1,4 @@
-import Bin from "../../assets/images/bin.png"
+import Hold from "../../assets/images/hold.png"
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -26,15 +26,15 @@ const CryptoJS = require("crypto-js");
         }
     });
 
-const BinBtn = props =>{
-    if(props.currentTab === "Recycle bin"){
-        secureStorage.setItem("tab", "Recycle bin")
+const onHoldBtn = props =>{
+    if(props.currentTab === "On hold"){
+        secureStorage.setItem("tab", "On hold")
     }
     return(
         <div>
-            <input type="image" src={Bin} alt="bin" style={{width:"40px", marginTop:"20px", marginLeft:"10px", float:"left"}} onClick={() => {props.onChange("Recycle bin")}} />
+            <input type="image" src={Hold} alt="hold" style={{width:"40px", marginTop:"20px", marginLeft: "20px", float:"left"}} onClick={() => {props.onChange("On hold")}} />
         </div>
     );
 };
 
-export default BinBtn;
+export default onHoldBtn;
