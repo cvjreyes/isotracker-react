@@ -4,17 +4,8 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import './statusDataTable.css'
-
-
-const data = [
-    { key:1, id: '021A1971101N0003_01.pdf', status: 'New', condition: 'ON GOING', progressMax: 10, realProgress: 50, progress: 50},
-    { key:2, id: '021A1971101N0003_02.pdf', status: 'LDG Design', condition: 'ON GOING', progressMax: 4, realProgress: 55, progress: 55},
-    { key:3, id: '021B1971101N0003_01.pdf', status: 'New', condition: 'ON GOING', progressMax: 2, realProgress: 55, progress: 50},
-    { key:4, id: '021A194321N0003_01.pdf', status: 'New', condition: 'ON GOING', progressMax: 5, realProgress: 60, progress: 50},
-    { key:5, id: '021A1121101N0003_01.pdf', status: 'New', condition: 'ON GOING', progressMax: 1, realProgress: 30, progress: 30},
-    { key:6, id: '021A1971101N9003_01.pdf', status: 'New', condition: 'ON GOING', progressMax: 10, realProgress: 35, progress: 30},
-    { key:7, id: '121A1971101N0003_01.pdf', status: 'New', condition: 'ON GOING', progressMax: 8, realProgress: 80, progress: 80},
-];
+import { Link } from 'react-router-dom';
+import { columnLookupSelector } from '@material-ui/data-grid';
 
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -31,8 +22,66 @@ class StatusDataTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
+    data: []
   };
   
+
+  componentDidMount(){
+
+    const options = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json"
+      },
+    }
+    fetch("http://localhost:5000/api/statusFiles", options)
+        .then(response => response.json())
+        .then(json => {
+            console.log(json)
+            var rows = []
+            var row = null;
+            for(let i = 0; i < json.rows.length; i++){
+                row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
+                      
+              rows.push(row)
+            }
+                         
+            this.setState({data : rows});
+
+            }
+        )
+        .catch(error => {
+            console.log(error);
+        })
+  }
+
+  getMaster(fileName){
+
+    console.log(fileName)
+
+    const options = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/pdf"
+      }
+    }
+    fetch("http://localhost:5000/getMaster/"+fileName, options)
+    .then(res => res.blob())
+    .then(response => {
+      console.log(response)
+      const file = new Blob([response], {
+        type: "application/pdf"
+      });
+      //Build a URL from the file
+      const fileURL = URL.createObjectURL(file);
+      //Open the URL on new Window
+      window.open(fileURL);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
   
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -177,9 +226,9 @@ class StatusDataTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
-            <b>Total elements: {data.length}</b>
+            <b>Total elements: {this.state.data.length}</b>
           </div>
         </div>
         

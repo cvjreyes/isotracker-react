@@ -66,6 +66,7 @@ class DragAndDrop extends React.Component{
               fileName: filename,
               user: this.props.user,
             }
+            console.log(body)
             fetch('http://localhost:5000/uploadHis', {
               // content-type header should not be specified!
               method: 'POST',
