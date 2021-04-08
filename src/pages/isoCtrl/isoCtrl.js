@@ -17,6 +17,7 @@ import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
 import OnHoldTable from "../../components/onHoldTable/onHoldTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
+import HistoryDataTable from "../../components/historyDataTable/historyDataTable"
 import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 
 import Alert from '@material-ui/lab/Alert';
@@ -303,6 +304,7 @@ const IsoCtrl = () => {
             for (let i = 0; i < selected.length; i++){
                 const body ={
                     fileName: selected[i],
+                    user: currentUser,
                     deleted: 0,
                     onhold: 0
                 }
@@ -339,6 +341,8 @@ const IsoCtrl = () => {
         tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
         tableContent = <StatusDataTable pagination = {pagination}/>
+    }if(currentTab === "History"){
+        tableContent = <HistoryDataTable pagination = {pagination}/>   
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
