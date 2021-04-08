@@ -261,7 +261,7 @@ class OnHoldTable extends React.Component{
         width: '20%',
         ...this.getColumnSearchProps('id'),
         sorter:{
-          compare: (a, b) => a.id - b.id,
+          compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
       },
       {
@@ -271,7 +271,7 @@ class OnHoldTable extends React.Component{
         width: '20%',
         ...this.getColumnSearchProps('date'),
         sorter: {
-          compare: (a, b) => moment(a.date, 'DD/MM/YYYY') - moment(b.date, 'DD/MM/YYYY'),
+          compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
         },
       },
       {
