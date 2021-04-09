@@ -23,6 +23,8 @@ import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
 import OnHoldBtn from "../../components/onHoldBtn/onHoldBtn"
+import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
+import ProcInstTable from "../../components/procInstTable/procInstTable"
 
 
 
@@ -79,7 +81,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent
+    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn
     var currentTabText = currentTab
     tableContent = <DataTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
@@ -120,22 +122,61 @@ const IsoCtrl = () => {
     const claim = async (event) => {
         if(selected.length > 0){
             localStorage.setItem("update", true)
-            for (let i = 0; i < selected.length; i++){
+            if(currentTab === "Process"){
+                for (let i = 0; i < selected.length; i++){
                 
-                const body ={
-                    user : currentUser,
-                    file: selected[i],
-                    role: currentRole
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    fetch("http://localhost:5000/claimProc", options)
+                        .then(response => response.json(),                     )
                 }
-                const options = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(body)
+            }else if(currentTab === "Instrument"){
+                for (let i = 0; i < selected.length; i++){
+                
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    fetch("http://localhost:5000/claimInst", options)
+                        .then(response => response.json(),                     )
                 }
-                fetch("http://localhost:5000/claim", options)
-                    .then(response => response.json(),                     )
+            }else{
+                for (let i = 0; i < selected.length; i++){
+                
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    fetch("http://localhost:5000/claim", options)
+                        .then(response => response.json(),)
+                }
+            
             }
             setUpdateData(!updateData)
             console.log(updateData);
@@ -146,26 +187,61 @@ const IsoCtrl = () => {
     
 
     const unclaim = async (event) =>{
-        console.log(selected)
         if(selected.length > 0){
             localStorage.setItem("update", true)
-            console.log(localStorage.getItem("update"))
-            for (let i = 0; i < selected.length; i++){
-                const body ={
-                    user : currentUser,
-                    file: selected[i]
+            if (currentTab === "Process"){
+                for (let i = 0; i < selected.length; i++){
+                    const body ={
+                        user : currentUser,
+                        file: selected[i]
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    console.log(body)
+                    fetch("http://localhost:5000/unclaimProc", options)
+                        .then(response => response.json())
                 }
-                const options = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(body)
+            }else if(currentTab === "Instrument"){
+                for (let i = 0; i < selected.length; i++){
+                    const body ={
+                        user : currentUser,
+                        file: selected[i]
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    console.log(body)
+                    fetch("http://localhost:5000/unclaimInst", options)
+                        .then(response => response.json())
                 }
-                console.log(body)
-                fetch("http://localhost:5000/unclaim", options)
-                    .then(response => response.json())
+            }else{
+                for (let i = 0; i < selected.length; i++){
+                    const body ={
+                        user : currentUser,
+                        file: selected[i]
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    console.log(body)
+                    fetch("http://localhost:5000/unclaim", options)
+                        .then(response => response.json())
+                }
             }
+            
             console.log(updateData);
             setUpdateData(!updateData)
         }
@@ -322,6 +398,40 @@ const IsoCtrl = () => {
         }
     }
 
+    function procOrInst() {
+        console.log(currentRole)
+        if (currentRole === "Process"){
+            setCurrentTab("Process")
+        }else{
+            setCurrentTab("Instrument")
+        }
+    }
+
+    function sendProcessClick(fileName){
+        localStorage.setItem("update", true)
+            
+            const body ={
+                user : currentUser,
+                file: fileName,
+                role: currentRole
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://localhost:5000/process", options)
+                .then(response => response.json())
+        
+        setUpdateData(!updateData)
+    }
+
+    function sendInstrumentClick(fileName){
+        console.log(fileName)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
@@ -334,7 +444,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
+        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){
@@ -343,6 +453,10 @@ const IsoCtrl = () => {
         tableContent = <StatusDataTable pagination = {pagination}/>
     }if(currentTab === "History"){
         tableContent = <HistoryDataTable pagination = {pagination}/>   
+    }if(currentRole === "Process" || currentRole === "Instrument"){
+        procInsBtn = <ProcInsBtn onChange={value => procOrInst()} currentTab = {currentTab} />
+    }if(currentTab === "Process" || currentTab === "Instrument"){
+        tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -357,7 +471,9 @@ const IsoCtrl = () => {
     ((currentRole === "Materials") && currentTab === "Materials") ||
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
-    (currentTab=== "My Tray")) || (((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead") || currentRole === "SpecialityLead" || currentRole === "Issuer")){
+    (currentTab=== "My Tray")) || (((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead") || 
+    currentRole === "SpecialityLead" || currentRole === "Issuer") || (currentTab === "Process" && currentRole === "Process") ||
+    (currentRole === "Instrument" && currentTab === "Instrument")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
@@ -412,10 +528,12 @@ const IsoCtrl = () => {
                         <StateTable/>
                     </td>
                 </div>
-                <div style={{position: "relative", width:"400px"}}>
+                <div style={{position: "relative", width:"500px"}}>
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
+                  {procInsBtn}
+
                 </div>
                     
                 
