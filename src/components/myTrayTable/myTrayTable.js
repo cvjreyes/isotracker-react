@@ -3,10 +3,10 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import './myTrayTable.css'
 import UploadPopUp from '../uploadPopUp/uploadPopUp';
 import { Link } from 'react-router-dom';
+import UploadProcInst from '../uploadProcInst/uploadProcInst';
 
 
 const CryptoJS = require("crypto-js");
@@ -89,24 +89,32 @@ class MyTrayTable extends React.Component{
             var row = null;
             for(let i = 0; i < json.rows.length; i++){
               if(process.env.REACT_APP_IFC === "1"){
+                if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
+                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} role={this.state.role}/>}
+                }else{
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                     if (secureStorage.getItem("role") === "Design" || secureStorage.getItem("role") === "DesignLead" || secureStorage.getItem("role") === "Issuer"){
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> <button className="btn btn-warning" style={{backgroundColor:"white"}}>P</button></div>} 
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button> </div>} 
                     }else{
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button></div>}
                     }
                   }else{
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user}/>}
-                  }             
-               }else{
-                
-                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> }
-                  }else{
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} />}
-                  }
-                
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user}/> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button> </div>}
+                  } 
                 }
+                              
+              }else{
+                if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
+                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user}/>}
+                }else{
+                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button></div>}
+                  }else{
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} /> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button> </div>}
+                  }
+                }
+                
+              }
               
               rows.push(row)
             }
@@ -160,38 +168,32 @@ class MyTrayTable extends React.Component{
               var row = null
               for(let i = 0; i < json.rows.length; i++){
                 if(process.env.REACT_APP_IFC === "1"){
-                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
-                    if (secureStorage.getItem("role") === "Design" || secureStorage.getItem("role") === "DesignLead" || secureStorage.getItem("role") === "Issuer"){
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px"}}>CANCEL VERIFY</button> <button className="btn btn-info" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"white", color:"black", borderColor:"#B0E0E6", width:"23px"}}>P</button> <button className="btn btn-info" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"white", color:"black", borderColor:"#B0E0E6", width:"23px"}}>I</button> </div>} 
-                    }else{
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px"}}>CANCEL VERIFY</button> }
-                    }
+                  if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} role={this.state.role}/>}
                   }else{
-                    if (secureStorage.getItem("role") === "Design" || secureStorage.getItem("role") === "DesignLead" || secureStorage.getItem("role") === "Issuer"){
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<div> <UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/> <button className="btn btn-info" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} style={{backgroundColor:"white", color:"black"}}>P</button> <button className="btn btn-info" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"white", color:"black", borderColor:"#B0E0E6", width:"23px"}}>I</button> </div>}
+                    if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                      if (secureStorage.getItem("role") === "Design" || secureStorage.getItem("role") === "DesignLead" || secureStorage.getItem("role") === "Issuer"){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button> </div>} 
+                      }else{
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button></div>}
+                      }
                     }else{
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/>}
-                    }
-                  }         
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user}/> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button> </div>}
+                    } 
+                  }
+                                
                 }else{
-                  
-                  if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
-                    if (secureStorage.getItem("role") === "Design" || secureStorage.getItem("role") === "DesignLead" || secureStorage.getItem("role") === "Issuer"){
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px"}}>CANCEL VERIFY</button> <button className="btn btn-info" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} style={{backgroundColor:"white", color:"black"}}>P</button> <button className="btn btn-info" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"white", color:"black", borderColor:"#B0E0E6", width:"23px"}}>I</button> </div> }
-                    }else{
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px"}}>CANCEL VERIFY</button> }
-                    }
-
+                  if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user}/>}
                   }else{
-                    if (secureStorage.getItem("role") === "Design" || secureStorage.getItem("role") === "DesignLead" || secureStorage.getItem("role") === "Issuer"){
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<div> <UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/> <button className="btn btn-info" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} style={{backgroundColor:"white", color:"black"}}>P</button> <button className="btn btn-info" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"white", color:"black", borderColor:"#B0E0E6", width:"23px"}}>I</button> </div>}
+                    if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"100px"}}>CANCEL VERIFY</button> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button></div>}
                     }else{
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} currentUser = {this.state.user}/>}
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} /> <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px"}}>P</button> </div>}
                     }
-
                   }
                   
-                  }
+                }
                 
                 rows.push(row)
               }
@@ -205,7 +207,7 @@ class MyTrayTable extends React.Component{
     }
   }
 
-  getMaster(fileName){
+  getMaster(filename){
 
     const options = {
       method: "GET",
@@ -213,7 +215,7 @@ class MyTrayTable extends React.Component{
           "Content-Type": "application/pdf"
       }
     }
-    fetch("http://localhost:5000/getMaster/"+fileName, options)
+    fetch("http://localhost:5000/getMaster/"+filename, options)
     .then(res => res.blob())
     .then(response => {
       console.log(response)

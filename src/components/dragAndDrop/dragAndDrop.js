@@ -183,10 +183,9 @@ class DragAndDrop extends React.Component{
     })
 
     await allFiles.forEach(file => {
-
       
       const formData  = new FormData(); 
-      formData.append('file', file.file);       
+      formData.append('file', file[0]);  
       if(this.props.mode === "upload"){
         this.uploadFile(formData);
       }else{

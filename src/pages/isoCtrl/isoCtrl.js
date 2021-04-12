@@ -189,7 +189,7 @@ const IsoCtrl = () => {
     const unclaim = async (event) =>{
         if(selected.length > 0){
             localStorage.setItem("update", true)
-            if (currentTab === "Process"){
+            if (currentRole === "Process"){
                 for (let i = 0; i < selected.length; i++){
                     const body ={
                         user : currentUser,
@@ -206,7 +206,7 @@ const IsoCtrl = () => {
                     fetch("http://localhost:5000/unclaimProc", options)
                         .then(response => response.json())
                 }
-            }else if(currentTab === "Instrument"){
+            }else if(currentRole === "Instrument"){
                 for (let i = 0; i < selected.length; i++){
                     const body ={
                         user : currentUser,
