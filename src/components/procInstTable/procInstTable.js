@@ -83,8 +83,10 @@ class procInstTable extends React.Component{
                 var rows = []
                 var row = null
                 for(let i = 0; i < json.rows.length; i++){
-                    if(json.rows[i].spoclaimed === 1 && this.props.currentTab ===  "Process" || json.rows[i].sitclaimed === 1 && this.props.currentTab ===  "Instrument"){
+                    if(json.rows[i].spoclaimed === 1 && this.props.currentTab ===  "Process"){ 
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].spouser, actions: "CLAIMED" }
+                    }else if (json.rows[i].sitclaimed === 1 && this.props.currentTab ===  "Instrument"){
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].situser, actions: "CLAIMED" }   
                     }else{
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: "None", actions:""}
                     }
@@ -122,12 +124,14 @@ class procInstTable extends React.Component{
                   var rows = []
                   let row = null
                   for(let i = 0; i < json.rows.length; i++){
-                    if(json.rows[i].spoclaimed === 1 && this.props.currentTab ===  "Process" || json.rows[i].sitclaimed === 1 && this.props.currentTab ===  "Instrument"){
+                    if(json.rows[i].spoclaimed === 1 && this.props.currentTab ===  "Process"){ 
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].spouser, actions: "CLAIMED" }
+                    }else if (json.rows[i].sitclaimed === 1 && this.props.currentTab ===  "Instrument"){
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].situser, actions: "CLAIMED" }   
                     }else{
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: "None", actions:""}
                     }
-                    rows.push(row)                
+                    rows.push(row)
                   }
                   this.setState({
                     data : rows,

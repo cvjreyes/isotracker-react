@@ -36,7 +36,6 @@ class DragAndDrop extends React.Component{
   };
 
   async uploadFile(file) {
-
     await fetch('http://localhost:5000/upload', {
       // content-type header should not be specified!
       method: 'POST',
@@ -45,7 +44,6 @@ class DragAndDrop extends React.Component{
       .then(response => {
         // Do something with the successful response
         if (response.status === 200){
-          console.log("ADSAD")
           if(!this.state.success){
               this.setState({
                 success : true,
@@ -105,6 +103,7 @@ class DragAndDrop extends React.Component{
 
   async updateFile(file) {
 
+    
     await fetch('http://localhost:5000/update', {
       // content-type header should not be specified!
       method: 'POST',
@@ -183,9 +182,8 @@ class DragAndDrop extends React.Component{
     })
 
     await allFiles.forEach(file => {
-      
       const formData  = new FormData(); 
-      formData.append('file', file[0]);  
+      formData.append('file', file.file);  
       if(this.props.mode === "upload"){
         this.uploadFile(formData);
       }else{

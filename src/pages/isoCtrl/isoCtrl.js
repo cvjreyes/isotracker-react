@@ -429,7 +429,28 @@ const IsoCtrl = () => {
     }
 
     function sendInstrumentClick(fileName){
-        console.log(fileName)
+        localStorage.setItem("update", true)
+            
+            const body ={
+                user : currentUser,
+                file: fileName,
+                role: currentRole
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://localhost:5000/instrument", options)
+                .then(response => response.json())
+        
+        setUpdateData(!updateData)
+    }
+
+    function updateD(){
+        setUpdateData(!updateData)
     }
 
     if(currentTab === "Upload IsoFiles"){
@@ -444,7 +465,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
+        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){
