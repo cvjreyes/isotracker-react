@@ -189,7 +189,7 @@ export default class UploadProcInst extends Component {
     render() {
         return (
             <section>
-                <input type="button"  value="UPLOAD" className="btn btn-warning"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"#B0E0E6", borderColor:"#B0E0E6", width:"100px", float:"left"}} onClick={() => this.openModal()} />
+                <input type="button"  value="UPLOAD" className="btn btn-warning"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"#B0E0E6", borderColor:"#B0E0E6", width:"100px", float:"left", marginRight:"5px"}} onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="650" height="430" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <button onClick={() => this.closeModal()} style={{marginTop:"5px", fontSize:"16px", position:"absolute", right:"10px", backgroundColor:"transparent", border:"None"}}>X</button>
