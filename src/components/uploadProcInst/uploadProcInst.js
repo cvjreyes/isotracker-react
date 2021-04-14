@@ -35,6 +35,7 @@ export default class UploadProcInst extends Component {
                     file: this.state.file.name,
                     action: "accept",
                     user: this.state.user,
+                    role: this.state.role
                 }
     
                 const options = {
@@ -110,6 +111,7 @@ export default class UploadProcInst extends Component {
                     file: this.state.file.name,
                     action: "deny",
                     user: this.state.user,
+                    role: this.state.role
                 }
     
                 const options = {

@@ -193,7 +193,8 @@ const IsoCtrl = () => {
                 for (let i = 0; i < selected.length; i++){
                     const body ={
                         user : currentUser,
-                        file: selected[i]
+                        file: selected[i],
+                        role: currentRole
                     }
                     const options = {
                         method: "POST",
@@ -210,7 +211,8 @@ const IsoCtrl = () => {
                 for (let i = 0; i < selected.length; i++){
                     const body ={
                         user : currentUser,
-                        file: selected[i]
+                        file: selected[i],
+                        role: currentRole
                     }
                     const options = {
                         method: "POST",
@@ -227,7 +229,8 @@ const IsoCtrl = () => {
                 for (let i = 0; i < selected.length; i++){
                     const body ={
                         user : currentUser,
-                        file: selected[i]
+                        file: selected[i],
+                        role: currentRole
                     }
                     const options = {
                         method: "POST",
