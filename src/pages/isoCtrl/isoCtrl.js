@@ -372,6 +372,28 @@ const IsoCtrl = () => {
         }    
     }
 
+    function returnLead(destiny){
+        for (let i = 0; i < selected.length; i++){
+                    
+            const body ={
+                user : currentUser,
+                fileName: selected[i],
+                to: destiny,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://localhost:5000/api/returnLead", options)
+                .then(response => response.json(),                     )
+        }
+        setUpdateData(!updateData)
+    }
+    
+
     function handleComment(event){
         setComment(event.target.value)
     }
@@ -499,7 +521,7 @@ const IsoCtrl = () => {
     currentRole === "SpecialityLead" || currentRole === "Issuer") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso

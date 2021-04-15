@@ -11,8 +11,11 @@ const ActionBtns = props =>{
             actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("Design")}>Design</button>
         }
         if(process.env.REACT_APP_IFC === "0"){
-            actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("stress")}>Stress</button>
-            actionBtn4 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("supports")}>Support</button>
+            if (props.role !== "Stress" && props.role !== "StressLead"){
+                actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("stress")}>Stress</button>
+            } if (props.role !== "Supports" && props.role !== "SupportsLead"){
+                actionBtn4 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("supports")}>Support</button>
+            }
             if(props.role !== "DesignLead" && props.role !== "StressLead" && props.role !== "SupportsLead" && props.role !== "Process" && props.role !== "Instrument"){
                 actionBtn5= <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.verifyClick()}>Verify</button>
 
@@ -34,8 +37,16 @@ const ActionBtns = props =>{
         }
         
         if(props.role === "DesignLead" || props.role === "SpecialityLead"){
+            actionBtn1 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.returnLead("Design")}>Design</button>
             actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
             actionBtn7 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("On hold")}>Hold</button>
+        }
+
+        if(props.role === "StressLead"){
+            actionBtn1 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.returnLead("Stress")}>Stress</button>
+        }
+        if(props.role === "SupportsLead"){
+            actionBtn1 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.returnLead("Supports")}>Supports</button>
         }
 
     }if ((props.currentTab === "Recycle bin" && (props.role === "DesignLead" || props.role === "SpecialityLead")) || 
