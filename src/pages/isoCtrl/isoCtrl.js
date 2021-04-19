@@ -25,6 +25,9 @@ import Collapse from '@material-ui/core/Collapse'
 import OnHoldBtn from "../../components/onHoldBtn/onHoldBtn"
 import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
 import ProcInstTable from "../../components/procInstTable/procInstTable"
+import download from 'downloadjs'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver';
 
 
 
@@ -39,6 +42,7 @@ const IsoCtrl = () => {
     const [updateData, setUpdateData] = useState();
     const [comment, setComment] = useState(" ");
     const [commentAlert, setCommentAlert] = useState(false);
+    const [downloadZip, setDownloadzip] = useState(new JSZip());
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -104,7 +108,6 @@ const IsoCtrl = () => {
             .then(response => response.json())
             .then(json => {
                 setRoles(json.roles);
-                console.log(json)
                 if(secureStorage.getItem('role') !== null){
                     setCurrentRole(secureStorage.getItem('role'))
                 }else{
@@ -373,6 +376,7 @@ const IsoCtrl = () => {
     }
 
     function returnLead(destiny){
+        localStorage.setItem("update", true)
         for (let i = 0; i < selected.length; i++){
                     
             const body ={
@@ -478,6 +482,51 @@ const IsoCtrl = () => {
         setUpdateData(!updateData)
     }
 
+    function downloadFiles(){
+        if(selected.length === 1){
+            console.log("ASDS")
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                const body ={
+                    fileName: selected[i]
+                }
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/pdf"
+                    }
+                }
+                fetch("http://localhost:5000/download/"+selected[i], options)
+                .then(res => res.blob())
+                    .then(response =>{
+                        download(new Blob([response]), selected[i], "application/pdf")
+                    })
+            }
+        }else if (selected.length > 1){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/pdf"
+                    }
+                }
+                fetch("http://localhost:5000/download/"+selected[i], options)
+                .then(res => res.blob())
+                    .then(response =>{
+                        setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
+                    })
+            }
+            const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
+            downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
+                saveAs(blob,  zipname)
+            })
+            
+        }
+        setUpdateData(!updateData)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
@@ -521,7 +570,7 @@ const IsoCtrl = () => {
     currentRole === "SpecialityLead" || currentRole === "Issuer") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
