@@ -202,12 +202,7 @@ class DragAndDrop extends React.Component{
       file.remove();
     });    
 
-      if (!this.state.uploaded){
-        this.setState({
-          uploading: false,
-          uploaded: true
-        })
-      }
+      
 
   }
 
