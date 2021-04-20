@@ -30,7 +30,6 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 
 
-
 const IsoCtrl = () => {
    
     
@@ -43,6 +42,7 @@ const IsoCtrl = () => {
     const [comment, setComment] = useState(" ");
     const [commentAlert, setCommentAlert] = useState(false);
     const [downloadZip, setDownloadzip] = useState(new JSZip());
+    const [loading, setLoading] = useState(false);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -124,6 +124,7 @@ const IsoCtrl = () => {
 
     const claim = async(event) => {
         if(selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
             if(currentTab === "Process"){
                 for (let i = 0; i < selected.length; i++){
@@ -179,7 +180,7 @@ const IsoCtrl = () => {
             
             }
             setUpdateData(!updateData)
-            console.log(updateData);
+            setLoading(false)
             
         }
      
@@ -187,6 +188,7 @@ const IsoCtrl = () => {
 
     const unclaim = async (event) =>{
         if(selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
             if (currentRole === "Process"){
                 for (let i = 0; i < selected.length; i++){
@@ -240,14 +242,14 @@ const IsoCtrl = () => {
                     await fetch("http://localhost:5000/unclaim", options)
                 }
             }
-            
-            console.log(updateData);
             await setUpdateData(!updateData)
+            setLoading(false)
         }
         
     }
 
     const verifyClick = async(event) =>{
+        setLoading(true)
         console.log("Envio a verify")
         if(selected.length > 0){
             localStorage.setItem("update", true)
@@ -268,12 +270,12 @@ const IsoCtrl = () => {
                 await fetch("http://localhost:5000/verify", options)
             }
             await setUpdateData(!updateData)
-            
+            setLoading(false)
         }    
     }
 
     async function cancelVerifyClick(filename){
-        console.log(filename);
+        setLoading(true)
         localStorage.setItem("update", true)
             
             const body ={
@@ -291,11 +293,13 @@ const IsoCtrl = () => {
             await fetch("http://localhost:5000/cancelVerify", options)
         
         await setUpdateData(!updateData)
+        setLoading(false)
             
     }
 
     async function transaction(destiny){
         if(selected.length > 0){
+            setLoading(true)
             if(destiny === "Design"){
                 if(comment.length > 1){
                     setComment(" ")
@@ -358,10 +362,12 @@ const IsoCtrl = () => {
                 }
             }
             await setUpdateData(!updateData)
+            setLoading(false)
         }    
     }
 
     async function returnLead(destiny){
+        setLoading(true)
         localStorage.setItem("update", true)
         for (let i = 0; i < selected.length; i++){
                     
@@ -380,6 +386,7 @@ const IsoCtrl = () => {
             await fetch("http://localhost:5000/api/returnLead", options)
         }
         await setUpdateData(!updateData)
+        setLoading(false)
     }
     
 
@@ -389,7 +396,7 @@ const IsoCtrl = () => {
 
     async function restore(){
         if(selected.length > 0){
-
+            setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
                 const body ={
@@ -408,11 +415,11 @@ const IsoCtrl = () => {
                 await fetch("http://localhost:5000/restore", options)
             }
             await setUpdateData(!updateData)
+            setLoading(false)
         }
     }
 
     function procOrInst() {
-        console.log(currentRole)
         if (currentRole === "Process"){
             setCurrentTab("Process")
         }else{
@@ -421,6 +428,7 @@ const IsoCtrl = () => {
     }
 
     async function sendProcessClick(fileName){
+        setLoading(true)
         localStorage.setItem("update", true)
             
             const body ={
@@ -438,9 +446,11 @@ const IsoCtrl = () => {
             await fetch("http://localhost:5000/process", options)
         
         await setUpdateData(!updateData)
+        setLoading(false)
     }
 
     async function sendInstrumentClick(fileName){
+        setLoading(true)
         localStorage.setItem("update", true)
             
             const body ={
@@ -458,6 +468,7 @@ const IsoCtrl = () => {
             await fetch("http://localhost:5000/instrument", options)
         
         await setUpdateData(!updateData)
+        setLoading(false)
     }
 
     function updateD(){
@@ -480,6 +491,7 @@ const IsoCtrl = () => {
                 await fetch("http://localhost:5000/download/"+selected[i], options)
                 .then(res => res.blob())
                     .then(response =>{
+                        console.log("Se descarga")
                         download(new Blob([response]), selected[i], "application/pdf")
                     })
             }
@@ -505,6 +517,7 @@ const IsoCtrl = () => {
             })
             
         }
+        await setDownloadzip(new JSZip())   
         await setUpdateData(!updateData)
     }
     
@@ -552,7 +565,9 @@ const IsoCtrl = () => {
     currentRole === "SpecialityLead" || currentRole === "Issuer") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+    }else if(currentTab !== "History" && currentTab !== "Upload" && currentTab !== "Recycle bin"){
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
@@ -566,8 +581,15 @@ const IsoCtrl = () => {
         
         <body>
             <NavBar onChange={value => setCurrentTab(value)}/>
+
             <div className="isoCtrl__container">     
                 <center>
+                    <Collapse in={loading}>
+                        <Alert style={{position: "fixed", left: "46%", zIndex:"3"}} severity="info"
+                            >
+                            Processing...
+                        </Alert>
+                    </Collapse>
                     <h2 className="title__container">
                         <div className="roleSelector__container">
                             <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
