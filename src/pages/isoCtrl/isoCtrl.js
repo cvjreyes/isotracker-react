@@ -566,7 +566,7 @@ const IsoCtrl = () => {
     (currentRole === "Instrument" && currentTab === "Instrument")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
-    }else if(currentTab !== "History" && currentTab !== "Upload" && currentTab !== "Recycle bin"){
+    }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin"){
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 
