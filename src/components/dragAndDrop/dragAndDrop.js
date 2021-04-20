@@ -69,11 +69,11 @@ class DragAndDrop extends React.Component{
               // content-type header should not be specified!
               method: 'POST',
               headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Accept": "application/json"
               },
               body: JSON.stringify(body)
-            }).then(response => console.log(response.json()))
-            .catch(error => message.error(error))
+            }).catch(error => message.error(error))
           }
         }else{
           for (let value of file.values()) {
