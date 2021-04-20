@@ -260,6 +260,7 @@ class HistoryDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
         },
+        defaultSortOrder: 'descend'
       },
       {
         title: <div className="dataTable__header__text">From</div>,

@@ -75,13 +75,13 @@ const IsoCtrl = () => {
     var dataTableHeight = 8
 
     if (pagination === 8){
-        dataTableHeight = "490px"
+        dataTableHeight = "520px"
     }if(pagination === 25){
-        dataTableHeight = "1160px"
+        dataTableHeight = "1220px"
     }if(pagination === 50){
-        dataTableHeight = "2130px"
+        dataTableHeight = "2230px"
     }if(pagination === 100){
-        dataTableHeight = "4070px"
+        dataTableHeight = "4300px"
     }
 
     //Componentes de la pagina que varian en funcion del estado
@@ -122,7 +122,7 @@ const IsoCtrl = () => {
         
     },[currentRole]);
 
-    const claim = async (event) => {
+    const claim = async(event) => {
         if(selected.length > 0){
             localStorage.setItem("update", true)
             if(currentTab === "Process"){
@@ -140,8 +140,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    fetch("http://localhost:5000/claimProc", options)
-                        .then(response => response.json(),                     )
+                    await fetch("http://localhost:5000/claimProc", options)
                 }
             }else if(currentTab === "Instrument"){
                 for (let i = 0; i < selected.length; i++){
@@ -158,8 +157,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    fetch("http://localhost:5000/claimInst", options)
-                        .then(response => response.json(),                     )
+                    await fetch("http://localhost:5000/claimInst", options)
                 }
             }else{
                 for (let i = 0; i < selected.length; i++){
@@ -176,8 +174,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    fetch("http://localhost:5000/claim", options)
-                        .then(response => response.json(),)
+                    await fetch("http://localhost:5000/claim", options)
                 }
             
             }
@@ -185,9 +182,8 @@ const IsoCtrl = () => {
             console.log(updateData);
             
         }
-        setUpdateData(!updateData)        
-    }
-    
+     
+    }    
 
     const unclaim = async (event) =>{
         if(selected.length > 0){
@@ -207,8 +203,7 @@ const IsoCtrl = () => {
                         body: JSON.stringify(body)
                     }
                     console.log(body)
-                    fetch("http://localhost:5000/unclaimProc", options)
-                        .then(response => response.json())
+                    await fetch("http://localhost:5000/unclaimProc", options)
                 }
             }else if(currentRole === "Instrument"){
                 for (let i = 0; i < selected.length; i++){
@@ -225,8 +220,7 @@ const IsoCtrl = () => {
                         body: JSON.stringify(body)
                     }
                     console.log(body)
-                    fetch("http://localhost:5000/unclaimInst", options)
-                        .then(response => response.json())
+                    await fetch("http://localhost:5000/unclaimInst", options)
                 }
             }else{
                 for (let i = 0; i < selected.length; i++){
@@ -243,13 +237,12 @@ const IsoCtrl = () => {
                         body: JSON.stringify(body)
                     }
                     console.log(body)
-                    fetch("http://localhost:5000/unclaim", options)
-                        .then(response => response.json())
+                    await fetch("http://localhost:5000/unclaim", options)
                 }
             }
             
             console.log(updateData);
-            setUpdateData(!updateData)
+            await setUpdateData(!updateData)
         }
         
     }
@@ -272,16 +265,14 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                fetch("http://localhost:5000/verify", options)
-                    .then(response => response.json(),                     )
+                await fetch("http://localhost:5000/verify", options)
             }
-            setUpdateData(!updateData)
-            console.log(updateData);
+            await setUpdateData(!updateData)
             
         }    
     }
 
-    function cancelVerifyClick(filename){
+    async function cancelVerifyClick(filename){
         console.log(filename);
         localStorage.setItem("update", true)
             
@@ -297,15 +288,13 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
-            fetch("http://localhost:5000/cancelVerify", options)
-                .then(response => response.json())
+            await fetch("http://localhost:5000/cancelVerify", options)
         
-        setUpdateData(!updateData)
-        console.log(updateData);
+        await setUpdateData(!updateData)
             
     }
 
-    function transaction(destiny){
+    async function transaction(destiny){
         if(selected.length > 0){
             if(destiny === "Design"){
                 if(comment.length > 1){
@@ -329,8 +318,7 @@ const IsoCtrl = () => {
                             },
                             body: JSON.stringify(body)
                         }
-                        fetch("http://localhost:5000/api/transaction", options)
-                            .then(response => response.json(),                     )
+                        await fetch("http://localhost:5000/api/transaction", options)
                     }
                 }else{
                     console.log("vacio")
@@ -366,16 +354,14 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    fetch("http://localhost:5000/api/transaction", options)
-                        .then(response => response.json(),                     )
+                    await fetch("http://localhost:5000/api/transaction", options)
                 }
             }
-            setUpdateData(!updateData)
-            
+            await setUpdateData(!updateData)
         }    
     }
 
-    function returnLead(destiny){
+    async function returnLead(destiny){
         localStorage.setItem("update", true)
         for (let i = 0; i < selected.length; i++){
                     
@@ -391,10 +377,9 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
-            fetch("http://localhost:5000/api/returnLead", options)
-                .then(response => response.json(),                     )
+            await fetch("http://localhost:5000/api/returnLead", options)
         }
-        setUpdateData(!updateData)
+        await setUpdateData(!updateData)
     }
     
 
@@ -402,7 +387,7 @@ const IsoCtrl = () => {
         setComment(event.target.value)
     }
 
-    function restore(){
+    async function restore(){
         if(selected.length > 0){
 
             localStorage.setItem("update", true)
@@ -420,10 +405,9 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                fetch("http://localhost:5000/restore", options)
-                    .then(response => response.json())
+                await fetch("http://localhost:5000/restore", options)
             }
-            setUpdateData(!updateData)
+            await setUpdateData(!updateData)
         }
     }
 
@@ -436,7 +420,7 @@ const IsoCtrl = () => {
         }
     }
 
-    function sendProcessClick(fileName){
+    async function sendProcessClick(fileName){
         localStorage.setItem("update", true)
             
             const body ={
@@ -451,13 +435,12 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
-            fetch("http://localhost:5000/process", options)
-                .then(response => response.json())
+            await fetch("http://localhost:5000/process", options)
         
-        setUpdateData(!updateData)
+        await setUpdateData(!updateData)
     }
 
-    function sendInstrumentClick(fileName){
+    async function sendInstrumentClick(fileName){
         localStorage.setItem("update", true)
             
             const body ={
@@ -472,19 +455,17 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
-            fetch("http://localhost:5000/instrument", options)
-                .then(response => response.json())
+            await fetch("http://localhost:5000/instrument", options)
         
-        setUpdateData(!updateData)
+        await setUpdateData(!updateData)
     }
 
     function updateD(){
         setUpdateData(!updateData)
     }
 
-    function downloadFiles(){
+    async function downloadFiles(){
         if(selected.length === 1){
-            console.log("ASDS")
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
                 const body ={
@@ -496,7 +477,7 @@ const IsoCtrl = () => {
                         "Content-Type": "application/pdf"
                     }
                 }
-                fetch("http://localhost:5000/download/"+selected[i], options)
+                await fetch("http://localhost:5000/download/"+selected[i], options)
                 .then(res => res.blob())
                     .then(response =>{
                         download(new Blob([response]), selected[i], "application/pdf")
@@ -512,7 +493,7 @@ const IsoCtrl = () => {
                         "Content-Type": "application/pdf"
                     }
                 }
-                fetch("http://localhost:5000/download/"+selected[i], options)
+                await fetch("http://localhost:5000/download/"+selected[i], options)
                 .then(res => res.blob())
                     .then(response =>{
                         setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
@@ -524,8 +505,9 @@ const IsoCtrl = () => {
             })
             
         }
-        setUpdateData(!updateData)
+        await setUpdateData(!updateData)
     }
+    
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
