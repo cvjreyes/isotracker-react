@@ -1,6 +1,6 @@
 //Cabecera de IsoTracker con diferentes desplegables y botones
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,6 +11,34 @@ import Icapp from "../../assets/images/icapp.png"
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import './navBar.css';
+import {useHistory} from "react-router";
+
+const CryptoJS = require("crypto-js");
+const SecureStorage = require("secure-web-storage");
+var SECRET_KEY = 'sanud2ha8shd72h';
+
+var secureStorage = new SecureStorage(localStorage, {
+    hash: function hash(key) {
+        key = CryptoJS.SHA256(key, SECRET_KEY);
+
+        return key.toString();
+    },
+    encrypt: function encrypt(data) {
+        data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+
+        data = data.toString();
+
+        return data;
+    },
+    decrypt: function decrypt(data) {
+        data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+
+        data = data.toString(CryptoJS.enc.Utf8);
+
+        return data;
+    }
+});
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,6 +56,8 @@ const NavBar = (props) =>{
     const classes = useStyles();
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElIso, setAnchorElIso] = React.useState(null);
+    const history = useHistory();
+    const[username, setUsername] = React.useState("");
 
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -45,11 +75,37 @@ const NavBar = (props) =>{
         setAnchorElIso(null);
         props.onChange(selectedTab);
     };
+    const handleLogOut = () => {
+        localStorage.clear();
+        history.replace("/welcome");
+    };
+    const handleHome = () =>{
+        setAnchorElUser(null);
+        setAnchorElIso(null);
+        history.replace("/home");
+    }
+    useEffect(() =>{
+        const bodyUsername = {
+            email: secureStorage.getItem("user")
+          }
+        const optionsUsername = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(bodyUsername)
+        }
+        fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+        .then(response => response.json())
+        .then(json => {
+            setUsername(json.name);
+        })
+    })
     return(
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
                 <Toolbar>
-                    <a class="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/home">
+                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/home">
                         <img src={TechnipLogo} alt="technipLogo" style={{height:"50px"}}/>
                     </a>
                     <Typography variant="h6" className={classes.title}>
@@ -78,12 +134,12 @@ const NavBar = (props) =>{
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px", fontWeight:"bold"}} onClick={(event) => handleCloseIso("CheckBy")}>CHECK BY_</MenuItem>
                     </Menu>
                     <li className="icapp__button"><a href="/"><strong className="icapp__text">ICApp</strong></a></li>
-                    <a class="navbar-brand" href="/">
+                    <a className="navbar-brand" href="/">
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>
                     </a>
                     
                     <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickUser}>
-                    <i className="dropdown__text">User</i>&nbsp;<b className="dropdown__arrow">▼</b>
+                    <i className="dropdown__text">{username}</i>&nbsp;<b className="dropdown__arrow">▼</b>
                     </Button>
                     <Menu
                         id="simple-menu"
@@ -94,9 +150,9 @@ const NavBar = (props) =>{
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUser}
                     >
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}>Home</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleHome}>Home</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}>Change password</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}><b>Logout</b></MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleLogOut}><b>Logout</b></MenuItem>
                     </Menu>
  
                     

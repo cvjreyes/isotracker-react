@@ -4,10 +4,9 @@ import StateTable from "../../components/stateTable/stateTable"
 import NavBtns from "../../components/navBtns/navBtns"
 import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./isoCtrl.css"
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
 import ActionExtra from "../../components/actionExtra/actionExtra"
-import CommentBox from "../../components/commentBox/commentBox"
 import ProgressTable from "../../components/progressTable/progressTable"
 import SelectPag from "../../components/selectPag/selectPag"
 import CheckInTable from "../../components/checkInTable/checkInTable"
@@ -16,59 +15,559 @@ import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"
 import MyTrayTable from "../../components/myTrayTable/myTrayTable"
 import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
+import OnHoldTable from "../../components/onHoldTable/onHoldTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
+import HistoryDataTable from "../../components/historyDataTable/historyDataTable"
+import RoleDropDown from "../../components/roleDropDown/roleDropDown"
+
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
+import OnHoldBtn from "../../components/onHoldBtn/onHoldBtn"
+import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
+import ProcInstTable from "../../components/procInstTable/procInstTable"
+import download from 'downloadjs'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver';
 
 
 const IsoCtrl = () => {
-
-    const [currentTab, setCurrentTab] = useState("Status") //Controla la tabla y botones que se muestran
+   
+    
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const user = "admin" //De momento esta variable controla el tipo de user
+    const [currentRole, setCurrentRole] = useState();
+    const [roles, setRoles] = useState();
+    const [selected, setSelected] = useState([]);
+    const [updateData, setUpdateData] = useState();
+    const [comment, setComment] = useState(" ");
+    const [commentAlert, setCommentAlert] = useState(false);
+    const [downloadZip, setDownloadzip] = useState(new JSZip());
+    const [loading, setLoading] = useState(false);
 
-    console.log(currentTab)
+    const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+    
+    var secureStorage = new SecureStorage(localStorage, {
+        hash: function hash(key) {
+            key = CryptoJS.SHA256(key, SECRET_KEY);
+    
+            return key.toString();
+        },
+        encrypt: function encrypt(data) {
+            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+    
+            data = data.toString();
+    
+            return data;
+        },
+        decrypt: function decrypt(data) {
+            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+    
+            data = data.toString(CryptoJS.enc.Utf8);
+    
+            return data;
+        }
+    });
 
+    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) //Controla la tabla y botones que se muestran
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
     var dataTableHeight = 8
 
     if (pagination === 8){
-        dataTableHeight = "490px"
+        dataTableHeight = "520px"
     }if(pagination === 25){
-        dataTableHeight = "1160px"
+        dataTableHeight = "1220px"
     }if(pagination === 50){
-        dataTableHeight = "2130px"
+        dataTableHeight = "2230px"
     }if(pagination === 100){
-        dataTableHeight = "4070px"
+        dataTableHeight = "4300px"
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, uploadDefButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth
+    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn
     var currentTabText = currentTab
-    var tableContent = <DataTable pagination = {pagination} />
+    tableContent = <DataTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+    var currentUser = secureStorage.getItem('user')
+
+    const body = {
+        user: currentUser,
+    }
+    
+    useEffect(()=>{
+        setUpdateData(!updateData)
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://localhost:5000/api/roles/user", options)
+            .then(response => response.json())
+            .then(json => {
+                setRoles(json.roles);
+                if(secureStorage.getItem('role') !== null){
+                    setCurrentRole(secureStorage.getItem('role'))
+                }else{
+                    secureStorage.setItem('role', json.roles[0])
+                    setCurrentRole(secureStorage.getItem('role'))
+                }
+                }
+            )
+            .catch(error => {
+                console.log(error);
+            })       
+        
+    },[currentRole]);
+
+    const claim = async(event) => {
+        if(selected.length > 0){
+            setLoading(true)
+            localStorage.setItem("update", true)
+            if(currentTab === "Process"){
+                for (let i = 0; i < selected.length; i++){
+                
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    await fetch("http://localhost:5000/claimProc", options)
+                }
+            }else if(currentTab === "Instrument"){
+                for (let i = 0; i < selected.length; i++){
+                
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    await fetch("http://localhost:5000/claimInst", options)
+                }
+            }else{
+                for (let i = 0; i < selected.length; i++){
+                
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    await fetch("http://localhost:5000/claim", options)
+                }
+            
+            }
+            setUpdateData(!updateData)
+            setLoading(false)
+            
+        }
+     
+    }    
+
+    const unclaim = async (event) =>{
+        if(selected.length > 0){
+            setLoading(true)
+            localStorage.setItem("update", true)
+            if (currentRole === "Process"){
+                for (let i = 0; i < selected.length; i++){
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    console.log(body)
+                    await fetch("http://localhost:5000/unclaimProc", options)
+                }
+            }else if(currentRole === "Instrument"){
+                for (let i = 0; i < selected.length; i++){
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    console.log(body)
+                    await fetch("http://localhost:5000/unclaimInst", options)
+                }
+            }else{
+                for (let i = 0; i < selected.length; i++){
+                    const body ={
+                        user : currentUser,
+                        file: selected[i],
+                        role: currentRole
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    console.log(body)
+                    await fetch("http://localhost:5000/unclaim", options)
+                }
+            }
+            await setUpdateData(!updateData)
+            setLoading(false)
+        }
+        
+    }
+
+    const verifyClick = async(event) =>{
+        setLoading(true)
+        console.log("Envio a verify")
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                
+                const body ={
+                    user : currentUser,
+                    file: selected[i],
+                    role: currentRole
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                await fetch("http://localhost:5000/verify", options)
+            }
+            await setUpdateData(!updateData)
+            setLoading(false)
+        }    
+    }
+
+    async function cancelVerifyClick(filename){
+        setLoading(true)
+        localStorage.setItem("update", true)
+            
+            const body ={
+                user : currentUser,
+                file: filename,
+                role: currentRole
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            await fetch("http://localhost:5000/cancelVerify", options)
+        
+        await setUpdateData(!updateData)
+        setLoading(false)
+            
+    }
+
+    async function transaction(destiny){
+        if(selected.length > 0){
+            setLoading(true)
+            if(destiny === "Design"){
+                if(comment.length > 1){
+                    setComment(" ")
+                    setCommentAlert(false)
+                    localStorage.setItem("update", true)
+                    for (let i = 0; i < selected.length; i++){
+                        const body ={
+                            user : currentUser,
+                            fileName: selected[i],
+                            to: destiny,
+                            role: secureStorage.getItem("role"),
+                            comment: comment,
+                            deleted: 0,
+                            onhold: 0
+                        }
+                        const options = {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(body)
+                        }
+                        await fetch("http://localhost:5000/api/transaction", options)
+                    }
+                }else{
+                    console.log("vacio")
+                    setCommentAlert(true)
+                }
+            }else{
+                setCommentAlert(false)
+                localStorage.setItem("update", true)
+                let deleted, hold = 0
+
+                if(destiny === "Recycle bin"){
+                    deleted = 1
+                }
+
+                if(destiny === "On hold"){
+                    hold = 1
+                }
+                for (let i = 0; i < selected.length; i++){
+                    
+                    const body ={
+                        user : currentUser,
+                        fileName: selected[i],
+                        to: destiny,
+                        role: secureStorage.getItem("role"),
+                        comment: null,
+                        deleted: deleted,
+                        onhold: hold
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    await fetch("http://localhost:5000/api/transaction", options)
+                }
+            }
+            await setUpdateData(!updateData)
+            setLoading(false)
+        }    
+    }
+
+    async function returnLead(destiny){
+        setLoading(true)
+        localStorage.setItem("update", true)
+        for (let i = 0; i < selected.length; i++){
+                    
+            const body ={
+                user : currentUser,
+                fileName: selected[i],
+                to: destiny,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            await fetch("http://localhost:5000/api/returnLead", options)
+        }
+        await setUpdateData(!updateData)
+        setLoading(false)
+    }
+    
+
+    function handleComment(event){
+        setComment(event.target.value)
+    }
+
+    async function restore(){
+        if(selected.length > 0){
+            setLoading(true)
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                const body ={
+                    fileName: selected[i],
+                    user: currentUser,
+                    deleted: 0,
+                    onhold: 0
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                await fetch("http://localhost:5000/restore", options)
+            }
+            await setUpdateData(!updateData)
+            setLoading(false)
+        }
+    }
+
+    function procOrInst() {
+        if (currentRole === "Process"){
+            setCurrentTab("Process")
+        }else{
+            setCurrentTab("Instrument")
+        }
+    }
+
+    async function sendProcessClick(fileName){
+        setLoading(true)
+        localStorage.setItem("update", true)
+            
+            const body ={
+                user : currentUser,
+                file: fileName,
+                role: currentRole
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            await fetch("http://localhost:5000/process", options)
+        
+        await setUpdateData(!updateData)
+        setLoading(false)
+    }
+
+    async function sendInstrumentClick(fileName){
+        setLoading(true)
+        localStorage.setItem("update", true)
+            
+            const body ={
+                user : currentUser,
+                file: fileName,
+                role: currentRole
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            await fetch("http://localhost:5000/instrument", options)
+        
+        await setUpdateData(!updateData)
+        setLoading(false)
+    }
+
+    function updateD(){
+        setUpdateData(!updateData)
+    }
+
+    async function downloadFiles(){
+        if(selected.length === 1){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                const body ={
+                    fileName: selected[i]
+                }
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/pdf"
+                    }
+                }
+                await fetch("http://localhost:5000/download/"+selected[i], options)
+                .then(res => res.blob())
+                    .then(response =>{
+                        console.log("Se descarga")
+                        download(new Blob([response]), selected[i], "application/pdf")
+                    })
+            }
+        }else if (selected.length > 1){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/pdf"
+                    }
+                }
+                await fetch("http://localhost:5000/download/"+selected[i], options)
+                .then(res => res.blob())
+                    .then(response =>{
+                        setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
+                    })
+            }
+            const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
+            downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
+                saveAs(blob,  zipname)
+            })
+            
+        }
+        await setDownloadzip(new JSZip())   
+        await setUpdateData(!updateData)
+    }
+    
 
     if(currentTab === "Upload IsoFiles"){
+        secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
-        tableContent = <DragAndDrop/>
+        tableContent = <DragAndDrop mode={"upload"} user={currentUser}/>
         pageSelector = null
-        uploadDefButton = <div><br></br><button class="btn btn-info btn-lg" style={{width: "100%"}}>Click here to upload</button></div>
-    }if(currentTab === "Design"){
-        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
+    }if(currentTab === "Design" && currentRole === "Design"){
+        uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "LDE/IsoControl"){
         actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable pagination = {pagination}/>
+        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
     }if(currentTab === "Recycle bin"){
-        tableContent = <BinTable pagination = {pagination}/>
+        tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
+    }if(currentTab === "On hold"){
+        tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
         tableContent = <StatusDataTable pagination = {pagination}/>
+    }if(currentTab === "History"){
+        tableContent = <HistoryDataTable pagination = {pagination}/>   
+    }if(currentRole === "Process" || currentRole === "Instrument"){
+        procInsBtn = <ProcInsBtn onChange={value => procOrInst()} currentTab = {currentTab} />
+    }if(currentTab === "Process" || currentTab === "Instrument"){
+        tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }
 
-    if(currentTab !== "Upload IsoFiles" && currentTab !== "Status" && currentTab !== "History" && currentTab !== "CheckBy"){
+    if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
+        commentBox = <div>
+            <textarea placeholder="Comments" class="comments" cols="100" rows="2" required="" maxlength="400" name="comments" value={comment} onChange={handleComment}></textarea>
+        </div>
+    }
+
+    if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
+    ((currentRole === "Stress" || currentRole === "StressLead") && currentTab === "Stress") ||
+    ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Supports") ||
+    ((currentRole === "Materials") && currentTab === "Materials") ||
+    ((currentRole === "Issuer") && currentTab === "Issuer") ||
+    ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
+    (currentTab=== "My Tray")) || (((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead") || 
+    currentRole === "SpecialityLead" || currentRole === "Issuer") || (currentTab === "Process" && currentRole === "Process") ||
+    (currentRole === "Instrument" && currentTab === "Instrument")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons onChange={value => setCurrentTab(value)} currentTab = {currentTab} user={user}/>
-        commentBox = <CommentBox/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+    }else if(currentTab !== "History" && currentTab !== "Upload" && currentTab !== "Recycle bin"){
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
@@ -82,10 +581,19 @@ const IsoCtrl = () => {
         
         <body>
             <NavBar onChange={value => setCurrentTab(value)}/>
+
             <div className="isoCtrl__container">     
                 <center>
-                    
+                    <Collapse in={loading}>
+                        <Alert style={{position: "fixed", left: "46%", zIndex:"3"}} severity="info"
+                            >
+                            Processing...
+                        </Alert>
+                    </Collapse>
                     <h2 className="title__container">
+                        <div className="roleSelector__container">
+                            <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
+                         </div>
                         <b >      
                             <i className="iso__title">IsoTracker</i>
                         </b>
@@ -107,7 +615,7 @@ const IsoCtrl = () => {
                             </td>   
                                            
                             <td style={{width: progressTableWidth,position:"inline-block", right: "0"}}>
-                                <ProgressTable user = {user} />
+                                <ProgressTable user = {user} updateData = {updateData}/>
                             </td>    
                             
                         </tr>
@@ -119,19 +627,28 @@ const IsoCtrl = () => {
                         <StateTable/>
                     </td>
                 </div>
-                <div style={{position: "absolute", width:"300px", overflow:"hidden"}}>
+                <div style={{position: "relative", width:"500px"}}>
                   {pageSelector}
-                  <BinBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                  <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
+                  <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
+                  {procInsBtn}
+
                 </div>
                     
                 
                 <div style={{height: dataTableHeight}}>
                     <br></br>
-                    <br></br>
-                    {uploadDefButton}   
+                    <br></br> 
                     {tableContent}
                 </div>
                 <div className="bottom__container">
+                    <Collapse in={commentAlert}>
+                        <Alert severity="error"
+                            >
+                            Add a comment before sending the isos back to design!
+
+                            </Alert>
+                    </Collapse>
                     <center className="actionBtns__container">
                         {actionText}
                         {actionExtra}

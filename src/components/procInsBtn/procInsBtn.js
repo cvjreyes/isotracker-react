@@ -1,4 +1,4 @@
-import Bin from "../../assets/images/bin.png"
+import Lens from "../../assets/images/lupa.png"
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -26,15 +26,17 @@ const CryptoJS = require("crypto-js");
         }
     });
 
-const BinBtn = props =>{
-    if(props.currentTab === "Recycle bin"){
-        secureStorage.setItem("tab", "Recycle bin")
+const procInsBtn = props =>{
+    if(props.currentTab === "Process"){
+        secureStorage.setItem("tab", "Process")
+    }else if(props.currentTab === "Instrument"){
+        secureStorage.setItem("tab", "Instrument")
     }
     return(
         <div>
-            <input type="image" src={Bin} alt="bin" style={{width:"40px", marginTop:"20px", marginLeft:"10px", float:"left"}} onClick={() => {props.onChange("Recycle bin")}} />
+            <input type="image" src={Lens} alt="lens" style={{width:"60px", marginTop:"22px", marginLeft:"10px", float:"left"}} onClick={() => {props.onChange(props.currentTab)}} />
         </div>
     );
 };
 
-export default BinBtn;
+export default procInsBtn;

@@ -13,3 +13,15 @@
   bottom: 25;
   left: 0;
 }
+
+.claimed__btn{
+  font-size: 12px;
+  font-weight: bold;
+  background-color: green;
+}
+
+.pending__btn{
+  font-size: 12px;
+  font-weight: bold;
+  background-color: yellow;
+}

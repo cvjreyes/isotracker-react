@@ -4,11 +4,10 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import './binTable.css'
+import './onHoldTable.css'
 import { Link } from 'react-router-dom';
 
-
-class BinTable extends React.Component{
+class OnHoldTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
@@ -38,9 +37,6 @@ class BinTable extends React.Component{
           acronyms: dict
         })
       })
-
-
-      
     
     const body ={
       currentTab : this.props.currentTab
@@ -77,7 +73,6 @@ class BinTable extends React.Component{
   componentDidUpdate(prevProps, prevState){
 
     if(prevProps !== this.props){
-      
       console.log(this.state.acronyms)
       const body ={
         currentTab : this.props.currentTab
@@ -113,7 +108,6 @@ class BinTable extends React.Component{
   }
 
   getMaster(fileName){
-
     const options = {
       method: "GET",
       headers: {
@@ -299,8 +293,7 @@ class BinTable extends React.Component{
         },
       },
     ];
-
-    var totalElements = null;
+    var totalElements = null
     if (this.state.data.length === 0){
       totalElements = null;
     }else{
@@ -322,4 +315,4 @@ class BinTable extends React.Component{
   }
 }
 
-export default BinTable;
+export default OnHoldTable;

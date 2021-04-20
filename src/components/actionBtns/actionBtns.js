@@ -1,30 +1,65 @@
 //Botones de accion que aparecen en cada fase de isotracker para tratar los archivos
 
-import CancelIso from "../cancelIso/cancelIso";
-
 const ActionBtns = props =>{
-    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5
-    if (props.currentTab === "Design"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
-    }if (props.currentTab === "Stress"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
-    }if (props.currentTab === "Support"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
-    }if (props.currentTab === "Materials"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
-    }if (props.currentTab === "Issuer"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
-    }if (props.currentTab === "LDE/IsoControl"){
-        actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Claim</button>
-    }if (props.currentTab === "My Tray"){
-        actionBtn1 = <button class="btn btn-sm btn-warning" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px"}}>Unclaim</button>
-        actionBtn2 = <button class="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px"}}>Verify</button>
-        actionBtn3 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px"}}>Cancel verify</button>
-        actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px"}}>With Comments</button>
-        actionBtn5=  <CancelIso user = {props.user} style={{marginRight:"5px", marginLeft:"5px"}}/>
-    }if (props.currentTab === "Recycle bin"){
-        actionBtn2 = <button class="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px"}} >Restore</button>
+    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9
+    if(props.onlyDownload){
+        actionBtn9 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
+    }else{
+        if (props.currentTab !== "My Tray" && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold"){
+            actionBtn9 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
+            actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.claimClick()}>Claim</button>
+    
+        }if (props.currentTab === "My Tray"){
+            actionBtn1 = <button className="btn btn-sm btn-warning" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.unclaimClick()}>Unclaim</button>
+            actionBtn9 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
+            if(props.role !== "Design" && props.role !== "DesignLead" && props.role !== "Process" && props.role !== "Instrument"){
+                actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("Design")}>Design</button>
+            }
+            if(process.env.REACT_APP_IFC === "0"){
+                if (props.role !== "Stress" && props.role !== "StressLead"){
+                    actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("stress")}>Stress</button>
+                } if (props.role !== "Supports" && props.role !== "SupportsLead"){
+                    actionBtn4 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("supports")}>Support</button>
+                }
+                if(props.role !== "DesignLead" && props.role !== "StressLead" && props.role !== "SupportsLead" && props.role !== "Process" && props.role !== "Instrument"){
+                    actionBtn5= <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.verifyClick()}>Verify</button>
+
+                }
+            }else{
+                if(props.role !== "Design" && props.role !== "DesignLead" && props.role !== "Process" && props.role !== "Instrument"){
+                    actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("Design")}>Design</button>
+                }if(props.role === "DesignLead"){
+                    actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("stress")}>Stress</button>
+                    actionBtn4 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("Supports")}>Support</button>     
+                }else if(props.role === "StressLead"){
+                    actionBtn3 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("supports")}>Supports</button>
+                }else if(props.role === "SupportsLead"){
+                    actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("stress")}>Stress</button>
+                }else if (props.role !== "Process" && props.role !== "Instrument"){
+                    actionBtn3 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.verifyClick()}>Verify</button>
+
+                }
+            }
+            
+            if(props.role === "DesignLead" || props.role === "SpecialityLead"){
+                actionBtn1 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.returnLead("Design")}>Design</button>
+                actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
+                actionBtn7 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.transaction("On hold")}>Hold</button>
+            }
+
+            if(props.role === "StressLead"){
+                actionBtn1 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.returnLead("Stress")}>Stress</button>
+            }
+            if(props.role === "SupportsLead"){
+                actionBtn1 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.returnLead("Supports")}>Supports</button>
+            }
+
+        }if ((props.currentTab === "Recycle bin" && (props.role === "DesignLead" || props.role === "SpecialityLead")) || 
+            (props.currentTab === "On hold" && (props.role === "DesignLead" || props.role === "SpecialityLead" || props.role === "Issuer"))){
+            actionBtn8 = <button className="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px", width:"98px"}} onClick={() => props.restoreClick()}>Restore</button>
+        }
     }
+
     return(
         <div>
             {actionBtn1}
@@ -32,6 +67,10 @@ const ActionBtns = props =>{
             {actionBtn3}
             {actionBtn4}
             {actionBtn5}
+            {actionBtn6}
+            {actionBtn7}
+            {actionBtn8}
+            {actionBtn9}
         </div>
     );
 };

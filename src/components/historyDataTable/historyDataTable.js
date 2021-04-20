@@ -4,11 +4,37 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import './binTable.css'
+import './historyDataTable.css'
 import { Link } from 'react-router-dom';
 
 
-class BinTable extends React.Component{
+const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+    
+    var secureStorage = new SecureStorage(localStorage, {
+        hash: function hash(key) {
+            key = CryptoJS.SHA256(key, SECRET_KEY);
+    
+            return key.toString();
+        },
+        encrypt: function encrypt(data) {
+            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+    
+            data = data.toString();
+    
+            return data;
+        },
+        decrypt: function decrypt(data) {
+            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+    
+            data = data.toString(CryptoJS.enc.Utf8);
+    
+            return data;
+        }
+    });
+
+class HistoryDataTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
@@ -38,30 +64,22 @@ class BinTable extends React.Component{
           acronyms: dict
         })
       })
-
-
       
-    
-    const body ={
-      currentTab : this.props.currentTab
-    }
-    console.log(body)
     const options = {
-      method: "POST",
+      method: "GET",
       headers: {
           "Content-Type": "application/json"
       },
-      body: JSON.stringify(body)
   }
-    fetch("http://localhost:5000/files", options)
+    fetch("http://localhost:5000/api/historyFiles", options)
         .then(response => response.json())
         .then(json => {
                 var rows = []
+                var row = null
                 for(let i = 0; i < json.rows.length; i++){
-                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}
-                 
-                    rows.push(row)                
-                }
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions:""}
+                    rows.push(row)
+                  }
                 
                 this.setState({data : rows, selectedRows: []});
 
@@ -74,46 +92,8 @@ class BinTable extends React.Component{
         
   }
 
-  componentDidUpdate(prevProps, prevState){
-
-    if(prevProps !== this.props){
-      
-      console.log(this.state.acronyms)
-      const body ={
-        currentTab : this.props.currentTab
-      }
-      const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    }
-      fetch("http://localhost:5000/files", options)
-          .then(response => response.json())
-          .then(json => {
-                  var rows = []
-                  
-                  for(let i = 0; i < json.rows.length; i++){
-                      console.log(json.rows[i].role)
-                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}
-                   
-                      rows.push(row)                
-                  }
-                  this.setState({
-                    data : rows,
-                  });
-              }
-          )
-          .catch(error => {
-              console.log(error);
-          })
-      }
-
-  }
 
   getMaster(fileName){
-
     const options = {
       method: "GET",
       headers: {
@@ -241,6 +221,7 @@ class BinTable extends React.Component{
       getCheckboxProps: (record) => (      
         {
         
+        disabled: record.actions === 'CLAIMED' | (record.actions.type === 'button' && (secureStorage.getItem("role") !== "DesignLead" && secureStorage.getItem("role") !== "StressLead" && secureStorage.getItem("role") !== "SupportsLead")) | (record.actions.type !== 'button' && (secureStorage.getItem("role") === "DesignLead" | secureStorage.getItem("role") === "StressLead" | secureStorage.getItem("role") === "SupportsLead")),
         // Column configuration not to be checked
         name: record.name,
       }),
@@ -279,6 +260,7 @@ class BinTable extends React.Component{
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
         },
+        defaultSortOrder: 'descend'
       },
       {
         title: <div className="dataTable__header__text">From</div>,
@@ -290,12 +272,30 @@ class BinTable extends React.Component{
         },
       },
       {
+        title: <div className="dataTable__header__text">To</div>,
+        dataIndex: 'to',
+        key: 'to',
+        ...this.getColumnSearchProps('to'),
+        sorter: {
+          compare: (a, b) => { return a.to.localeCompare(b.to)},
+        },
+      },
+      {
         title: <div className="dataTable__header__text">User</div>,
         dataIndex: 'user',
         key: 'user',
         ...this.getColumnSearchProps('user'),
         sorter: {
           compare: (a, b) => { return a.user.localeCompare(b.user)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Actions</div>,
+        dataIndex: 'actions',
+        key: 'actions',
+        ...this.getColumnSearchProps('actions'),
+        sorter: {
+          compare: (a, b) => a.actions.localeCompare(b.actions),
         },
       },
     ];
@@ -322,4 +322,4 @@ class BinTable extends React.Component{
   }
 }
 
-export default BinTable;
+export default HistoryDataTable;
