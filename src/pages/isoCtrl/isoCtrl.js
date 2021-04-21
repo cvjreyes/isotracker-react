@@ -124,6 +124,7 @@ const IsoCtrl = () => {
     },[currentRole]);
 
     const claim = async(event) => {
+        console.log(selected)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -188,6 +189,7 @@ const IsoCtrl = () => {
     }    
 
     const unclaim = async (event) =>{
+        console.log(selected)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)

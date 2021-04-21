@@ -405,16 +405,16 @@ class MyTrayTable extends React.Component{
     this.setState({ searchText: '' });
   };
 
-  onSelectChange = async (selectedRowKeys, selectedRows) => {
+  onSelectChange = (selectedRowKeys, selectedRows) => {
     let ids = []
     for(let i = 0; i < selectedRows.length; i++){
       ids.push(selectedRows[i].id.props.children)
     }
-    await this.setState({
+    this.setState({
       selectedRowsKeys: selectedRowKeys,
       selectedRows: selectedRows
     })
-    
+    this.props.onChange(ids);
   };
 
 
