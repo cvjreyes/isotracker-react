@@ -43,6 +43,7 @@ const IsoCtrl = () => {
     const [commentAlert, setCommentAlert] = useState(false);
     const [downloadZip, setDownloadzip] = useState(new JSZip());
     const [loading, setLoading] = useState(false);
+    const [attachFiles, setAttachFiles] = useState();
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -123,6 +124,7 @@ const IsoCtrl = () => {
     },[currentRole]);
 
     const claim = async(event) => {
+        console.log(selected)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -187,6 +189,7 @@ const IsoCtrl = () => {
     }    
 
     const unclaim = async (event) =>{
+        console.log(selected)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -476,6 +479,8 @@ const IsoCtrl = () => {
     }
 
     async function downloadFiles(){
+        setLoading(true)
+        localStorage.setItem("update", true)
         if(selected.length === 1){
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -517,8 +522,53 @@ const IsoCtrl = () => {
             })
             
         }
-        await setDownloadzip(new JSZip())   
         await setUpdateData(!updateData)
+        await setDownloadzip(new JSZip())   
+        setLoading(false)
+        /* EN CASO DE QUERER ADJUNTOS
+        for (let i = 0; i < selected.length; i++){
+            const body ={
+                fileName: selected[i]
+            }
+            const options = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/pdf"
+                }
+            }
+            
+            await fetch("http://localhost:5000/getAttach/"+selected[i], options)
+            .then(response => response.json())
+            .then(async json => {
+                await fetch("http://localhost:5000/download/"+selected[i], options)
+                .then(res => res.blob())
+                .then( async response =>{
+                    setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
+                    for(let i = 0; i < json.length; i++){
+                        await fetch("http://localhost:5000/download/"+json[i], options)
+                        .then(res => res.blob())
+                        .then(response =>{
+                            setDownloadzip(downloadZip.file(json[i], new Blob([response]),{binary:true}))   
+                        })
+                    }
+                     
+                })
+            })
+        
+
+            
+    
+        }
+        const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
+        downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
+            saveAs(blob,  zipname)
+        })  
+        
+        await setDownloadzip(new JSZip())   
+        await setAttachFiles(null)
+        await setUpdateData(!updateData)
+        setLoading(false)
+        */ 
     }
     
 
@@ -567,6 +617,7 @@ const IsoCtrl = () => {
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin"){
+        actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
 

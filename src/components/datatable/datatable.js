@@ -303,25 +303,36 @@ class DataTable extends React.Component{
     ),
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-        : '',
+
+    this.state.searchedColumn === "id" ? (
+      record.id.props.children
+        ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
+        : ''
+      ) : (
+        record[dataIndex]
+          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+          : ''
+      ),
+
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
       }
     },
-    render: text =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+    render: text => 
+      text.props ? (
+      <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
+    ) : this.state.searchedColumn === dataIndex ? (
+      <Highlighter
+        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        searchWords={[this.state.searchText]}
+        autoEscape
+        textToHighlight={text ? text : ''}
+      />
+    ) : (
+      text
+    ),
+      
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
