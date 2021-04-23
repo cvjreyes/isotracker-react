@@ -268,7 +268,7 @@ class MyTrayTable extends React.Component{
                                 
                 }else{
                   if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} update={this.updateData.bind(this)}/>}
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} role ={this.state.role} update={this.updateData.bind(this)}/>}
                   }else{
                     if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                       row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px", marginRight: "5px"}}>CANCEL VERIFY</button> {pButton} {iButton}</div>}
@@ -377,7 +377,7 @@ class MyTrayTable extends React.Component{
       }
     },
     render: text => 
-      text.props ? (
+      text.props && text.type !== UploadProcInst && text.type !== "div" ? (
       <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
     ) : this.state.searchedColumn === dataIndex ? (
       <Highlighter
@@ -428,13 +428,21 @@ class MyTrayTable extends React.Component{
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);
       },
-      getCheckboxProps: (record) => ( 
+      getCheckboxProps: (record) => 
+      this.state.role != "Instrument" && this.state.role != "Process" ? (
+      ( 
         {
         
-        disabled: record.actions.props.children[0].props.children === 'CANCEL VERIFY',
+        disabled: record.actions.props.children[0].props.children === 'CANCEL VERIFY' ,
         // Column configuration not to be checked
         name: record.name,
-      }),
+      })
+      ) : (
+        {
+          name: record.name,
+        }),
+      
+      
     };
 
     if(localStorage.getItem("update") === "true"){
