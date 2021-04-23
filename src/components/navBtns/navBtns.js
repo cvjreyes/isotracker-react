@@ -71,6 +71,38 @@ const NavBtns = props =>{
         ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>LDE/Isocontrol</b></button>
     }else{
         ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "white"}} onClick={() => {props.onChange("LDE/IsoControl")}}><b>LDE/Isocontrol</b></button>
+    }if(props.currentTab === "My Tray"){
+        switch(props.currentRole){
+            case "Design":
+                designButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Design")}}><b>Design</b></button>
+                break;
+            case "DesignLead":
+                designButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Design")}}><b>Design</b></button>
+                break;
+            case "Stress":
+                stressButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Stress")}}><b>Stress</b></button>
+                break;
+            case "StressLead":
+                stressButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Stress")}}><b>Stress</b></button>
+                break;
+            case "Supports":
+                supportsButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Supports")}}><b>Supports</b></button>
+                break;
+            case "SupportsLead":
+                supportsButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Supports")}}><b>Supports</b></button>
+                break;
+            case "Materials":
+                materialsButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Materials")}}><b>Materials</b></button>
+                break;
+            case "Issuer":
+                issuerButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Issuer")}}><b>Issuer</b></button>
+                break;
+            case "SpecialityLead":
+                ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("LDE/IsoControl")}}><b>LDE/Isocontrol</b></button>
+                break;
+            default:
+                break;
+        }
     }
     
     return(
