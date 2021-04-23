@@ -12,6 +12,9 @@ const StateTable = props =>{
     const [onHoldCount, setOnHoldCount] = useState(0)
     const [totalCount, setTotalCount] = useState(0)
     const [deletedCount, setDeletedCount] = useState(0)
+    const [materialsCount, setMaterialsCount] = useState(0)
+    const [issuerCount, setIssuerCount] = useState(0)
+    const [isocontrolToIssue, setIsocontrolToIssue] = useState(0)
 
     useEffect(()=>{
         fetch("http://localhost:5000/updateStatus")
@@ -23,8 +26,11 @@ const StateTable = props =>{
             setSupportsCount(json["supports"])
             setOnHoldCount(json["onHold"])
             setDeletedCount(json["deleted"])
+            setMaterialsCount(json["materials"])
+            setIssuerCount(json["issuer"])
+            setIsocontrolToIssue(json["isocontrolToIssue"])
       }) 
-     setTotalCount(designUploadedCount+designProgressCount+stressCount+supportsCount+onHoldCount)
+     setTotalCount(designUploadedCount+designProgressCount+stressCount+supportsCount+onHoldCount+materialsCount+issuerCount+isocontrolToIssue)
     },props.updateData)
 
     return (
@@ -65,9 +71,9 @@ const StateTable = props =>{
                         <td className="statusTable__value">{designProgressCount}</td>
                         <td className="statusTable__value">{stressCount}</td>
                         <td className="statusTable__value">{supportsCount}</td>
-                        <td className="statusTable__value">0</td>
-                        <td className="statusTable__value">0</td>
-                        <td className="statusTable__value">0</td>   
+                        <td className="statusTable__value">{materialsCount}</td>
+                        <td className="statusTable__value">{issuerCount}</td>
+                        <td className="statusTable__value">{isocontrolToIssue}</td>   
                         <td className="statusTable__value"></td>
                         <td className="statusTable__value"></td>
                         <td className="statusTable__value"></td>

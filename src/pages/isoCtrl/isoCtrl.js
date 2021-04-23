@@ -44,6 +44,8 @@ const IsoCtrl = () => {
     const [downloadZip, setDownloadzip] = useState(new JSZip());
     const [loading, setLoading] = useState(false);
     const [attachFiles, setAttachFiles] = useState();
+    const [errorPI, setErrorPI] = useState(false);
+    const [transactionSuccess, setTransactionSuccess] = useState(false);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -120,10 +122,19 @@ const IsoCtrl = () => {
             .catch(error => {
                 console.log(error);
             })       
-        
+            setErrorPI(false)
+            setUpdateData(!updateData)
+            setTransactionSuccess(false);
     },[currentRole]);
 
+    useEffect(()=>{
+        setErrorPI(false);
+        setTransactionSuccess(false)
+    }, [currentTab])
+
     const claim = async(event) => {
+        setTransactionSuccess(false);
+        setErrorPI(false)
         console.log(selected)
         if(selected.length > 0){
             setLoading(true)
@@ -189,6 +200,8 @@ const IsoCtrl = () => {
     }    
 
     const unclaim = async (event) =>{
+        setTransactionSuccess(false);
+        setErrorPI(false)
         console.log(selected)
         if(selected.length > 0){
             setLoading(true)
@@ -252,6 +265,8 @@ const IsoCtrl = () => {
     }
 
     const verifyClick = async(event) =>{
+        setTransactionSuccess(false);
+        setErrorPI(false)
         setLoading(true)
         console.log("Envio a verify")
         if(selected.length > 0){
@@ -278,6 +293,7 @@ const IsoCtrl = () => {
     }
 
     async function cancelVerifyClick(filename){
+        setTransactionSuccess(false);
         setLoading(true)
         localStorage.setItem("update", true)
             
@@ -301,7 +317,10 @@ const IsoCtrl = () => {
     }
 
     async function transaction(destiny){
+        
         if(selected.length > 0){
+            setErrorPI(false);
+            setTransactionSuccess(false);
             setLoading(true)
             if(destiny === "Design"){
                 if(comment.length > 1){
@@ -326,11 +345,54 @@ const IsoCtrl = () => {
                             body: JSON.stringify(body)
                         }
                         await fetch("http://localhost:5000/api/transaction", options)
+                        setTransactionSuccess(true)
                     }
                 }else{
                     console.log("vacio")
                     setCommentAlert(true)
                 }
+            }else if (destiny === "LDE/Isocontrol"){
+                for (let i = 0; i < selected.length; i++){
+                    const options = {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                    }
+                    await fetch("http://localhost:5000/piStatus/"+selected[i], options)
+                    .then(response => response.json())
+                    .then(async json =>{
+                        if(json.sit === 1 || json.sit === 4 || json.spo === 1 || json.spo === 4){
+                            localStorage.setItem("update", true)
+                            setErrorPI(true);
+                        }else{
+                            setCommentAlert(false)
+                            localStorage.setItem("update", true)
+                            let deleted, hold = 0
+                    
+                            const body ={
+                                user : currentUser,
+                                fileName: selected[i],
+                                to: destiny,
+                                role: secureStorage.getItem("role"),
+                                comment: null,
+                                deleted: deleted,
+                                onhold: hold
+                            }
+                            const options = {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(body)
+                            }
+                            await fetch("http://localhost:5000/api/transaction", options)
+                            setTransactionSuccess(true)
+                        }
+                    })
+                }
+                await setUpdateData(!updateData)
+                setLoading(false)
             }else{
                 setCommentAlert(false)
                 localStorage.setItem("update", true)
@@ -362,6 +424,7 @@ const IsoCtrl = () => {
                         body: JSON.stringify(body)
                     }
                     await fetch("http://localhost:5000/api/transaction", options)
+                    setTransactionSuccess(true)
                 }
             }
             await setUpdateData(!updateData)
@@ -370,6 +433,8 @@ const IsoCtrl = () => {
     }
 
     async function returnLead(destiny){
+        setTransactionSuccess(false);
+        setErrorPI(false)
         setLoading(true)
         localStorage.setItem("update", true)
         for (let i = 0; i < selected.length; i++){
@@ -398,6 +463,7 @@ const IsoCtrl = () => {
     }
 
     async function restore(){
+        setTransactionSuccess(false);
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -431,6 +497,7 @@ const IsoCtrl = () => {
     }
 
     async function sendProcessClick(fileName){
+        setTransactionSuccess(false);
         setLoading(true)
         localStorage.setItem("update", true)
             
@@ -453,6 +520,7 @@ const IsoCtrl = () => {
     }
 
     async function sendInstrumentClick(fileName){
+        setTransactionSuccess(false);
         setLoading(true)
         localStorage.setItem("update", true)
             
@@ -479,6 +547,7 @@ const IsoCtrl = () => {
     }
 
     async function downloadFiles(){
+        setTransactionSuccess(false);
         setLoading(true)
         localStorage.setItem("update", true)
         if(selected.length === 1){
@@ -570,7 +639,7 @@ const IsoCtrl = () => {
         setLoading(false)
         */ 
     }
-    
+
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
@@ -612,7 +681,7 @@ const IsoCtrl = () => {
     ((currentRole === "Issuer") && currentTab === "Issuer") ||
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
     (currentTab=== "My Tray")) || (((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead") || 
-    currentRole === "SpecialityLead" || currentRole === "Issuer") || (currentTab === "Process" && currentRole === "Process") ||
+    currentRole === "SpecialityLead") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
@@ -639,6 +708,18 @@ const IsoCtrl = () => {
                         <Alert style={{position: "fixed", left: "46%", zIndex:"3"}} severity="info"
                             >
                             Processing...
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorPI}>
+                        <Alert style={{position: "fixed", left: "37%", zIndex:"3"}} severity="error"
+                            >
+                            At least one isometric was on revision and wasn't sent to LDE/Isocontrol
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={transactionSuccess}>
+                        <Alert style={{position: "fixed", left: "43%", zIndex:"3"}} severity="success"
+                            >
+                            Successful transaction!
                         </Alert>
                     </Collapse>
                     <h2 className="title__container">
@@ -714,7 +795,7 @@ const IsoCtrl = () => {
                 </div>
             </div>
             <center className="navBtns__center">              
-                <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>               
+                <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/>               
             </center>
             <br></br>
         </body>
