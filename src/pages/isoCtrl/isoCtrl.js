@@ -90,7 +90,7 @@ const IsoCtrl = () => {
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn
     var currentTabText = currentTab
-    tableContent = <DataTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
+    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
 
@@ -263,6 +263,31 @@ const IsoCtrl = () => {
         }
         
     }
+
+    async function forceUnclaim(fileName){
+        setTransactionSuccess(false);
+        setErrorPI(false)
+        setLoading(true)
+        localStorage.setItem("update", true)
+        const body ={
+            user : currentUser,
+            file: fileName,
+            role: currentRole
+        }
+        console.log(body)
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        console.log(body)
+        await fetch("http://localhost:5000/forceUnclaim", options)
+        await setUpdateData(!updateData)
+        setLoading(false)
+    }
+
 
     const verifyClick = async(event) =>{
         setTransactionSuccess(false);
