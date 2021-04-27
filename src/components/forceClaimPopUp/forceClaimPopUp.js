@@ -1,3 +1,4 @@
+import { ThumbUpSharp } from '@material-ui/icons';
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import "./forceClaimPopUp.css"
@@ -45,13 +46,78 @@ export default class UploadPopUp extends Component {
                 "Content-Type": "application/json"
             }
         }
+        await this.setState({
+            users: []
+        })
         await fetch("http://localhost:5000/api/users/"+secureStorage.getItem("tab"), options)
         .then(response => response.json())
-        .then(json => {
-            this.setState({
-                users: json.usernames
-            })
-        })    
+        .then(async json => {
+            let usernames = json.usernames
+            for(let i = 0; i < json.usernames.length; i++){
+                await fetch("http://localhost:5000/api/getroles/"+json.usernames[i], options)
+                .then(response => response.json())
+                .then(async json =>{
+                    for(let j = 0; j < json.roles.length; j++){
+                        if(secureStorage.getItem("tab") === "Design" && (json.roles[j] === "DES" || json.roles[j] === "LDE")){
+                            let users_array = this.state.users
+                            users_array.push(json.roles[j] + " - " + usernames[i])
+                            await this.setState({
+                                users : users_array
+                            })
+                        }
+                        if(secureStorage.getItem("tab") === "Stress" && (json.roles[j] === "STR" || json.roles[j] === "LST")){
+                            let users_array = this.state.users
+                            users_array.push(json.roles[j] + " - " + usernames[i])
+                            await this.setState({
+                                users : users_array
+                            })
+                        }
+                        if(secureStorage.getItem("tab") === "Supports" && (json.roles[j] === "SUP" || json.roles[j] === "LSP")){
+                            let users_array = this.state.users
+                            users_array.push(json.roles[j] + " - " + usernames[i])
+                            await this.setState({
+                                users : users_array
+                            })
+                        }
+                        if(secureStorage.getItem("tab") === "Materials" && json.roles[j] === "MAT"){
+                            let users_array = this.state.users
+                            users_array.push(json.roles[j] + " - " + usernames[i])
+                            await this.setState({
+                                users : users_array
+                            })
+                        }
+                        if(secureStorage.getItem("tab") === "Issuer" && json.roles[j] === "ISS"){
+                            let users_array = this.state.users
+                            users_array.push(json.roles[j] + " - " + usernames[i])
+                            await this.setState({
+                                users : users_array
+                            })
+                        }
+                        if(secureStorage.getItem("tab") === "Materials" && json.roles[j] === "MAT"){
+                            let users_array = this.state.users
+                            users_array.push(json.roles[j] + " - " + usernames[i])
+                            await this.setState({
+                                users : users_array
+                            })
+                        }
+                        if(secureStorage.getItem("tab") === "Process" && json.roles[j] === "PRO"){
+                            let users_array = this.state.users
+                            users_array.push(json.roles[j] + " - " + usernames[i])
+                            await this.setState({
+                                users : users_array
+                            })
+                        }
+                        if(secureStorage.getItem("tab") === "Instrument" && json.roles[j] === "INS"){
+                            let users_array = this.state.users
+                            users_array.push(json.roles[j] + " - " + usernames[i])
+                            await this.setState({
+                                users : users_array
+                            })
+                        }
+                    }
+                })
+            }
+        })   
         this.setState({
             visible : true,
         });
@@ -64,19 +130,29 @@ export default class UploadPopUp extends Component {
         });
     }
 
+    getUser(){
+        this.props.assignToUser(document.getElementById("userSelect").value)
+        this.closeModal()
+    }
+
     render() {
         return (
             <section style={{float:"left"}}>
-                <button value="Force claim" className="btn btn-sm btn-warning" style={{marginRight:"5px", marginLeft:"5px", width:"110px", float: "left"}} onClick={() => this.openModal()}>Force unclaim</button>                <div>
-                    <Modal visible={this.state.visible} width="650" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                <button value="Force claim" className="btn btn-sm btn-warning" style={{marginRight:"5px", marginLeft:"5px", width:"110px", float: "left"}} onClick={() => this.openModal()}>Assign</button>                <div>
+                    <Modal visible={this.state.visible} width="650" height="180" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="popUp__container" >
                             <center className="popUp__title"><h1>Select a user</h1></center>          
                         </div>
-                        <center>
-                            <select id="userSelect">
-
+                        <div className="selector__container">
+                        
+                            <select id="userSelect" className="userSelect">
+                                {this.state.users.map(user =>(
+                                    <option>{user}</option>
+                                ))}
                             </select>
-                        </center>
+                                
+                            <button class="btn btn-sm btn-success" style={{fontSize:"15px"}} onClick={()=>this.getUser()}>Assign</button>
+                        </div>
                     </Modal>
                 </div>
             </section>

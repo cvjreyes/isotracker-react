@@ -2,13 +2,20 @@
 import ForceClaimPopUp from '../forceClaimPopUp/forceClaimPopUp';
 
 const ActionBtns = props =>{
+
+    function assignToUser(username){
+        props.forceClaim(username)
+    }
+
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11
     if(props.onlyDownload){
         actionBtn11 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
     }else{
         if (props.currentTab !== "My Tray" && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold"){
             actionBtn11 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
-            actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.claimClick()}>Claim</button>
+            if (!(props.role === "SpecialityLead" && (props.currentTab === "Process" || props.currentTab === "Instrument"))){
+                actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.claimClick()}>Claim</button>
+            }
     
         }if (props.currentTab === "My Tray"){
             actionBtn1 = <button className="btn btn-sm btn-warning" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.unclaimClick()}>Unclaim</button>
@@ -68,9 +75,9 @@ const ActionBtns = props =>{
             }
 
             
-
-        }else if(props.role === "SpecialityLead"){
-            actionBtn10 = <ForceClaimPopUp currentTab={props.currentTab}/>
+        
+        }else if(props.role === "SpecialityLead" && props.currentTab !== "LDE/IsoControl" && props.currentTab !== "Process" &&  props.currentTab !== "Instrument"){
+            actionBtn10 = <ForceClaimPopUp currentTab={props.currentTab} assignToUser={assignToUser.bind(this)}/>
         }
         
         if ((props.currentTab === "Recycle bin" && (props.role === "DesignLead" || props.role === "SpecialityLead")) || 
