@@ -31,8 +31,8 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import UploadReportPopUp from "../../components/uploadReportPopUp/uploadReportPopUp"
 import readXlsxFile from 'read-excel-file'
+import ReportBoxBtns from "../../components/reportBoxBtns/reportBoxBtns"
 
 
 const IsoCtrl = () => {
@@ -730,7 +730,7 @@ const IsoCtrl = () => {
         */ 
     }
 
-    async function dowloadHistory(){
+    async function downloadHistory(){
         setErrorReports(false)
         const options = {
             method: "GET",
@@ -802,7 +802,7 @@ const IsoCtrl = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <div className="reports__container"><button className="btn btn-bg btn-success" style={{float:"left"}} onClick={() => dowloadHistory()}>Comments</button><UploadReportPopUp setUploading={setUploading.bind(this)} setErrorReport={setErrorReport.bind(this)}/></div>
+        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
