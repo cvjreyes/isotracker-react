@@ -24,10 +24,13 @@ import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
 import OnHoldBtn from "../../components/onHoldBtn/onHoldBtn"
 import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
+import ReportsBtn from "../../components/reportsBtn/reportsBtn"
 import ProcInstTable from "../../components/procInstTable/procInstTable"
 import download from 'downloadjs'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 
 const IsoCtrl = () => {
@@ -710,6 +713,37 @@ const IsoCtrl = () => {
         */ 
     }
 
+    async function dowloadHistory(){
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        await fetch("http://localhost:5000/downloadHistory/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["ISO_ID", "FROM", "TO", "DATE", "COMMENT", "USER"]
+            exportToExcel(JSON.parse(json), "Comments", headers)
+        })
+    }
+
+    const exportToExcel = (apiData, fileName, headers) => {
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
+        const fileExtension = ".xlsx";
+      
+          const ws = XLSX.utils.json_to_sheet(apiData);   
+          for(let i = 0; i < headers.length; i++){
+              ws[header_cells[i]].v = headers[i]
+          }
+          const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+          const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+          const data = new Blob([excelBuffer], { type: fileType });
+          FileSaver.saveAs(data, fileName + fileExtension);
+
+    }
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
@@ -736,6 +770,8 @@ const IsoCtrl = () => {
         procInsBtn = <ProcInsBtn onChange={value => procOrInst(value)} currentTab = {currentTab} />
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
+    }if(currentTab === "Reports"){
+        tableContent = <div className="reports__container"><button className="btn btn-bg btn-success" onClick={() => dowloadHistory()}>Comments</button></div>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -755,7 +791,7 @@ const IsoCtrl = () => {
     (currentRole === "Instrument" && currentTab === "Instrument")){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
-    }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin"){
+    }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
@@ -839,6 +875,7 @@ const IsoCtrl = () => {
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
+                  <ReportsBtn onChange={value => setCurrentTab("Reports")} currentTab = {currentTab}/>
                   {procInsBtn}
 
                 </div>

@@ -99,3 +99,7 @@ body{
     width: 130px;
     position: absolute;
 }
+
+.reports__container{
+    margin-top: 50px;
+}
