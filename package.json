@@ -35,7 +35,8 @@
     "reqwest": "^2.0.5",
     "reverse-md5": "^0.0.5",
     "secure-web-storage": "^1.0.2",
-    "web-vitals": "^1.1.0"
+    "web-vitals": "^1.1.0",
+    "xlsx": "^0.16.9"
   },
   "scripts": {
     "start": "react-scripts start",
