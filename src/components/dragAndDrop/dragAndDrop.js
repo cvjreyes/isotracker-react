@@ -28,8 +28,10 @@ class DragAndDrop extends React.Component{
     fileList: [],
     success: false,
     error: false,
+    pipeError: false,
     uploaded: false,
     errorAlerts: [],
+    pipeErrorAlerts: [],
     max: 0,
     uploadingPreview: false,
     uploading: false
@@ -175,7 +177,9 @@ class DragAndDrop extends React.Component{
       success: false,
       uploaded: false,
       error: false,
+      pipeError: false,
       errorAlerts: [],
+      pipeErrorAlerts: [],
       counter: 0,
       max: files.length,
       uploading: true
@@ -185,7 +189,33 @@ class DragAndDrop extends React.Component{
       const formData  = new FormData(); 
       formData.append('file', file.file);  
       if(this.props.mode === "upload"){
-        this.uploadFile(formData);
+        if(process.env.REACT_APP_PROGRESS === "0"){
+          this.uploadFile(formData);
+        }else{
+          fetch('http://localhost:5000/checkPipe/'+file.file.name)
+          .then(response => response.json())
+          .then(async json =>{
+            if(json.exists){
+              this.uploadFile(formData);
+            }else{
+              let joined = this.state.pipeErrorAlerts.concat(file.file.name);
+              this.setState({
+                pipeErrorAlerts : joined,
+                pipeError: true
+              })
+              let max = this.state.max - 1
+              this.setState({
+                max: max
+              })
+              if (max === 0){
+                this.setState({
+                  uploaded: true,
+                  uploading: false
+                })
+              }
+            }
+          })
+        }
       }else{
         if(String(this.props.iso).trim() === String(file.file.name.split('.').slice(0, -1)).trim() || 
            String(this.props.iso+'-CL').trim() === String(file.file.name.split('.').slice(0, -1)).trim() ){
@@ -209,7 +239,9 @@ class DragAndDrop extends React.Component{
   render(){
 
     const errorAlerts = this.state.errorAlerts;
+    const pipeErrorAlerts = this.state.pipeErrorAlerts;
     let errors = []
+    let pipeErrors = []
     if(errorAlerts.length > 0){
       for(let i = 0; i < errorAlerts.length; i++){
         
@@ -228,6 +260,18 @@ class DragAndDrop extends React.Component{
         }
       }
     }
+
+    if(pipeErrorAlerts.length > 0){
+      for(let i = 0; i < pipeErrorAlerts.length; i++){
+        
+          pipeErrors.push(<Alert severity="error"
+          >
+            The file {pipeErrorAlerts[i]} doesn't belong to this project!
+
+          </Alert>)
+      }
+    }
+    
 
     let inputContent = null
     let styles = null
@@ -252,7 +296,7 @@ class DragAndDrop extends React.Component{
           height: '2px'
         }
     }
-   
+    
   }
 
     return (
@@ -273,9 +317,16 @@ class DragAndDrop extends React.Component{
             </Alert>
           </Collapse>
         </Collapse>
+
         <Collapse in={this.state.error}>
           <Collapse in={this.state.uploaded}>
             {errors}
+          </Collapse>
+          
+        </Collapse>
+        <Collapse in={this.state.pipeError}>
+          <Collapse in={this.state.uploaded}>
+            {pipeErrors}
           </Collapse>
           
         </Collapse>
