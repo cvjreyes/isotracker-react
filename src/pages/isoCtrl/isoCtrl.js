@@ -31,6 +31,8 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
+import readXlsxFile from 'read-excel-file'
+import ReportBoxBtns from "../../components/reportBoxBtns/reportBoxBtns"
 
 
 const IsoCtrl = () => {
@@ -49,6 +51,7 @@ const IsoCtrl = () => {
     const [errorUnclaim, setErrorUnclaim] = useState(false);
     const [errorPI, setErrorPI] = useState(false);
     const [transactionSuccess, setTransactionSuccess] = useState(false);
+    const [errorReports, setErrorReports] = useState(false);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -129,15 +132,18 @@ const IsoCtrl = () => {
             setUpdateData(!updateData)
             setTransactionSuccess(false);
             setErrorUnclaim(false)
+            setErrorReports(false)
     },[currentRole]);
 
     useEffect(()=>{
         setErrorPI(false);
         setTransactionSuccess(false)
         setErrorUnclaim(false)
+        setErrorReports(false)
     }, [currentTab])
 
     const claim = async(event) => {
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -206,6 +212,7 @@ const IsoCtrl = () => {
     }   
     
     const forceClaim = async(username) =>{
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -235,6 +242,7 @@ const IsoCtrl = () => {
     }
 
     const unclaim = async (event) =>{
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -302,6 +310,7 @@ const IsoCtrl = () => {
     }
 
     async function forceUnclaim(fileName){
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -328,6 +337,7 @@ const IsoCtrl = () => {
 
 
     const verifyClick = async(event) =>{
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -357,6 +367,7 @@ const IsoCtrl = () => {
     }
 
     async function cancelVerifyClick(filename){
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setLoading(true)
@@ -384,6 +395,7 @@ const IsoCtrl = () => {
     async function transaction(destiny){
         
         if(selected.length > 0){
+            setErrorReports(false)
             setErrorUnclaim(false)
             setErrorPI(false);
             setTransactionSuccess(false);
@@ -499,6 +511,7 @@ const IsoCtrl = () => {
     }
 
     async function returnLead(destiny){
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -530,6 +543,7 @@ const IsoCtrl = () => {
     }
 
     async function restore(){
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         if(selected.length > 0){
@@ -567,6 +581,7 @@ const IsoCtrl = () => {
     }
 
     async function sendProcessClick(fileName){
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setLoading(true)
@@ -591,6 +606,7 @@ const IsoCtrl = () => {
     }
 
     async function sendInstrumentClick(fileName){
+        setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setLoading(true)
@@ -619,6 +635,7 @@ const IsoCtrl = () => {
     }
 
     async function downloadFiles(){
+        setErrorReports(false)
         setTransactionSuccess(false);
         setErrorUnclaim(false)
         setLoading(true)
@@ -713,7 +730,8 @@ const IsoCtrl = () => {
         */ 
     }
 
-    async function dowloadHistory(){
+    async function downloadHistory(){
+        setErrorReports(false)
         const options = {
             method: "GET",
             headers: {
@@ -729,6 +747,7 @@ const IsoCtrl = () => {
     }
 
     const exportToExcel = (apiData, fileName, headers) => {
+        setErrorReports(false)
         const fileType =
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
         const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
@@ -743,6 +762,18 @@ const IsoCtrl = () => {
           const data = new Blob([excelBuffer], { type: fileType });
           FileSaver.saveAs(data, fileName + fileExtension);
 
+    }
+
+    async function setUploading(active){
+        setErrorReports(false)
+        setLoading(active)
+        if(!active){
+            setTransactionSuccess(true)
+        }
+    }
+
+    async function setErrorReport(){
+        setErrorReports(true)
     }
 
     if(currentTab === "Upload IsoFiles"){
@@ -771,7 +802,7 @@ const IsoCtrl = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <div className="reports__container"><button className="btn btn-bg btn-success" onClick={() => dowloadHistory()}>Comments</button></div>
+        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -832,6 +863,12 @@ const IsoCtrl = () => {
                         <Alert style={{position: "fixed", left: "44%", zIndex:"3"}} severity="error"
                             >
                             Can't unclaim an iso assigned by LOS!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorReports}>
+                        <Alert style={{position: "fixed", left: "45%", zIndex:"3"}} severity="error"
+                            >
+                            Missing columns!
                         </Alert>
                     </Collapse>
                     <h2 className="title__container">

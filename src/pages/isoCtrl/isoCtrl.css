@@ -102,4 +102,10 @@ body{
 
 .reports__container{
     margin-top: 50px;
+    border: 1px solid black;
+    display: table;
+    height:500px;
+    width: 100%;
+    background-color:rgb(255,255,255,0.5);
+    
 }

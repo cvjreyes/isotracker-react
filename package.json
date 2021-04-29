@@ -32,6 +32,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "react-select": "^4.1.0",
+    "read-excel-file": "^5.1.0",
     "reqwest": "^2.0.5",
     "reverse-md5": "^0.0.5",
     "secure-web-storage": "^1.0.2",
