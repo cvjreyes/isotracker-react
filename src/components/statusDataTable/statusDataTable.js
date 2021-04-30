@@ -5,7 +5,6 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import './statusDataTable.css'
 import { Link } from 'react-router-dom';
-import { columnLookupSelector } from '@material-ui/data-grid';
 
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {

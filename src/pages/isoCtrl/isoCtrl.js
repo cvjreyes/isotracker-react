@@ -31,7 +31,6 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import readXlsxFile from 'read-excel-file'
 import ReportBoxBtns from "../../components/reportBoxBtns/reportBoxBtns"
 
 
@@ -133,12 +132,14 @@ const IsoCtrl = () => {
             setTransactionSuccess(false);
             setErrorUnclaim(false)
             setErrorReports(false)
+            setLoading(false)
     },[currentRole]);
 
     useEffect(()=>{
         setErrorPI(false);
         setTransactionSuccess(false)
         setErrorUnclaim(false)
+        setLoading(false)
         setErrorReports(false)
     }, [currentTab])
 
@@ -532,6 +533,7 @@ const IsoCtrl = () => {
                 body: JSON.stringify(body)
             }
             await fetch("http://localhost:5000/api/returnLead", options)
+            setTransactionSuccess(true)
         }
         await setUpdateData(!updateData)
         setLoading(false)
@@ -546,6 +548,8 @@ const IsoCtrl = () => {
         setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
+        setErrorPI(false)
+        console.log(selected.length)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -564,8 +568,10 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://localhost:5000/restore", options)
+                setTransactionSuccess(true)
             }
             await setUpdateData(!updateData)
+            console.log("restored")
             setLoading(false)
         }
     }
@@ -643,9 +649,6 @@ const IsoCtrl = () => {
         if(selected.length === 1){
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
-                const body ={
-                    fileName: selected[i]
-                }
                 const options = {
                     method: "GET",
                     headers: {
@@ -732,12 +735,7 @@ const IsoCtrl = () => {
 
     async function downloadHistory(){
         setErrorReports(false)
-        const options = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }
+
         await fetch("http://localhost:5000/downloadHistory/")
         .then(response => response.json())
         .then(json => {

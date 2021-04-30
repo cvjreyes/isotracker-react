@@ -3,7 +3,6 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import './binTable.css'
 import { Link } from 'react-router-dom';
 

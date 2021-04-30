@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import UploadReportPopUp from "../../components/uploadReportPopUp/uploadReportPopUp"
 
 export default class ReportBoxBtns extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     setErrorReport(){
         this.props.setErrorReport();
