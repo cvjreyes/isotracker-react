@@ -1,13 +1,18 @@
 //Botones de accion que aparecen en cada fase de isotracker para tratar los archivos
 import ForceClaimPopUp from '../forceClaimPopUp/forceClaimPopUp';
+import ActionExtra from "../../components/actionExtra/actionExtra"
 
 const ActionBtns = props =>{
 
     function assignToUser(username){
         props.forceClaim(username)
     }
+    
+    function toIssue(transmittal, date){
+        props.issue(transmittal, date)
+    }
 
-    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11
+    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
     if(props.onlyDownload){
         actionBtn11 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
     }else{
@@ -60,11 +65,17 @@ const ActionBtns = props =>{
                 }
             }
             
-            if(props.role === "DesignLead" || props.role === "SpecialityLead"){
+            if(props.role === "DesignLead"){
                 actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#781C2E"}} onClick={() => props.returnLead("Design")}>Design</button>
                 actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
                 actionBtn7 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("On hold")}>Hold</button>
-            }else if(props.role === "StressLead"){
+            }if(props.role === "SpecialityLead"){
+                actionBtn3 = actionBtn1
+                actionBtn1 = <ActionExtra toIssue={toIssue.bind(this)}/>
+                actionBtn2 = null
+                actionBtn5 = null
+            }
+            else if(props.role === "StressLead"){
                 actionBtn2 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.returnLead("Stress")}>Stress</button>
                 actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.returnLead("Supports")}>Supports</button>
             }
@@ -87,7 +98,7 @@ const ActionBtns = props =>{
     }
 
     return(
-        <div>
+        <div style={{display:"flex"}}>
             {actionBtn1}
             {actionBtn2}
             {actionBtn3}
@@ -99,6 +110,7 @@ const ActionBtns = props =>{
             {actionBtn9}
             {actionBtn10}
             {actionBtn11}
+            {actionBtn12}
         </div>
     );
 };
