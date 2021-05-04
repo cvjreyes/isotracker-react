@@ -21,11 +21,12 @@ class StatusDataTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
-    data: []
+    data: [],
+    weights: []
   };
   
 
-  componentDidMount(){
+  async componentDidMount(){
 
     const options = {
       method: "GET",
@@ -33,6 +34,14 @@ class StatusDataTable extends React.Component{
           "Content-Type": "application/json"
       },
     }
+    await fetch("http://localhost:5000/getMaxProgress", options)
+    .then(response => response.json())
+    .then(json =>{
+      this.setState({
+        weights: [json.weights[0].weight,json.weights[1].weight,json.weights[2].weight]
+      })
+    })
+
     fetch("http://localhost:5000/api/statusFiles", options)
         .then(response => response.json())
         .then(json => {
@@ -40,7 +49,11 @@ class StatusDataTable extends React.Component{
             var rows = []
             var row = null;
             for(let i = 0; i < json.rows.length; i++){
-                row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
+                if(json.rows[i].tpipes_id){
+                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, realProgress: json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id] * 100 + "%", progress: json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id] * 100 + "%"}
+                }else{
+                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
+                }
                       
               rows.push(row)
             }
@@ -126,26 +139,37 @@ class StatusDataTable extends React.Component{
     ),
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
-      
-      record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-        : '',
+      this.state.searchedColumn === "id" ? (
+        record.id.props.children
+          ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
+          : ''
+        ) : (
+          record[dataIndex]
+            ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+            : ''
+        ),
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
       }
     },
     render: text =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+    text != null ? (
+    text.props && text.type !== "div" ? (
+      <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
+    ) : this.state.searchedColumn === dataIndex ? (
+      <Highlighter
+        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+        searchWords={[this.state.searchText]}
+        autoEscape
+        textToHighlight={text ? text : ''}
+      />
+    ) : (
+      text
+    )
+    ) : (
+      text
+    )
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {

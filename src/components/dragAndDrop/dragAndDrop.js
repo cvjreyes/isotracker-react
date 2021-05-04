@@ -232,7 +232,7 @@ class DragAndDrop extends React.Component{
       file.remove();
     });    
 
-      
+    this.props.uploaded()
 
   }
 

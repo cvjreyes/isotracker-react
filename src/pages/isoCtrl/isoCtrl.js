@@ -51,6 +51,10 @@ const IsoCtrl = () => {
     const [errorPI, setErrorPI] = useState(false);
     const [transactionSuccess, setTransactionSuccess] = useState(false);
     const [errorReports, setErrorReports] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [realProgress, setRealProgress] = useState(0);
+    const [progressISO, setProgressISO] = useState(0);
+    const [realProgressISO, setRealProgressISO] = useState(0);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -142,6 +146,38 @@ const IsoCtrl = () => {
         setLoading(false)
         setErrorReports(false)
     }, [currentTab])
+
+    useEffect(async()=>{
+        if(process.env.REACT_APP_PROGRESS === "1"){
+            
+            await getProgress()
+            await setUpdateData(!updateData)
+            console.log(progress)
+            console.log(realProgress)
+            
+
+        }
+    },[])
+
+    const getProgress = () =>{
+        const options = {
+            method: "GET",
+        }
+        fetch("http://localhost:5000/currentProgressISO", options)
+        .then(response => response.json())
+        .then(async json =>{
+             await setProgressISO(json.progressISO)
+             await setRealProgressISO(json.realprogressISO)
+        })
+
+        fetch("http://localhost:5000/currentProgress", options)
+        .then(response => response.json())
+        .then(async json =>{
+             await setProgress(json.progress)
+             await setRealProgress(json.realprogress)
+        })
+        
+    }
 
     const claim = async(event) => {
         setErrorReports(false)
@@ -508,6 +544,7 @@ const IsoCtrl = () => {
             }
             await setUpdateData(!updateData)
             setLoading(false)
+            await getProgress()
         }    
     }
 
@@ -777,7 +814,7 @@ const IsoCtrl = () => {
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
-        tableContent = <DragAndDrop mode={"upload"} user={currentUser}/>
+        tableContent = <DragAndDrop mode={"upload"} user={currentUser} uploaded={getProgress.bind(this)}/>
         pageSelector = null
     }if(currentTab === "Design" && currentRole === "Design"){
         uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
@@ -894,7 +931,7 @@ const IsoCtrl = () => {
                             </td>   
                                            
                             <td style={{width: progressTableWidth,position:"inline-block", right: "0"}}>
-                                <ProgressTable user = {user} updateData = {updateData}/>
+                                <ProgressTable user = {user} updateData = {updateData} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
                             </td>    
                             
                         </tr>

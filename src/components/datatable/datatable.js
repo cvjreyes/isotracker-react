@@ -326,7 +326,7 @@ class DataTable extends React.Component{
       }
     },
     render: text => 
-      text.props && text.type !== "div" ? (
+    text.props && text.type !== "div" ? (
       <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
     ) : this.state.searchedColumn === dataIndex ? (
       <Highlighter
