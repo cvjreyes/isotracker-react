@@ -1,7 +1,7 @@
 //Tabla que muestra el progreso de isoTracker
 
 import "./progressTable.css"
-import React, {useEffect} from 'react'
+import React from 'react'
 
 class ProgressTable extends React.Component{
     
@@ -11,9 +11,9 @@ class ProgressTable extends React.Component{
         updateData: this.props.updateData,
         currentProgressISO: this.props.progressISO,
         currentRealProgressISO: this.props.realProgressISO,
-        user: this.props.user
+        role: this.props.role
     }
-    //Si el user es admin muestra mas informacion
+    //Si el role es admin muestra mas informacion
    
     componentDidMount() {
         this.setState({
@@ -21,6 +21,7 @@ class ProgressTable extends React.Component{
             currentRealProgress: this.props.realProgress,
             currentProgressISO: this.props.progressISO,
             currentRealProgressISO: this.props.realProgressISO,
+            role: this.props.role
         })
     }
 
@@ -31,6 +32,7 @@ class ProgressTable extends React.Component{
                 currentRealProgress: this.props.realProgress,
                 currentProgressISO: this.props.progressISO,
                 currentRealProgressISO: this.props.realProgressISO,
+                role: this.props.role
             })
         }
     }
@@ -43,7 +45,7 @@ class ProgressTable extends React.Component{
     const currentRealProgressWidthISO = String(this.state.currentRealProgressISO)+"%"
     let headers, progress
 
-    if (this.state.user === "admin"){
+    if (this.state.role === "SpecialityLead"){
 
             headers =
             <tr>
@@ -82,16 +84,16 @@ class ProgressTable extends React.Component{
             </tr>
 
             progress = <tr>
-                <td style={{textAlign:"center"}}>
-                    <div style={{color:"black", fontSize: "15px",width:"40%",backgroundColor: "#A0AFD9", height: "21px"}}>
-                        <span class="sr-only"></span>40%
-                    </div>
-                </td>
-                <td style={{textAlign:"center"}}>
-                    <div style={{color:"black", fontSize: "15px",width:"50%",backgroundColor: "#A0AFD9", height: "21px"}}>
-                        <span class="sr-only"></span>50%
-                    </div>
-                </td>                      
+                <td className="progressTable__content__td">
+                <div style={{color:"black", fontSize: "13px",width:currentProgressWidth,backgroundColor: "#A0AFD9", height: "19px"}}>
+                    <span class="sr-only"></span>{this.state.currentProgress}%
+                </div>
+            </td>
+            <td style={{textAlign:"center", height: "19px"}}>
+                <div style={{color:"black", fontSize: "13px",width:currentProgressISOWidth,backgroundColor: "#A0AFD9", height: "19px"}}>
+                    <span class="sr-only"></span>{this.state.currentProgressISO}%
+                </div>
+            </td>                   
             </tr>
 
     }

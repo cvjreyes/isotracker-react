@@ -97,7 +97,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn
+    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn, progTable
     var currentTabText = currentTab
     tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
@@ -829,7 +829,7 @@ const IsoCtrl = () => {
     }if(currentTab === "On hold"){
         tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
-        tableContent = <StatusDataTable pagination = {pagination}/>
+        tableContent = <StatusDataTable pagination = {pagination} role = {currentRole}/>
     }if(currentTab === "History"){
         tableContent = <HistoryDataTable pagination = {pagination}/>   
     }if(currentRole === "Process" || currentRole === "Instrument" || currentRole === "SpecialityLead"){
@@ -844,6 +844,10 @@ const IsoCtrl = () => {
         commentBox = <div>
             <textarea placeholder="Comments" class="comments" cols="100" rows="2" required="" maxlength="400" name="comments" value={comment} onChange={handleComment}></textarea>
         </div>
+    }
+
+    if(process.env.REACT_APP_PROGRESS === "1"){
+        progTable = <ProgressTable role = {currentRole} updateData = {updateData} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
     }
 
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
@@ -931,7 +935,7 @@ const IsoCtrl = () => {
                             </td>   
                                            
                             <td style={{width: progressTableWidth,position:"inline-block", right: "0"}}>
-                                <ProgressTable user = {user} updateData = {updateData} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
+                                {progTable}
                             </td>    
                             
                         </tr>

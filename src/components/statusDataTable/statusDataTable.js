@@ -22,49 +22,150 @@ class StatusDataTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
-    weights: []
+    weights: [],
+    role: this.props.role
   };
   
 
   async componentDidMount(){
 
-    const options = {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/json"
-      },
-    }
-    await fetch("http://localhost:5000/getMaxProgress", options)
-    .then(response => response.json())
-    .then(json =>{
-      this.setState({
-        weights: [json.weights[0].weight,json.weights[1].weight,json.weights[2].weight]
-      })
-    })
-
-    fetch("http://localhost:5000/api/statusFiles", options)
-        .then(response => response.json())
-        .then(json => {
-            console.log(json)
-            var rows = []
-            var row = null;
-            for(let i = 0; i < json.rows.length; i++){
-                if(json.rows[i].tpipes_id){
-                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, realProgress: json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id] * 100 + "%", progress: json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id] * 100 + "%"}
-                }else{
-                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
-                }
-                      
-              rows.push(row)
-            }
-                         
-            this.setState({data : rows});
-
-            }
-        )
-        .catch(error => {
-            console.log(error);
+    if(process.env.REACT_APP_PROGRESS === "1"){
+      const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+      }
+      await fetch("http://localhost:5000/getMaxProgress", options)
+      .then(response => response.json())
+      .then(json =>{
+        this.setState({
+          weights: [json.weights[0].weight,json.weights[1].weight,json.weights[2].weight]
         })
+      })
+
+      fetch("http://localhost:5000/api/statusFiles", options)
+          .then(response => response.json())
+          .then(json => {
+            console.log(this.state.weights)
+              var rows = []
+              var row = null;
+              for(let i = 0; i < json.rows.length; i++){
+                  if(json.rows[i].tpipes_id){
+                    row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
+                  }else{
+                    row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
+                  }
+                        
+                rows.push(row)
+              }
+                          
+              this.setState({data : rows, role: this.props.role});
+
+              }
+          )
+          .catch(error => {
+              console.log(error);
+          })
+    }else{
+      const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+      }
+      fetch("http://localhost:5000/api/statusFiles", options)
+          .then(response => response.json())
+          .then(json => {
+            console.log(this.state.weights)
+              var rows = []
+              var row = null;
+              for(let i = 0; i < json.rows.length; i++){
+                row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}                    
+                rows.push(row)
+              }
+                          
+              this.setState({data : rows, role: this.props.role});
+
+              }
+          )
+          .catch(error => {
+              console.log(error);
+          })
+    }
+  }
+
+  async componentDidUpdate(prevProps, prevState){
+
+    if(prevProps !== this.props){
+
+      if(process.env.REACT_APP_PROGRESS === "1"){
+        const options = {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json"
+          },
+        }
+        await fetch("http://localhost:5000/getMaxProgress", options)
+        .then(response => response.json())
+        .then(json =>{
+          this.setState({
+            weights: [json.weights[0].weight,json.weights[1].weight,json.weights[2].weight]
+          })
+        })
+  
+        fetch("http://localhost:5000/api/statusFiles", options)
+            .then(response => response.json())
+            .then(json => {
+              console.log(this.state.weights)
+                var rows = []
+                var row = null;
+                for(let i = 0; i < json.rows.length; i++){
+                    if(json.rows[i].tpipes_id){
+                      row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
+                    }else{
+                      row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
+                    }
+                          
+                  rows.push(row)
+                }
+                            
+                this.setState({data : rows, role: this.props.role});
+  
+                }
+            )
+            .catch(error => {
+                console.log(error);
+            })
+      }else{
+        const options = {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json"
+          },
+  
+        }
+        fetch("http://localhost:5000/api/statusFiles", options)
+            .then(response => response.json())
+            .then(json => {
+              console.log(this.state.weights)
+                var rows = []
+                var row = null;
+                for(let i = 0; i < json.rows.length; i++){
+                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}                    
+                  rows.push(row)
+                }
+                            
+                this.setState({data : rows, role: this.props.role});
+  
+                }
+            )
+            .catch(error => {
+                console.log(error);
+            })
+      }
+    }
   }
 
   getMaster(fileName){
@@ -217,26 +318,19 @@ class StatusDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.condition.localeCompare(b.condition)},
         },
-      },
-      {
-        title: <div className="dataTable__header__text">Progress MAX</div>,
-        dataIndex: 'progressMax',
-        key: 'progressMax',
-        ...this.getColumnSearchProps('progressMax'),
+      }
+    ];
+    if(process.env.REACT_APP_PROGRESS === "1"){
+      columns.push({
+        title: <div className="dataTable__header__text">MAX Weight</div>,
+        dataIndex: 'MAXWeight',
+        key: 'MAXWeight',
+        ...this.getColumnSearchProps('MAXWeight'),
         sorter: {
-            compare: (a, b) => a.progressMax - b.progressMax,
+            compare: (a, b) => a.MAXWeight - b.MAXWeight,
         },
-      },
-      {
-        title: <div className="dataTable__header__text">Real Progress</div>,
-        dataIndex: 'realProgress',
-        key: 'realProgress',
-        ...this.getColumnSearchProps('realProgress'),
-        sorter: {
-            compare: (a, b) => a.realProgress - b.realProgress,
-        },
-      },
-      {
+      })
+      columns.push({
         title: <div className="dataTable__header__text">Progress</div>,
         dataIndex: 'progress',
         key: 'progress',
@@ -244,8 +338,19 @@ class StatusDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.progress - b.progress,
         },
-      },
-    ];
+      })
+      if(this.state.role === "SpecialityLead"){
+        columns.push({
+          title: <div className="dataTable__header__text">Real Progress</div>,
+          dataIndex: 'realProgress',
+          key: 'realProgress',
+          ...this.getColumnSearchProps('realProgress'),
+          sorter: {
+              compare: (a, b) => a.realProgress - b.realProgress,
+          },
+        })
+      }
+    } 
 
     return (
       <div>
