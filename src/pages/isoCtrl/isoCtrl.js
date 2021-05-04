@@ -934,7 +934,7 @@ const IsoCtrl = () => {
                                 {uploadButton}
                             </td>   
                                            
-                            <td style={{width: progressTableWidth,position:"inline-block", right: "0"}}>
+                            <td style={{width: "750px",position:"inline-block", right: "0"}}>
                                 {progTable}
                             </td>    
                             
