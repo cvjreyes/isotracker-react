@@ -284,7 +284,7 @@ class procInstTable extends React.Component{
       getCheckboxProps: (record) => (      
         {
         
-        disabled: record.actions === 'CLAIMED' | (record.actions.type === 'button' && (secureStorage.getItem("role") !== "DesignLead" && secureStorage.getItem("role") !== "StressLead" && secureStorage.getItem("role") !== "SupportsLead")) | (record.actions.type !== 'button' && (secureStorage.getItem("role") === "DesignLead" | secureStorage.getItem("role") === "StressLead" | secureStorage.getItem("role") === "SupportsLead")),
+        disabled: record.actions === 'CLAIMED' | (record.actions.type === 'button' && (secureStorage.getItem("role") !== "DesignLead" && secureStorage.getItem("role") !== "StressLead" && secureStorage.getItem("role") !== "SupportsLead" && secureStorage.getItem("role") !== "SpecialityLead")) | (record.actions.type !== 'button' && (secureStorage.getItem("role") === "DesignLead" | secureStorage.getItem("role") === "StressLead" | secureStorage.getItem("role") === "SupportsLead")),
         // Column configuration not to be checked
         name: record.name,
       }),
