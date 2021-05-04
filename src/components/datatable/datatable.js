@@ -3,7 +3,6 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
-import moment from 'moment';
 import './datatable.css'
 import { Link } from 'react-router-dom';
 
@@ -327,7 +326,7 @@ class DataTable extends React.Component{
       }
     },
     render: text => 
-      text.props && text.type !== "div" ? (
+    text.props && text.type !== "div" ? (
       <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
     ) : this.state.searchedColumn === dataIndex ? (
       <Highlighter

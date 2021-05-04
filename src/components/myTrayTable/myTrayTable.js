@@ -436,14 +436,13 @@ class MyTrayTable extends React.Component{
 
     const selectedRows = this.state.selectedRows;
     const selectedRowsKeys = this.state.selectedRowsKeys;
-    const update = this.state.updateData;
 
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);
       },
       getCheckboxProps: (record) => 
-      this.state.role != "Instrument" && this.state.role != "Process" ? (
+      this.state.role !== "Instrument" && this.state.role !== "Process" ? (
       ( 
         {
         

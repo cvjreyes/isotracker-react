@@ -1,10 +1,7 @@
-import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import './uploadReportPopUp.css'
-import * as XLSX from "xlsx";
 import readXlsxFile from 'read-excel-file'
-import { loadAsync } from 'jszip';
 
 export default class UploadReportPopUp extends Component {
     constructor(props) {

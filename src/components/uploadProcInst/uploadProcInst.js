@@ -1,7 +1,5 @@
-import { CenterFocusStrong, TransferWithinAStationSharp } from '@material-ui/icons';
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
-import SecureStorage from 'secure-web-storage';
 import './uploadProcInst.css'
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'

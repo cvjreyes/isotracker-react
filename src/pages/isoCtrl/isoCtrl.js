@@ -31,7 +31,6 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import readXlsxFile from 'read-excel-file'
 import ReportBoxBtns from "../../components/reportBoxBtns/reportBoxBtns"
 
 
@@ -52,6 +51,10 @@ const IsoCtrl = () => {
     const [errorPI, setErrorPI] = useState(false);
     const [transactionSuccess, setTransactionSuccess] = useState(false);
     const [errorReports, setErrorReports] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [realProgress, setRealProgress] = useState(0);
+    const [progressISO, setProgressISO] = useState(0);
+    const [realProgressISO, setRealProgressISO] = useState(0);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -94,7 +97,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn
+    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn, progTable
     var currentTabText = currentTab
     tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
@@ -133,14 +136,48 @@ const IsoCtrl = () => {
             setTransactionSuccess(false);
             setErrorUnclaim(false)
             setErrorReports(false)
+            setLoading(false)
     },[currentRole]);
 
     useEffect(()=>{
         setErrorPI(false);
         setTransactionSuccess(false)
         setErrorUnclaim(false)
+        setLoading(false)
         setErrorReports(false)
     }, [currentTab])
+
+    useEffect(async()=>{
+        if(process.env.REACT_APP_PROGRESS === "1"){
+            
+            await getProgress()
+            await setUpdateData(!updateData)
+            console.log(progress)
+            console.log(realProgress)
+            
+
+        }
+    },[])
+
+    const getProgress = () =>{
+        const options = {
+            method: "GET",
+        }
+        fetch("http://localhost:5000/currentProgressISO", options)
+        .then(response => response.json())
+        .then(async json =>{
+             await setProgressISO(json.progressISO)
+             await setRealProgressISO(json.realprogressISO)
+        })
+
+        fetch("http://localhost:5000/currentProgress", options)
+        .then(response => response.json())
+        .then(async json =>{
+             await setProgress(json.progress)
+             await setRealProgress(json.realprogress)
+        })
+        
+    }
 
     const claim = async(event) => {
         setErrorReports(false)
@@ -507,6 +544,7 @@ const IsoCtrl = () => {
             }
             await setUpdateData(!updateData)
             setLoading(false)
+            await getProgress()
         }    
     }
 
@@ -532,6 +570,7 @@ const IsoCtrl = () => {
                 body: JSON.stringify(body)
             }
             await fetch("http://localhost:5000/api/returnLead", options)
+            setTransactionSuccess(true)
         }
         await setUpdateData(!updateData)
         setLoading(false)
@@ -546,6 +585,8 @@ const IsoCtrl = () => {
         setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
+        setErrorPI(false)
+        console.log(selected.length)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -564,8 +605,10 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://localhost:5000/restore", options)
+                setTransactionSuccess(true)
             }
             await setUpdateData(!updateData)
+            console.log("restored")
             setLoading(false)
         }
     }
@@ -643,9 +686,6 @@ const IsoCtrl = () => {
         if(selected.length === 1){
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
-                const body ={
-                    fileName: selected[i]
-                }
                 const options = {
                     method: "GET",
                     headers: {
@@ -732,12 +772,7 @@ const IsoCtrl = () => {
 
     async function downloadHistory(){
         setErrorReports(false)
-        const options = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }
+
         await fetch("http://localhost:5000/downloadHistory/")
         .then(response => response.json())
         .then(json => {
@@ -779,7 +814,7 @@ const IsoCtrl = () => {
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
-        tableContent = <DragAndDrop mode={"upload"} user={currentUser}/>
+        tableContent = <DragAndDrop mode={"upload"} user={currentUser} uploaded={getProgress.bind(this)}/>
         pageSelector = null
     }if(currentTab === "Design" && currentRole === "Design"){
         uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
@@ -794,7 +829,7 @@ const IsoCtrl = () => {
     }if(currentTab === "On hold"){
         tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
-        tableContent = <StatusDataTable pagination = {pagination}/>
+        tableContent = <StatusDataTable pagination = {pagination} role = {currentRole}/>
     }if(currentTab === "History"){
         tableContent = <HistoryDataTable pagination = {pagination}/>   
     }if(currentRole === "Process" || currentRole === "Instrument" || currentRole === "SpecialityLead"){
@@ -809,6 +844,10 @@ const IsoCtrl = () => {
         commentBox = <div>
             <textarea placeholder="Comments" class="comments" cols="100" rows="2" required="" maxlength="400" name="comments" value={comment} onChange={handleComment}></textarea>
         </div>
+    }
+
+    if(process.env.REACT_APP_PROGRESS === "1"){
+        progTable = <ProgressTable role = {currentRole} updateData = {updateData} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
     }
 
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
@@ -896,7 +935,7 @@ const IsoCtrl = () => {
                             </td>   
                                            
                             <td style={{width: progressTableWidth,position:"inline-block", right: "0"}}>
-                                <ProgressTable user = {user} updateData = {updateData}/>
+                                {progTable}
                             </td>    
                             
                         </tr>

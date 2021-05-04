@@ -1,4 +1,3 @@
-import { ThumbUpSharp } from '@material-ui/icons';
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import "./forceClaimPopUp.css"

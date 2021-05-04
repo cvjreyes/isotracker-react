@@ -1,60 +1,101 @@
 //Tabla que muestra el progreso de isoTracker
 
 import "./progressTable.css"
+import React from 'react'
 
-const ProgressTable = props =>{
-    var headers, progress
-    //Si el user es admin muestra mas informacion
-    if (props.user === "admin"){
-        headers = 
-        <tr>
-            <td className="progressTable__header">Progress</td>
-            <td className="progressTable__header">Progress ISO</td>
-            <td className="progressTable__header">Real progress</td>
-            <td className="progressTable__header">Real progress ISO</td>
-        </tr>
-        progress = 
-        <tr>
+class ProgressTable extends React.Component{
+    
+    state={
+        currentProgress: this.props.progress,
+        currentRealProgress: this.props.realProgress,
+        updateData: this.props.updateData,
+        currentProgressISO: this.props.progressISO,
+        currentRealProgressISO: this.props.realProgressISO,
+        role: this.props.role
+    }
+    //Si el role es admin muestra mas informacion
+   
+    componentDidMount() {
+        this.setState({
+            currentProgress: this.props.progress,
+            currentRealProgress: this.props.realProgress,
+            currentProgressISO: this.props.progressISO,
+            currentRealProgressISO: this.props.realProgressISO,
+            role: this.props.role
+        })
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps !== this.props){
+            this.setState({
+                currentProgress: this.props.progress,
+                currentRealProgress: this.props.realProgress,
+                currentProgressISO: this.props.progressISO,
+                currentRealProgressISO: this.props.realProgressISO,
+                role: this.props.role
+            })
+        }
+    }
+
+    render(){
+
+    const currentProgressWidth = String(this.state.currentProgress)+"%"
+    const currentRealProgressWidth = String(this.state.currentRealProgress)+"%"
+    const currentProgressISOWidth = String(this.state.currentProgressISO)+"%"
+    const currentRealProgressWidthISO = String(this.state.currentRealProgressISO)+"%"
+    let headers, progress
+
+    if (this.state.role === "SpecialityLead"){
+
+            headers =
+            <tr>
+                <td className="progressTable__header">Progress</td>
+                <td className="progressTable__header">Progress ISO</td>
+                <td className="progressTable__header">Real progress</td>
+                <td className="progressTable__header">Real progress ISO</td>
+            </tr>
+
+            progress = <tr>
             <td className="progressTable__content__td">
-                <div style={{color:"black", fontSize: "13px",width:"40%",backgroundColor: "#A0AFD9", height: "19px"}}>
-                    <span class="sr-only"></span>40%
+                <div style={{color:"black", fontSize: "13px",width:currentProgressWidth,backgroundColor: "#A0AFD9", height: "19px"}}>
+                    <span class="sr-only"></span>{this.state.currentProgress}%
                 </div>
             </td>
             <td style={{textAlign:"center", height: "19px"}}>
-                <div style={{color:"black", fontSize: "13px",width:"50%",backgroundColor: "#A0AFD9", height: "19px"}}>
-                    <span class="sr-only"></span>50%
+                <div style={{color:"black", fontSize: "13px",width:currentProgressISOWidth,backgroundColor: "#A0AFD9", height: "19px"}}>
+                    <span class="sr-only"></span>{this.state.currentProgressISO}%
                 </div>
             </td>
             <td style={{textAlign:"center", height: "19px"}}>
-                <div style={{color:"black", fontSize: "13px",width:"80%",backgroundColor: "#A0AFD9", height: "19px"}}>
-                    <span class="sr-only"></span>80%
+                <div style={{color:"black", fontSize: "13px",width:currentRealProgressWidth,backgroundColor: "#A0AFD9", height: "19px"}}>
+                    <span class="sr-only"></span>{this.state.currentRealProgress}%
                 </div>
             </td>
             <td style={{textAlign:"center", height: "19px"}}>
-                <div style={{color:"black", fontSize: "13px",width:"60%",backgroundColor: "#A0AFD9", height: "19px"}}>
-                    <span class="sr-only"></span>60%
+                <div style={{color:"black", fontSize: "13px",width:currentRealProgressWidthISO,backgroundColor: "#A0AFD9", height: "19px"}}>
+                    <span class="sr-only"></span>{this.state.currentRealProgressISO}%
                 </div>
             </td>                        
-        </tr>
+        </tr>     
     }else{
-        headers = 
-        <tr>
-            <td  style={{width: "11%"}} className="progressTable__header">Progress</td>
-            <td  style={{width: "11%"}} className="progressTable__header">Progress ISO</td>
-        </tr>
-        progress = 
-        <tr>
-            <td style={{textAlign:"center"}}>
-                <div style={{color:"black", fontSize: "15px",width:"40%",backgroundColor: "#A0AFD9", height: "21px"}}>
-                    <span class="sr-only"></span>40%
+            headers = <tr>
+                <td  style={{width: "11%"}} className="progressTable__header">Progress</td>
+                <td  style={{width: "11%"}} className="progressTable__header">Progress ISO</td>
+            </tr>
+
+            progress = <tr>
+                <td className="progressTable__content__td">
+                <div style={{color:"black", fontSize: "13px",width:currentProgressWidth,backgroundColor: "#A0AFD9", height: "19px"}}>
+                    <span class="sr-only"></span>{this.state.currentProgress}%
                 </div>
             </td>
-            <td style={{textAlign:"center"}}>
-                <div style={{color:"black", fontSize: "15px",width:"50%",backgroundColor: "#A0AFD9", height: "21px"}}>
-                    <span class="sr-only"></span>50%
+            <td style={{textAlign:"center", height: "19px"}}>
+                <div style={{color:"black", fontSize: "13px",width:currentProgressISOWidth,backgroundColor: "#A0AFD9", height: "19px"}}>
+                    <span class="sr-only"></span>{this.state.currentProgressISO}%
                 </div>
-            </td>                      
-        </tr>
+            </td>                   
+            </tr>
+
     }
     return (
         <td className="progressTable__td">
@@ -67,5 +108,6 @@ const ProgressTable = props =>{
         </td>
     );
 };
+}
 
 export default ProgressTable;
