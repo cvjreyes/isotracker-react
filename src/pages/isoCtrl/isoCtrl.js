@@ -32,6 +32,7 @@ import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import ReportBoxBtns from "../../components/reportBoxBtns/reportBoxBtns"
+import IssuedBtn from "../../components/issuedBtn/issuedBtn"
 
 
 const IsoCtrl = () => {
@@ -97,7 +98,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn, progTable
+    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn, progTable, issuedBtn
     var currentTabText = currentTab
     tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
@@ -811,6 +812,62 @@ const IsoCtrl = () => {
         setErrorReports(true)
     }
 
+    async function issue(transmittal, date){
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorUnclaim(false)
+        setLoading(true)
+
+        console.log(transmittal)
+        
+        if (selected.length > 0){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                const body ={
+                    user : currentUser,
+                    file: selected[i],
+                    role: currentRole,
+                    transmittal: transmittal,
+                    date: date
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                await fetch("http://localhost:5000/toIssue", options)
+            }
+            await setUpdateData(!updateData)
+            setLoading(false)
+        }
+    }
+
+    async function newRev() {
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorUnclaim(false)
+        setLoading(true)
+        if (selected.length > 0){
+            for (let i = 0; i < selected.length; i++){
+                console.log(selected[i])
+            }
+        }
+    }
+
+    async function request() {
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorUnclaim(false)
+        setLoading(true)
+        if (selected.length > 0){
+            for (let i = 0; i < selected.length; i++){
+                console.log(selected[i])
+            }
+        }
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
@@ -858,12 +915,16 @@ const IsoCtrl = () => {
     ((currentRole === "SpecialityLead" || currentTab ==="SpecialityLead") ||
     (currentTab=== "My Tray")) || (((currentTab === "Recycle bin" || currentTab === "On hold") && currentRole === "DesignLead") || 
     currentRole === "SpecialityLead") || (currentTab === "Process" && currentRole === "Process") ||
-    (currentRole === "Instrument" && currentTab === "Instrument")){
+    (currentRole === "Instrument" && currentTab === "Instrument") ||
+    (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+    }
+    if(currentTab === "LDE/IsoControl" || currentTab === "Issued"){
+        issuedBtn = <IssuedBtn onChange={value => setCurrentTab("Issued")} currentTab = {currentTab}/>
     }
 
     //El usuario admin ve mas parte de la tabla de progreso
@@ -953,6 +1014,7 @@ const IsoCtrl = () => {
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
                   <ReportsBtn onChange={value => setCurrentTab("Reports")} currentTab = {currentTab}/>
                   {procInsBtn}
+                  {issuedBtn}
 
                 </div>
                     
@@ -972,7 +1034,6 @@ const IsoCtrl = () => {
                     </Collapse>
                     <center className="actionBtns__container">
                         {actionText}
-                        {actionExtra}
                         {actionButtons}
                     </center>
                     <br></br>
