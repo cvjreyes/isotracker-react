@@ -3,7 +3,6 @@ import ForceClaimPopUp from '../forceClaimPopUp/forceClaimPopUp';
 import ActionExtra from "../../components/actionExtra/actionExtra"
 
 const ActionBtns = props =>{
-
     function assignToUser(username){
         props.forceClaim(username)
     }
@@ -16,10 +15,19 @@ const ActionBtns = props =>{
     if(props.onlyDownload){
         actionBtn11 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
     }else{
+        
         if (props.currentTab !== "My Tray" && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold"){
             actionBtn11 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
-            if (!(props.role === "SpecialityLead" && (props.currentTab === "Process" || props.currentTab === "Instrument"))){
+            if (!(props.role === "SpecialityLead" && (props.currentTab === "Process" || props.currentTab === "Instrument")) && props.currentTab !== "Issued"){
                 actionBtn1 = <button class="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.claimClick()}>Claim</button>
+            }
+            if(props.currentTab === "Issued"){
+                
+                if(props.role === "SpecialityLead"){
+                    actionBtn1 = <button class="btn btn-sm btn-success" name="newrev" value="newrev" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.newRev()}>New Rev</button>
+                }else if(props.role === "Design" || props.role === "DesignLead"){
+                    actionBtn1 = <button class="btn btn-sm btn-success" name="newrev" value="newrev" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.request()}>Request</button>
+                }
             }
     
         }if (props.currentTab === "My Tray"){
@@ -87,7 +95,7 @@ const ActionBtns = props =>{
 
             
         
-        }else if(props.role === "SpecialityLead" && props.currentTab !== "LDE/IsoControl" && props.currentTab !== "Process" &&  props.currentTab !== "Instrument"){
+        }else if(props.role === "SpecialityLead" && props.currentTab !== "LDE/IsoControl" && props.currentTab !== "Process" &&  props.currentTab !== "Instrument" && props.currentTab !== "Issued"){
             actionBtn10 = <ForceClaimPopUp currentTab={props.currentTab} assignToUser={assignToUser.bind(this)}/>
         }
         
