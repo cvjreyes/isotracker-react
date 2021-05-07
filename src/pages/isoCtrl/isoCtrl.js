@@ -56,6 +56,7 @@ const IsoCtrl = () => {
     const [realProgress, setRealProgress] = useState(0);
     const [progressISO, setProgressISO] = useState(0);
     const [realProgressISO, setRealProgressISO] = useState(0);
+    const [updateProgress, setUpdateProgress] = useState(0);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -158,7 +159,7 @@ const IsoCtrl = () => {
             
 
         }
-    },[])
+    },[updateProgress])
 
     const getProgress = () =>{
         const options = {
@@ -575,6 +576,7 @@ const IsoCtrl = () => {
         }
         await setUpdateData(!updateData)
         setLoading(false)
+        await getProgress()
     }
     
 
@@ -611,6 +613,7 @@ const IsoCtrl = () => {
             await setUpdateData(!updateData)
             console.log("restored")
             setLoading(false)
+            await getProgress()
         }
     }
 
@@ -841,6 +844,7 @@ const IsoCtrl = () => {
             }
             await setUpdateData(!updateData)
             setLoading(false)
+            await getProgress()
         }
     }
 
@@ -850,9 +854,25 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setLoading(true)
         if (selected.length > 0){
+            localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
-                console.log(selected[i])
+                const body ={
+                    user : currentUser,
+                    file: selected[i],
+                    role: currentRole,
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                await fetch("http://localhost:5000/newRev", options)
             }
+            setUpdateData(!updateData)
+            setLoading(false)
+            await getProgress()
         }
     }
 
@@ -862,10 +882,28 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setLoading(true)
         if (selected.length > 0){
+            localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
-                console.log(selected[i])
+                const body ={
+                    user : currentUser,
+                    file: selected[i],
+                    role: currentRole,
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                await fetch("http://localhost:5000/request", options)
+                
             }
+            setUpdateData(!updateData)
+            setLoading(false)
+            
         }
+
     }
 
     if(currentTab === "Upload IsoFiles"){

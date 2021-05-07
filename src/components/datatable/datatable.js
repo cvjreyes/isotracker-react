@@ -65,7 +65,6 @@ class DataTable extends React.Component{
         })
       })
 
-
       let body 
       if(this.props.currentTab === "Issued"){
         body ={
@@ -88,7 +87,7 @@ class DataTable extends React.Component{
           .then(json => {
                   var rows = []
                   let row = null
-                  let pButton, iButton = null
+                  let pButton, iButton, rButton = null
                   
                   for(let i = 0; i < json.rows.length; i++){
                     switch(json.rows[i].spo){
@@ -129,6 +128,13 @@ class DataTable extends React.Component{
                       default:  
                         iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>      
                     }
+                    if(json.rows[i].requested === 1){
+                      rButton = <button className="btn btn-danger" disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }else if(json.rows[i].requested !== 1 && json.rows[i].requested !== 2){
+                      rButton = <button className="btn btn-warning" disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }else if(json.rows[i].requested === 2){
+                      rButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }
                     if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){
                       row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} </div>}
                     }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){
@@ -149,9 +155,8 @@ class DataTable extends React.Component{
                         }
                       }
                     }else if(json.rows[i].user !== "None"){           
-                      console.log("ASDSA")      
                       if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> {pButton} {iButton} </div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> {pButton} {iButton} {rButton} </div>}
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> {pButton} {iButton} </div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
@@ -165,7 +170,7 @@ class DataTable extends React.Component{
 
                     }else{                
                       if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div> {pButton} {iButton} </div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div> {pButton} {iButton} {rButton}</div>}
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div> {pButton} {iButton} </div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
@@ -218,7 +223,7 @@ class DataTable extends React.Component{
           .then(json => {
                   var rows = []
                   let row = null
-                  let pButton, iButton = null
+                  let pButton, iButton, rButton = null
                   
                   for(let i = 0; i < json.rows.length; i++){
                     switch(json.rows[i].spo){
@@ -259,6 +264,13 @@ class DataTable extends React.Component{
                       default:  
                         iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>      
                     }
+                    if(json.rows[i].requested === 1){
+                      rButton = <button className="btn btn-danger" disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }else if(json.rows[i].requested !== 1 && json.rows[i].requested !== 2){
+                      rButton = <button className="btn btn-warning" disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }else if(json.rows[i].requested === 2){
+                      rButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }
                     if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){
                       row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} </div>}
                     }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){
@@ -279,9 +291,8 @@ class DataTable extends React.Component{
                         }
                       }
                     }else if(json.rows[i].user !== "None"){           
-                      console.log("ASDSA")      
                       if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> {pButton} {iButton} </div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> {pButton} {iButton} {rButton} </div>}
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> {pButton} {iButton} </div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
@@ -295,7 +306,7 @@ class DataTable extends React.Component{
 
                     }else{                
                       if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div> {pButton} {iButton} </div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div> {pButton} {iButton} {rButton}</div>}
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div> {pButton} {iButton} </div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
@@ -458,9 +469,13 @@ class DataTable extends React.Component{
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);
       },
-      getCheckboxProps: (record) => (
+      getCheckboxProps: (record) => record.actions.props.children[5] ?(
         {
         
+        disabled: record.actions.props.children[1].props.children === 'CLAIMED'| (record.actions.props.children[1].props.children === 'PENDING' && (secureStorage.getItem("role") !== "DesignLead" && secureStorage.getItem("role") !== "StressLead" && secureStorage.getItem("role") !== "SupportsLead" && secureStorage.getItem("role") !== "SpecialityLead")) | (record.actions.props.children[1].props.children !== 'PENDING' && this.props.currentTab !== "Issued" && (secureStorage.getItem("role") === "DesignLead" | secureStorage.getItem("role") === "StressLead" | secureStorage.getItem("role") === "SupportsLead") || record.actions.props.children[5].props.className === "btn btn-success"),
+        // Column configuration not to be checked
+        name: record.name,
+      }) : ({
         disabled: record.actions.props.children[1].props.children === 'CLAIMED'| (record.actions.props.children[1].props.children === 'PENDING' && (secureStorage.getItem("role") !== "DesignLead" && secureStorage.getItem("role") !== "StressLead" && secureStorage.getItem("role") !== "SupportsLead" && secureStorage.getItem("role") !== "SpecialityLead")) | (record.actions.props.children[1].props.children !== 'PENDING' && (secureStorage.getItem("role") === "DesignLead" | secureStorage.getItem("role") === "StressLead" | secureStorage.getItem("role") === "SupportsLead")),
         // Column configuration not to be checked
         name: record.name,

@@ -58,10 +58,14 @@ class DragAndDrop extends React.Component{
           }
           let extension = "";
           let i = filename.lastIndexOf('.');
+          let cl = false
           if (i > 0) {
             extension = filename.substring(i+1);
+            if(filename.substring(i-2) == 'CL.pdf'){
+              cl = true
+            }
           }
-          if(extension === "pdf"){
+          if(extension === "pdf" && !cl){
             let body =  {
               fileName: filename,
               user: this.props.user,
@@ -101,6 +105,7 @@ class DragAndDrop extends React.Component{
       })
       .catch(error => message.error(error)
     );
+    this.props.uploaded()
   }
 
   async updateFile(file) {
