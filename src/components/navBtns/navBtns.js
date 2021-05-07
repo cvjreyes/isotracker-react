@@ -68,9 +68,9 @@ const NavBtns = props =>{
     }
     if(props.currentTab === "LDE/IsoControl"){
         secureStorage.setItem("tab", "LDE/IsoControl")
-        ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>LDE/Isocontrol</b></button>
+        ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>LOS/Isocontrol</b></button>
     }else{
-        ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "white"}} onClick={() => {props.onChange("LDE/IsoControl")}}><b>LDE/Isocontrol</b></button>
+        ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "white"}} onClick={() => {props.onChange("LDE/IsoControl")}}><b>LOS/Isocontrol</b></button>
     }if(props.currentTab === "My Tray"){
         switch(props.currentRole){
             case "Design":
@@ -98,7 +98,7 @@ const NavBtns = props =>{
                 issuerButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("Issuer")}}><b>Issuer</b></button>
                 break;
             case "SpecialityLead":
-                ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("LDE/IsoControl")}}><b>LDE/Isocontrol</b></button>
+                ldeIsocontrolButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "lightgray"}} onClick={() => {props.onChange("LDE/IsoControl")}}><b>LOS/Isocontrol</b></button>
                 break;
             default:
                 break;

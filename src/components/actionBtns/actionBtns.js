@@ -41,7 +41,7 @@ const ActionBtns = props =>{
             }if(props.role === "Materials"){
                 actionBtn5 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "#FF6781", color:"white"}} onClick={() => props.transaction("Issuer")}>Issuer</button>
             }if(props.role === "Issuer"){
-                actionBtn5 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "	#FF8C00", color:"white"}} onClick={() => props.transaction("LDE/Isocontrol")}>LDE/Isocontrol</button>
+                actionBtn5 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "	#FF8C00", color:"white"}} onClick={() => props.transaction("LDE/Isocontrol")}>LOS/Isocontrol</button>
             }
             if(process.env.REACT_APP_IFC === "0"){
                 if (props.role !== "Stress" && props.role !== "StressLead"){

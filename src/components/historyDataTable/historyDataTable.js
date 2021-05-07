@@ -76,7 +76,7 @@ class HistoryDataTable extends React.Component{
                 var rows = []
                 var row = null
                 for(let i = 0; i < json.rows.length; i++){
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions:""}
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions:""}
                     rows.push(row)
                   }
                 
@@ -257,6 +257,16 @@ class HistoryDataTable extends React.Component{
         key: 'id',
         width: '20%',
         ...this.getColumnSearchProps('id'),
+        sorter:{
+          compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+        },
+      },
+      {
+        title: <center className="dataTable__header__text">Revision</center>,
+        dataIndex: 'revision',
+        key: 'revision',
+        width: '8%',
+        ...this.getColumnSearchProps('revision'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
