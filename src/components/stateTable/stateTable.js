@@ -15,22 +15,56 @@ const StateTable = props =>{
     const [materialsCount, setMaterialsCount] = useState(0)
     const [issuerCount, setIssuerCount] = useState(0)
     const [isocontrolToIssue, setIsocontrolToIssue] = useState(0)
+    const [r0, setR0] = useState(0)
+    const [r1, setR1] = useState(0)
+    const [r2, setR2] = useState(0)
+    const [model, setModel] = useState(0)
+
+    console.log(designUploadedCount)
 
     useEffect(()=>{
-        fetch("http://localhost:5000/updateStatus")
-        .then(response => response.json())
-        .then(json => {
-            setDesignUploadedCount(json["designUploaded"])
-            setDesignProgessCount(json["designProgress"])
-            setStressCount(json["stress"])
-            setSupportsCount(json["supports"])
-            setOnHoldCount(json["onHold"])
-            setDeletedCount(json["deleted"])
-            setMaterialsCount(json["materials"])
-            setIssuerCount(json["issuer"])
-            setIsocontrolToIssue(json["isocontrolToIssue"])
-      }) 
-     setTotalCount(designUploadedCount+designProgressCount+stressCount+supportsCount+onHoldCount+materialsCount+issuerCount+isocontrolToIssue)
+        if(process.env.REACT_APP_PROGRESS === "0"){
+            fetch("http://localhost:5000/updateStatus")
+            .then(response => response.json())
+            .then(json => {
+                console.log(json)
+                setDesignUploadedCount(json["designUploaded"])
+                setDesignProgessCount(json["designProgress"])
+                setStressCount(json["stress"])
+                setSupportsCount(json["supports"])
+                setOnHoldCount(json["onHold"])
+                setDeletedCount(json["deleted"])
+                setMaterialsCount(json["materials"])
+                setIssuerCount(json["issuer"])
+                setIsocontrolToIssue(json["isocontrolToIssue"])
+                setR0(json["r0"])
+                setR1(json["r1"])
+                setR2(json["r2"])
+                setTotalCount(json["total"])
+            }) 
+        }else{
+            fetch("http://localhost:5000/updateStatus")
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json)
+                    setDesignUploadedCount(json["designUploaded"])
+                    setDesignProgessCount(json["designProgress"])
+                    setStressCount(json["stress"])
+                    setSupportsCount(json["supports"])
+                    setOnHoldCount(json["onHold"])
+                    setDeletedCount(json["deleted"])
+                    setMaterialsCount(json["materials"])
+                    setIssuerCount(json["issuer"])
+                    setIsocontrolToIssue(json["isocontrolToIssue"])
+                    setR0(json["r0"])
+                    setR1(json["r1"])
+                    setR2(json["r2"])
+                    setTotalCount(json["total"])
+                    setModel(json["model"])
+                }) 
+
+        }
+        
     },props.updateData)
 
     return (
@@ -66,7 +100,7 @@ const StateTable = props =>{
                         <td className="statusTable__state">-</td>      
                     </tr>
                     <tr>
-                        <td className="statusTable__value">0</td>
+                        <td className="statusTable__value">{model}</td>
                         <td className="statusTable__value">{designUploadedCount}</td>
                         <td className="statusTable__value">{designProgressCount}</td>
                         <td className="statusTable__value">{stressCount}</td>
@@ -74,9 +108,9 @@ const StateTable = props =>{
                         <td className="statusTable__value">{materialsCount}</td>
                         <td className="statusTable__value">{issuerCount}</td>
                         <td className="statusTable__value">{isocontrolToIssue}</td>   
-                        <td className="statusTable__value"></td>
-                        <td className="statusTable__value"></td>
-                        <td className="statusTable__value"></td>
+                        <td className="statusTable__value">{r0}</td>
+                        <td className="statusTable__value">{r1}</td>
+                        <td className="statusTable__value">{r2}</td>
                         <td className="statusTable__value">{deletedCount}</td>
                         <td className="statusTable__value">{onHoldCount}</td>
                         <td className="statusTable__value">{totalCount}</td>   
