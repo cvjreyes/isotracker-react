@@ -807,6 +807,17 @@ const IsoCtrl = () => {
         })
     }
 
+    async function downloadStatus(){
+        setErrorReports(false)
+
+        await fetch("http://localhost:5000/downloadStatus/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION"]
+            exportToExcel(JSON.parse(json), "Status", headers)
+        })
+    }
+
     const exportToExcel = (apiData, fileName, headers) => {
         setErrorReports(false)
         const fileType =
@@ -957,7 +968,7 @@ const IsoCtrl = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
+        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
