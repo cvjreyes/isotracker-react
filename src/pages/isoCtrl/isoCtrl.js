@@ -50,6 +50,7 @@ const IsoCtrl = () => {
     const [loading, setLoading] = useState(false);
     const [errorUnclaim, setErrorUnclaim] = useState(false);
     const [errorPI, setErrorPI] = useState(false);
+    const [errorCL, setErrorCL] = useState(false);
     const [transactionSuccess, setTransactionSuccess] = useState(false);
     const [errorReports, setErrorReports] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -134,6 +135,7 @@ const IsoCtrl = () => {
                 console.log(error);
             })       
             setErrorPI(false)
+            setErrorCL(false)
             setUpdateData(!updateData)
             setTransactionSuccess(false);
             setErrorUnclaim(false)
@@ -143,6 +145,7 @@ const IsoCtrl = () => {
 
     useEffect(()=>{
         setErrorPI(false);
+        setErrorCL(false)
         setTransactionSuccess(false)
         setErrorUnclaim(false)
         setLoading(false)
@@ -183,6 +186,7 @@ const IsoCtrl = () => {
 
     const claim = async(event) => {
         setErrorReports(false)
+        setErrorCL(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -252,6 +256,7 @@ const IsoCtrl = () => {
     
     const forceClaim = async(username) =>{
         setErrorReports(false)
+        setErrorCL(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -283,6 +288,7 @@ const IsoCtrl = () => {
     const unclaim = async (event) =>{
         setErrorReports(false)
         setErrorUnclaim(false)
+        setErrorCL(false)
         setTransactionSuccess(false);
         setErrorPI(false)
         if(selected.length > 0){
@@ -350,6 +356,7 @@ const IsoCtrl = () => {
 
     async function forceUnclaim(fileName){
         setErrorReports(false)
+        setErrorCL(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -377,6 +384,7 @@ const IsoCtrl = () => {
 
     const verifyClick = async(event) =>{
         setErrorReports(false)
+        setErrorCL(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
@@ -435,6 +443,7 @@ const IsoCtrl = () => {
         
         if(selected.length > 0){
             setErrorReports(false)
+            setErrorCL(false)
             setErrorUnclaim(false)
             setErrorPI(false);
             setTransactionSuccess(false);
@@ -504,6 +513,14 @@ const IsoCtrl = () => {
                                 body: JSON.stringify(body)
                             }
                             await fetch("http://localhost:5000/api/transaction", options)
+                            .then(response => response.json())
+                            .then(json=>{
+                                console.log(json)
+                            })
+                            .catch(error =>{
+                                setErrorCL(true)
+                            })
+
                             setTransactionSuccess(true)
                         }
                     })
@@ -553,6 +570,7 @@ const IsoCtrl = () => {
     async function returnLead(destiny){
         setErrorReports(false)
         setErrorUnclaim(false)
+        setErrorCL(false)
         setTransactionSuccess(false);
         setErrorPI(false)
         setLoading(true)
@@ -587,6 +605,7 @@ const IsoCtrl = () => {
     async function restore(){
         setErrorReports(false)
         setErrorUnclaim(false)
+        setErrorCL(false)
         setTransactionSuccess(false);
         setErrorPI(false)
         console.log(selected.length)
@@ -630,6 +649,7 @@ const IsoCtrl = () => {
     async function sendProcessClick(fileName){
         setErrorReports(false)
         setErrorUnclaim(false)
+        setErrorCL(false)
         setTransactionSuccess(false);
         setLoading(true)
         localStorage.setItem("update", true)
@@ -656,6 +676,7 @@ const IsoCtrl = () => {
         setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
+        setErrorCL(false)
         setLoading(true)
         localStorage.setItem("update", true)
             
@@ -683,6 +704,7 @@ const IsoCtrl = () => {
 
     async function downloadFiles(){
         setErrorReports(false)
+        setErrorCL(false)
         setTransactionSuccess(false);
         setErrorUnclaim(false)
         setLoading(true)
@@ -818,6 +840,7 @@ const IsoCtrl = () => {
     async function issue(transmittal, date){
         setErrorReports(false)
         setTransactionSuccess(false);
+        setErrorCL(false)
         setErrorUnclaim(false)
         setLoading(true)
 
@@ -851,6 +874,7 @@ const IsoCtrl = () => {
     async function newRev() {
         setErrorReports(false)
         setTransactionSuccess(false);
+        setErrorCL(false)
         setErrorUnclaim(false)
         setLoading(true)
         if (selected.length > 0){
@@ -879,6 +903,7 @@ const IsoCtrl = () => {
     async function request() {
         setErrorReports(false)
         setTransactionSuccess(false);
+        setErrorCL(false)
         setErrorUnclaim(false)
         setLoading(true)
         if (selected.length > 0){
@@ -1007,6 +1032,12 @@ const IsoCtrl = () => {
                         <Alert style={{position: "fixed", left: "45%", zIndex:"3"}} severity="error"
                             >
                             Missing columns!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorCL}>
+                        <Alert style={{position: "fixed", left: "46%", zIndex:"3"}} severity="error"
+                            >
+                            Missing clean!
                         </Alert>
                     </Collapse>
                     <h2 className="title__container">

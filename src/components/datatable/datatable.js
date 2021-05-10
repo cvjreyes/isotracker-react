@@ -279,7 +279,7 @@ class DataTable extends React.Component{
                       console.log(json.rows[i].transmittal)
                       revision = "R" + String(json.rows[i].revision - 1) + " - " + json.rows[i].transmittal + "/" + json.rows[i].issued_date
                     }else{
-                      revision = "*R" + json.rows[i].revision
+                      revision = "R" + json.rows[i].revision + "*"
                     }
 
                     if(json.rows[i].requested === 1){
