@@ -50,12 +50,25 @@ class StatusDataTable extends React.Component{
             console.log(this.state.weights)
               var rows = []
               var row = null;
+              
               for(let i = 0; i < json.rows.length; i++){
-                  if(json.rows[i].tpipes_id){
-                    row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
-                  }else{
-                    row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
-                  }
+                var condition = ""
+                if(json.rows[i].issued === null){
+                  condition = "ON GOING R" + String(json.rows[i].revision) + "*"
+                }else{
+                  condition = "ISSUED R" + String(json.rows[i].revision - 1)
+                }
+                if(json.rows[i].deleted === 1){
+                  condition = "DELETED"
+                }
+                if(json.rows[i].onhold === 1){
+                  condition = "ON HOLD"
+                }
+                if(json.rows[i].tpipes_id){
+                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, condition: condition, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
+                }else{
+                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
+                }
                         
                 rows.push(row)
               }
@@ -82,7 +95,19 @@ class StatusDataTable extends React.Component{
               var rows = []
               var row = null;
               for(let i = 0; i < json.rows.length; i++){
-                row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}                    
+                var condition = ""
+                if(json.rows[i].issued === null){
+                  condition = "ON GOING R" + String(json.rows[i].revision) + "*"
+                }else{
+                  condition = "ISSUED R" + String(json.rows[i].revision - 1)
+                }
+                if(json.rows[i].deleted === 1){
+                  condition = "DELETED"
+                }
+                if(json.rows[i].onhold === 1){
+                  condition = "ON HOLD"
+                }
+                row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, condition: condition}                    
                 rows.push(row)
               }
                           
@@ -121,12 +146,25 @@ class StatusDataTable extends React.Component{
               console.log(this.state.weights)
                 var rows = []
                 var row = null;
+                
                 for(let i = 0; i < json.rows.length; i++){
-                    if(json.rows[i].tpipes_id){
-                      row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
-                    }else{
-                      row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
-                    }
+                  var condition = ""
+                  if(json.rows[i].issued === null){
+                    condition = "ON GOING R" + json.rows[i].revision + "*"
+                  }else{
+                    condition = "ISSUED R" + json.rows[i].revision - 1
+                  }
+                  if(json.rows[i].deleted === 1){
+                    condition = "DELETED"
+                  }
+                  if(json.rows[i].onhold === 1){
+                    condition = "ON HOLD"
+                  }
+                  if(json.rows[i].tpipes_id){
+                    row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, condition: condition, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
+                  }else{
+                    row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
+                  }
                           
                   rows.push(row)
                 }
@@ -153,7 +191,19 @@ class StatusDataTable extends React.Component{
                 var rows = []
                 var row = null;
                 for(let i = 0; i < json.rows.length; i++){
-                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}                    
+                  var condition = ""
+                  if(json.rows[i].issued === null){
+                    condition = "ON GOING R" + json.rows[i].revision + "*"
+                  }else{
+                    condition = "ISSUED R" + json.rows[i].revision - 1
+                  }
+                  if(json.rows[i].deleted === 1){
+                    condition = "DELETED"
+                  }
+                  if(json.rows[i].onhold === 1){
+                    condition = "ON HOLD"
+                  }
+                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, condition: condition}                    
                   rows.push(row)
                 }
                             
