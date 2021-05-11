@@ -221,6 +221,7 @@ class DragAndDrop extends React.Component{
             }
           })
         }
+        this.props.uploaded()
       }else{
         if(String(this.props.iso).trim() === String(file.file.name.split('.').slice(0, -1)).trim() || 
            String(this.props.iso+'-CL').trim() === String(file.file.name.split('.').slice(0, -1)).trim() ){
@@ -230,14 +231,18 @@ class DragAndDrop extends React.Component{
           let joined = this.state.errorAlerts.concat(file.file.name);
             this.setState({
               errorAlerts : joined,
-              error: true
+              error: true,
+              uploading: false
             })
         }
       }
       file.remove();
     });    
+    this.setState({
+      uploaded: true
+    })
 
-    this.props.uploaded()
+    
 
   }
 
@@ -303,6 +308,7 @@ class DragAndDrop extends React.Component{
     }
     
   }
+  console.log(errors)
 
     return (
       <div>
