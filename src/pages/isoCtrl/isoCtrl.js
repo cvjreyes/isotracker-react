@@ -824,15 +824,21 @@ const IsoCtrl = () => {
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
         const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
         const fileExtension = ".xlsx";
-      
-          const ws = XLSX.utils.json_to_sheet(apiData);   
-          for(let i = 0; i < headers.length; i++){
-              ws[header_cells[i]].v = headers[i]
-          }
-          const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-          const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-          const data = new Blob([excelBuffer], { type: fileType });
-          FileSaver.saveAs(data, fileName + fileExtension);
+
+        let wscols = []
+        for(let i = 0; i < headers.length; i++){
+            wscols.push({width:35})
+        }
+
+        const ws = XLSX.utils.json_to_sheet(apiData);   
+        ws["!cols"] = wscols
+        for(let i = 0; i < headers.length; i++){
+            ws[header_cells[i]].v = headers[i]
+        }
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], { type: fileType });
+        FileSaver.saveAs(data, fileName + fileExtension);
 
     }
 
