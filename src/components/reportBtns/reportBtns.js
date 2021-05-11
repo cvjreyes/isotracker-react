@@ -45,6 +45,7 @@ const Report_btns = props => {
         <td className="td__btns">
             {StatusButton}
             {HistoryButton}
+            
         </td>
     );
 };

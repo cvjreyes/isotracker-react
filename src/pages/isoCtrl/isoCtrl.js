@@ -102,6 +102,9 @@ const IsoCtrl = () => {
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn, progTable, issuedBtn
     var currentTabText = currentTab
+    if(currentTabText === "LDE/IsoControl"){
+        currentTabText = "LOS/IsoControl"
+    }
     tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
@@ -807,21 +810,49 @@ const IsoCtrl = () => {
         })
     }
 
+    async function downloadStatus(){
+        setErrorReports(false)
+
+        await fetch("http://localhost:5000/downloadStatus/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION"]
+            exportToExcel(JSON.parse(json), "Status", headers)
+        })
+    }
+
+    async function downloadPI(){
+        setErrorReports(false)
+
+        await fetch("http://localhost:5000/downloadPI/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["ISO_ID", "PROCESS", "INSTRUMENTATION", "UPDATED_AT"]
+            exportToExcel(JSON.parse(json), "IsoStatusSIT-SPO", headers)
+        })
+    }
+
     const exportToExcel = (apiData, fileName, headers) => {
         setErrorReports(false)
         const fileType =
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
         const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
         const fileExtension = ".xlsx";
-      
-          const ws = XLSX.utils.json_to_sheet(apiData);   
-          for(let i = 0; i < headers.length; i++){
-              ws[header_cells[i]].v = headers[i]
-          }
-          const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-          const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-          const data = new Blob([excelBuffer], { type: fileType });
-          FileSaver.saveAs(data, fileName + fileExtension);
+
+        let wscols = []
+        for(let i = 0; i < headers.length; i++){
+            wscols.push({width:35})
+        }
+
+        const ws = XLSX.utils.json_to_sheet(apiData);   
+        ws["!cols"] = wscols
+        for(let i = 0; i < headers.length; i++){
+            ws[header_cells[i]].v = headers[i]
+        }
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], { type: fileType });
+        FileSaver.saveAs(data, fileName + fileExtension);
 
     }
 
@@ -957,7 +988,7 @@ const IsoCtrl = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
+        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
