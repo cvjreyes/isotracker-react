@@ -102,6 +102,9 @@ const IsoCtrl = () => {
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn, progTable, issuedBtn
     var currentTabText = currentTab
+    if(currentTabText === "LDE/IsoControl"){
+        currentTabText = "LOS/IsoControl"
+    }
     tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
@@ -815,6 +818,17 @@ const IsoCtrl = () => {
         .then(json => {
             const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION"]
             exportToExcel(JSON.parse(json), "Status", headers)
+        })
+    }
+
+    async function downloadPI(){
+        setErrorReports(false)
+
+        await fetch("http://localhost:5000/downloadPI/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["ISO_ID", "PROCESS", "INSTRUMENTATION", "UPDATED_AT"]
+            exportToExcel(JSON.parse(json), "IsoStatusSIT-SPO", headers)
         })
     }
 
