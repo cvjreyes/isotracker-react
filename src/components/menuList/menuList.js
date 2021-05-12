@@ -64,7 +64,7 @@ const MenuList = () =>{
             </div>
             <div className="panel__content__container">
                 <div>
-                    <a href="/" style={{textDecoration: "none"}}>
+                    <a href="/isotracker" style={{textDecoration: "none"}}>
                         <h4 style={{backgroundColor: equipIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setEquipIsShown(true)} onMouseLeave={() => setEquipIsShown(false)}><img src={EquiIcon} alt="equi" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Equipment (Weight: 4225 | 8.86%)</h4>                   
                     </a>
                     <div class="progress" style={{height: "25px"}}>

@@ -13,6 +13,11 @@ const ActionBtns = props =>{
 
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
     if(props.onlyDownload){
+        if(props.role === "SpecialityLead" || props.role === "DesignLead"){
+            console.log("entra")
+            actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
+            actionBtn7 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#CD853F"}} onClick={() => props.transaction("On hold")}>Hold</button>
+        }
         actionBtn11 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
     }else{
         
@@ -74,9 +79,7 @@ const ActionBtns = props =>{
             }
             
             if(props.role === "DesignLead"){
-                actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#781C2E"}} onClick={() => props.returnLead("Design")}>Design</button>
-                actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
-                actionBtn7 = <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("On hold")}>Hold</button>
+                actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#781C2E"}} onClick={() => props.returnLead("Design")}>Design</button>               
             }if(props.role === "SpecialityLead"){
                 actionBtn3 = actionBtn1
                 actionBtn1 = <ActionExtra toIssue={toIssue.bind(this)}/>
@@ -102,6 +105,11 @@ const ActionBtns = props =>{
         if ((props.currentTab === "Recycle bin" && (props.role === "DesignLead" || props.role === "SpecialityLead")) || 
             (props.currentTab === "On hold" && (props.role === "DesignLead" || props.role === "SpecialityLead" || props.role === "Issuer"))){
             actionBtn8 = <button className="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.restoreClick()}>Restore</button>
+        }
+        if(props.role === "SpecialityLead" || props.role === "DesignLead"){
+            console.log("entra")
+            actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
+            actionBtn7 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#CD853F"}} onClick={() => props.transaction("On hold")}>Hold</button>
         }
     }
 

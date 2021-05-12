@@ -177,14 +177,14 @@ const IsoCtrl = () => {
              await setProgressISO(json.progressISO)
              await setRealProgressISO(json.realprogressISO)
         })
-
+        
         fetch("http://localhost:5000/currentProgress", options)
         .then(response => response.json())
         .then(async json =>{
              await setProgress(json.progress)
              await setRealProgress(json.realprogress)
         })
-        
+
     }
 
     const claim = async(event) => {
@@ -521,7 +521,7 @@ const IsoCtrl = () => {
                                 console.log(json)
                             })
                             .catch(error =>{
-                                setErrorCL(true)
+                                setErrorCL(true)                             
                             })
 
                             setTransactionSuccess(true)
@@ -832,6 +832,17 @@ const IsoCtrl = () => {
         })
     }
 
+    async function downloadIssued(){
+        setErrorReports(false)
+
+        await fetch("http://localhost:5000/downloadIssued/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["ISO_ID", "REV0", "REV1", "REV2", "REV3", "REV4"]
+            exportToExcel(JSON.parse(json), "IsoStatusIssued", headers)
+        })
+    }
+
     const exportToExcel = (apiData, fileName, headers) => {
         setErrorReports(false)
         const fileType =
@@ -988,7 +999,7 @@ const IsoCtrl = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
+        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -1036,37 +1047,37 @@ const IsoCtrl = () => {
             <div className="isoCtrl__container">     
                 <center>
                     <Collapse in={loading}>
-                        <Alert style={{position: "fixed", left: "47%", zIndex:"3"}} severity="info"
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"3"}} severity="info"
                             >
                             Processing...
                         </Alert>
                     </Collapse>
                     <Collapse in={errorPI}>
-                        <Alert style={{position: "fixed", left: "37%", zIndex:"3"}} severity="error"
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                             >
                             At least one isometric was on revision and wasn't sent to LDE/Isocontrol
                         </Alert>
                     </Collapse>
                     <Collapse in={transactionSuccess}>
-                        <Alert style={{position: "fixed", left: "47%", zIndex:"3"}} severity="success"
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
                             >
                             Successful!
                         </Alert>
                     </Collapse>
                     <Collapse in={errorUnclaim}>
-                        <Alert style={{position: "fixed", left: "44%", zIndex:"3"}} severity="error"
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                             >
                             Can't unclaim an iso assigned by LOS!
                         </Alert>
                     </Collapse>
                     <Collapse in={errorReports}>
-                        <Alert style={{position: "fixed", left: "45%", zIndex:"3"}} severity="error"
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                             >
                             Missing columns!
                         </Alert>
                     </Collapse>
                     <Collapse in={errorCL}>
-                        <Alert style={{position: "fixed", left: "46%", zIndex:"3"}} severity="error"
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                             >
                             Missing clean!
                         </Alert>
