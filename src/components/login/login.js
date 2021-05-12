@@ -55,7 +55,7 @@ const Login = props =>{
                     localStorage.setItem('token', json.token);
                     secureStorage.setItem('user', json.user)
                     secureStorage.setItem('tab', "Status")      
-                    history.replace('/');
+                    history.replace('/isotracker');
                     window.location.reload(false);
                     
                 }
