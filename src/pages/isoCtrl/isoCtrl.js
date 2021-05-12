@@ -494,6 +494,7 @@ const IsoCtrl = () => {
                         if(json.sit === 1 || json.sit === 4 || json.spo === 1 || json.spo === 4){
                             localStorage.setItem("update", true)
                             setErrorPI(true);
+                            setTransactionSuccess(false);
                         }else{
                             setCommentAlert(false)
                             localStorage.setItem("update", true)
@@ -523,8 +524,10 @@ const IsoCtrl = () => {
                             .catch(error =>{
                                 setErrorCL(true)                             
                             })
-
-                            setTransactionSuccess(true)
+                            if(!errorCL){
+                                setTransactionSuccess(true)
+                            }
+                            
                         }
                     })
                 }
