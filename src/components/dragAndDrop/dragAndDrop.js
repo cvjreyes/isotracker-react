@@ -70,7 +70,6 @@ class DragAndDrop extends React.Component{
               fileName: filename,
               user: this.props.user,
             }
-            console.log(body)
             fetch('http://localhost:5000/uploadHis', {
               // content-type header should not be specified!
               method: 'POST',
@@ -79,7 +78,7 @@ class DragAndDrop extends React.Component{
                 "Accept": "application/json"
               },
               body: JSON.stringify(body)
-            }).catch(error => message.error(error))
+            }).catch(error =>console.log(error))
           }
         }else{
           for (let value of file.values()) {
@@ -139,7 +138,6 @@ class DragAndDrop extends React.Component{
               file: filename,
               user: this.props.user,
             }
-            console.log(body)
             fetch('http://localhost:5000/updateHis', {
               // content-type header should not be specified!
               method: 'POST',
@@ -191,16 +189,20 @@ class DragAndDrop extends React.Component{
     })
 
     await allFiles.forEach(file => {
+      console.log("Empiezo el upload de ", file)
       const formData  = new FormData(); 
       formData.append('file', file.file);  
       if(this.props.mode === "upload"){
         if(process.env.REACT_APP_PROGRESS === "0"){
           this.uploadFile(formData);
         }else{
+          console.log(file.file.name)
           fetch('http://localhost:5000/checkPipe/'+file.file.name)
           .then(response => response.json())
           .then(async json =>{
+            console.log(json)
             if(json.exists){
+              console.log("existe")
               this.uploadFile(formData);
             }else{
               let joined = this.state.pipeErrorAlerts.concat(file.file.name);
@@ -221,11 +223,10 @@ class DragAndDrop extends React.Component{
             }
           })
         }
-        this.props.uploaded()
+        
       }else{
         if(String(this.props.iso).trim() === String(file.file.name.split('.').slice(0, -1)).trim() || 
            String(this.props.iso+'-CL').trim() === String(file.file.name.split('.').slice(0, -1)).trim() ){
-          console.log("Pertenece " + file.file.name)
           this.updateFile(formData);
         }else{
           let joined = this.state.errorAlerts.concat(file.file.name);
@@ -241,7 +242,7 @@ class DragAndDrop extends React.Component{
     this.setState({
       uploaded: true
     })
-
+    this.props.uploaded()
     
 
   }
@@ -308,7 +309,6 @@ class DragAndDrop extends React.Component{
     }
     
   }
-  console.log(errors)
 
     return (
       <div>

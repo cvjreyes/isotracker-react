@@ -197,6 +197,7 @@ class DataTable extends React.Component{
                   this.setState({
                     data : rows,
                   });
+                  console.log(this.state.data)
               }
           )
           .catch(error => {
