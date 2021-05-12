@@ -521,7 +521,7 @@ const IsoCtrl = () => {
                                 console.log(json)
                             })
                             .catch(error =>{
-                                setErrorCL(true)
+                                setErrorCL(true)                             
                             })
 
                             setTransactionSuccess(true)
@@ -832,6 +832,17 @@ const IsoCtrl = () => {
         })
     }
 
+    async function downloadIssued(){
+        setErrorReports(false)
+
+        await fetch("http://localhost:5000/downloadIssued/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["ISO_ID", "REV0", "REV1", "REV2", "REV3", "REV4"]
+            exportToExcel(JSON.parse(json), "IsoStatusIssued", headers)
+        })
+    }
+
     const exportToExcel = (apiData, fileName, headers) => {
         setErrorReports(false)
         const fileType =
@@ -988,7 +999,7 @@ const IsoCtrl = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
+        tableContent = <ReportBoxBtns downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
