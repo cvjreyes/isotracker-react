@@ -521,8 +521,10 @@ const IsoCtrl = () => {
                             .then(json=>{
                                 console.log(json)
                             })
-                            .catch(error =>{
-                                setErrorCL(true)                             
+                            .catch(async error =>{
+                                
+                                await setErrorCL(true) 
+                                console.log(errorCL)                            
                             })
                             if(!errorCL){
                                 setTransactionSuccess(true)
