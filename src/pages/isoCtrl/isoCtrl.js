@@ -58,6 +58,7 @@ const IsoCtrl = () => {
     const [progressISO, setProgressISO] = useState(0);
     const [realProgressISO, setRealProgressISO] = useState(0);
     const [updateProgress, setUpdateProgress] = useState(0);
+    const [errorUnclaimR, setErrorUnclaimR] = useState(false);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -138,6 +139,7 @@ const IsoCtrl = () => {
                 console.log(error);
             })       
             setErrorPI(false)
+            setErrorUnclaimR(false)
             setErrorCL(false)
             setUpdateData(!updateData)
             setTransactionSuccess(false);
@@ -147,6 +149,7 @@ const IsoCtrl = () => {
     },[currentRole]);
 
     useEffect(()=>{
+        setErrorUnclaimR(false)
         setErrorPI(false);
         setErrorCL(false)
         setTransactionSuccess(false)
@@ -188,6 +191,7 @@ const IsoCtrl = () => {
     }
 
     const claim = async(event) => {
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorCL(false)
         setErrorUnclaim(false)
@@ -258,6 +262,7 @@ const IsoCtrl = () => {
     }   
     
     const forceClaim = async(username) =>{
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorCL(false)
         setErrorUnclaim(false)
@@ -289,6 +294,7 @@ const IsoCtrl = () => {
     }
 
     const unclaim = async (event) =>{
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorUnclaim(false)
         setErrorCL(false)
@@ -346,8 +352,14 @@ const IsoCtrl = () => {
                     }
                     await fetch("http://localhost:5000/unclaim", options)
                     .then(response => response.json())
+                    .then(json=>{
+                        if(json.error === "forced"){
+                            setErrorUnclaim(true)
+                        }else if(json.error === "returned"){
+                            setErrorUnclaimR(true)
+                        }
+                    })
                     .catch(err => {
-                        setErrorUnclaim(true)
                     });
                 }
             }
@@ -358,6 +370,7 @@ const IsoCtrl = () => {
     }
 
     async function forceUnclaim(fileName){
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorCL(false)
         setErrorUnclaim(false)
@@ -386,6 +399,7 @@ const IsoCtrl = () => {
 
 
     const verifyClick = async(event) =>{
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorCL(false)
         setErrorUnclaim(false)
@@ -417,6 +431,7 @@ const IsoCtrl = () => {
     }
 
     async function cancelVerifyClick(filename){
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
@@ -445,6 +460,7 @@ const IsoCtrl = () => {
     async function transaction(destiny){
         
         if(selected.length > 0){
+            setErrorUnclaimR(false)
             setErrorReports(false)
             setErrorCL(false)
             setErrorUnclaim(false)
@@ -581,6 +597,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setTransactionSuccess(false);
         setErrorPI(false)
+        setErrorUnclaimR(false)
         setLoading(true)
         localStorage.setItem("update", true)
         for (let i = 0; i < selected.length; i++){
@@ -612,6 +629,7 @@ const IsoCtrl = () => {
 
     async function restore(){
         setErrorReports(false)
+        setErrorUnclaimR(false)
         setErrorUnclaim(false)
         setErrorCL(false)
         setTransactionSuccess(false);
@@ -655,6 +673,7 @@ const IsoCtrl = () => {
     }
 
     async function sendProcessClick(fileName){
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorUnclaim(false)
         setErrorCL(false)
@@ -683,6 +702,7 @@ const IsoCtrl = () => {
     async function sendInstrumentClick(fileName){
         setErrorReports(false)
         setErrorUnclaim(false)
+        setErrorUnclaimR(false)
         setTransactionSuccess(false);
         setErrorCL(false)
         setLoading(true)
@@ -711,6 +731,7 @@ const IsoCtrl = () => {
     }
 
     async function downloadFiles(){
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorCL(false)
         setTransactionSuccess(false);
@@ -885,6 +906,7 @@ const IsoCtrl = () => {
     }
 
     async function issue(transmittal, date){
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setTransactionSuccess(false);
         setErrorCL(false)
@@ -920,6 +942,7 @@ const IsoCtrl = () => {
 
     async function newRev() {
         setErrorReports(false)
+        setErrorUnclaimR(false)
         setTransactionSuccess(false);
         setErrorCL(false)
         setErrorUnclaim(false)
@@ -948,6 +971,7 @@ const IsoCtrl = () => {
     }
 
     async function request() {
+        setErrorUnclaimR(false)
         setErrorReports(false)
         setTransactionSuccess(false);
         setErrorCL(false)
@@ -976,6 +1000,39 @@ const IsoCtrl = () => {
             
         }
 
+    }
+
+    async function returnIso(destiny, comments){
+        setErrorUnclaimR(false)
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setErrorUnclaim(false)
+        setLoading(true)
+        if (selected.length > 0){
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                const body ={
+                    user : currentUser,
+                    file: selected[i],
+                    role: currentRole,
+                    from: currentTab,
+                    destiny: destiny,
+                    comments: comments
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                await fetch("http://localhost:5000/returnIso", options)
+                
+            }
+            setUpdateData(!updateData)
+            setLoading(false)
+        }
     }
 
     if(currentTab === "Upload IsoFiles"){
@@ -1028,10 +1085,10 @@ const IsoCtrl = () => {
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
     if(currentTab === "LDE/IsoControl" || currentTab === "Issued"){
         issuedBtn = <IssuedBtn onChange={value => setCurrentTab("Issued")} currentTab = {currentTab}/>
@@ -1073,6 +1130,12 @@ const IsoCtrl = () => {
                         <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                             >
                             Can't unclaim an iso assigned by LOS!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorUnclaimR}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            Can't unclaim a returned ISO!
                         </Alert>
                     </Collapse>
                     <Collapse in={errorReports}>
