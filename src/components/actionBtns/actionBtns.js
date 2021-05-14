@@ -1,6 +1,7 @@
 //Botones de accion que aparecen en cada fase de isotracker para tratar los archivos
 import ForceClaimPopUp from '../forceClaimPopUp/forceClaimPopUp';
 import ActionExtra from "../../components/actionExtra/actionExtra"
+import CancelIso from "../../components/cancelIso/cancelIso"
 
 const ActionBtns = props =>{
     function assignToUser(username){
@@ -9,6 +10,10 @@ const ActionBtns = props =>{
     
     function toIssue(transmittal, date){
         props.issue(transmittal, date)
+    }
+
+    function returnIso(destiny, comments){
+        props.returnIso(destiny, comments)
     }
 
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
@@ -83,7 +88,7 @@ const ActionBtns = props =>{
             }if(props.role === "SpecialityLead"){
                 actionBtn3 = actionBtn1
                 actionBtn1 = <ActionExtra toIssue={toIssue.bind(this)}/>
-                actionBtn2 = null
+                actionBtn2 = <CancelIso returnIso={returnIso.bind(this)}/>
                 actionBtn5 = null
             }
             else if(props.role === "StressLead"){
