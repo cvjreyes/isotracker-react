@@ -12,8 +12,8 @@ const Welcome = () =>{
             </div>
             <div class="content">
                 <div className="cover__main__container">
-                    <div className="cover__main__text">3D Progress Control v2</div><br></br><div>
-                    <div className="cover__main__footer"><center><footer>Ⓒ Copyright 2021 Technip Iberia, S.A.U - Developed by: J.Reyes-Sztayzel</footer></center></div></div>
+                    <div className="cover__main__text">IsoTracker v2021</div><br></br><div>
+                    <div className="cover__main__footer"><center><footer>Ⓒ Copyright 2021 Technip Iberia, S.A.U - Developed by: J.Reyes-Sztayzel / A.Domínguez-Ortega</footer></center></div></div>
                 </div>
             </div>
         </div>

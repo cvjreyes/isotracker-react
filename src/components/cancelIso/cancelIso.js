@@ -23,30 +23,35 @@ export default class CancelIso extends Component {
         });
     }
 
+    return(){
+        const tray = document.getElementById("tray").value
+        const comments = document.getElementById("comments").value
+        this.props.returnIso(tray, comments)
+        this.closeModal()
+    }
+
     render() {
         var trayHeader, traySelect
-        if (this.props.user === "admin"){
+
             trayHeader = <h4 className="cancel__header__tray">Tray</h4>
-            traySelect = <select className="destination__select" ><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Support">Support</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
-        }
+            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Support">Support</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
+        
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
-                <button class="btn btn-sm" style={{backgroundColor: "grey", color:"white"}} onClick={() => this.openModal()}>Cancel isometric</button>
+                <button class="btn btn-sm" style={{backgroundColor: "grey", color:"white", width:"110px", height:"32px", marginTop:"1px"}} onClick={() => this.openModal()}>Return</button>
                 <div>
-                    <Modal visible={this.state.visible} width="1100" height="500" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="650" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="header__container">
-                            <h4 className="cancel__header__id">Iso ID</h4>
                             {trayHeader}
                             <h4 className="cancel__header__comments">Comments</h4>
                         </div>
-                        <div className="body__container">
-                            <p className="isometric__name">021A1971101N0004_01.pdf</p>
+                        <div className="body__container">   
                             {traySelect}
-                            <textarea placeholder="Comments" class="comments" cols="51" rows="14" required="" maxlength="400" name="comments" style={{margin: "10px 10px 10px 10px"}}></textarea>
+                            <textarea id="comments" placeholder="Comments" class="comments" cols="51" rows="6" required="" maxlength="400" name="comments" style={{margin: "10px 10px 10px 10px"}}></textarea>
                         </div>
                         <center className="buttons__container">
-                            <button class="btn btn-sm btn-success" style={{marginRight:"5px", fontSize:"16px"}}>Confirm</button>
-                            <button class="btn btn-sm btn-danger" style={{marginRight:"5px", fontSize:"16px"}}>Cancel</button>
+                            <button class="btn btn-sm btn-success" style={{marginRight:"5px", fontSize:"16px"}} onClick={()=>this.return()}>Confirm</button>
+                            <button class="btn btn-sm btn-danger" style={{marginRight:"5px", fontSize:"16px"}} onClick={()=>this.closeModal()}>Cancel</button>
                         </center>
                     </Modal>
                 </div>
