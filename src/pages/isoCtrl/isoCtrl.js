@@ -1161,9 +1161,9 @@ const IsoCtrl = () => {
                     <h3 className="iso__subtitle">{currentTabText}</h3>
                 </center>
                 
-                <table style={{width: "100%"}}>
-                    <tbody>
-                        <tr>
+                <div>
+                    <div>
+                        <div style={{display:"inline"}}>
                         <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
                             <td className="reportBtns__container" style={{width:"380px"}}>
                                 
@@ -1173,20 +1173,17 @@ const IsoCtrl = () => {
                             <td>
                                 {uploadButton}
                             </td>   
-                                           
-                            <td style={{width: "750px",position:"inline-block", right: "0"}}>
-                                {progTable}
-                            </td>    
-                            
-                        </tr>
-                    </tbody>
-                </table>              
+                            <div className="stateTable__container">
+                                <td style={{width: "75 %"}}>
+                                    <StateTable updateData={updateData} currentRole = {currentRole} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
+                                </td>
+                            </div>            
+
+                        </div>
+                    </div>
+                </div>              
                 
-                <div className="stateTable__container">
-                    <td style={{width: "75 %"}}>
-                        <StateTable/>
-                    </td>
-                </div>
+                
                 <div style={{position: "relative", width:"500px"}}>
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
