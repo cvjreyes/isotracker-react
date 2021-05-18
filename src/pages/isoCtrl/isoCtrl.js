@@ -738,6 +738,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setLoading(true)
         localStorage.setItem("update", true)
+        /*
         if(selected.length === 1){
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -779,7 +780,7 @@ const IsoCtrl = () => {
         await setUpdateData(!updateData)
         await setDownloadzip(new JSZip())   
         setLoading(false)
-        /* EN CASO DE QUERER ADJUNTOS
+        */
         for (let i = 0; i < selected.length; i++){
             const body ={
                 fileName: selected[i]
@@ -819,10 +820,10 @@ const IsoCtrl = () => {
         })  
         
         await setDownloadzip(new JSZip())   
-        await setAttachFiles(null)
+        //await setAttachFiles(null)
         await setUpdateData(!updateData)
         setLoading(false)
-        */ 
+        
     }
 
     async function downloadHistory(){
