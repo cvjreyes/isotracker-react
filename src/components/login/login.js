@@ -49,13 +49,13 @@ const Login = props =>{
             },
             body: JSON.stringify(body)
         }
-        fetch("http://localhost:5000/login", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/login", options)
             .then(response => response.json())
             .then(json => {
                     localStorage.setItem('token', json.token);
                     secureStorage.setItem('user', json.user)
                     secureStorage.setItem('tab', "Status")      
-                    history.replace('/isotracker');
+                    history.replace('/'+process.env.REACT_APP_SERVER+'/isotracker');
                     window.location.reload(false);
                     
                 }

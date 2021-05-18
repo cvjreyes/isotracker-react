@@ -18,7 +18,7 @@ const Register = () =>{
     }
 
     useEffect(()=>{
-        fetch("http://localhost:5000/api/roles")
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles")
         .then(response => response.json())
         .then(json => {
                 setRoleItems(json);
@@ -38,7 +38,7 @@ const Register = () =>{
             },
             body: JSON.stringify(body)
         }
-        fetch("http://localhost:5000/register", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/register", options)
             .then(response => response.json())
             .then(json => {
                     window.location.reload(false);                

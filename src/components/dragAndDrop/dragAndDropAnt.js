@@ -19,7 +19,7 @@ class DragAndDrop extends React.Component{
   };
 
   async uploadFile(file) {
-    await fetch('http://localhost:5000/upload', {
+    await fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/upload', {
       // content-type header should not be specified!
       method: 'POST',
       body: file,
@@ -47,7 +47,7 @@ class DragAndDrop extends React.Component{
               fileName: filename,
               user: this.props.user,
             }
-            fetch('http://localhost:5000/uploadHis', {
+            fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadHis', {
               // content-type header should not be specified!
               method: 'POST',
               headers: {
@@ -133,7 +133,7 @@ render (){
   const props = {
     name: 'file',
     multiple: true,
-    action: 'http://localhost:5000/upload',
+    action: 'http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/upload',
     onRemove: file => {
       this.setState(state => {
         const index = state.fileList.indexOf(file);

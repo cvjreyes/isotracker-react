@@ -48,12 +48,12 @@ export default class UploadPopUp extends Component {
         await this.setState({
             users: []
         })
-        await fetch("http://localhost:5000/api/users/"+secureStorage.getItem("tab"), options)
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/users/"+secureStorage.getItem("tab"), options)
         .then(response => response.json())
         .then(async json => {
             let usernames = json.usernames
             for(let i = 0; i < json.usernames.length; i++){
-                await fetch("http://localhost:5000/api/getroles/"+json.usernames[i], options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/getroles/"+json.usernames[i], options)
                 .then(response => response.json())
                 .then(async json =>{
                     for(let j = 0; j < json.roles.length; j++){

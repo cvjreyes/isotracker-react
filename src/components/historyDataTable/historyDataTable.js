@@ -51,7 +51,7 @@ class HistoryDataTable extends React.Component{
   componentDidMount(){
 
     
-    fetch("http://localhost:5000/api/roles/acronyms")
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/acronyms")
       .then(response => response.json())
       .then(json => {
         let dict = {}
@@ -70,7 +70,7 @@ class HistoryDataTable extends React.Component{
           "Content-Type": "application/json"
       },
   }
-    fetch("http://localhost:5000/api/historyFiles", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/historyFiles", options)
         .then(response => response.json())
         .then(json => {
                 var rows = []
@@ -99,7 +99,7 @@ class HistoryDataTable extends React.Component{
           "Content-Type": "application/pdf"
       }
     }
-    fetch("http://localhost:5000/getMaster/"+fileName, options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+fileName, options)
     .then(res => res.blob())
     .then(response => {
       console.log(response)

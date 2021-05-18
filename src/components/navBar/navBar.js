@@ -60,6 +60,7 @@ const NavBar = (props) =>{
     const[username, setUsername] = React.useState("");
 
     const handleClickUser = (event) => {
+        console.log(event.currentTarget)
         setAnchorElUser(event.currentTarget);
     };
 
@@ -77,12 +78,12 @@ const NavBar = (props) =>{
     };
     const handleLogOut = () => {
         localStorage.clear();
-        history.replace("/welcome");
+        history.replace("/"+process.env.REACT_APP_SERVER);
     };
     const handleHome = () =>{
         setAnchorElUser(null);
         setAnchorElIso(null);
-        history.replace("/isotracker");
+        history.replace("/"+process.env.REACT_APP_SERVER+"/isotracker");
     }
     useEffect(() =>{
         const bodyUsername = {
@@ -95,7 +96,7 @@ const NavBar = (props) =>{
         },
         body: JSON.stringify(bodyUsername)
         }
-        fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/findByEmail", optionsUsername)
         .then(response => response.json())
         .then(json => {
             setUsername(json.name);
@@ -105,7 +106,7 @@ const NavBar = (props) =>{
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
                 <Toolbar>
-                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href="/isotracker">
+                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_SERVER+"/isotracker"}>
                         <img src={TechnipLogo} alt="technipLogo" style={{height:"50px"}}/>
                     </a>
                     <Typography variant="h6" className={classes.title}>
@@ -133,8 +134,8 @@ const NavBar = (props) =>{
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("LDE/IsoControl")}>Controls</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px", fontWeight:"bold"}} onClick={(event) => handleCloseIso("CheckBy")}>CHECK BY_</MenuItem>
                     </Menu>
-                    <li className="icapp__button"><a href="/"><strong className="icapp__text">ICApp</strong></a></li>
-                    <a className="navbar-brand" href="/">
+                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_SERVER+"/"}><strong className="icapp__text">ICApp</strong></a></li>
+                    <a className="navbar-brand" href={"/"+process.env.REACT_APP_SERVER+"/"}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>
                     </a>
                     
@@ -149,6 +150,12 @@ const NavBar = (props) =>{
                         transformOrigin={{ vertical: "top", horizontal: "center" }}
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUser}
+                        PaperProps={{
+                            style: {
+                            left: '50%',
+                            transform: 'translateX(+140%)',
+                            }
+                        }}
                     >
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleHome}>Home</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}>Change password</MenuItem>
