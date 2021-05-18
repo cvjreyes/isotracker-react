@@ -34,7 +34,7 @@ import IssuedBtn from "../../components/issuedBtn/issuedBtn"
 
 const IsoCtrl = () => {
    
-    
+    document.body.style.zoom = 0.9
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
@@ -1070,9 +1070,11 @@ const IsoCtrl = () => {
         issuedBtn = <IssuedBtn onChange={value => setCurrentTab("Issued")} currentTab = {currentTab}/>
     }
     
+    
     return (
         
         <body>
+            
             <NavBar onChange={value => setCurrentTab(value)}/>
 
             <div className="isoCtrl__container">     
