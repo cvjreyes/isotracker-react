@@ -5,7 +5,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { useState } from 'react'
-import { OmitProps } from 'antd/lib/transfer/ListBody';
 
 const useStyles = makeStyles((theme) => ({
     container: {

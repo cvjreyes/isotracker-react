@@ -61,7 +61,7 @@ class DragAndDrop extends React.Component{
           let cl = false
           if (i > 0) {
             extension = filename.substring(i+1);
-            if(filename.substring(i-2) == 'CL.pdf'){
+            if(filename.substring(i-2) === 'CL.pdf'){
               cl = true
             }
           }

@@ -6,8 +6,6 @@ import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./isoCtrl.css"
 import React, { useState , useEffect} from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
-import ActionExtra from "../../components/actionExtra/actionExtra"
-import ProgressTable from "../../components/progressTable/progressTable"
 import SelectPag from "../../components/selectPag/selectPag"
 import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
@@ -26,7 +24,6 @@ import OnHoldBtn from "../../components/onHoldBtn/onHoldBtn"
 import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
 import ReportsBtn from "../../components/reportsBtn/reportsBtn"
 import ProcInstTable from "../../components/procInstTable/procInstTable"
-import download from 'downloadjs'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
@@ -39,7 +36,6 @@ const IsoCtrl = () => {
    
     
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
-    const user = "admin" //De momento esta variable controla el tipo de user
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
     const [selected, setSelected] = useState([]);
@@ -57,7 +53,6 @@ const IsoCtrl = () => {
     const [realProgress, setRealProgress] = useState(0);
     const [progressISO, setProgressISO] = useState(0);
     const [realProgressISO, setRealProgressISO] = useState(0);
-    const [updateProgress, setUpdateProgress] = useState(0);
     const [errorUnclaimR, setErrorUnclaimR] = useState(false);
 
     const CryptoJS = require("crypto-js");
@@ -101,7 +96,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn, progTable, issuedBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, issuedBtn
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -157,18 +152,6 @@ const IsoCtrl = () => {
         setLoading(false)
         setErrorReports(false)
     }, [currentTab])
-
-    useEffect(async()=>{
-        if(process.env.REACT_APP_PROGRESS === "1"){
-            
-            await getProgress()
-            await setUpdateData(!updateData)
-            console.log(progress)
-            console.log(realProgress)
-            
-
-        }
-    },[updateProgress])
 
     const getProgress = () =>{
         const options = {
@@ -782,9 +765,7 @@ const IsoCtrl = () => {
         setLoading(false)
         */
         for (let i = 0; i < selected.length; i++){
-            const body ={
-                fileName: selected[i]
-            }
+
             const options = {
                 method: "GET",
                 headers: {
@@ -1043,8 +1024,6 @@ const IsoCtrl = () => {
         pageSelector = null
     }if(currentTab === "Design" && currentRole === "Design"){
         uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
-    }if(currentTab === "LDE/IsoControl"){
-        actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
@@ -1071,10 +1050,6 @@ const IsoCtrl = () => {
         </div>
     }
 
-    if(process.env.REACT_APP_PROGRESS === "1"){
-        progTable = <ProgressTable role = {currentRole} updateData = {updateData} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
-    }
-
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
     ((currentRole === "Stress" || currentRole === "StressLead") && currentTab === "Stress") ||
     ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Supports") ||
@@ -1093,13 +1068,6 @@ const IsoCtrl = () => {
     }
     if(currentTab === "LDE/IsoControl" || currentTab === "Issued"){
         issuedBtn = <IssuedBtn onChange={value => setCurrentTab("Issued")} currentTab = {currentTab}/>
-    }
-
-    //El usuario admin ve mas parte de la tabla de progreso
-    if (user === "admin"){
-        progressTableWidth = "35%";
-    }else{
-        progressTableWidth = "15%";
     }
     
     return (
