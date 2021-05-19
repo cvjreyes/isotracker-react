@@ -207,7 +207,7 @@ class MyTrayTable extends React.Component{
       
   
       const body ={
-        currentRole : this.state.role,
+        currentRole : secureStorage.getItem("role"),
         currentUser: this.state.user
       }
       const options = {
