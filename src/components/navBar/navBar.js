@@ -78,12 +78,12 @@ const NavBar = (props) =>{
     };
     const handleLogOut = () => {
         localStorage.clear();
-        history.replace("/"+process.env.REACT_APP_SERVER);
+        history.replace("/"+process.env.REACT_APP_PROJECT);
     };
     const handleHome = () =>{
         setAnchorElUser(null);
         setAnchorElIso(null);
-        history.replace("/"+process.env.REACT_APP_SERVER+"/isotracker");
+        history.replace("/"+process.env.REACT_APP_PROJECT+"/isotracker");
     }
     useEffect(() =>{
         const bodyUsername = {

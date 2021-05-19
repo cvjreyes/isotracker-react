@@ -4,6 +4,7 @@ import './welcome.css'
 //Página de welcome que actua como portada
 
 const Welcome = () =>{
+    document.body.style.zoom = 1.0
     return(
         <body>
         <div className="cover__background"> 
