@@ -106,7 +106,7 @@ const NavBar = (props) =>{
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
                 <Toolbar>
-                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_SERVER+"/isotracker"}>
+                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"}>
                         <img src={TechnipLogo} alt="technipLogo" style={{height:"50px"}}/>
                     </a>
                     <Typography variant="h6" className={classes.title}>
@@ -134,8 +134,8 @@ const NavBar = (props) =>{
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("LDE/IsoControl")}>Controls</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px", fontWeight:"bold"}} onClick={(event) => handleCloseIso("CheckBy")}>CHECK BY_</MenuItem>
                     </Menu>
-                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_SERVER+"/"}><strong className="icapp__text">ICApp</strong></a></li>
-                    <a className="navbar-brand" href={"/"+process.env.REACT_APP_SERVER+"/"}>
+                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/"}><strong className="icapp__text">ICApp</strong></a></li>
+                    <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/"}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>
                     </a>
                     
