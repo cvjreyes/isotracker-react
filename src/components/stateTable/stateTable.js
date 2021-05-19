@@ -66,7 +66,7 @@ const StateTable = props =>{
 
     useEffect(()=>{
         if(process.env.REACT_APP_PROGRESS === "0"){
-            fetch("http://localhost:5000/updateStatus")
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
             .then(response => response.json())
             .then(json => {
                 setDesignR0(json["designR0"])
@@ -119,7 +119,7 @@ const StateTable = props =>{
                 
             }) 
         }else{
-            fetch("http://localhost:5000/updateStatus")
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
                 .then(response => response.json())
                 .then(json => {
                     console.log(json["model"])
@@ -175,14 +175,14 @@ const StateTable = props =>{
                 const options = {
                     method: "GET",
                 }
-                fetch("http://localhost:5000/currentProgressISO", options)
+                fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgressISO", options)
                 .then(response => response.json())
                 .then(async json =>{
                      setProgressIso(json.progressISO)
                      setRealProgressIso(json.realprogressISO)
                 })
                 
-                fetch("http://localhost:5000/currentProgress", options)
+                fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgress", options)
                 .then(response => response.json())
                 .then(async json =>{
                      setProgress(json.progress)
