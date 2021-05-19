@@ -66,7 +66,7 @@ const StateTable = props =>{
 
     useEffect(()=>{
         if(process.env.REACT_APP_PROGRESS === "0"){
-            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
+            fetch("http://localhost:5000/updateStatus")
             .then(response => response.json())
             .then(json => {
                 setDesignR0(json["designR0"])
@@ -119,7 +119,7 @@ const StateTable = props =>{
                 
             }) 
         }else{
-            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
+            fetch("http://localhost:5000/updateStatus")
                 .then(response => response.json())
                 .then(json => {
                     console.log(json["model"])
@@ -175,14 +175,14 @@ const StateTable = props =>{
                 const options = {
                     method: "GET",
                 }
-                fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgressISO", options)
+                fetch("http://localhost:5000/currentProgressISO", options)
                 .then(response => response.json())
                 .then(async json =>{
                      setProgressIso(json.progressISO)
                      setRealProgressIso(json.realprogressISO)
                 })
                 
-                fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgress", options)
+                fetch("http://localhost:5000/currentProgress", options)
                 .then(response => response.json())
                 .then(async json =>{
                      setProgress(json.progress)
@@ -192,7 +192,7 @@ const StateTable = props =>{
         }
         console.log(props.currentRole)
         if(props.currentRole === "SpecialityLead"){
-            setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.nP.</td>)
+            setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P.</td>)
             setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P. ISO</td>)
             setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{realProgress}%</td>)
             setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state">{realProgressISO}%</td>)

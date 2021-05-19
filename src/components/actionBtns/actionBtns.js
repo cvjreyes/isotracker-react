@@ -125,10 +125,12 @@ const ActionBtns = props =>{
             {actionBtn3}
             {actionBtn4}
             {actionBtn5}
+            {actionBtn9}
             {actionBtn6}
+            
             {actionBtn7}
             {actionBtn8}
-            {actionBtn9}
+            
             {actionBtn10}
             {actionBtn11}
             {actionBtn12}

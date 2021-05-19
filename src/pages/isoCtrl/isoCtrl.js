@@ -154,22 +154,7 @@ const IsoCtrl = () => {
     }, [currentTab])
 
     const getProgress = () =>{
-        const options = {
-            method: "GET",
-        }
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgressISO", options)
-        .then(response => response.json())
-        .then(async json =>{
-             await setProgressISO(json.progressISO)
-             await setRealProgressISO(json.realprogressISO)
-        })
-        
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgress", options)
-        .then(response => response.json())
-        .then(async json =>{
-             await setProgress(json.progress)
-             await setRealProgress(json.realprogress)
-        })
+        setUpdateData(!updateData)
 
     }
 
