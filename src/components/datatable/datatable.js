@@ -52,7 +52,7 @@ class DataTable extends React.Component{
   componentDidMount(){
 
     
-    fetch("http://localhost:5000/api/roles/acronyms")
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/acronyms")
       .then(response => response.json())
       .then(json => {
         let dict = {}
@@ -82,7 +82,7 @@ class DataTable extends React.Component{
         },
         body: JSON.stringify(body)
     }
-      fetch("http://localhost:5000/files", options)
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
           .then(response => response.json())
           .then(json => {
                   var rows = []
@@ -228,7 +228,7 @@ class DataTable extends React.Component{
         },
         body: JSON.stringify(body)
     }
-      fetch("http://localhost:5000/files", options)
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
           .then(response => response.json())
           .then(json => {
                   var rows = []
@@ -359,7 +359,7 @@ class DataTable extends React.Component{
           "Content-Type": "application/pdf"
       }
     }
-    fetch("http://localhost:5000/getMaster/"+fileName, options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+fileName, options)
     .then(res => res.blob())
     .then(response => {
       console.log(response)

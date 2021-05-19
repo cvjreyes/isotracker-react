@@ -36,7 +36,7 @@ class StatusDataTable extends React.Component{
             "Content-Type": "application/json"
         },
       }
-      await fetch("http://localhost:5000/getMaxProgress", options)
+      await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaxProgress", options)
       .then(response => response.json())
       .then(json =>{
         this.setState({
@@ -44,7 +44,7 @@ class StatusDataTable extends React.Component{
         })
       })
 
-      fetch("http://localhost:5000/api/statusFiles", options)
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
           .then(response => response.json())
           .then(json => {
             console.log(this.state.weights)
@@ -88,7 +88,7 @@ class StatusDataTable extends React.Component{
         },
 
       }
-      fetch("http://localhost:5000/api/statusFiles", options)
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
           .then(response => response.json())
           .then(json => {
             console.log(this.state.weights)
@@ -132,7 +132,7 @@ class StatusDataTable extends React.Component{
               "Content-Type": "application/json"
           },
         }
-        await fetch("http://localhost:5000/getMaxProgress", options)
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaxProgress", options)
         .then(response => response.json())
         .then(json =>{
           this.setState({
@@ -140,7 +140,7 @@ class StatusDataTable extends React.Component{
           })
         })
   
-        fetch("http://localhost:5000/api/statusFiles", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
             .then(response => response.json())
             .then(json => {
               console.log(this.state.weights)
@@ -184,7 +184,7 @@ class StatusDataTable extends React.Component{
           },
   
         }
-        fetch("http://localhost:5000/api/statusFiles", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
             .then(response => response.json())
             .then(json => {
               console.log(this.state.weights)
@@ -228,7 +228,7 @@ class StatusDataTable extends React.Component{
           "Content-Type": "application/pdf"
       }
     }
-    fetch("http://localhost:5000/getMaster/"+fileName, options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+fileName, options)
     .then(res => res.blob())
     .then(response => {
       console.log(response)

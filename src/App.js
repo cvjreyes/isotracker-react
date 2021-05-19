@@ -10,15 +10,14 @@ require('dotenv').config();
 
 
 function App() {
-
   return (
     <div className="App">
       <Router>
         <Switch>
-            <Route exact path="/" component={Welcome}></Route>
-            <Route exact path="/isotracker" component={IsoCtrl}></Route>
-            <Route exact path="/register" component={Register}></Route>
-            <Route exact path="/login" component={LoginPage}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_SERVER+"/"} component={Welcome}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_SERVER+"/isotracker"} component={IsoCtrl}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_SERVER+"/register"} component={Register}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_SERVER+"/login"} component={LoginPage}></Route>
         </Switch>
       </Router>
   

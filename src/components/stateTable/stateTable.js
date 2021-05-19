@@ -192,7 +192,7 @@ const StateTable = props =>{
         }
         console.log(props.currentRole)
         if(props.currentRole === "SpecialityLead"){
-            setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.nP.</td>)
+            setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P.</td>)
             setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P. ISO</td>)
             setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{realProgress}%</td>)
             setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state">{realProgressISO}%</td>)
