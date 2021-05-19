@@ -45,7 +45,7 @@ export default class UploadProcInst extends Component {
                 }
 
                 if(this.state.role === "Process"){
-                    await fetch('http://localhost:5000/uploadProc', {
+                    await fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadProc', {
                     // content-type header should not be specified!
                     method: 'POST',
                     body: file,
@@ -56,7 +56,7 @@ export default class UploadProcInst extends Component {
                             file: null,
                             error: false
                         })
-                        fetch('http://localhost:5000/process', options)
+                        fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/process', options)
                             .then(response => {
         
                                 this.closeModal()
@@ -67,7 +67,7 @@ export default class UploadProcInst extends Component {
                     .catch(error => console.log(error)
                     );
                 }else if(this.state.role === "Instrument"){
-                    await fetch('http://localhost:5000/uploadInst', {
+                    await fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadInst', {
                         // content-type header should not be specified!
                         method: 'POST',
                         body: file,
@@ -78,7 +78,7 @@ export default class UploadProcInst extends Component {
                                 file: null,
                                 error: false
                             })
-                            fetch('http://localhost:5000/instrument', options)
+                            fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrument', options)
                                 .then(response => {
             
                                     this.closeModal()
@@ -121,7 +121,7 @@ export default class UploadProcInst extends Component {
                 }
 
                 if(this.state.role === "Process"){
-                    await fetch('http://localhost:5000/uploadProc', {
+                    await fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadProc', {
                     // content-type header should not be specified!
                     method: 'POST',
                     body: file,
@@ -132,7 +132,7 @@ export default class UploadProcInst extends Component {
                             file: null,
                             error: false
                         })
-                        fetch('http://localhost:5000/process', options)
+                        fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/process', options)
                             .then(response => {
         
                                 this.closeModal()
@@ -143,7 +143,7 @@ export default class UploadProcInst extends Component {
                     .catch(error => console.log(error)
                     );
                 }else if(this.state.role === "Instrument"){
-                    await fetch('http://localhost:5000/uploadInst', {
+                    await fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadInst', {
                         // content-type header should not be specified!
                         method: 'POST',
                         body: file,
@@ -154,7 +154,7 @@ export default class UploadProcInst extends Component {
                                 file: null,
                                 error: false
                             })
-                            fetch('http://localhost:5000/instrument', options)
+                            fetch('http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrument', options)
                                 .then(response => {
             
                                     this.closeModal()

@@ -38,7 +38,7 @@ class DragAndDrop extends React.Component{
   };
 
   async uploadFile(file) {
-    await fetch('http://localhost:5000/upload', {
+    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/upload", {
       // content-type header should not be specified!
       method: 'POST',
       body: file,
@@ -61,7 +61,7 @@ class DragAndDrop extends React.Component{
           let cl = false
           if (i > 0) {
             extension = filename.substring(i+1);
-            if(filename.substring(i-2) == 'CL.pdf'){
+            if(filename.substring(i-2) === 'CL.pdf'){
               cl = true
             }
           }
@@ -70,7 +70,7 @@ class DragAndDrop extends React.Component{
               fileName: filename,
               user: this.props.user,
             }
-            fetch('http://localhost:5000/uploadHis', {
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadHis", {
               // content-type header should not be specified!
               method: 'POST',
               headers: {
@@ -110,7 +110,7 @@ class DragAndDrop extends React.Component{
   async updateFile(file) {
 
     
-    await fetch('http://localhost:5000/update', {
+    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/update", {
       // content-type header should not be specified!
       method: 'POST',
       body: file,
@@ -138,7 +138,7 @@ class DragAndDrop extends React.Component{
               file: filename,
               user: this.props.user,
             }
-            fetch('http://localhost:5000/updateHis', {
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateHis", {
               // content-type header should not be specified!
               method: 'POST',
               headers: {
@@ -197,7 +197,7 @@ class DragAndDrop extends React.Component{
           this.uploadFile(formData);
         }else{
           console.log(file.file.name)
-          fetch('http://localhost:5000/checkPipe/'+file.file.name)
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+file.file.name)
           .then(response => response.json())
           .then(async json =>{
             console.log(json)
@@ -242,7 +242,9 @@ class DragAndDrop extends React.Component{
     this.setState({
       uploaded: true
     })
-    this.props.uploaded()
+    if(this.props.mode === "upload"){
+      this.props.uploaded()
+    }
     
 
   }

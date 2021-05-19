@@ -67,7 +67,7 @@ class MyTrayTable extends React.Component{
       body: JSON.stringify(bodyUsername)
     }
 
-    fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/findByEmail", optionsUsername)
     .then(response => response.json())
     .then(json => {
       this.setState({
@@ -87,7 +87,7 @@ class MyTrayTable extends React.Component{
       },
       body: JSON.stringify(body)
   }
-    fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/myTrayFiles/myFiles", options)
         .then(response => response.json())
         .then(json => {
             var rows = []
@@ -197,7 +197,7 @@ class MyTrayTable extends React.Component{
         body: JSON.stringify(bodyUsername)
       }
   
-      fetch("http://localhost:5000/api/findByEmail", optionsUsername)
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/findByEmail", optionsUsername)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -217,7 +217,7 @@ class MyTrayTable extends React.Component{
         },
         body: JSON.stringify(body)
     }
-      fetch("http://localhost:5000/api/myTrayFiles/myFiles", options)
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/myTrayFiles/myFiles", options)
           .then(response => response.json())
           .then(json => {
               var rows = []
@@ -321,7 +321,7 @@ class MyTrayTable extends React.Component{
           "Content-Type": "application/pdf"
       }
     }
-    fetch("http://localhost:5000/getMaster/"+filename, options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+filename, options)
     .then(res => res.blob())
     .then(response => {
       console.log(response)

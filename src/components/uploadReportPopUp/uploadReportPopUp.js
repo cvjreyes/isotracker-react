@@ -48,7 +48,7 @@ export default class UploadReportPopUp extends Component {
                 },
                 body: JSON.stringify(rows)
             }
-            await fetch("http://localhost:5000/uploadReport", options)
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadReport", options)
             .then(response => response.json())
             .catch(async error =>{
                 this.props.setErrorReport()

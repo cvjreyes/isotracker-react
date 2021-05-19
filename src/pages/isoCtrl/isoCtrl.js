@@ -6,8 +6,6 @@ import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./isoCtrl.css"
 import React, { useState , useEffect} from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
-import ActionExtra from "../../components/actionExtra/actionExtra"
-import ProgressTable from "../../components/progressTable/progressTable"
 import SelectPag from "../../components/selectPag/selectPag"
 import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
@@ -26,7 +24,6 @@ import OnHoldBtn from "../../components/onHoldBtn/onHoldBtn"
 import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
 import ReportsBtn from "../../components/reportsBtn/reportsBtn"
 import ProcInstTable from "../../components/procInstTable/procInstTable"
-import download from 'downloadjs'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
@@ -37,9 +34,8 @@ import IssuedBtn from "../../components/issuedBtn/issuedBtn"
 
 const IsoCtrl = () => {
    
-    
+    document.body.style.zoom = 0.9
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
-    const user = "admin" //De momento esta variable controla el tipo de user
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
     const [selected, setSelected] = useState([]);
@@ -57,7 +53,6 @@ const IsoCtrl = () => {
     const [realProgress, setRealProgress] = useState(0);
     const [progressISO, setProgressISO] = useState(0);
     const [realProgressISO, setRealProgressISO] = useState(0);
-    const [updateProgress, setUpdateProgress] = useState(0);
     const [errorUnclaimR, setErrorUnclaimR] = useState(false);
 
     const CryptoJS = require("crypto-js");
@@ -101,7 +96,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, actionExtra, commentBox, progressTableWidth, tableContent, procInsBtn, progTable, issuedBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, issuedBtn
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -123,7 +118,7 @@ const IsoCtrl = () => {
             },
             body: JSON.stringify(body)
         }
-        fetch("http://localhost:5000/api/roles/user", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
             .then(response => response.json())
             .then(json => {
                 setRoles(json.roles);
@@ -158,35 +153,8 @@ const IsoCtrl = () => {
         setErrorReports(false)
     }, [currentTab])
 
-    useEffect(async()=>{
-        if(process.env.REACT_APP_PROGRESS === "1"){
-            
-            await getProgress()
-            await setUpdateData(!updateData)
-            console.log(progress)
-            console.log(realProgress)
-            
-
-        }
-    },[updateProgress])
-
     const getProgress = () =>{
-        const options = {
-            method: "GET",
-        }
-        fetch("http://localhost:5000/currentProgressISO", options)
-        .then(response => response.json())
-        .then(async json =>{
-             await setProgressISO(json.progressISO)
-             await setRealProgressISO(json.realprogressISO)
-        })
-        
-        fetch("http://localhost:5000/currentProgress", options)
-        .then(response => response.json())
-        .then(async json =>{
-             await setProgress(json.progress)
-             await setRealProgress(json.realprogress)
-        })
+        setUpdateData(!updateData)
 
     }
 
@@ -216,7 +184,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    await fetch("http://localhost:5000/claimProc", options)
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/claimProc", options)
                 }
             }else if(currentTab === "Instrument"){
                 for (let i = 0; i < selected.length; i++){
@@ -233,7 +201,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    await fetch("http://localhost:5000/claimInst", options)
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/claimInst", options)
                 }
             }else{
                 for (let i = 0; i < selected.length; i++){
@@ -250,7 +218,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    await fetch("http://localhost:5000/claim", options)
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/claim", options)
                 }
             
             }
@@ -286,7 +254,7 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                await fetch("http://localhost:5000/forceClaim", options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/forceClaim", options)
             }
             setUpdateData(!updateData)
             setLoading(false)
@@ -317,7 +285,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    await fetch("http://localhost:5000/unclaimProc", options)
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unclaimProc", options)
                 }
             }else if(currentRole === "Instrument"){
                 for (let i = 0; i < selected.length; i++){
@@ -334,7 +302,7 @@ const IsoCtrl = () => {
                         body: JSON.stringify(body)
                     }
                     console.log(body)
-                    await fetch("http://localhost:5000/unclaimInst", options)
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unclaimInst", options)
                 }
             }else{
                 for (let i = 0; i < selected.length; i++){
@@ -350,7 +318,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    await fetch("http://localhost:5000/unclaim", options)
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unclaim", options)
                     .then(response => response.json())
                     .then(json=>{
                         if(json.error === "forced"){
@@ -392,7 +360,7 @@ const IsoCtrl = () => {
             body: JSON.stringify(body)
         }
         console.log(body)
-        await fetch("http://localhost:5000/forceUnclaim", options)
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/forceUnclaim", options)
         await setUpdateData(!updateData)
         setLoading(false)
     }
@@ -423,7 +391,7 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                await fetch("http://localhost:5000/verify", options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/verify", options)
             }
             await setUpdateData(!updateData)
             setLoading(false)
@@ -450,7 +418,7 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
-            await fetch("http://localhost:5000/cancelVerify", options)
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/cancelVerify", options)
         
         await setUpdateData(!updateData)
         setLoading(false)
@@ -489,7 +457,7 @@ const IsoCtrl = () => {
                             },
                             body: JSON.stringify(body)
                         }
-                        await fetch("http://localhost:5000/api/transaction", options)
+                        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                         setTransactionSuccess(true)
                     }
                 }else{
@@ -504,7 +472,7 @@ const IsoCtrl = () => {
                             "Content-Type": "application/json"
                         },
                     }
-                    await fetch("http://localhost:5000/piStatus/"+selected[i], options)
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/piStatus/"+selected[i], options)
                     .then(response => response.json())
                     .then(async json =>{
                         if(json.sit === 1 || json.sit === 4 || json.spo === 1 || json.spo === 4){
@@ -532,7 +500,7 @@ const IsoCtrl = () => {
                                 },
                                 body: JSON.stringify(body)
                             }
-                            await fetch("http://localhost:5000/api/transaction", options)
+                            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                             .then(response => response.json())
                             .then(json=>{
                                 console.log(json)
@@ -581,7 +549,7 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    await fetch("http://localhost:5000/api/transaction", options)
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                     setTransactionSuccess(true)
                 }
             }
@@ -614,7 +582,7 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
-            await fetch("http://localhost:5000/api/returnLead", options)
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLead", options)
             setTransactionSuccess(true)
         }
         await setUpdateData(!updateData)
@@ -652,7 +620,7 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                await fetch("http://localhost:5000/restore", options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/restore", options)
                 setTransactionSuccess(true)
             }
             await setUpdateData(!updateData)
@@ -693,7 +661,7 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
-            await fetch("http://localhost:5000/process", options)
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/process", options)
         
         await setUpdateData(!updateData)
         setLoading(false)
@@ -720,7 +688,7 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
-            await fetch("http://localhost:5000/instrument", options)
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrument", options)
         
         await setUpdateData(!updateData)
         setLoading(false)
@@ -738,6 +706,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setLoading(true)
         localStorage.setItem("update", true)
+        /*
         if(selected.length === 1){
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -747,7 +716,7 @@ const IsoCtrl = () => {
                         "Content-Type": "application/pdf"
                     }
                 }
-                await fetch("http://localhost:5000/download/"+selected[i], options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
                 .then(res => res.blob())
                     .then(response =>{
                         console.log("Se descarga")
@@ -764,7 +733,7 @@ const IsoCtrl = () => {
                         "Content-Type": "application/pdf"
                     }
                 }
-                await fetch("http://localhost:5000/download/"+selected[i], options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
                 .then(res => res.blob())
                     .then(response =>{
                         setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
@@ -779,11 +748,9 @@ const IsoCtrl = () => {
         await setUpdateData(!updateData)
         await setDownloadzip(new JSZip())   
         setLoading(false)
-        /* EN CASO DE QUERER ADJUNTOS
+        */
         for (let i = 0; i < selected.length; i++){
-            const body ={
-                fileName: selected[i]
-            }
+
             const options = {
                 method: "GET",
                 headers: {
@@ -791,15 +758,15 @@ const IsoCtrl = () => {
                 }
             }
             
-            await fetch("http://localhost:5000/getAttach/"+selected[i], options)
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getAttach/"+selected[i], options)
             .then(response => response.json())
             .then(async json => {
-                await fetch("http://localhost:5000/download/"+selected[i], options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
                 .then(res => res.blob())
                 .then( async response =>{
                     setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
                     for(let i = 0; i < json.length; i++){
-                        await fetch("http://localhost:5000/download/"+json[i], options)
+                        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+json[i], options)
                         .then(res => res.blob())
                         .then(response =>{
                             setDownloadzip(downloadZip.file(json[i], new Blob([response]),{binary:true}))   
@@ -819,16 +786,16 @@ const IsoCtrl = () => {
         })  
         
         await setDownloadzip(new JSZip())   
-        await setAttachFiles(null)
+        //await setAttachFiles(null)
         await setUpdateData(!updateData)
         setLoading(false)
-        */ 
+        
     }
 
     async function downloadHistory(){
         setErrorReports(false)
 
-        await fetch("http://localhost:5000/downloadHistory/")
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadHistory/")
         .then(response => response.json())
         .then(json => {
             const headers = ["ISO_ID", "FROM", "TO", "DATE", "COMMENT", "USER"]
@@ -839,7 +806,7 @@ const IsoCtrl = () => {
     async function downloadStatus(){
         setErrorReports(false)
 
-        await fetch("http://localhost:5000/downloadStatus/")
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadStatus/")
         .then(response => response.json())
         .then(json => {
             const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION"]
@@ -850,7 +817,7 @@ const IsoCtrl = () => {
     async function downloadPI(){
         setErrorReports(false)
 
-        await fetch("http://localhost:5000/downloadPI/")
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadPI/")
         .then(response => response.json())
         .then(json => {
             const headers = ["ISO_ID", "PROCESS", "INSTRUMENTATION", "UPDATED_AT"]
@@ -861,7 +828,7 @@ const IsoCtrl = () => {
     async function downloadIssued(){
         setErrorReports(false)
 
-        await fetch("http://localhost:5000/downloadIssued/")
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadIssued/")
         .then(response => response.json())
         .then(json => {
             const headers = ["ISO_ID", "REV0", "REV1", "REV2", "REV3", "REV4"]
@@ -932,7 +899,7 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                await fetch("http://localhost:5000/toIssue", options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/toIssue", options)
             }
             await setUpdateData(!updateData)
             setLoading(false)
@@ -962,7 +929,7 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                await fetch("http://localhost:5000/newRev", options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/newRev", options)
             }
             setUpdateData(!updateData)
             setLoading(false)
@@ -992,7 +959,7 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                await fetch("http://localhost:5000/request", options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/request", options)
                 
             }
             setUpdateData(!updateData)
@@ -1027,7 +994,7 @@ const IsoCtrl = () => {
                     },
                     body: JSON.stringify(body)
                 }
-                await fetch("http://localhost:5000/returnIso", options)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/returnIso", options)
                 
             }
             setUpdateData(!updateData)
@@ -1042,8 +1009,6 @@ const IsoCtrl = () => {
         pageSelector = null
     }if(currentTab === "Design" && currentRole === "Design"){
         uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
-    }if(currentTab === "LDE/IsoControl"){
-        actionExtra = <ActionExtra/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
@@ -1070,10 +1035,6 @@ const IsoCtrl = () => {
         </div>
     }
 
-    if(process.env.REACT_APP_PROGRESS === "1"){
-        progTable = <ProgressTable role = {currentRole} updateData = {updateData} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
-    }
-
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
     ((currentRole === "Stress" || currentRole === "StressLead") && currentTab === "Stress") ||
     ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Supports") ||
@@ -1093,17 +1054,12 @@ const IsoCtrl = () => {
     if(currentTab === "LDE/IsoControl" || currentTab === "Issued"){
         issuedBtn = <IssuedBtn onChange={value => setCurrentTab("Issued")} currentTab = {currentTab}/>
     }
-
-    //El usuario admin ve mas parte de la tabla de progreso
-    if (user === "admin"){
-        progressTableWidth = "35%";
-    }else{
-        progressTableWidth = "15%";
-    }
+    
     
     return (
         
         <body>
+            
             <NavBar onChange={value => setCurrentTab(value)}/>
 
             <div className="isoCtrl__container">     
