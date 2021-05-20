@@ -70,7 +70,7 @@ const Login = props =>{
 
     return(
         <div className="login__form__container">
-                    <form>
+                    
                         <center><h3>Log in</h3></center>
 
                         <div className="form-group">
@@ -83,8 +83,8 @@ const Login = props =>{
                             <input type="password" className="form-control" placeholder="Enter password" onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         {error && <p className="error__message" style={{color: "red"}}>Email or password incorrect. Try again.</p>}
-                        <button type="submit" className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px", backgroundColor: "#17a2b8"}}  onClick={handleLogin}>Log in</button>
-                    </form>
+                        <button className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px", backgroundColor: "#17a2b8"}}  onClick={handleLogin}>Log in</button>
+                    
         </div>
     );
 };
