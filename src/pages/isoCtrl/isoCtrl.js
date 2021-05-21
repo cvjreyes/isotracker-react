@@ -151,6 +151,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setLoading(false)
         setErrorReports(false)
+        setSelected([])
     }, [currentTab])
 
     const getProgress = () =>{
@@ -224,6 +225,7 @@ const IsoCtrl = () => {
             }
             setUpdateData(!updateData)
             setLoading(false)
+            setSelected([])
             
         }
      
@@ -258,6 +260,7 @@ const IsoCtrl = () => {
             }
             setUpdateData(!updateData)
             setLoading(false)
+            setSelected([])
         }
     }
 
@@ -333,6 +336,7 @@ const IsoCtrl = () => {
             }
             await setUpdateData(!updateData)
             setLoading(false)
+            setSelected([])
         }
         
     }
@@ -363,6 +367,7 @@ const IsoCtrl = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/forceUnclaim", options)
         await setUpdateData(!updateData)
         setLoading(false)
+        setSelected([])
     }
 
 
@@ -395,6 +400,7 @@ const IsoCtrl = () => {
             }
             await setUpdateData(!updateData)
             setLoading(false)
+            setSelected([])
         }    
     }
 
@@ -422,7 +428,7 @@ const IsoCtrl = () => {
         
         await setUpdateData(!updateData)
         setLoading(false)
-            
+        setSelected([])
     }
 
     async function transaction(destiny){
@@ -556,6 +562,7 @@ const IsoCtrl = () => {
             await setUpdateData(!updateData)
             setLoading(false)
             await getProgress()
+            setSelected([])
         }    
     }
 
@@ -590,6 +597,7 @@ const IsoCtrl = () => {
         await setUpdateData(!updateData)
         setLoading(false)
         await getProgress()
+        setSelected([])
     }
     
 
@@ -629,6 +637,7 @@ const IsoCtrl = () => {
             console.log("restored")
             setLoading(false)
             await getProgress()
+            setSelected([])
         }
     }
 
@@ -667,6 +676,7 @@ const IsoCtrl = () => {
         
         await setUpdateData(!updateData)
         setLoading(false)
+        setSelected([])
     }
 
     async function sendInstrumentClick(fileName){
@@ -694,6 +704,7 @@ const IsoCtrl = () => {
         
         await setUpdateData(!updateData)
         setLoading(false)
+        setSelected([])
     }
 
     function updateD(){
@@ -791,6 +802,7 @@ const IsoCtrl = () => {
         //await setAttachFiles(null)
         await setUpdateData(!updateData)
         setLoading(false)
+        setSelected([])
         
     }
 
@@ -906,6 +918,7 @@ const IsoCtrl = () => {
             await setUpdateData(!updateData)
             setLoading(false)
             await getProgress()
+            setSelected([])
         }
     }
 
@@ -936,6 +949,7 @@ const IsoCtrl = () => {
             setUpdateData(!updateData)
             setLoading(false)
             await getProgress()
+            setSelected([])
         }
     }
 
@@ -966,7 +980,7 @@ const IsoCtrl = () => {
             }
             setUpdateData(!updateData)
             setLoading(false)
-            
+            setSelected([])
         }
 
     }
@@ -1005,6 +1019,7 @@ const IsoCtrl = () => {
             setUpdateData(!updateData)
             setLoading(false)
             setComment("")
+            setSelected([])
         }
     }
 
