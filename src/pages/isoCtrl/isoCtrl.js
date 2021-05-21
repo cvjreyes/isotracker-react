@@ -574,6 +574,7 @@ const IsoCtrl = () => {
                 user : currentUser,
                 fileName: selected[i],
                 to: destiny,
+                from: currentTab
             }
             const options = {
                 method: "POST",
@@ -582,6 +583,7 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
+            console.log("a", body)
             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLead", options)
             setTransactionSuccess(true)
         }
@@ -978,6 +980,9 @@ const IsoCtrl = () => {
         setLoading(true)
         if (selected.length > 0){
             localStorage.setItem("update", true)
+            if(comments.length < 1){
+                comments = comment
+            }
             for (let i = 0; i < selected.length; i++){
                 const body ={
                     user : currentUser,
@@ -999,6 +1004,7 @@ const IsoCtrl = () => {
             }
             setUpdateData(!updateData)
             setLoading(false)
+            setComment("")
         }
     }
 
