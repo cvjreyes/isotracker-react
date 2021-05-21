@@ -36,7 +36,7 @@ export default class UploadPopUp extends Component {
                                 
                         </div>
                         <div className="dnd__container">
-                            <DragAndDrop mode="update" iso={this.id} user={this.props.currentUser} reset={true}/>
+                            <DragAndDrop mode="update" iso={this.id} role={this.props.role} user={this.props.currentUser} reset={true}/>
                         </div> 
                         <center className="popUp__warning__title">***WARNING!*** This action will replace the current(s) file(s). Take appropiate cautions.</center>
                         <center className="popUp__warning__subtitle">If you are not sure of this action, click cancel and contact your supervisor.</center>
