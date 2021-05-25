@@ -150,9 +150,9 @@ class StatusDataTable extends React.Component{
                 for(let i = 0; i < json.rows.length; i++){
                   var condition = ""
                   if(json.rows[i].issued === null){
-                    condition = "ON GOING R" + json.rows[i].revision + "*"
+                    condition = "ON GOING R" + String(json.rows[i].revision) + "*"
                   }else{
-                    condition = "ISSUED R" + json.rows[i].revision - 1
+                    condition = "ISSUED R" + String(json.rows[i].revision - 1)
                   }
                   if(json.rows[i].deleted === 1){
                     condition = "DELETED"
@@ -193,9 +193,9 @@ class StatusDataTable extends React.Component{
                 for(let i = 0; i < json.rows.length; i++){
                   var condition = ""
                   if(json.rows[i].issued === null){
-                    condition = "ON GOING R" + json.rows[i].revision + "*"
+                    condition = "ON GOING R" + String(json.rows[i].revision) + "*"
                   }else{
-                    condition = "ISSUED R" + json.rows[i].revision - 1
+                    condition = "ISSUED R" + String(json.rows[i].revision - 1)
                   }
                   if(json.rows[i].deleted === 1){
                     condition = "DELETED"

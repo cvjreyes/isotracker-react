@@ -8,7 +8,7 @@ const LoginPage = () =>{
     return(
         <body>
             <div className="home__background">
-                <NavBar/>
+                
                 
                 <Login/>
   );

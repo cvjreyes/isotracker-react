@@ -4,11 +4,12 @@ import './welcome.css'
 //Página de welcome que actua como portada
 
 const Welcome = () =>{
+    document.body.style.zoom = 1.0
     return(
         <body>
         <div className="cover__background"> 
             <div className="cover__login__container">
-                <a href={"/"+process.env.REACT_APP_SERVER+"/login"} className="cover__login__text">LOGIN</a>
+                <a href={"/"+process.env.REACT_APP_PROJECT+"/login"} className="cover__login__text">LOGIN</a>
             </div>
             <div class="content">
                 <div className="cover__main__container">

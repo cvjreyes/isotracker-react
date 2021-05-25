@@ -30,7 +30,7 @@ const MenuList = () =>{
             </div>
             <div className="panel__content__container">
                 <div>
-                    <a href={"/"+process.env.REACT_APP_SERVER+"/"} style={{textDecoration: "none"}}>
+                    <a href={"/"+process.env.REACT_APP_PROJECT+"/"} style={{textDecoration: "none"}}>
                         <h4 style={{backgroundColor: isoIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setIsoIsShown(true)} onMouseLeave={() => setIsoIsShown(false)} ><img src={FileIcon} alt="file" className="panel__icon"/>&nbsp;&nbsp;&nbsp;IsoTracker</h4>
                         <div className="progress__bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
                             <span class="sr-only"></span><strong>Open</strong>
@@ -40,7 +40,7 @@ const MenuList = () =>{
             </div>
             <div className="panel__content__container">
                 <div>
-                    <a href={"/"+process.env.REACT_APP_SERVER+"/"} style={{textDecoration: "none"}}>
+                    <a href={"/"+process.env.REACT_APP_PROJECT+"/"} style={{textDecoration: "none"}}>
                         <h4 style={{backgroundColor: progIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setProgIsShown(true)} onMouseLeave={() => setProgIsShown(false)}><img src={ChartColorIcon} alt="chart" className="panel__icon"/>&nbsp;&nbsp;&nbsp;3D Progress (Weight: 47688 | 100%)</h4>
                     </a>
                     <div class="progress" style={{height: "25px"}}>
@@ -52,7 +52,7 @@ const MenuList = () =>{
             </div>
             <div className="panel__content__container">
                 <div>
-                    <a href={"/"+process.env.REACT_APP_SERVER+"/"} style={{textDecoration: "none"}}>
+                    <a href={"/"+process.env.REACT_APP_PROJECT+"/"} style={{textDecoration: "none"}}>
                         <h4 style={{backgroundColor: pipeIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setPipeIsShown(true)} onMouseLeave={() => setPipeIsShown(false)}><img src={PipeIcon} alt="pipe" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Piping (Weight: 20582 | 43.18%)</h4>        
                     </a>
                     <div class="progress" style={{height: "25px"}}>
@@ -64,7 +64,7 @@ const MenuList = () =>{
             </div>
             <div className="panel__content__container">
                 <div>
-                    <a href={"/"+process.env.REACT_APP_SERVER+"/isotracker"}style={{textDecoration: "none"}}>
+                    <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"}style={{textDecoration: "none"}}>
                         <h4 style={{backgroundColor: equipIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setEquipIsShown(true)} onMouseLeave={() => setEquipIsShown(false)}><img src={EquiIcon} alt="equi" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Equipment (Weight: 4225 | 8.86%)</h4>                   
                     </a>
                     <div class="progress" style={{height: "25px"}}>
@@ -76,7 +76,7 @@ const MenuList = () =>{
             </div>
             <div className="panel__content__container">
                 <div>
-                    <a href={"/"+process.env.REACT_APP_SERVER+"/"}style={{textDecoration: "none"}}>
+                    <a href={"/"+process.env.REACT_APP_PROJECT+"/"}style={{textDecoration: "none"}}>
                         <h4 style={{backgroundColor: civIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setCivIsShown(true)} onMouseLeave={() => setCivIsShown(false)}><img src={StruIcon} alt="stru" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Civil (Weight: 16730 | 35.1%)</h4> 
                     </a>
                     <div class="progress" style={{height: "25px"}}>
@@ -88,7 +88,7 @@ const MenuList = () =>{
             </div>
             <div className="panel__content__container">
                 <div>
-                    <a href={"/"+process.env.REACT_APP_SERVER+"/"}style={{textDecoration: "none"}}>
+                    <a href={"/"+process.env.REACT_APP_PROJECT+"/"}style={{textDecoration: "none"}}>
                         <h4 style={{backgroundColor: instIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setInstIsShown(true)} onMouseLeave={() => setInstIsShown(false)}><img src={InstIcon} alt= "inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Instrumentation (Weight: 1886 | 3.96%)</h4>         
                     </a>
                     <div class="progress" style={{height: "25px"}}>
@@ -100,7 +100,7 @@ const MenuList = () =>{
             </div>
             <div className="panel__content__container__last">
                 <div>
-                    <a href={"/"+process.env.REACT_APP_SERVER+"/"} style={{textDecoration: "none"}}>
+                    <a href={"/"+process.env.REACT_APP_PROJECT+"/"} style={{textDecoration: "none"}}>
                         <h4 style={{backgroundColor: elecIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setElecIsShown(true)} onMouseLeave={() => setElecIsShown(false)}><img src={ElecIcon} alt="inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Electrical (Weight: 4245 | 8.91%)</h4>
                     </a>
                     <div class="progress" style={{height: "25px"}}>

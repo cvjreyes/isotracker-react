@@ -105,12 +105,12 @@ const IsoCtrl = () => {
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
 
-    const body = {
-        user: currentUser,
-    }
+    
     
     useEffect(()=>{
-        setUpdateData(!updateData)
+        const body = {
+            user: currentUser,
+        }
         const options = {
             method: "POST",
             headers: {
@@ -151,6 +151,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setLoading(false)
         setErrorReports(false)
+        setSelected([])
     }, [currentTab])
 
     const getProgress = () =>{
@@ -224,6 +225,7 @@ const IsoCtrl = () => {
             }
             setUpdateData(!updateData)
             setLoading(false)
+            setSelected([])
             
         }
      
@@ -258,6 +260,7 @@ const IsoCtrl = () => {
             }
             setUpdateData(!updateData)
             setLoading(false)
+            setSelected([])
         }
     }
 
@@ -333,6 +336,7 @@ const IsoCtrl = () => {
             }
             await setUpdateData(!updateData)
             setLoading(false)
+            setSelected([])
         }
         
     }
@@ -363,6 +367,7 @@ const IsoCtrl = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/forceUnclaim", options)
         await setUpdateData(!updateData)
         setLoading(false)
+        setSelected([])
     }
 
 
@@ -395,6 +400,7 @@ const IsoCtrl = () => {
             }
             await setUpdateData(!updateData)
             setLoading(false)
+            setSelected([])
         }    
     }
 
@@ -422,7 +428,7 @@ const IsoCtrl = () => {
         
         await setUpdateData(!updateData)
         setLoading(false)
-            
+        setSelected([])
     }
 
     async function transaction(destiny){
@@ -556,6 +562,7 @@ const IsoCtrl = () => {
             await setUpdateData(!updateData)
             setLoading(false)
             await getProgress()
+            setSelected([])
         }    
     }
 
@@ -574,6 +581,7 @@ const IsoCtrl = () => {
                 user : currentUser,
                 fileName: selected[i],
                 to: destiny,
+                from: currentTab
             }
             const options = {
                 method: "POST",
@@ -582,12 +590,14 @@ const IsoCtrl = () => {
                 },
                 body: JSON.stringify(body)
             }
+            console.log("a", body)
             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLead", options)
             setTransactionSuccess(true)
         }
         await setUpdateData(!updateData)
         setLoading(false)
         await getProgress()
+        setSelected([])
     }
     
 
@@ -627,6 +637,7 @@ const IsoCtrl = () => {
             console.log("restored")
             setLoading(false)
             await getProgress()
+            setSelected([])
         }
     }
 
@@ -665,6 +676,7 @@ const IsoCtrl = () => {
         
         await setUpdateData(!updateData)
         setLoading(false)
+        setSelected([])
     }
 
     async function sendInstrumentClick(fileName){
@@ -692,6 +704,7 @@ const IsoCtrl = () => {
         
         await setUpdateData(!updateData)
         setLoading(false)
+        setSelected([])
     }
 
     function updateD(){
@@ -789,6 +802,7 @@ const IsoCtrl = () => {
         //await setAttachFiles(null)
         await setUpdateData(!updateData)
         setLoading(false)
+        setSelected([])
         
     }
 
@@ -904,6 +918,7 @@ const IsoCtrl = () => {
             await setUpdateData(!updateData)
             setLoading(false)
             await getProgress()
+            setSelected([])
         }
     }
 
@@ -934,6 +949,7 @@ const IsoCtrl = () => {
             setUpdateData(!updateData)
             setLoading(false)
             await getProgress()
+            setSelected([])
         }
     }
 
@@ -964,7 +980,7 @@ const IsoCtrl = () => {
             }
             setUpdateData(!updateData)
             setLoading(false)
-            
+            setSelected([])
         }
 
     }
@@ -978,6 +994,9 @@ const IsoCtrl = () => {
         setLoading(true)
         if (selected.length > 0){
             localStorage.setItem("update", true)
+            if(comments.length < 1){
+                comments = comment
+            }
             for (let i = 0; i < selected.length; i++){
                 const body ={
                     user : currentUser,
@@ -999,20 +1018,22 @@ const IsoCtrl = () => {
             }
             setUpdateData(!updateData)
             setLoading(false)
+            setComment("")
+            setSelected([])
         }
     }
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
-        tableContent = <DragAndDrop mode={"upload"} user={currentUser} uploaded={getProgress.bind(this)}/>
+        tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
         pageSelector = null
     }if(currentTab === "Design" && currentRole === "Design"){
         uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} updateData = {updateData}/>
+        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){

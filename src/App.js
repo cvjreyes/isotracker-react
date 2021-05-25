@@ -14,10 +14,10 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-            <Route exact path={"/"+process.env.REACT_APP_SERVER+"/"} component={Welcome}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_SERVER+"/isotracker"} component={IsoCtrl}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_SERVER+"/register"} component={Register}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_SERVER+"/login"} component={LoginPage}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/"} component={Welcome}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} component={IsoCtrl}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/register"} component={Register}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/login"} component={LoginPage}></Route>
         </Switch>
       </Router>
   

@@ -69,6 +69,7 @@ class DragAndDrop extends React.Component{
             let body =  {
               fileName: filename,
               user: this.props.user,
+              role: this.props.role
             }
             fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadHis", {
               // content-type header should not be specified!
@@ -133,10 +134,12 @@ class DragAndDrop extends React.Component{
           if (i > 0) {
             extension = filename.substring(i+1);
           }
+          console.log(this.props)
           if(extension === "pdf"){
             let body =  {
               file: filename,
               user: this.props.user,
+              role: this.props.role
             }
             fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateHis", {
               // content-type header should not be specified!
