@@ -55,7 +55,7 @@ const ActionBtns = props =>{
             }
             if(process.env.REACT_APP_IFC === "0"){
                 if (props.role !== "Stress" && props.role !== "StressLead"){
-                    actionBtn3 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("stress")}>Stress</button>
+                    actionBtn3 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Stress")}>Stress</button>
                 } if (props.role !== "Supports" && props.role !== "SupportsLead"){
                     actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("supports")}>Support</button>
                 }
@@ -66,7 +66,7 @@ const ActionBtns = props =>{
                 if(props.role !== "Design" && props.role !== "DesignLead" && props.role !== "Process" && props.role !== "Instrument" && props.role !== "StressLead" && props.role !== "SupportsLead"){
                     actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#781C2E"}} onClick={() => props.returnIso("Design", "")}>Design</button>
                 }if(props.role === "DesignLead"){
-                    actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("stress")}>Stress</button>
+                    actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Stress")}>Stress</button>
                     actionBtn4 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Supports")}>Support</button>     
                 }else if(props.role === "Stress"){
                     actionBtn5= <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.verifyClick()}>Verify</button>
