@@ -30,6 +30,8 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import ReportBoxBtns from "../../components/reportBoxBtns/reportBoxBtns"
 import IssuedBtn from "../../components/issuedBtn/issuedBtn"
+import ProgressBtn from "../../components/progressBtn/progressBtn"
+import ProgressPlot from "../../components/progressPlot/progressPlot"
 
 
 const IsoCtrl = () => {
@@ -96,7 +98,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, issuedBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, issuedBtn, progressBtn
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -1065,6 +1067,10 @@ const IsoCtrl = () => {
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
         tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)}/>
+    }if(currentTab === "Status"){
+        progressBtn = <ProgressBtn onChange={value => setCurrentTab("Progress")} currentTab = {currentTab}></ProgressBtn>
+    }if(currentTab === "Progress"){
+        tableContent = <ProgressPlot></ProgressPlot>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -1183,6 +1189,7 @@ const IsoCtrl = () => {
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
                   <ReportsBtn onChange={value => setCurrentTab("Reports")} currentTab = {currentTab}/>
+                  {progressBtn}
                   {procInsBtn}
                   {issuedBtn}
 
