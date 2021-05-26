@@ -103,7 +103,7 @@ const ActionBtns = props =>{
 
             
         
-        }else if(props.role === "SpecialityLead" && props.currentTab !== "LDE/IsoControl" && props.currentTab !== "Process" &&  props.currentTab !== "Instrument" && props.currentTab !== "Issued"){
+        }else if(props.role === "SpecialityLead" && props.currentTab !== "LDE/IsoControl" && props.currentTab !== "Process" &&  props.currentTab !== "Instrument" && props.currentTab !== "Issued" && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold"){
             actionBtn10 = <ForceClaimPopUp currentTab={props.currentTab} assignToUser={assignToUser.bind(this)}/>
         }
         
