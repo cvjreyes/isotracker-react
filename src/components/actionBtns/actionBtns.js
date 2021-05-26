@@ -93,10 +93,10 @@ const ActionBtns = props =>{
             }
             else if(props.role === "StressLead"){
                 actionBtn2 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.returnIso("Stress", "")}>Stress</button>
-                actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.returnLead("Supports")}>Supports</button>
+                actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Supports")}>Supports</button>
             }
             else if(props.role === "SupportsLead"){
-                actionBtn3 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.returnLead("Stress")}>Stress</button>
+                actionBtn3 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.returnLeadStress()}>LDG Stress</button>
                 actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.returnIso("Supports", "")}>Supports</button>
                 
             }
