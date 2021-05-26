@@ -46,12 +46,12 @@ const data = [
 	},
   ];
   
-  export default class ProgressPlot extends PureComponent {
+  export default class ProgressPlot extends React.PureComponent {
 	static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
   
 	render() {
 	  return (
-		<ResponsiveContainer width="100%" height="100%">
+		<ResponsiveContainer width="100%" height="80%">
 		  <LineChart
 			width={500}
 			height={300}
