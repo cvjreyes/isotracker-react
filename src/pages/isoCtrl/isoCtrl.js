@@ -86,13 +86,13 @@ const IsoCtrl = () => {
     var dataTableHeight = 8
 
     if (pagination === 8){
-        dataTableHeight = "520px"
+        dataTableHeight = "550px"
     }if(pagination === 25){
-        dataTableHeight = "1220px"
+        dataTableHeight = "1250px"
     }if(pagination === 50){
-        dataTableHeight = "2230px"
+        dataTableHeight = "2250px"
     }if(pagination === 100){
-        dataTableHeight = "4300px"
+        dataTableHeight = "4330px"
     }
 
     //Componentes de la pagina que varian en funcion del estado
@@ -508,13 +508,11 @@ const IsoCtrl = () => {
                             }
                             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                             .then(response => response.json())
-                            .then(json=>{
+                            .then(async json=>{
                                 console.log(json)
-                            })
-                            .catch(async error =>{
-                                
-                                await setErrorCL(true) 
-                                console.log(errorCL)                            
+                                if(json.error){
+                                    await setErrorCL(true) 
+                                }
                             })
                             if(!errorCL){
                                 setTransactionSuccess(true)
@@ -736,6 +734,57 @@ const IsoCtrl = () => {
             }
             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrument", options)
         
+        await setUpdateData(!updateData)
+        setLoading(false)
+        setSelected([])
+    }
+
+    async function sendCancelProcessClick(fileName){
+        setErrorReports(false)
+        setErrorUnclaim(false)
+        setErrorUnclaimR(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setLoading(true)
+        localStorage.setItem("update", true)
+
+        const body ={
+            file: fileName
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/cancelProc", options)
+    
+        await setUpdateData(!updateData)
+        await setLoading(false)
+        setSelected([])
+    }
+
+    async function sendCancelInstrumentClick(fileName){
+        setErrorReports(false)
+        setErrorUnclaim(false)
+        setErrorUnclaimR(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setLoading(true)
+        localStorage.setItem("update", true)
+        const body ={
+            file: fileName
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/cancelInst", options)
+    
         await setUpdateData(!updateData)
         setLoading(false)
         setSelected([])
@@ -1084,7 +1133,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
+        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){
