@@ -431,7 +431,7 @@ const IsoCtrl = () => {
         setSelected([])
     }
 
-    async function transaction(destiny){
+    async function transaction(destiny, comments){
         
         if(selected.length > 0){
             setErrorUnclaimR(false)
@@ -481,7 +481,7 @@ const IsoCtrl = () => {
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/piStatus/"+selected[i], options)
                     .then(response => response.json())
                     .then(async json =>{
-                        if(json.sit === 1 || json.sit === 4 || json.spo === 1 || json.spo === 4){
+                        if(json.sit === 1 || json.sit === 4 || json.sit === 5|| json.spo === 1 || json.spo === 4 || json.spo === 5){
                             localStorage.setItem("update", true)
                             setErrorPI(true);
                             setTransactionSuccess(false);
@@ -523,6 +523,39 @@ const IsoCtrl = () => {
                 }
                 await setUpdateData(!updateData)
                 setLoading(false)
+            }else if(destiny === "On hold"){
+                setCommentAlert(false)
+                localStorage.setItem("update", true)
+                let deleted, hold = 0
+
+                if(destiny === "Recycle bin"){
+                    deleted = 1
+                }
+
+                if(destiny === "On hold"){
+                    hold = 1
+                }
+                for (let i = 0; i < selected.length; i++){
+                    
+                    const body ={
+                        user : currentUser,
+                        fileName: selected[i],
+                        to: destiny,
+                        role: secureStorage.getItem("role"),
+                        comment: comments,
+                        deleted: deleted,
+                        onhold: hold
+                    }
+                    const options = {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(body)
+                    }
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
+                    setTransactionSuccess(true)
+                }
             }else{
                 setCommentAlert(false)
                 localStorage.setItem("update", true)
@@ -1123,6 +1156,10 @@ const IsoCtrl = () => {
         }
     }
 
+    async function success(){
+        setTransactionSuccess(true)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
@@ -1133,7 +1170,7 @@ const IsoCtrl = () => {
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
+        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} success={success.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){

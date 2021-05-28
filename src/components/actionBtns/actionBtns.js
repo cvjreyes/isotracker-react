@@ -2,6 +2,7 @@
 import ForceClaimPopUp from '../forceClaimPopUp/forceClaimPopUp';
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CancelIso from "../../components/cancelIso/cancelIso"
+import HoldComment from '../../components/holdComment/holdComment';
 
 const ActionBtns = props =>{
     function assignToUser(username){
@@ -16,12 +17,16 @@ const ActionBtns = props =>{
         props.returnIso(destiny, comments)
     }
 
+    function sendHolds(comments){
+        props.transaction("On hold",comments)
+    }
+
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
             console.log("entra")
             actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
-            actionBtn7 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#CD853F"}} onClick={() => props.transaction("On hold")}>Hold</button>
+            actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
         }
         actionBtn11 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
     }else{
@@ -44,7 +49,11 @@ const ActionBtns = props =>{
             actionBtn1 = <button className="btn btn-sm btn-warning" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.unclaimClick()}>Unclaim</button>
             actionBtn11 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"lightgray"}} onClick={() => props.downloadFiles()}>Download</button>
             if(props.role !== "Design" && props.role !== "DesignLead" && props.role !== "Process" && props.role !== "Instrument" && props.role !== "StressLead" && props.role !== "SupportsLead" ){
-                actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#781C2E"}} onClick={() => props.returnIso("Design","")}>Design</button>
+                if(props.role === "Stress"){
+                    actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#781C2E"}} onClick={() => props.returnIso("Design","")}>Design</button>
+                }else{
+                    actionBtn2 = <CancelIso returnIso={returnIso.bind(this)} role={props.role}/>
+                }
             }
             if(props.role === "DesignLead" || props.role === "StressLead" || props.role === "SupportsLead"){
                 actionBtn9 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "#8B008B", color:"white"}} onClick={() => props.transaction("Materials")}>Materials</button>
@@ -63,9 +72,7 @@ const ActionBtns = props =>{
                     actionBtn5= <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.verifyClick()}>Verify</button>
                 }
             }else{
-                if(props.role !== "Design" && props.role !== "DesignLead" && props.role !== "Process" && props.role !== "Instrument" && props.role !== "StressLead" && props.role !== "SupportsLead"){
-                    actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#781C2E"}} onClick={() => props.returnIso("Design", "")}>Design</button>
-                }if(props.role === "DesignLead"){
+                if(props.role === "DesignLead"){
                     actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Stress")}>Stress</button>
                     actionBtn4 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Supports")}>Support</button>     
                 }else if(props.role === "Stress"){
@@ -87,8 +94,8 @@ const ActionBtns = props =>{
                 actionBtn2 = <button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#781C2E"}} onClick={() => returnIso("Design", "")}>Design</button>               
             }if(props.role === "SpecialityLead"){
                 actionBtn3 = actionBtn1
-                actionBtn1 = <ActionExtra toIssue={toIssue.bind(this)}/>
-                actionBtn2 = <CancelIso returnIso={returnIso.bind(this)}/>
+                actionBtn1 = <ActionExtra toIssue={toIssue.bind(this)} role={props.role}/>
+                actionBtn2 = <CancelIso returnIso={returnIso.bind(this)} role={props.role}/>
                 actionBtn5 = null
             }
             else if(props.role === "StressLead"){
@@ -114,7 +121,7 @@ const ActionBtns = props =>{
         }
         if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab != "Process" && props.currentTab != "Instrument"){
             actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
-            actionBtn7 = <button className="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor:"#CD853F"}} onClick={() => props.transaction("On hold")}>Hold</button>
+            actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
         }
     }
 

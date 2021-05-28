@@ -357,7 +357,7 @@ class StatusDataTable extends React.Component{
         width: '20%',
         ...this.getColumnSearchProps('id'),
         sorter:{
-            compare: (a, b) => { return a.id.localeCompare(b.id)},
+          compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
       },
       {

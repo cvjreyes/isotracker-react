@@ -54,6 +54,10 @@ class MyTrayTable extends React.Component{
     this.props.updateD()
   }
 
+  success(){
+    this.props.success()
+  }
+
   componentDidMount(){
 
     const bodyUsername = {
@@ -156,7 +160,7 @@ class MyTrayTable extends React.Component{
              }
               if(process.env.REACT_APP_IFC === "1"){
                 if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} role={this.state.role} update={this.updateData.bind(this)}/> {fButton} {rButton} </div>}
+                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} currentUser = {this.state.user} role={this.state.role} update={this.updateData.bind(this)}/> {fButton} {rButton} </div>}
                 }else{
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                     if (secureStorage.getItem("role") === "Design" || secureStorage.getItem("role") === "DesignLead" || secureStorage.getItem("role") === "Issuer"){
@@ -165,13 +169,13 @@ class MyTrayTable extends React.Component{
                       row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px", marginRight: "5px"}}>CANCEL VERIFY</button> {pButton} {iButton} {fButton} {rButton} </div>}
                     }
                   }else{
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} role={this.state.role}  currentUser = {this.state.user}/> {pButton} {iButton} {fButton} {rButton} </div>}
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} role={this.state.role}  currentUser = {this.state.user}/> {pButton} {iButton} {fButton} {rButton} </div>}
                   } 
                 }
                               
               }else{
                 if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div> <UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)} role={this.state.role}  currentUser = {this.state.user} update={this.updateData.bind(this)}/> {fButton} {rButton} </div>}
+                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div> <UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} role={this.state.role}  currentUser = {this.state.user} update={this.updateData.bind(this)}/> {fButton} {rButton} </div>}
                 }else{
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                     row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px", marginRight: "5px"}}>CANCEL VERIFY</button> {pButton} {iButton} {fButton} {rButton}</div>}
@@ -289,6 +293,7 @@ class MyTrayTable extends React.Component{
                       break;
                   }
                   if(json.rows[i].returned === 1){
+                    console.log("esta ret")
                     rButton = <button className="btn btn-danger" disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
                   }else{
                     rButton = null
@@ -296,7 +301,7 @@ class MyTrayTable extends React.Component{
                 }
                 if(process.env.REACT_APP_IFC === "1"){
                   if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} role={this.state.role} update={this.updateData.bind(this)}/> {fButton} {rButton} </div>}
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} currentUser = {this.state.user} role={this.state.role} update={this.updateData.bind(this)}/> {fButton} {rButton} </div>}
                   }else{
                     if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                       if (secureStorage.getItem("role") === "Design" || secureStorage.getItem("role") === "DesignLead" || secureStorage.getItem("role") === "Issuer"){
@@ -311,12 +316,12 @@ class MyTrayTable extends React.Component{
                                 
                 }else{
                   if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div> <UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)}  currentUser = {this.state.user} update={this.updateData.bind(this)}/> {fButton} {rButton} </div>}
+                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div> <UploadProcInst id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} currentUser = {this.state.user} update={this.updateData.bind(this)}/> {fButton} {rButton} </div>}
                   }else{
                     if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                       row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px", marginRight: "5px"}}>CANCEL VERIFY</button> {pButton} {iButton} {fButton} {rButton}</div>}
                     }else{
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  role={this.state.role} currentUser = {this.state.user} /> {pButton} {iButton} {fButton} {rButton} </div>}
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} role={this.state.role} currentUser = {this.state.user} /> {pButton} {iButton} {fButton} {rButton} </div>}
                     }
                   }
                   
