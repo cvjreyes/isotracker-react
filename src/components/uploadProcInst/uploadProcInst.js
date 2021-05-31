@@ -61,6 +61,7 @@ export default class UploadProcInst extends Component {
         
                                 this.closeModal()
                                 this.props.update()
+                                this.props.success()
                             })            
                             
                     })
@@ -83,6 +84,7 @@ export default class UploadProcInst extends Component {
             
                                     this.closeModal()
                                     this.props.update()
+                                    this.props.success()
                                 })            
                                 
                         })
@@ -137,6 +139,7 @@ export default class UploadProcInst extends Component {
         
                                 this.closeModal()
                                 this.props.update()
+                                this.props.success()
                             })            
                             
                     })
@@ -159,6 +162,7 @@ export default class UploadProcInst extends Component {
             
                                     this.closeModal()
                                     this.props.update()
+                                    this.props.success()
                                 })            
                                 
                         })

@@ -64,153 +64,166 @@ const StateTable = props =>{
     const [realProgressTDValue, setRealProgressTDValue] = useState()
     const [realProgressIsoTDValue, setRealProgressIsoTDValue] = useState()
 
-    useEffect(()=>{
-        if(process.env.REACT_APP_PROGRESS === "0"){
-            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
-            .then(response => response.json())
-            .then(json => {
-                setDesignR0(json["designR0"])
-                setDesignR1(json["designR1"])
-                setDesignR2(json["designR2"])
-                setDesignHold(json["designHold"])
-                setDesignDeleted(json["designDeleted"])
-                setDesignStock(json["designStock"])
-                setStressR0(json["stressR0"])
-                setStressR1(json["stressR1"])
-                setStressR2(json["stressR2"])
-                setStressHold(json["stressHold"])
-                setStressDeleted(json["stressDeleted"])
-                setStressStock(json["stressStock"])
-                setSupportsR0(json["supportsR0"])
-                setSupportsR1(json["supportsR1"])
-                setSupportsR2(json["supportsR2"])
-                setSupportsHold(json["supportsHold"])
-                setSupportsDeleted(json["supportsDeleted"])
-                setSupportsStock(json["supportsStock"])
-                setMaterialsR0(json["materialsR0"])
-                setMaterialsR1(json["materialsR1"])
-                setMaterialsR2(json["materialsR2"])
-                setMaterialsHold(json["materialsHold"])
-                setMaterialsDeleted(json["materialsDeleted"])
-                setMaterialsStock(json["materialsStock"])
-                setIssuerR0(json["issuerR0"])
-                setIssuerR1(json["issuerR1"])
-                setIssuerR2(json["issuerR2"])
-                setIssuerHold(json["issuerHold"])
-                setIssuerDeleted(json["issuerDeleted"])
-                setIssuerStock(json["issuerStock"])
-                setToIssueR0(json["toIssueR0"])
-                setToIssueR1(json["toIssueR1"])
-                setToIssueR2(json["toIssueR2"])
-                setToIssueHold(json["toIssueHold"])
-                setToIssueDeleted(json["toIssueDeleted"])
-                setToIssueStock(json["toIssueStock"])
-                setIssuedR0(json["issuedR0"])
-                setIssuedR1(json["issuedR1"])
-                setIssuedR2(json["issuedR2"])
-                setIssuedDeleted(json["issuedDeleted"])
-                setIssuedStock(json["issuedStock"])
-                setTotalR0(json["totalR0"])
-                setTotalR1(json["totalR1"])
-                setTotalR2(json["totalR2"])
-                setTotalHold(json["totalHold"])
-                setTotalDeleted(json["totalDeleted"])
-                setTotalStock(json["totalStock"])
-                
-            }) 
-        }else{
-            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
+    const [loading, setLoading] = useState(true);
+
+    useEffect(async ()=>{
+        if(loading){
+            if(process.env.REACT_APP_PROGRESS === "0"){
+                fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
                 .then(response => response.json())
                 .then(json => {
-                    console.log(json["model"])
                     setDesignR0(json["designR0"])
-                setDesignR1(json["designR1"])
-                setDesignR2(json["designR2"])
-                setDesignHold(json["designHold"])
-                setDesignDeleted(json["designDeleted"])
-                setDesignStock(json["designStock"])
-                setStressR0(json["stressR0"])
-                setStressR1(json["stressR1"])
-                setStressR2(json["stressR2"])
-                setStressHold(json["stressHold"])
-                setStressDeleted(json["stressDeleted"])
-                setStressStock(json["stressStock"])
-                setSupportsR0(json["supportsR0"])
-                setSupportsR1(json["supportsR1"])
-                setSupportsR2(json["supportsR2"])
-                setSupportsHold(json["supportsHold"])
-                setSupportsDeleted(json["supportsDeleted"])
-                setSupportsStock(json["supportsStock"])
-                setMaterialsR0(json["materialsR0"])
-                setMaterialsR1(json["materialsR1"])
-                setMaterialsR2(json["materialsR2"])
-                setMaterialsHold(json["materialsHold"])
-                setMaterialsDeleted(json["materialsDeleted"])
-                setMaterialsStock(json["materialsStock"])
-                setIssuerR0(json["issuerR0"])
-                setIssuerR1(json["issuerR1"])
-                setIssuerR2(json["issuerR2"])
-                setIssuerHold(json["issuerHold"])
-                setIssuerDeleted(json["issuerDeleted"])
-                setIssuerStock(json["issuerStock"])
-                setToIssueR0(json["toIssueR0"])
-                setToIssueR1(json["toIssueR1"])
-                setToIssueR2(json["toIssueR2"])
-                setToIssueHold(json["toIssueHold"])
-                setToIssueDeleted(json["toIssueDeleted"])
-                setToIssueStock(json["toIssueStock"])
-                setIssuedR0(json["issuedR0"])
-                setIssuedR1(json["issuedR1"])
-                setIssuedR2(json["issuedR2"])
-                setIssuedDeleted(json["issuedDeleted"])
-                setIssuedStock(json["issuedStock"])
-                setTotalR0(json["totalR0"])
-                setTotalR1(json["totalR1"])
-                setTotalR2(json["totalR2"])
-                setTotalHold(json["totalHold"])
-                setTotalDeleted(json["totalDeleted"])
-                setTotalStock(json["totalStock"])
-                setModel(json["modelCount"])
+                    setDesignR1(json["designR1"])
+                    setDesignR2(json["designR2"])
+                    setDesignHold(json["designHold"])
+                    setDesignDeleted(json["designDeleted"])
+                    setDesignStock(json["designStock"])
+                    setStressR0(json["stressR0"])
+                    setStressR1(json["stressR1"])
+                    setStressR2(json["stressR2"])
+                    setStressHold(json["stressHold"])
+                    setStressDeleted(json["stressDeleted"])
+                    setStressStock(json["stressStock"])
+                    setSupportsR0(json["supportsR0"])
+                    setSupportsR1(json["supportsR1"])
+                    setSupportsR2(json["supportsR2"])
+                    setSupportsHold(json["supportsHold"])
+                    setSupportsDeleted(json["supportsDeleted"])
+                    setSupportsStock(json["supportsStock"])
+                    setMaterialsR0(json["materialsR0"])
+                    setMaterialsR1(json["materialsR1"])
+                    setMaterialsR2(json["materialsR2"])
+                    setMaterialsHold(json["materialsHold"])
+                    setMaterialsDeleted(json["materialsDeleted"])
+                    setMaterialsStock(json["materialsStock"])
+                    setIssuerR0(json["issuerR0"])
+                    setIssuerR1(json["issuerR1"])
+                    setIssuerR2(json["issuerR2"])
+                    setIssuerHold(json["issuerHold"])
+                    setIssuerDeleted(json["issuerDeleted"])
+                    setIssuerStock(json["issuerStock"])
+                    setToIssueR0(json["toIssueR0"])
+                    setToIssueR1(json["toIssueR1"])
+                    setToIssueR2(json["toIssueR2"])
+                    setToIssueHold(json["toIssueHold"])
+                    setToIssueDeleted(json["toIssueDeleted"])
+                    setToIssueStock(json["toIssueStock"])
+                    setIssuedR0(json["issuedR0"])
+                    setIssuedR1(json["issuedR1"])
+                    setIssuedR2(json["issuedR2"])
+                    setIssuedDeleted(json["issuedDeleted"])
+                    setIssuedStock(json["issuedStock"])
+                    setTotalR0(json["totalR0"])
+                    setTotalR1(json["totalR1"])
+                    setTotalR2(json["totalR2"])
+                    setTotalHold(json["totalHold"])
+                    setTotalDeleted(json["totalDeleted"])
+                    setTotalStock(json["totalStock"])
+                    
                 }) 
-                const options = {
-                    method: "GET",
-                }
-                fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgressISO", options)
-                .then(response => response.json())
-                .then(async json =>{
-                     setProgressIso(json.progressISO)
-                     setRealProgressIso(json.realprogressISO)
-                })
-                
-                fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgress", options)
-                .then(response => response.json())
-                .then(async json =>{
-                     setProgress(json.progress)
-                     setRealProgress(json.realprogress)
-                })
+            }else{
+                fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
+                    .then(response => response.json())
+                    .then(json => {
+                        console.log(json["model"])
+                        setDesignR0(json["designR0"])
+                    setDesignR1(json["designR1"])
+                    setDesignR2(json["designR2"])
+                    setDesignHold(json["designHold"])
+                    setDesignDeleted(json["designDeleted"])
+                    setDesignStock(json["designStock"])
+                    setStressR0(json["stressR0"])
+                    setStressR1(json["stressR1"])
+                    setStressR2(json["stressR2"])
+                    setStressHold(json["stressHold"])
+                    setStressDeleted(json["stressDeleted"])
+                    setStressStock(json["stressStock"])
+                    setSupportsR0(json["supportsR0"])
+                    setSupportsR1(json["supportsR1"])
+                    setSupportsR2(json["supportsR2"])
+                    setSupportsHold(json["supportsHold"])
+                    setSupportsDeleted(json["supportsDeleted"])
+                    setSupportsStock(json["supportsStock"])
+                    setMaterialsR0(json["materialsR0"])
+                    setMaterialsR1(json["materialsR1"])
+                    setMaterialsR2(json["materialsR2"])
+                    setMaterialsHold(json["materialsHold"])
+                    setMaterialsDeleted(json["materialsDeleted"])
+                    setMaterialsStock(json["materialsStock"])
+                    setIssuerR0(json["issuerR0"])
+                    setIssuerR1(json["issuerR1"])
+                    setIssuerR2(json["issuerR2"])
+                    setIssuerHold(json["issuerHold"])
+                    setIssuerDeleted(json["issuerDeleted"])
+                    setIssuerStock(json["issuerStock"])
+                    setToIssueR0(json["toIssueR0"])
+                    setToIssueR1(json["toIssueR1"])
+                    setToIssueR2(json["toIssueR2"])
+                    setToIssueHold(json["toIssueHold"])
+                    setToIssueDeleted(json["toIssueDeleted"])
+                    setToIssueStock(json["toIssueStock"])
+                    setIssuedR0(json["issuedR0"])
+                    setIssuedR1(json["issuedR1"])
+                    setIssuedR2(json["issuedR2"])
+                    setIssuedDeleted(json["issuedDeleted"])
+                    setIssuedStock(json["issuedStock"])
+                    setTotalR0(json["totalR0"])
+                    setTotalR1(json["totalR1"])
+                    setTotalR2(json["totalR2"])
+                    setTotalHold(json["totalHold"])
+                    setTotalDeleted(json["totalDeleted"])
+                    setTotalStock(json["totalStock"])
+                    setModel(json["modelCount"])
+                    }) 
+                    const options = {
+                        method: "GET",
+                    }
+                    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgressISO", options)
+                    .then(response => response.json())
+                    .then(async json =>{
+                        console.log(json)
+                         await setProgressIso([json.progressISO, json.realprogressISO])
+                    })
+                    
+                    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgress", options)
+                    .then(response => response.json())
+                    .then(async json =>{
+                        console.log(json)
+                         await setProgress([json.progress, json.realprogress])
+                    })
+    
+            }
 
-        }
-        console.log(props.currentRole)
-        if(props.currentRole === "SpecialityLead"){
-            setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P.</td>)
-            setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P. ISO</td>)
-            setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{realProgress}%</td>)
-            setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state">{realProgressISO}%</td>)
-        }else{
-            setRealProgressTD(null)
-            setRealProgressIsoTD(null)
-            setRealProgressTDValue(null)
-            setRealProgressIsoTDValue(null)
+            if(props.currentRole === "SpecialityLead"){
+                await setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P.</td>)
+                await setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P. ISO</td>)
+                await setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{progress[1]}%</td>)
+                await setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state">{progressIso[1]}%</td>)
+            }else{
+                await setRealProgressTD(null)
+                await setRealProgressIsoTD(null)
+                await setRealProgressTDValue(null)
+                await setRealProgressIsoTDValue(null)
+            }
+            console.log("eontrooorn")
+            await setLoading(false)
         }
         
-    },[props.updateData, props.currentRole])
+        
+    },[loading])
+
+    useEffect(async ()=>{
+        setLoading(true)
+    }, [props.updateData, props.currentRole])
+
+    
 
     return (
         <td className="statusTable__td">
             <table className="statusTable__table">
                 <tbody className="statusTable__body">
                     <tr>
-                        <td  className="statusTable__header" >M:{model}</td>
+                        <td  className="statusTable__header" style={{backgroundColor: "purple"}}>M:{model}</td>
                         <td  className="statusTable__header" >Design</td>
                         <td  className="statusTable__header" >Stress</td>
                         <td  className="statusTable__header" >Supports</td>
@@ -225,7 +238,7 @@ const StateTable = props =>{
                         {realProgressIsoTD}
                     </tr>
                     <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"lightblue"}}>R0</td>
+                        <td className="statusTable__header" style={{backgroundColor:"white", color:"gray"}}>R0</td>
                         <td className="statusTable__state">{designR0}</td>
                         <td className="statusTable__state">{stressR0}</td>
                         <td className="statusTable__state">{supportsR0}</td>
@@ -234,32 +247,32 @@ const StateTable = props =>{
                         <td className="statusTable__state">{toIssueR0}</td>
                         <td className="statusTable__state">{issuedR0}</td>   
                         <td className="statusTable__state">{totalR0}</td>  
-                        <td rowSpan="6" className="statusTable__state">{progress}%</td>  
-                        <td rowSpan="6" className="statusTable__state">{progressIso}%</td>  
+                        <td rowSpan="6" className="statusTable__state">{progress[0]}%</td>  
+                        <td rowSpan="6" className="statusTable__state">{progressIso[0]}%</td>  
                         {realProgressTDValue}
                         {realProgressIsoTDValue} 
                     </tr>
                     <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"lightblue"}}>R1</td>
-                        <td className="statusTable__state">{designR1}</td>
-                        <td className="statusTable__state">{stressR1}</td>
-                        <td className="statusTable__state">{supportsR1}</td>
-                        <td className="statusTable__state">{materialsR1}</td>
-                        <td className="statusTable__state">{issuerR1}</td>
-                        <td className="statusTable__state">{toIssueR1}</td>
-                        <td className="statusTable__state">{issuedR1}</td>   
-                        <td className="statusTable__state">{totalR1}</td> 
+                        <td className="statusTable__header" style={{backgroundColor:"#d1ebf7", color:"gray"}}>R1</td>
+                        <td className="statusTable__state_R1">{designR1}</td>
+                        <td className="statusTable__state_R1">{stressR1}</td>
+                        <td className="statusTable__state_R1">{supportsR1}</td>
+                        <td className="statusTable__state_R1">{materialsR1}</td>
+                        <td className="statusTable__state_R1">{issuerR1}</td>
+                        <td className="statusTable__state_R1">{toIssueR1}</td>
+                        <td className="statusTable__state_R1">{issuedR1}</td>   
+                        <td className="statusTable__state_R1">{totalR1}</td> 
                   </tr>
                   <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"lightblue"}}>R2</td>
-                        <td className="statusTable__state">{designR2}</td>
-                        <td className="statusTable__state">{stressR2}</td>
-                        <td className="statusTable__state">{supportsR2}</td>
-                        <td className="statusTable__state">{materialsR2}</td>
-                        <td className="statusTable__state">{issuerR2}</td>
-                        <td className="statusTable__state">{toIssueR2}</td>
-                        <td className="statusTable__state">{issuedR2}</td>   
-                        <td className="statusTable__state">{totalR2}</td> 
+                        <td className="statusTable__header" style={{backgroundColor:"lightblue", color:"gray"}}>R2</td>
+                        <td className="statusTable__state_R2">{designR2}</td>
+                        <td className="statusTable__state_R2">{stressR2}</td>
+                        <td className="statusTable__state_R2">{supportsR2}</td>
+                        <td className="statusTable__state_R2">{materialsR2}</td>
+                        <td className="statusTable__state_R2">{issuerR2}</td>
+                        <td className="statusTable__state_R2">{toIssueR2}</td>
+                        <td className="statusTable__state_R2">{issuedR2}</td>   
+                        <td className="statusTable__state_R2">{totalR2}</td> 
                   </tr>
                   <tr>
                         <td className="statusTable__header" style={{backgroundColor:"red"}}>On hold</td>
@@ -292,7 +305,7 @@ const StateTable = props =>{
                         <td className="statusTable__state">{issuerStock}</td>
                         <td className="statusTable__state">{toIssueStock}</td>
                         <td className="statusTable__state">{issuedStock}</td>   
-                        <td className="statusTable__state">{totalStock}</td> 
+                        <td className="statusTable__state" style={{fontWeight:"bold", color:"black"}}>{totalStock}</td> 
                   </tr>
                 </tbody>
             </table>

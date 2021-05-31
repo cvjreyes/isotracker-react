@@ -9,6 +9,7 @@ export default class CancelIso extends Component {
             visible : false
         }
         this.user = props.user;
+        this.role = props.role;
     }
 
     openModal() {
@@ -32,9 +33,17 @@ export default class CancelIso extends Component {
 
     render() {
         var trayHeader, traySelect
-
-            trayHeader = <h4 className="cancel__header__tray">Tray</h4>
-            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Support">Support</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
+        console.log(this.props.role)
+        trayHeader = <h4 className="cancel__header__tray">Tray</h4>
+        if(this.props.role === "SpecialityLead"){
+            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
+        }else if(this.props.role === "Supports"){
+            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option></select>
+        }else if(this.props.role === "Materials"){
+            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option></select>
+        }else if(this.props.role === "Issuer"){
+            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option><option value="Materials">Materials</option></select>
+        }
         
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
