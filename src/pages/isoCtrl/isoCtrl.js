@@ -37,6 +37,7 @@ import ProgressPlot from "../../components/progressPlot/progressPlot"
 const IsoCtrl = () => {
    
     document.body.style.zoom = 0.9
+    document.title= process.env.REACT_APP_APP_NAMEPROJ
     const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
@@ -56,6 +57,7 @@ const IsoCtrl = () => {
     const [progressISO, setProgressISO] = useState(0);
     const [realProgressISO, setRealProgressISO] = useState(0);
     const [errorUnclaimR, setErrorUnclaimR] = useState(false);
+    const [warningSelected, setWarningSelected] = useState(false);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -98,7 +100,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, issuedBtn, progressBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -143,6 +145,7 @@ const IsoCtrl = () => {
             setErrorUnclaim(false)
             setErrorReports(false)
             setLoading(false)
+            setWarningSelected(false)
     },[currentRole]);
 
     useEffect(()=>{
@@ -154,6 +157,7 @@ const IsoCtrl = () => {
         setLoading(false)
         setErrorReports(false)
         setSelected([])
+        setWarningSelected(false)
     }, [currentTab])
 
     const getProgress = () =>{
@@ -167,6 +171,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setErrorUnclaim(false)
         setTransactionSuccess(false);
+        setWarningSelected(false)
         setErrorPI(false)
         console.log(selected)
         if(selected.length > 0){
@@ -229,6 +234,8 @@ const IsoCtrl = () => {
             setLoading(false)
             setSelected([])
             
+        }else{
+            setWarningSelected(true)
         }
      
     }   
@@ -240,6 +247,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
+        setWarningSelected(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -273,6 +281,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setTransactionSuccess(false);
         setErrorPI(false)
+        setWarningSelected(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -339,6 +348,8 @@ const IsoCtrl = () => {
             await setUpdateData(!updateData)
             setLoading(false)
             setSelected([])
+        }else{
+            setWarningSelected(true)
         }
         
     }
@@ -351,6 +362,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorPI(false)
         setLoading(true)
+        setWarningSelected(false)
         localStorage.setItem("update", true)
         const body ={
             user : currentUser,
@@ -380,9 +392,9 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setErrorPI(false)
-        setLoading(true)
-        console.log("Envio a verify")
+        setWarningSelected(false)
         if(selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
                 
@@ -403,7 +415,9 @@ const IsoCtrl = () => {
             await setUpdateData(!updateData)
             setLoading(false)
             setSelected([])
-        }    
+        }else{
+            setWarningSelected(true)
+        }
     }
 
     async function cancelVerifyClick(filename){
@@ -412,6 +426,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setTransactionSuccess(false);
         setLoading(true)
+        setWarningSelected(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -437,6 +452,7 @@ const IsoCtrl = () => {
         
         if(selected.length > 0){
             setErrorUnclaimR(false)
+            setWarningSelected(false)
             setErrorReports(false)
             setErrorCL(false)
             setErrorUnclaim(false)
@@ -596,6 +612,8 @@ const IsoCtrl = () => {
             setLoading(false)
             await getProgress()
             setSelected([])
+        }else{
+            setWarningSelected(true)
         }    
     }
 
@@ -603,33 +621,38 @@ const IsoCtrl = () => {
         setErrorReports(false)
         setErrorUnclaim(false)
         setErrorCL(false)
+        setWarningSelected(false)
         setTransactionSuccess(false);
         setErrorPI(false)
         setErrorUnclaimR(false)
-        setLoading(true)
-        localStorage.setItem("update", true)
-        for (let i = 0; i < selected.length; i++){
-                    
-            const body ={
-                user : currentUser,
-                fileName: selected[i],
-                to: destiny,
-                from: currentTab
+        if(selected.length > 0){
+            setLoading(true)
+            localStorage.setItem("update", true)
+            for (let i = 0; i < selected.length; i++){
+                setLoading(true)
+                const body ={
+                    user : currentUser,
+                    fileName: selected[i],
+                    to: destiny,
+                    from: currentTab
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLead", options)
+                setTransactionSuccess(true)
             }
-            const options = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(body)
-            }
-            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLead", options)
-            setTransactionSuccess(true)
+            await setUpdateData(!updateData)
+            setLoading(false)
+            await getProgress()
+            setSelected([])
+        }else{
+            setWarningSelected(true)
         }
-        await setUpdateData(!updateData)
-        setLoading(false)
-        await getProgress()
-        setSelected([])
     }
     
     async function returnLeadStress(){
@@ -639,9 +662,9 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorPI(false)
         setErrorUnclaimR(false)
-        setLoading(true)
-
+        setWarningSelected(false)
         if(selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
                         
@@ -664,6 +687,8 @@ const IsoCtrl = () => {
             setLoading(false)
             await getProgress()
             setSelected([])
+        }else{
+            setWarningSelected(true)
         }
     }
 
@@ -678,7 +703,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setTransactionSuccess(false);
         setErrorPI(false)
-        console.log(selected.length)
+        setWarningSelected(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -705,6 +730,8 @@ const IsoCtrl = () => {
             setLoading(false)
             await getProgress()
             setSelected([])
+        }else{
+            setWarningSelected(true)
         }
     }
 
@@ -725,6 +752,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setTransactionSuccess(false);
         setLoading(true)
+        setWarningSelected(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -753,6 +781,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorCL(false)
         setLoading(true)
+        setWarningSelected(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -781,6 +810,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorCL(false)
         setLoading(true)
+        setWarningSelected(false)
         localStorage.setItem("update", true)
 
         const body ={
@@ -806,6 +836,7 @@ const IsoCtrl = () => {
         setErrorUnclaimR(false)
         setTransactionSuccess(false);
         setErrorCL(false)
+        setWarningSelected(false)
         setLoading(true)
         localStorage.setItem("update", true)
         const body ={
@@ -835,27 +866,53 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setTransactionSuccess(false);
         setErrorUnclaim(false)
-        setLoading(true)
-        localStorage.setItem("update", true)
-        /*
-        if(selected.length === 1){
+        setWarningSelected(false)
+        if(selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
-            for (let i = 0; i < selected.length; i++){
-                const options = {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/pdf"
+            /*
+            if(selected.length === 1){
+                localStorage.setItem("update", true)
+                for (let i = 0; i < selected.length; i++){
+                    const options = {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/pdf"
+                        }
                     }
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
+                    .then(res => res.blob())
+                        .then(response =>{
+                            console.log("Se descarga")
+                            download(new Blob([response]), selected[i], "application/pdf")
+                        })
                 }
-                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
-                .then(res => res.blob())
-                    .then(response =>{
-                        console.log("Se descarga")
-                        download(new Blob([response]), selected[i], "application/pdf")
-                    })
+            }else if (selected.length > 1){
+                localStorage.setItem("update", true)
+                for (let i = 0; i < selected.length; i++){
+
+                    const options = {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/pdf"
+                        }
+                    }
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
+                    .then(res => res.blob())
+                        .then(response =>{
+                            setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
+                        })
+                }
+                const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
+                downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
+                    saveAs(blob,  zipname)
+                })
+                
             }
-        }else if (selected.length > 1){
-            localStorage.setItem("update", true)
+            await setUpdateData(!updateData)
+            await setDownloadzip(new JSZip())   
+            setLoading(false)
+            */
             for (let i = 0; i < selected.length; i++){
 
                 const options = {
@@ -864,64 +921,42 @@ const IsoCtrl = () => {
                         "Content-Type": "application/pdf"
                     }
                 }
-                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
-                .then(res => res.blob())
-                    .then(response =>{
+                
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getAttach/"+selected[i], options)
+                .then(response => response.json())
+                .then(async json => {
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
+                    .then(res => res.blob())
+                    .then( async response =>{
                         setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
+                        for(let i = 0; i < json.length; i++){
+                            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+json[i], options)
+                            .then(res => res.blob())
+                            .then(response =>{
+                                setDownloadzip(downloadZip.file(json[i], new Blob([response]),{binary:true}))   
+                            })
+                        }
+                        
                     })
+                })
+            
+
+                
+        
             }
             const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
             downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
                 saveAs(blob,  zipname)
-            })
+            })  
             
+            await setDownloadzip(new JSZip())   
+            //await setAttachFiles(null)
+            await setUpdateData(!updateData)
+            setLoading(false)
+            setSelected([])
+        }else{
+            setWarningSelected(true)
         }
-        await setUpdateData(!updateData)
-        await setDownloadzip(new JSZip())   
-        setLoading(false)
-        */
-        for (let i = 0; i < selected.length; i++){
-
-            const options = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/pdf"
-                }
-            }
-            
-            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getAttach/"+selected[i], options)
-            .then(response => response.json())
-            .then(async json => {
-                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
-                .then(res => res.blob())
-                .then( async response =>{
-                    setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
-                    for(let i = 0; i < json.length; i++){
-                        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+json[i], options)
-                        .then(res => res.blob())
-                        .then(response =>{
-                            setDownloadzip(downloadZip.file(json[i], new Blob([response]),{binary:true}))   
-                        })
-                    }
-                     
-                })
-            })
-        
-
-            
-    
-        }
-        const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
-        downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
-            saveAs(blob,  zipname)
-        })  
-        
-        await setDownloadzip(new JSZip())   
-        //await setAttachFiles(null)
-        await setUpdateData(!updateData)
-        setLoading(false)
-        setSelected([])
-        
     }
 
     async function downloadHistory(){
@@ -1027,11 +1062,9 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorCL(false)
         setErrorUnclaim(false)
-        setLoading(true)
-
-        console.log(transmittal)
-        
+        setWarningSelected(false)
         if (selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
                 const body ={
@@ -1063,8 +1096,9 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorCL(false)
         setErrorUnclaim(false)
-        setLoading(true)
+        setWarningSelected(false)
         if (selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
                 const body ={
@@ -1094,8 +1128,9 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorCL(false)
         setErrorUnclaim(false)
-        setLoading(true)
+        setWarningSelected(false)
         if (selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
                 const body ={
@@ -1126,8 +1161,9 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorCL(false)
         setErrorUnclaim(false)
-        setLoading(true)
+        setWarningSelected(false)
         if (selected.length > 0){
+            setLoading(true)
             localStorage.setItem("update", true)
             if(comments.length < 1){
                 comments = comment
@@ -1155,6 +1191,8 @@ const IsoCtrl = () => {
             setLoading(false)
             setComment("")
             setSelected([])
+        }else{
+            setWarningSelected(true)
         }
     }
 
@@ -1215,9 +1253,6 @@ const IsoCtrl = () => {
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
-    if(currentTab === "LDE/IsoControl" || currentTab === "Issued"){
-        issuedBtn = <IssuedBtn onChange={value => setCurrentTab("Issued")} currentTab = {currentTab}/>
-    }
     
     
     return (
@@ -1270,6 +1305,12 @@ const IsoCtrl = () => {
                             Missing clean!
                         </Alert>
                     </Collapse>
+                    <Collapse in={warningSelected}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="warning"
+                            >
+                            Select at least one isometric!
+                        </Alert>
+                    </Collapse>
                     <h2 className="title__container">
                         <div className="roleSelector__container">
                             <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
@@ -1308,10 +1349,11 @@ const IsoCtrl = () => {
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
+                  <IssuedBtn onChange={value => setCurrentTab("Issued")} currentTab = {currentTab}/>
                   <ReportsBtn onChange={value => setCurrentTab("Reports")} currentTab = {currentTab}/>
                   {progressBtn}
                   {procInsBtn}
-                  {issuedBtn}
+                  
 
                 </div>
                     

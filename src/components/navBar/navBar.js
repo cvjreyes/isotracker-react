@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TechnipLogo from "../../assets/images/tpenr_logo.svg"
-import Icapp from "../../assets/images/icapp.png"
+import Icapp from "../../assets/images/client.png"
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import './navBar.css';
@@ -134,7 +134,8 @@ const NavBar = (props) =>{
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("LDE/IsoControl")}>Controls</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px", fontWeight:"bold"}} onClick={(event) => handleCloseIso("CheckBy")}>CHECK BY_</MenuItem>
                     </Menu>
-                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/"}><strong className="icapp__text">ICApp</strong></a></li>
+                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/"}><strong className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</strong></a></li>
+                     
                     <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/"}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>
                     </a>

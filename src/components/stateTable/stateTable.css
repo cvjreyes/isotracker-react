@@ -175,7 +175,7 @@
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    background-color: lightblue;
+    background-color: #d1ebf7;
 }
 
 .statusTable__state_R2{
@@ -200,7 +200,7 @@
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    background-color: #6fbbd3;
+    background-color: lightblue;
 }
 
 .statusTable__value{

@@ -253,7 +253,7 @@ const StateTable = props =>{
                         {realProgressIsoTDValue} 
                     </tr>
                     <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"lightblue"}}>R1</td>
+                        <td className="statusTable__header" style={{backgroundColor:"#d1ebf7", color:"gray"}}>R1</td>
                         <td className="statusTable__state_R1">{designR1}</td>
                         <td className="statusTable__state_R1">{stressR1}</td>
                         <td className="statusTable__state_R1">{supportsR1}</td>
@@ -264,7 +264,7 @@ const StateTable = props =>{
                         <td className="statusTable__state_R1">{totalR1}</td> 
                   </tr>
                   <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"#6fbbd3"}}>R2</td>
+                        <td className="statusTable__header" style={{backgroundColor:"lightblue", color:"gray"}}>R2</td>
                         <td className="statusTable__state_R2">{designR2}</td>
                         <td className="statusTable__state_R2">{stressR2}</td>
                         <td className="statusTable__state_R2">{supportsR2}</td>

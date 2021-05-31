@@ -32,7 +32,7 @@ const IssuedBtn = props =>{
     }
     return(
         <div>
-            <input type="image" src={Issued} alt="issued" style={{width:"40px", marginTop:"20px", marginLeft:"10px", float:"left"}} onClick={() => {props.onChange("Issued")}} />
+            <input type="image" src={Issued} alt="issued" style={{width:"40px", marginTop:"20px", marginLeft:"20px", float:"left"}} onClick={() => {props.onChange("Issued")}} />
         </div>
     );
 };
