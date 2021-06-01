@@ -85,6 +85,11 @@ const NavBar = (props) =>{
         setAnchorElIso(null);
         history.replace("/"+process.env.REACT_APP_PROJECT+"/isotracker");
     }
+    const handleChangePassword = () =>{
+        setAnchorElUser(null);
+        setAnchorElIso(null);
+        history.replace("/"+process.env.REACT_APP_PROJECT+"/changepassword");
+    }
     useEffect(() =>{
         const bodyUsername = {
             email: secureStorage.getItem("user")
@@ -159,7 +164,7 @@ const NavBar = (props) =>{
                         }}
                     >
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleHome}>Home</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleCloseUser}>Change password</MenuItem>
+                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleChangePassword}>Change password</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleLogOut}><b>Logout</b></MenuItem>
                     </Menu>
  
