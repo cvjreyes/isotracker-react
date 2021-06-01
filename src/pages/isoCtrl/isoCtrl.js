@@ -1225,7 +1225,7 @@ const IsoCtrl = () => {
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
         tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)}/>
-    }if(currentTab === "Status" || currentTab === "Progress"){
+    }if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <ProgressBtn onChange={value => setCurrentTab("Progress")} currentTab = {currentTab}></ProgressBtn>
     }if(currentTab === "Progress"){
         tableContent = <ProgressPlot></ProgressPlot>
@@ -1335,9 +1335,9 @@ const IsoCtrl = () => {
                                 {uploadButton}
                             </td>   
                             <div className="stateTable__container">
-                                <td style={{width: "75 %"}}>
-                                    <StateTable updateData={updateData} currentRole = {currentRole} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
-                                </td>
+                                
+                                <StateTable updateData={updateData} currentRole = {currentRole} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
+                               
                             </div>            
 
                         </div>
@@ -1345,7 +1345,7 @@ const IsoCtrl = () => {
                 </div>              
                 
                 
-                <div style={{position: "relative", width:"500px"}}>
+                <div style={{position: "relative", width:"540px"}}>
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>

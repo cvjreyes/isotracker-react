@@ -1,9 +1,5 @@
 .statusTable__body{
-    border-bottom-color: rgb(128, 128, 128);
-    border-collapse: collapse;
-    border-left-color: rgb(128, 128, 128);
-    border-right-color: rgb(128, 128, 128);
-    border-top-color: rgb(128, 128, 128);
+    
     box-sizing: border-box;
     color: rgb(99, 107, 111);
     display: table-row-group;
@@ -22,17 +18,9 @@
 }
 
 .statusTable__table{
-    border: 1px solid black;
-    background-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgb(128, 128, 128);
-    border-bottom-width: 1px;
-    border-collapse: collapse;
-    border-left-color: rgb(128, 128, 128);
-    border-left-width: 1px;
-    border-right-color: rgb(128, 128, 128);
-    border-right-width: 1px;
-    border-top-color: rgb(128, 128, 128);
-    border-top-width: 1px;
+    background-color: rgba(0, 0, 0, 0); 
+    border-collapse: separate;
+    border-radius: 1em;
     box-sizing: border-box;
     color: rgb(99, 107, 111);
     display: table;
@@ -204,7 +192,6 @@
 }
 
 .statusTable__value{
-    border: 1px solid rgb(99, 107, 111);
     background-attachment: scroll;
     background-clip: border-box;
     background-color: rgb(255, 255, 255);

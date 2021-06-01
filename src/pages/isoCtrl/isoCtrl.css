@@ -94,6 +94,7 @@ body{
     float: right;
     right: 0;
     margin-bottom: 20px;
+    border-radius: 2em;
 }
 
 .roleSelector__container{

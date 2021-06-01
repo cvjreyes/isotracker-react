@@ -64,6 +64,9 @@ const StateTable = props =>{
     const [realProgressTDValue, setRealProgressTDValue] = useState()
     const [realProgressIsoTDValue, setRealProgressIsoTDValue] = useState()
 
+    const [pISOHeaderTD, setpISOHeaderTD] = useState()
+    const [pISOValueTD, setpISOValueTD] = useState()
+
     const [loading, setLoading] = useState(true);
 
     useEffect(async ()=>{
@@ -196,14 +199,18 @@ const StateTable = props =>{
 
             if(props.currentRole === "SpecialityLead"){
                 await setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P.</td>)
-                await setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P. ISO</td>)
+                await setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange", borderRadius:"0 1em 0 0"}}>R.P. ISO</td>)
                 await setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{progress[1]}%</td>)
-                await setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state">{progressIso[1]}%</td>)
+                await setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[1]}%</td>)
+                await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.ISO</td>)
+                await setpISOValueTD(<td rowSpan="6" className="statusTable__state">{progressIso[0]}%</td>)
             }else{
                 await setRealProgressTD(null)
                 await setRealProgressIsoTD(null)
                 await setRealProgressTDValue(null)
                 await setRealProgressIsoTDValue(null)
+                await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"orange", borderRadius:"0 1em 0 0"}}>P.ISO</td>)
+                await setpISOValueTD(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[0]}%</td>)
             }
             console.log("eontrooorn")
             await setLoading(false)
@@ -219,11 +226,12 @@ const StateTable = props =>{
     
 
     return (
+        
         <td className="statusTable__td">
             <table className="statusTable__table">
                 <tbody className="statusTable__body">
                     <tr>
-                        <td  className="statusTable__header" style={{backgroundColor: "purple"}}>M:{model}</td>
+                        <td  className="statusTable__header" style={{backgroundColor: "purple", borderRadius:"1em 0 0 0"}}>M:{model}</td>
                         <td  className="statusTable__header" >Design</td>
                         <td  className="statusTable__header" >Stress</td>
                         <td  className="statusTable__header" >Supports</td>
@@ -233,7 +241,7 @@ const StateTable = props =>{
                         <td  className="statusTable__header" style={{backgroundColor:"#00a000"}}>Issued</td>
                         <td  className="statusTable__header" style={{backgroundColor:"blue"}}>Total</td>
                         <td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.</td>
-                        <td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.ISO</td>
+                        {pISOHeaderTD}
                         {realProgressTD}
                         {realProgressIsoTD}
                     </tr>
@@ -248,7 +256,7 @@ const StateTable = props =>{
                         <td className="statusTable__state">{issuedR0}</td>   
                         <td className="statusTable__state">{totalR0}</td>  
                         <td rowSpan="6" className="statusTable__state">{progress[0]}%</td>  
-                        <td rowSpan="6" className="statusTable__state">{progressIso[0]}%</td>  
+                        {pISOValueTD}  
                         {realProgressTDValue}
                         {realProgressIsoTDValue} 
                     </tr>
@@ -297,7 +305,7 @@ const StateTable = props =>{
                         <td className="statusTable__state">{totalDeleted}</td> 
                   </tr>
                   <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"blue"}}>Stock</td>
+                        <td className="statusTable__header" style={{backgroundColor:"blue", borderRadius:"0 0 0 1em"}}>Stock</td>
                         <td className="statusTable__state">{designStock}</td>
                         <td className="statusTable__state">{stressStock}</td>
                         <td className="statusTable__state">{supportsStock}</td>
@@ -305,7 +313,7 @@ const StateTable = props =>{
                         <td className="statusTable__state">{issuerStock}</td>
                         <td className="statusTable__state">{toIssueStock}</td>
                         <td className="statusTable__state">{issuedStock}</td>   
-                        <td className="statusTable__state" style={{fontWeight:"bold", color:"black"}}>{totalStock}</td> 
+                        <td className="statusTable__state" style={{fontWeight:"bold", color:"black"}}>{totalStock}</td>
                   </tr>
                 </tbody>
             </table>

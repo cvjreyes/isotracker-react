@@ -16,3 +16,7 @@ code {
 .ant-table-column-sorters-with-tooltip{
   text-align: center;
 }
+
+.ant-table table{
+  border-radius: 5em !important;
+}
