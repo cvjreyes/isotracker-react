@@ -32,6 +32,8 @@ import ReportBoxBtns from "../../components/reportBoxBtns/reportBoxBtns"
 import IssuedBtn from "../../components/issuedBtn/issuedBtn"
 import ProgressBtn from "../../components/progressBtn/progressBtn"
 import ProgressPlot from "../../components/progressPlot/progressPlot"
+import ModelledBtn from "../../components/modelledBtn/modelledBtn"
+import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
 
 
 const IsoCtrl = () => {
@@ -100,7 +102,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -1225,10 +1227,13 @@ const IsoCtrl = () => {
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
         tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)}/>
-    }if(currentTab === "Status" || currentTab === "Progress"){
+    }if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <ProgressBtn onChange={value => setCurrentTab("Progress")} currentTab = {currentTab}></ProgressBtn>
+        modelledBtn = <ModelledBtn onChange={value => setCurrentTab("Modelled")} currentTab = {currentTab}></ModelledBtn>
     }if(currentTab === "Progress"){
         tableContent = <ProgressPlot></ProgressPlot>
+    }if(currentTab === "Modelled"){
+        tableContent = <ModelledDataTable  pagination = {pagination}></ModelledDataTable>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -1249,7 +1254,7 @@ const IsoCtrl = () => {
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
-    }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab != "Progress"){
+    }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab != "Progress" && currentTab !== "Modelled"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
@@ -1335,9 +1340,9 @@ const IsoCtrl = () => {
                                 {uploadButton}
                             </td>   
                             <div className="stateTable__container">
-                                <td style={{width: "75 %"}}>
-                                    <StateTable updateData={updateData} currentRole = {currentRole} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
-                                </td>
+                                
+                                <StateTable updateData={updateData} currentRole = {currentRole} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
+                               
                             </div>            
 
                         </div>
@@ -1345,13 +1350,14 @@ const IsoCtrl = () => {
                 </div>              
                 
                 
-                <div style={{position: "relative", width:"500px"}}>
+                <div style={{position: "relative", width:"540px"}}>
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
                   <IssuedBtn onChange={value => setCurrentTab("Issued")} currentTab = {currentTab}/>
                   <ReportsBtn onChange={value => setCurrentTab("Reports")} currentTab = {currentTab}/>
                   {progressBtn}
+                  {modelledBtn}
                   {procInsBtn}
                   
 

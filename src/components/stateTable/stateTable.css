@@ -1,9 +1,5 @@
 .statusTable__body{
-    border-bottom-color: rgb(128, 128, 128);
-    border-collapse: collapse;
-    border-left-color: rgb(128, 128, 128);
-    border-right-color: rgb(128, 128, 128);
-    border-top-color: rgb(128, 128, 128);
+    
     box-sizing: border-box;
     color: rgb(99, 107, 111);
     display: table-row-group;
@@ -22,17 +18,9 @@
 }
 
 .statusTable__table{
-    border: 1px solid black;
-    background-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgb(128, 128, 128);
-    border-bottom-width: 1px;
-    border-collapse: collapse;
-    border-left-color: rgb(128, 128, 128);
-    border-left-width: 1px;
-    border-right-color: rgb(128, 128, 128);
-    border-right-width: 1px;
-    border-top-color: rgb(128, 128, 128);
-    border-top-width: 1px;
+    background-color: rgba(0, 0, 0, 0); 
+    border-collapse: separate;
+    border-radius: 0.5em;
     box-sizing: border-box;
     color: rgb(99, 107, 111);
     display: table;
@@ -72,7 +60,7 @@
 }
 
 .statusTable__header{
-    border: 1px solid rgb(99, 107, 111);
+    border: 0px solid rgb(99, 107, 111);
     background-attachment: scroll;
     background-clip: border-box;
     background-color: rgb(107, 157, 187);
@@ -105,10 +93,11 @@
 }
 
 .statusTable__state{
-    border: 1px solid rgb(99, 107, 111);
+    border: 0px solid rgb(99, 107, 111);
     border-collapse: collapse;
     box-sizing: border-box;
     color: rgb(99, 107, 111);
+    background-color: white;
     display: table-cell;
     font-family: 'Quicksand', sans-serif;
     font-size: 13px;
@@ -129,7 +118,7 @@
 }
 
 .statusTable__state_R0{
-    border: 1px solid rgb(99, 107, 111);
+    border: 0px solid rgb(99, 107, 111);
     border-collapse: collapse;
     box-sizing: border-box;
     color: rgb(99, 107, 111);
@@ -150,11 +139,11 @@
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    background-color: lightblue;
+    background-color: white;
 }
 
 .statusTable__state_R1{
-    border: 1px solid rgb(99, 107, 111);
+    border: 0px solid rgb(99, 107, 111);
     border-collapse: collapse;
     box-sizing: border-box;
     color: rgb(99, 107, 111);
@@ -179,7 +168,7 @@
 }
 
 .statusTable__state_R2{
-    border: 1px solid rgb(99, 107, 111);
+    border: 0px solid rgb(99, 107, 111);
     border-collapse: collapse;
     box-sizing: border-box;
     color: rgb(99, 107, 111);
@@ -204,7 +193,6 @@
 }
 
 .statusTable__value{
-    border: 1px solid rgb(99, 107, 111);
     background-attachment: scroll;
     background-clip: border-box;
     background-color: rgb(255, 255, 255);
