@@ -510,7 +510,7 @@ class MyTrayTable extends React.Component{
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
-        width: '20%',
+        width: '15%',
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
@@ -559,6 +559,7 @@ class MyTrayTable extends React.Component{
         title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',
         key: 'actions',
+        width:'20%',
         ...this.getColumnSearchProps('actions'),
         sorter: {
           compare: (a, b) => a.actions.props.type - b.actions.props.type,
