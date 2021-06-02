@@ -1350,7 +1350,7 @@ const IsoCtrl = () => {
                 </div>              
                 
                 
-                <div style={{position: "relative", width:"540px"}}>
+                <div style={{position: "relative", width:"600px"}}>
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>
