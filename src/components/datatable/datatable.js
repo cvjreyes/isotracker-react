@@ -169,12 +169,23 @@ class DataTable extends React.Component{
                     }
 
                     if(json.rows[i].blocked === 1){
-                      if(secureStorage.getItem('user') === "super@user.com"){
-                        bButton =  <RenamePopUp filename={json.rows[i].filename}/>
-                        uButton = <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>UNLOCK</button>
+                      if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
+                        if(secureStorage.getItem('user') === "super@user.com"){
+                          bButton =  <RenamePopUp filename={json.rows[i].filename}/>
+                          uButton = <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>UNLOCK</button>
+                        }else{
+                          uButton = null
+                          bButton = <button className="btn btn-danger" disabled style={{backgroundColor:"red", fontSize:"12px", borderColor:"red", padding:"2px 5px 2px 5px", marginRight:"5px"}}>LOCKED</button>
+                        }
                       }else{
-                        uButton = null
-                        bButton = <button className="btn btn-danger" disabled style={{backgroundColor:"red", fontSize:"12px", borderColor:"red", padding:"2px 5px 2px 5px", marginRight:"5px"}}>LOCKED</button>
+                        if(secureStorage.getItem('user') === "super@user.com"){
+                          bButton = null
+                          uButton = <button className="btn btn-danger" disabled onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>LOCKED ISSUED</button>
+                        }else{
+                          bButton = null
+                          uButton = <button className="btn btn-danger" disabled onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>LOCKED</button>
+                        }
+                        
                       }
                     }else{
                       bButton = null
@@ -335,12 +346,23 @@ class DataTable extends React.Component{
                     }
 
                     if(json.rows[i].blocked === 1){
-                      if(secureStorage.getItem('user') === "super@user.com"){
-                        bButton =  <RenamePopUp filename={json.rows[i].filename}/>
-                        uButton = <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", marginRight:"5px"}}>UNLOCK</button>
+                      if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
+                        if(secureStorage.getItem('user') === "super@user.com"){
+                          bButton =  <RenamePopUp filename={json.rows[i].filename}/>
+                          uButton = <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>UNLOCK</button>
+                        }else{
+                          uButton = null
+                          bButton = <button className="btn btn-danger" disabled style={{backgroundColor:"red", fontSize:"12px", borderColor:"red", padding:"2px 5px 2px 5px", marginRight:"5px"}}>LOCKED</button>
+                        }
                       }else{
-                        uButton = null
-                        bButton = <button className="btn btn-danger" disabled style={{backgroundColor:"red", fontSize:"12px", borderColor:"red", padding:"2px 5px 2px 5px", marginRight:"5px"}}>LOCKED</button>
+                        if(secureStorage.getItem('user') === "super@user.com"){
+                          bButton = null
+                          uButton = <button className="btn btn-danger" disabled onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>LOCKED ISSUED</button>
+                        }else{
+                          bButton = null
+                          uButton = <button className="btn btn-danger" disabled onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>LOCKED</button>
+                        }
+                        
                       }
                     }else{
                       bButton = null
@@ -586,7 +608,6 @@ class DataTable extends React.Component{
         title: <center className="dataTable__header__text">Revision</center>,
         dataIndex: 'revision',
         key: 'revision',
-        width: '15%',
         ...this.getColumnSearchProps('revision'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),

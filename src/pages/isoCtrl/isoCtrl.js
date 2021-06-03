@@ -103,7 +103,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn, myTrayBtn
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -1034,7 +1034,7 @@ const IsoCtrl = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadStatus/")
         .then(response => response.json())
         .then(json => {
-            const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION"]
+            const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION", "TRAY"]
             exportToExcel(JSON.parse(json), "Status", headers)
         })
     }
@@ -1182,6 +1182,15 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/newRev", options)
+                .then(response => response.json())
+                .then(json =>{
+                    
+                    if(json.blocked){
+                        setBlocked(true)
+                    }else{
+                        setTransactionSuccess(true)
+                    }
+                })
             }
             setUpdateData(!updateData)
             setLoading(false)
@@ -1311,6 +1320,8 @@ const IsoCtrl = () => {
         tableContent = <ProgressPlot></ProgressPlot>
     }if(currentTab === "Modelled"){
         tableContent = <ModelledDataTable  pagination = {pagination}></ModelledDataTable>
+    }if(currentRole !== "Review"){
+        myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -1413,7 +1424,7 @@ const IsoCtrl = () => {
                 <div>
                     <div>
                         <div style={{display:"inline"}}>
-                        <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                        {myTrayBtn}
                             <td className="reportBtns__container" style={{width:"380px"}}>
                                 
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
@@ -1433,7 +1444,7 @@ const IsoCtrl = () => {
                 </div>              
                 
                 
-                <div style={{position: "relative", width:"540px"}}>
+                <div style={{position: "relative", width:"600px"}}>
                   {pageSelector}
                   <BinBtn onChange={value => setCurrentTab("Recycle bin")} currentTab = {currentTab}/>
                   <OnHoldBtn onChange={value => setCurrentTab("On hold")} currentTab = {currentTab}/>

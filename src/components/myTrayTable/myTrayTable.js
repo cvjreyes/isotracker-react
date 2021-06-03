@@ -160,10 +160,14 @@ class MyTrayTable extends React.Component{
              }
 
               if(json.rows[i].blocked === 1){
+                pButton = null
+                iButton = null
                 bButton = <button className="btn btn-danger" disabled style={{backgroundColor:"red", fontSize:"12px", borderColor:"red", padding:"2px 5px 2px 5px", marginRight:"5px"}}>LOCKED</button>
               }else{
                 bButton = null
               }
+
+              
 
               if(process.env.REACT_APP_IFC === "1"){
                 if(secureStorage.getItem("role") === "Process" ||secureStorage.getItem("role") === "Instrument"){
@@ -307,6 +311,8 @@ class MyTrayTable extends React.Component{
                }
   
                 if(json.rows[i].blocked === 1){
+                  pButton = null
+                  iButton = null
                   bButton = <button className="btn btn-danger" disabled style={{backgroundColor:"red", fontSize:"12px", borderColor:"red", padding:"2px 5px 2px 5px", marginRight:"5px"}}>LOCKED</button>
                 }else{
                   bButton = null

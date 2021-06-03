@@ -40,6 +40,8 @@ export default class RenamePopUp extends Component {
 
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/rename", options)
         .then(response => console.log("Cambiado"))
+
+        this.closeModal()
         
     }
 
