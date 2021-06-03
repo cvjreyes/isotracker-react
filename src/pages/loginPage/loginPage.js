@@ -1,7 +1,5 @@
 import React,{ useState} from 'react';
 import Login from '../../components/login/login';
-import Alert from '@material-ui/lab/Alert';
-import Collapse from '@material-ui/core/Collapse'
 
 import './login.css';
 //Página de home con el menú para ir a las aplicaciones de isotracker

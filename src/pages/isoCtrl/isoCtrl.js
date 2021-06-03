@@ -60,6 +60,7 @@ const IsoCtrl = () => {
     const [realProgressISO, setRealProgressISO] = useState(0);
     const [errorUnclaimR, setErrorUnclaimR] = useState(false);
     const [warningSelected, setWarningSelected] = useState(false);
+    const [blocked, setBlocked] = useState(false);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -102,7 +103,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn, myTrayBtn
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -148,6 +149,7 @@ const IsoCtrl = () => {
             setErrorReports(false)
             setLoading(false)
             setWarningSelected(false)
+            setBlocked(false)
     },[currentRole]);
 
     useEffect(()=>{
@@ -160,6 +162,7 @@ const IsoCtrl = () => {
         setErrorReports(false)
         setSelected([])
         setWarningSelected(false)
+        setBlocked(false)
     }, [currentTab])
 
     const getProgress = () =>{
@@ -175,6 +178,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setWarningSelected(false)
         setErrorPI(false)
+        setBlocked(false)
         console.log(selected)
         if(selected.length > 0){
             setLoading(true)
@@ -250,6 +254,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorPI(false)
         setWarningSelected(false)
+        setBlocked(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -284,6 +289,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorPI(false)
         setWarningSelected(false)
+        setBlocked(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -365,6 +371,7 @@ const IsoCtrl = () => {
         setErrorPI(false)
         setLoading(true)
         setWarningSelected(false)
+        setBlocked(false)
         localStorage.setItem("update", true)
         const body ={
             user : currentUser,
@@ -395,6 +402,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorPI(false)
         setWarningSelected(false)
+        setBlocked(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -429,6 +437,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setLoading(true)
         setWarningSelected(false)
+        setBlocked(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -461,6 +470,7 @@ const IsoCtrl = () => {
             setErrorPI(false);
             setTransactionSuccess(false);
             setLoading(true)
+            setBlocked(false)
             if(destiny === "Design"){
                 if(comment.length > 1){
                     setComment(" ")
@@ -484,10 +494,18 @@ const IsoCtrl = () => {
                             body: JSON.stringify(body)
                         }
                         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
-                        setTransactionSuccess(true)
+                        .then(response => response.json())
+                        .then(json =>{
+                            console.log(json)
+                            if(json.blocked){
+                                setBlocked(true)
+                            }else{
+                                setTransactionSuccess(true)
+                            }
+                        })
+                        
                     }
                 }else{
-                    console.log("vacio")
                     setCommentAlert(true)
                 }
             }else if (destiny === "LDE/Isocontrol"){
@@ -532,9 +550,11 @@ const IsoCtrl = () => {
                                 console.log(json)
                                 if(json.error){
                                     await setErrorCL(true) 
+                                }else if(json.blocked){
+                                    setBlocked(true)
                                 }
                             })
-                            if(!errorCL){
+                            if(!errorCL && !blocked){
                                 setTransactionSuccess(true)
                             }
                             
@@ -574,7 +594,14 @@ const IsoCtrl = () => {
                         body: JSON.stringify(body)
                     }
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
-                    setTransactionSuccess(true)
+                    .then(response => response.json())
+                        .then(json =>{
+                            if(json.blocked){
+                                setBlocked(true)
+                            }else{
+                                setTransactionSuccess(true)
+                            }
+                        })
                 }
             }else{
                 setCommentAlert(false)
@@ -607,7 +634,14 @@ const IsoCtrl = () => {
                         body: JSON.stringify(body)
                     }
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
-                    setTransactionSuccess(true)
+                    .then(response => response.json())
+                        .then(json =>{
+                            if(json.blocked){
+                                setBlocked(true)
+                            }else{
+                                setTransactionSuccess(true)
+                            }
+                        })
                 }
             }
             await setUpdateData(!updateData)
@@ -627,6 +661,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorPI(false)
         setErrorUnclaimR(false)
+        setBlocked(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -646,7 +681,14 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLead", options)
-                setTransactionSuccess(true)
+                .then(response => response.json())
+                        .then(json =>{
+                            if(json.blocked){
+                                setBlocked(true)
+                            }else{
+                                setTransactionSuccess(true)
+                            }
+                        })
             }
             await setUpdateData(!updateData)
             setLoading(false)
@@ -665,6 +707,7 @@ const IsoCtrl = () => {
         setErrorPI(false)
         setErrorUnclaimR(false)
         setWarningSelected(false)
+        setBlocked(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -683,7 +726,14 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLeadStress", options)
-                setTransactionSuccess(true)
+                .then(response => response.json())
+                .then(json =>{
+                    if(json.blocked){
+                        setBlocked(true)
+                    }else{
+                        setTransactionSuccess(true)
+                    }
+                })
             }
             await setUpdateData(!updateData)
             setLoading(false)
@@ -706,6 +756,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorPI(false)
         setWarningSelected(false)
+        setBlocked(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -755,6 +806,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setLoading(true)
         setWarningSelected(false)
+        setBlocked(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -784,6 +836,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setLoading(true)
         setWarningSelected(false)
+        setBlocked(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -813,6 +866,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setLoading(true)
         setWarningSelected(false)
+        setBlocked(false)
         localStorage.setItem("update", true)
 
         const body ={
@@ -840,6 +894,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setWarningSelected(false)
         setLoading(true)
+        setBlocked(false)
         localStorage.setItem("update", true)
         const body ={
             file: fileName
@@ -869,6 +924,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setErrorUnclaim(false)
         setWarningSelected(false)
+        setBlocked(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -978,7 +1034,7 @@ const IsoCtrl = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadStatus/")
         .then(response => response.json())
         .then(json => {
-            const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION"]
+            const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION", "TRAY"]
             exportToExcel(JSON.parse(json), "Status", headers)
         })
     }
@@ -1065,6 +1121,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setErrorUnclaim(false)
         setWarningSelected(false)
+        setBlocked(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1084,6 +1141,14 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/toIssue", options)
+                .then(response => response.json())
+                .then(json =>{
+                    if(json.blocked){
+                        setBlocked(true)
+                    }else{
+                        setTransactionSuccess(true)
+                    }
+                })
             }
             await setUpdateData(!updateData)
             setLoading(false)
@@ -1099,6 +1164,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setErrorUnclaim(false)
         setWarningSelected(false)
+        setBlocked(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1116,6 +1182,15 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/newRev", options)
+                .then(response => response.json())
+                .then(json =>{
+                    
+                    if(json.blocked){
+                        setBlocked(true)
+                    }else{
+                        setTransactionSuccess(true)
+                    }
+                })
             }
             setUpdateData(!updateData)
             setLoading(false)
@@ -1131,6 +1206,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setErrorUnclaim(false)
         setWarningSelected(false)
+        setBlocked(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1164,6 +1240,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setErrorUnclaim(false)
         setWarningSelected(false)
+        setBlocked(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1187,6 +1264,15 @@ const IsoCtrl = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/returnIso", options)
+                .then(response => response.json())
+                .then(json =>{
+                    console.log(json)
+                    if(json.blocked){
+                        setBlocked(true)
+                    }else{
+                        setTransactionSuccess(true)
+                    }
+                })
                 
             }
             setUpdateData(!updateData)
@@ -1234,6 +1320,8 @@ const IsoCtrl = () => {
         tableContent = <ProgressPlot></ProgressPlot>
     }if(currentTab === "Modelled"){
         tableContent = <ModelledDataTable  pagination = {pagination}></ModelledDataTable>
+    }if(currentRole !== "Review"){
+        myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -1253,7 +1341,7 @@ const IsoCtrl = () => {
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab != "Progress" && currentTab !== "Modelled"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
@@ -1316,6 +1404,12 @@ const IsoCtrl = () => {
                             Select at least one isometric!
                         </Alert>
                     </Collapse>
+                    <Collapse in={blocked}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            The isometric has been locked! Contact the administrator
+                        </Alert>
+                    </Collapse>
                     <h2 className="title__container">
                         <div className="roleSelector__container">
                             <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
@@ -1330,7 +1424,7 @@ const IsoCtrl = () => {
                 <div>
                     <div>
                         <div style={{display:"inline"}}>
-                        <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                        {myTrayBtn}
                             <td className="reportBtns__container" style={{width:"380px"}}>
                                 
                                 <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
