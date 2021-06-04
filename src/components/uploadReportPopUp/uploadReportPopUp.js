@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import './uploadReportPopUp.css'
 import readXlsxFile from 'read-excel-file'
+import { readString } from 'react-papaparse'
 
 export default class UploadReportPopUp extends Component {
     constructor(props) {
@@ -40,30 +41,39 @@ export default class UploadReportPopUp extends Component {
     uploadReport(event){
         event.preventDefault()
         this.props.setUploading(true)
-        readXlsxFile(this.state.file).then(async(rows) => {
-            const options = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(rows)
-            }
-            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadReport", options)
-            .then(response => response.json())
-            .catch(async error =>{
-                this.props.setErrorReport()
-                await this.setState({
-                    error: true
-                })
-            })
-            
-        })
-        if(!this.state.error){
 
-            this.props.setUploading(false)
+        if(this.state.file.name.substring(this.state.file.name.length-4, this.state.file.name.length) === "xlsx"){
+            readXlsxFile(this.state.file).then(async(rows) => {
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(rows)
+                }
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadReport", options)
+                .then(response => response.json())
+                
+            })
+        }else{
+            let reader = new FileReader();
+            reader.onload = async function (e){
+                const csv = reader.result
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(readString(csv).data)
+                }
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadReport", options)
+                .then(response => response.json())
+
+            }
+            reader.readAsText(this.state.file)
         }
-       
         this.closeModal()
+        this.props.setUploading(false)
     }
 
     render() {

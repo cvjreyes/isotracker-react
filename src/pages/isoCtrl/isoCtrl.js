@@ -108,7 +108,7 @@ const IsoCtrl = () => {
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
     }
-    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData}/>
+    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} unlock = {unlock.bind(this)} rename = {rename.bind(this)}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
 
@@ -1078,6 +1078,17 @@ const IsoCtrl = () => {
         })
     }
 
+    async function downloadModelled(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadModelled/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["TAG", "ISO_ID", "TYPE"]
+            exportToExcel(JSON.parse(json), "Modelled", headers)
+        })
+    }
+
     const exportToExcel = (apiData, fileName, headers) => {
         setErrorReports(false)
         const fileType =
@@ -1288,6 +1299,67 @@ const IsoCtrl = () => {
         setTransactionSuccess(true)
     }
 
+    async function unlock(filename){
+
+        setErrorUnclaimR(false)
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setErrorUnclaim(false)
+        setWarningSelected(false)
+        setBlocked(false)
+        localStorage.setItem("update", true)
+
+        const body = {
+            fileName: filename
+          }
+      
+          const options = {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify(body)
+          }
+      
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unlock", options)
+          .then(response => console.log("Unlocked"))
+
+          setUpdateData(!updateData)
+    }
+
+    async function rename(newName, oldName){
+
+        setErrorUnclaimR(false)
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setErrorUnclaim(false)
+        setWarningSelected(false)
+        setBlocked(false)
+        localStorage.setItem("update", true)
+
+        const body = {
+            oldName: oldName,
+            newName: newName
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/rename", options)
+        .then(response => console.log("Cambiado"))
+
+        setTransactionSuccess(true)
+        
+        setUpdateData(!updateData)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
@@ -1312,7 +1384,7 @@ const IsoCtrl = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)}/>
+        tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)}/>
     }if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <ProgressBtn onChange={value => setCurrentTab("Progress")} currentTab = {currentTab}></ProgressBtn>
         modelledBtn = <ModelledBtn onChange={value => setCurrentTab("Modelled")} currentTab = {currentTab}></ModelledBtn>
@@ -1330,6 +1402,8 @@ const IsoCtrl = () => {
         </div>
     }
 
+    
+
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
     ((currentRole === "Stress" || currentRole === "StressLead") && currentTab === "Stress") ||
     ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Supports") ||
@@ -1345,8 +1419,9 @@ const IsoCtrl = () => {
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab != "Progress" && currentTab !== "Modelled"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+    }else if(currentTab === "Modelled"){
+        actionButtons = <button className="btn btn-sm btn-success" style={{marginTop:"40px"}} onClick={()=>downloadModelled()}>Export to excel</button>
     }
-    
     
     return (
         
