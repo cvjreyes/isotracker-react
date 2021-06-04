@@ -49,21 +49,11 @@ class DataTable extends React.Component{
   };
 
   unlock(filename){
+    this.props.unlock(filename)
+  }
 
-    const body = {
-      fileName: filename
-    }
-
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    }
-
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unlock", options)
-    .then(response => console.log("Unlocked"))
+  rename(newName, oldName){
+    this.props.rename(newName, oldName)
   }
 
   componentDidMount(){
@@ -171,7 +161,7 @@ class DataTable extends React.Component{
                     if(json.rows[i].blocked === 1){
                       if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
                         if(secureStorage.getItem('user') === "super@user.com"){
-                          bButton =  <RenamePopUp filename={json.rows[i].filename}/>
+                          bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)} filename={json.rows[i].filename}/>
                           uButton = <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>UNLOCK</button>
                         }else{
                           uButton = null
@@ -348,7 +338,7 @@ class DataTable extends React.Component{
                     if(json.rows[i].blocked === 1){
                       if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
                         if(secureStorage.getItem('user') === "super@user.com"){
-                          bButton =  <RenamePopUp filename={json.rows[i].filename}/>
+                          bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)} filename={json.rows[i].filename}/>
                           uButton = <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>UNLOCK</button>
                         }else{
                           uButton = null
@@ -617,7 +607,7 @@ class DataTable extends React.Component{
         title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'date',
         key: 'date',
-        width: '15%',
+        width: '10%',
         ...this.getColumnSearchProps('date'),
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
@@ -627,7 +617,7 @@ class DataTable extends React.Component{
         title: <div className="dataTable__header__text">From</div>,
         dataIndex: 'from',
         key: 'from',
-        width: '15%',
+        width: '10%',
         ...this.getColumnSearchProps('from'),
         sorter: {
           compare: (a, b) => { return a.from.localeCompare(b.from)},
@@ -657,7 +647,6 @@ class DataTable extends React.Component{
         title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',
         key: 'actions',
-        widht:"20%",
         ...this.getColumnSearchProps('actions'),
         sorter: {
           compare: (a, b) => a.actions.localeCompare(b.actions),
