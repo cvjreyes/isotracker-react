@@ -1,0 +1,46 @@
+.equipments__container{
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+    display: block;
+    position: static;
+    margin-top: 105px;
+}
+
+.title__container{
+    margin-top: 22px;
+    margin-bottom: 11px;
+    font-size: 30px;
+}
+
+.iso__title{
+    box-sizing: border-box;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 30px;
+    font-family: 'Quicksand', sans-serif;
+    line-height: 1.1;
+    color: rgb(99, 107, 111);
+    text-align: -webkit-center;
+    background-color: #f5f8fa;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.iso__subtitle{
+    font-size: 24px;
+    margin-top: 22px;
+    margin-bottom: 25px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+    color: rgb(99, 107, 111);
+    box-sizing: border-box;
+}
+
+.roleSelector__container{
+    width: 130px;
+    position: absolute;
+}

@@ -1423,6 +1423,9 @@ const IsoCtrl = () => {
     if(currentTab === "Modelled"){
         actionText = null
         actionButtons = <button className="btn btn-sm btn-success" style={{marginTop:"40px"}} onClick={()=>downloadModelled()}>Export</button>
+    }if(currentTab === "Reports"){
+        actionText=null
+        actionButtons = null
     }
     
     return (

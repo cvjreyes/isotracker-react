@@ -78,18 +78,23 @@ const NavBar = (props) =>{
     };
     const handleLogOut = () => {
         localStorage.clear();
-        history.replace("/"+process.env.REACT_APP_PROJECT);
+        history.push("/"+process.env.REACT_APP_PROJECT);
     };
     const handleHome = () =>{
         setAnchorElUser(null);
         setAnchorElIso(null);
-        history.replace("/"+process.env.REACT_APP_PROJECT+"/isotracker");
+        history.push("/"+process.env.REACT_APP_PROJECT+"/isotracker");
     }
     const handleChangePassword = () =>{
         setAnchorElUser(null);
         setAnchorElIso(null);
-        history.replace("/"+process.env.REACT_APP_PROJECT+"/changepassword");
+        history.push("/"+process.env.REACT_APP_PROJECT+"/changepassword");
     }
+
+    const handleClickEquipments = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/equipments");
+    }
+
     useEffect(() =>{
         const bodyUsername = {
             email: secureStorage.getItem("user")
@@ -117,6 +122,9 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
+                    <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
+                        <i className="dropdown__text">Equipments </i>
+                    </Button>
                     <Button onClick={handleClickIso} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">IsoTracker </i>&nbsp;<b className="dropdown__arrow">▼</b>
                     </Button>
