@@ -25,6 +25,8 @@ const Equipments = () => {
             },
             body: JSON.stringify(body)
         }
+       
+
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
             .then(response => response.json())
             .then(json => {

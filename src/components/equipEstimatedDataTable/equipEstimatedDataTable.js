@@ -40,12 +40,15 @@ class EquipEstimatedDataTable extends React.Component{
     selectedRowsKeys: [],
     updateData: this.props.updateData,
     username: "",
-    acronyms : null
+    acronyms : null,
+    steps: []
   };
 
-  
+  async componentWillReceiveProps(){
+    
+  }
 
-  componentDidMount(){
+  async componentDidMount(){
 
     const options = {
         method: "GET",
@@ -54,16 +57,39 @@ class EquipEstimatedDataTable extends React.Component{
         },
     }
 
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/modelled", options)
+
+    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/steps", options)
+    .then(response => response.json())
+    .then(async json => {
+      let percentages = []
+      console.log(json.steps[0].percentage)
+      for(let i = 0; i < json.steps.length; i++){
+        percentages.push(json.steps[i].percentage)
+      }
+      await this.setState({steps : percentages});
+      console.log(this.state.steps)
+    }) 
+
+
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/estimated", options)
       .then(response => response.json())
       .then(json => {
         var rows = []
         var row = null
-        for(let i = 0; i < json.rows.length; i++){
-            row = {key:i, id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
-            rows.push(row)
-            }
         
+        for(let i = 0; i < json.rows.length; i++){
+            let mod = 0
+            if(json.rows[i].modelled){
+              mod = json.rows[i].modelled
+            }
+            row = {key:i, area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod  }
+            
+            for(let j = 0; j < this.state.steps.length; j++){
+              let currentStep = this.state.steps[j].toString()
+              row[currentStep] = json.rows[i][currentStep]
+            }
+            rows.push(row)
+        }
         this.setState({data : rows, selectedRows: []});
 
     }) 
@@ -163,38 +189,63 @@ class EquipEstimatedDataTable extends React.Component{
 
   render() {
 
+    const steps = this.state.steps
+
     const columns = [
       {
-        title: <center className="dataTable__header__text">TAG</center>,
-        dataIndex: 'tag',
-        key: 'tag',
-        width: '40%',
-        ...this.getColumnSearchProps('tag'),
+        title: <center className="dataTable__header__text">AREA</center>,
+        dataIndex: 'area',
+        key: 'area',
+        width: '10%',
+        ...this.getColumnSearchProps('area'),
         sorter:{
-          compare: (a, b) => a.tag.localeCompare(b.tag),
+          compare: (a, b) => a.area.localeCompare(b.area),
         },
       },
       {
-        title: <center className="dataTable__header__text">ISO ID</center>,
-        dataIndex: 'id',
-        key: 'id',
-        width: '40%',
-        ...this.getColumnSearchProps('id'),
-        sorter:{
-          compare: (a, b) => a.id.localeCompare(b.id),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Type</div>,
+        title: <center className="dataTable__header__text">TYPE</center>,
         dataIndex: 'type',
         key: 'type',
         width: '20%',
         ...this.getColumnSearchProps('type'),
-        sorter: {
+        sorter:{
           compare: (a, b) => a.type.localeCompare(b.type),
         },
       },
+      {
+        title: <div className="dataTable__header__text">QUANITY</div>,
+        dataIndex: 'quantity',
+        key: 'quantity',
+        width: '10%',
+        ...this.getColumnSearchProps('quantity'),
+        sorter: {
+          compare: (a, b) => a.quantity.localeCompare(b.quantity),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">MODELLED</div>,
+        dataIndex: 'modelled',
+        key: 'modelled',
+        width: '10%',
+        ...this.getColumnSearchProps('modelled'),
+        sorter: {
+          compare: (a, b) => a.modelled.localeCompare(b.modelled),
+        },
+      },
     ];
+    
+    for(let i = 0; i < this.state.steps.length; i++){
+      let index = this.state.steps[i]
+      columns.push({
+        title: <div className="dataTable__header__text">{this.state.steps[i]}%</div>,
+        dataIndex: index,
+        key: index,
+        ...this.getColumnSearchProps(index),
+        sorter: {
+          compare: (a, b) => a.quantity.localeCompare(b.quantity),
+        },
+      })
+    }
 
     var totalElements = null;
     if (this.state.data.length === 0){
