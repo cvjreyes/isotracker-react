@@ -3,6 +3,9 @@ import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 import EquipEstimatedDataTable from "../../components/equipEstimatedDataTable/equipEstimatedDataTable"
+import EquipModelledDataTable from "../../components/equipModelledDataTable/equipModelledDataTable"
+import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
+import SelectPag from "../../components/selectPag/selectPag"
 
 const Equipments = () => {
 
@@ -11,7 +14,9 @@ const Equipments = () => {
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-
+    const[pagination, setPagination] = useState(8)
+    const[weight, setWeight] = useState();
+    const[progress, setProgress] = useState();
     
 
     useEffect(()=>{
@@ -44,6 +49,29 @@ const Equipments = () => {
             })       
             
     },[currentRole]);
+
+    useEffect(()=>{
+
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+       
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/weight", options)
+            .then(response => response.json())
+            .then(json => {
+                setWeight(json.weight)
+                setProgress(json.progress)
+            }
+            )
+            .catch(error => {
+                console.log(error);
+            })       
+            
+    },[]);
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -67,19 +95,33 @@ const Equipments = () => {
         }
     });
 
+    var dataTableHeight = 8
+
+    if (pagination === 8){
+        dataTableHeight = "550px"
+    }if(pagination === 25){
+        dataTableHeight = "1250px"
+    }if(pagination === 50){
+        dataTableHeight = "2250px"
+    }if(pagination === 100){
+        dataTableHeight = "4330px"
+    }
+
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("equip_tab"))
-    const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
 
     var currentUser = secureStorage.getItem('user')
     var table = null
 
     var dataTableHeight = 8
+    var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
 
 
     if(currentTab === "Estimated"){
-        table = <EquipEstimatedDataTable/>
+        table = <EquipEstimatedDataTable pagination = {pagination}/>
+    }else if(currentTab === "Modelled"){
+        table = <EquipModelledDataTable pagination = {pagination}/>
     }
 
     return(
@@ -99,15 +141,38 @@ const Equipments = () => {
                     </h2>
                     <h3 className="iso__subtitle">{currentTab}</h3>
                 </center>
-
+                <div style={{position: "absolute", width:"50px"}}>
+                  {pageSelector}        
+                </div>
+                <div style={{display:"inline"}}>
+                    <div className="equipTable__container">
+                        <td className="equipTable__td">
+                            <table className="equipTable__table">
+                                <tbody className="equipable__body">
+                                    <tr>    
+                                        <td  className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                        <td className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"0 1em 0 0"}}>Total progress</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
+                                        <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </div>
+                </div>
 
                 <div style={{height: dataTableHeight}}>
                     <br></br>
                     <br></br> 
+                    <br></br> 
                     {table}
-                </div>
-
+                </div>         
             </div>
+            <center className="equimentsNavBtns__center">              
+                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/>               
+            </center>
          </body>
     )
 }

@@ -68,14 +68,10 @@ const NavBar = (props) =>{
         setAnchorElUser(null);
     };
 
-    const handleClickIso = (event) => {
-        setAnchorElIso(event.currentTarget);
+    const handleClickIsotracker = () => {
+        history.push("/"+process.env.REACT_APP_PROJECT+"/isotracker");
     };
 
-    const handleCloseIso = (selectedTab) => {
-        setAnchorElIso(null);
-        props.onChange(selectedTab);
-    };
     const handleLogOut = () => {
         localStorage.clear();
         history.push("/"+process.env.REACT_APP_PROJECT);
@@ -125,28 +121,10 @@ const NavBar = (props) =>{
                     <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Equipments </i>
                     </Button>
-                    <Button onClick={handleClickIso} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">IsoTracker </i>&nbsp;<b className="dropdown__arrow">▼</b>
+                    <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
+                        <i className="dropdown__text">Isotracker </i>
                     </Button>
-                    <Menu
-                        id="simple-menu-iso"
-                        anchorEl={anchorElIso}
-                        getContentAnchorEl={null}
-                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                        transformOrigin={{ vertical: "top", horizontal: "center" }}
-                        open={Boolean(anchorElIso)}
-                        onClose={(event) => setAnchorElIso(null)}
-                    >
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("Status")}>Status</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("History")}>History</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("Design")}>Design</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("Stress")}>Stress</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("Support")}>Support</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("Materials")}>Materials</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("Issuer")}>Issuer</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={(event) => handleCloseIso("LDE/IsoControl")}>Controls</MenuItem>
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px", fontWeight:"bold"}} onClick={(event) => handleCloseIso("CheckBy")}>CHECK BY_</MenuItem>
-                    </Menu>
+                    
                     <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/"}><strong className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</strong></a></li>
                      
                     <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/"}>

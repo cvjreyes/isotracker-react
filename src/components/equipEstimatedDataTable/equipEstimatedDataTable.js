@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import './equipEstimatedDataTable.css'
 
 
 const CryptoJS = require("crypto-js");
@@ -44,10 +45,6 @@ class EquipEstimatedDataTable extends React.Component{
     steps: []
   };
 
-  async componentWillReceiveProps(){
-    
-  }
-
   async componentDidMount(){
 
     const options = {
@@ -82,7 +79,11 @@ class EquipEstimatedDataTable extends React.Component{
             if(json.rows[i].modelled){
               mod = json.rows[i].modelled
             }
-            row = {key:i, area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod  }
+            if(i % 2 === 0){
+              row = {key:i, area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod, color: "#fff"}
+            }else{
+              row = {key:i, area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod, color: "#eee"}
+            }
             
             for(let j = 0; j < this.state.steps.length; j++){
               let currentStep = this.state.steps[j].toString()
@@ -193,43 +194,43 @@ class EquipEstimatedDataTable extends React.Component{
 
     const columns = [
       {
-        title: <center className="dataTable__header__text">AREA</center>,
+        title: <center className="dataTable__header__text">Area</center>,
         dataIndex: 'area',
         key: 'area',
-        width: '10%',
+        width: '5%',
         ...this.getColumnSearchProps('area'),
         sorter:{
           compare: (a, b) => a.area.localeCompare(b.area),
         },
       },
       {
-        title: <center className="dataTable__header__text">TYPE</center>,
+        title: <center className="dataTable__header__text">Type</center>,
         dataIndex: 'type',
         key: 'type',
-        width: '20%',
+        width: '280px',
         ...this.getColumnSearchProps('type'),
         sorter:{
           compare: (a, b) => a.type.localeCompare(b.type),
         },
       },
       {
-        title: <div className="dataTable__header__text">QUANITY</div>,
+        title: <div className="dataTable__header__text">Qty</div>,
         dataIndex: 'quantity',
         key: 'quantity',
-        width: '10%',
+        width: '5%',
         ...this.getColumnSearchProps('quantity'),
         sorter: {
-          compare: (a, b) => a.quantity.localeCompare(b.quantity),
+          compare: (a, b) => a.quantity-b.quantity,
         },
       },
       {
-        title: <div className="dataTable__header__text">MODELLED</div>,
+        title: <div className="dataTable__header__text">Modelled</div>,
         dataIndex: 'modelled',
         key: 'modelled',
-        width: '10%',
+        width: '5%',
         ...this.getColumnSearchProps('modelled'),
         sorter: {
-          compare: (a, b) => a.modelled.localeCompare(b.modelled),
+          compare: (a, b) => a.modelled-b.modelled,
         },
       },
     ];
@@ -242,7 +243,7 @@ class EquipEstimatedDataTable extends React.Component{
         key: index,
         ...this.getColumnSearchProps(index),
         sorter: {
-          compare: (a, b) => a.quantity.localeCompare(b.quantity),
+          compare: (a, b) => a[index] - b[index],
         },
       })
     }
@@ -259,8 +260,9 @@ class EquipEstimatedDataTable extends React.Component{
     return (
       <div>
         {this.state.updateData}
-        <div className="dataTable__container">
-        <Table className="customTable" bordered = {true}  columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <div className="estimatedDataTable__container">
+        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"
+         rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
         

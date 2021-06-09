@@ -197,7 +197,15 @@ class MyTrayTable extends React.Component{
                 
               }
               
-              rows.push(row)
+              if(row){
+                if(i % 2 === 0){
+                  row["color"] = "#fff"
+                }else{
+                  row["color"] = "#eee"
+                }
+                 
+                rows.push(row)
+              }
             }
             this.setState({data : rows});
 
@@ -346,7 +354,15 @@ class MyTrayTable extends React.Component{
                   
                 }
                 
-                rows.push(row)
+                if(row){
+                  if(i % 2 === 0){
+                    row["color"] = "#fff"
+                  }else{
+                    row["color"] = "#eee"
+                  }
+                   
+                  rows.push(row)
+                }
               }
               this.setState({data : rows});
   
@@ -600,7 +616,7 @@ class MyTrayTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
       </div>
