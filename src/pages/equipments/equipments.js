@@ -96,20 +96,27 @@ const Equipments = () => {
     });
 
     var dataTableHeight = 8
+    let navBtnsMargin = "600px"
 
     if (pagination === 8){
         dataTableHeight = "550px"
+        navBtnsMargin = "600px"
     }if(pagination === 25){
         dataTableHeight = "1250px"
+        navBtnsMargin = "1200px"
     }if(pagination === 50){
         dataTableHeight = "2250px"
+        navBtnsMargin = "2300px"
     }if(pagination === 100){
-        dataTableHeight = "4330px"
+        dataTableHeight = "4350px"
     }
 
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("equip_tab"))
+    if(currentTab === "" || currentTab === null){
+        setCurrentTab("Estimated")
+    }
 
     var currentUser = secureStorage.getItem('user')
     var table = null
@@ -170,7 +177,7 @@ const Equipments = () => {
                     {table}
                 </div>         
             </div>
-            <center className="equimentsNavBtns__center">              
+            <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
                     <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/>               
             </center>
          </body>
