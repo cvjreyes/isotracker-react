@@ -110,7 +110,7 @@ const IsoCtrl = () => {
     }
     tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} unlock = {unlock.bind(this)} rename = {rename.bind(this)}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
-    var currentUser = secureStorage.getItem('user')
+    var currentUser = secureStorage.getItem('user') 
 
     
     

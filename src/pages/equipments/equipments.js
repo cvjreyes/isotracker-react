@@ -6,6 +6,7 @@ import EquipEstimatedDataTable from "../../components/equipEstimatedDataTable/eq
 import EquipModelledDataTable from "../../components/equipModelledDataTable/equipModelledDataTable"
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
 import SelectPag from "../../components/selectPag/selectPag"
+import ProgressPlotEquipments from "../../components/progressPlotEquipments/progressPlotEquipments"
 
 const Equipments = () => {
 
@@ -129,6 +130,8 @@ const Equipments = () => {
         table = <EquipEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
         table = <EquipModelledDataTable pagination = {pagination}/>
+    }else if(currentTab === "Progress"){
+        table = <ProgressPlotEquipments/>
     }
 
     return(
