@@ -1074,7 +1074,7 @@ const IsoCtrl = () => {
 
 
             const data = new Blob([output], { type: 'txt' });
-            FileSaver.saveAs(data, "statusprogresspipe.pmlmac");
+            FileSaver.saveAs(data, "fromIsoTrackerTo3d.mac");
         })
     }
 
