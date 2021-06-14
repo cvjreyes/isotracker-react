@@ -228,9 +228,15 @@ class DataTable extends React.Component{
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div> {pButton} {iButton} {bButton} {uButton} </div>}
                       }                   
                     }
-                      if(row){
-                        rows.push(row)
+                    if(row){
+                      if(i % 2 === 0){
+                        row["color"] = "#fff"
+                      }else{
+                        row["color"] = "#eee"
                       }
+                       
+                      rows.push(row)
+                    }
                     }
                   this.setState({
                     data : rows,
@@ -406,6 +412,12 @@ class DataTable extends React.Component{
                       }                   
                     }
                       if(row){
+                        if(i % 2 === 0){
+                          row["color"] = "#fff"
+                        }else{
+                          row["color"] = "#eee"
+                        }
+                         
                         rows.push(row)
                       }
                     }
@@ -667,7 +679,7 @@ class DataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
         

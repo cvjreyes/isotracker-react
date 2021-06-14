@@ -54,7 +54,8 @@ const Login = props =>{
             .then(json => {
                     localStorage.setItem('token', json.token);
                     secureStorage.setItem('user', json.user)
-                    secureStorage.setItem('tab', "Status")      
+                    secureStorage.setItem('tab', "Status")   
+                    secureStorage.setItem("equip_tab", "Estimated")   
                     history.replace('/'+process.env.REACT_APP_PROJECT+'/isotracker');
                     window.location.reload(false);
                     

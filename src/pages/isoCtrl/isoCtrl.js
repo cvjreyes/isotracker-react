@@ -1535,7 +1535,7 @@ const IsoCtrl = () => {
                 </div>
                     
                 
-                <div style={{position: "relative", marginTop: "50px"}}>
+                <div style={{position: "relative"}}>
                     <br></br>
                     <br></br> 
                     {tableContent}

@@ -62,7 +62,15 @@ class StatusDataTable extends React.Component{
                   row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
                 }
                         
-                rows.push(row)
+                if(row){
+                  if(i % 2 === 0){
+                    row["color"] = "#fff"
+                  }else{
+                    row["color"] = "#eee"
+                  }
+                   
+                  rows.push(row)
+                }
               }
                           
               this.setState({data : rows, role: this.props.role});
@@ -100,7 +108,15 @@ class StatusDataTable extends React.Component{
                   condition = "ON HOLD"
                 }
                 row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, condition: condition}                    
-                rows.push(row)
+                if(row){
+                  if(i % 2 === 0){
+                    row["color"] = "#fff"
+                  }else{
+                    row["color"] = "#eee"
+                  }
+                   
+                  rows.push(row)
+                }
               }
                           
               this.setState({data : rows, role: this.props.role});
@@ -158,7 +174,15 @@ class StatusDataTable extends React.Component{
                     row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
                   }
                           
-                  rows.push(row)
+                  if(row){
+                    if(i % 2 === 0){
+                      row["color"] = "#fff"
+                    }else{
+                      row["color"] = "#eee"
+                    }
+                     
+                    rows.push(row)
+                  }
                 }
                             
                 this.setState({data : rows, role: this.props.role});
@@ -196,7 +220,15 @@ class StatusDataTable extends React.Component{
                     condition = "ON HOLD"
                   }
                   row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, condition: condition}                    
-                  rows.push(row)
+                  if(row){
+                    if(i % 2 === 0){
+                      row["color"] = "#fff"
+                    }else{
+                      row["color"] = "#eee"
+                    }
+                     
+                    rows.push(row)
+                  }
                 }
                             
                 this.setState({data : rows, role: this.props.role});
@@ -421,8 +453,8 @@ class StatusDataTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
-          <div style={{position: "absolute", bottom:80, left:0}}>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+          <div style={{position: "absolute", bottom:25, left:0}}>
             <b>Total elements: {this.state.data.length}</b>
           </div>
         </div>

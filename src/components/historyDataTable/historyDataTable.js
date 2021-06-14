@@ -77,7 +77,15 @@ class HistoryDataTable extends React.Component{
                 var row = null
                 for(let i = 0; i < json.rows.length; i++){
                     row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions:""}
-                    rows.push(row)
+                    if(row){
+                      if(i % 2 === 0){
+                        row["color"] = "#fff"
+                      }else{
+                        row["color"] = "#eee"
+                      }
+                       
+                      rows.push(row)
+                    }
                   }
                 
                 this.setState({data : rows, selectedRows: []});
@@ -332,8 +340,10 @@ class HistoryDataTable extends React.Component{
     return (
       <div>
         {this.state.updateData}
-        {totalElements} 
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
+        <div className="dataTable__container">
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+          {totalElements}
+        </div>
         
         
       </div>
