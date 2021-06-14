@@ -7,6 +7,7 @@ import EquipModelledDataTable from "../../components/equipModelledDataTable/equi
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
 import SelectPag from "../../components/selectPag/selectPag"
 import ProgressPlotEquipments from "../../components/progressPlotEquipments/progressPlotEquipments"
+import EquipTypesDataTable from "../../components/equipTypesDataTable/equipTypesDataTable"
 
 const Equipments = () => {
 
@@ -96,7 +97,7 @@ const Equipments = () => {
         }
     });
 
-    var dataTableHeight = 8
+    var dataTableHeight = "550px"
     let navBtnsMargin = "600px"
 
     if (pagination === 8){
@@ -132,6 +133,8 @@ const Equipments = () => {
         table = <EquipModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotEquipments/>
+    }else if(currentTab === "Types"){
+        table = <EquipTypesDataTable/>
     }
 
     return(

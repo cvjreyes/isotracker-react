@@ -110,7 +110,7 @@ const IsoCtrl = () => {
     }
     tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} unlock = {unlock.bind(this)} rename = {rename.bind(this)}/>
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
-    var currentUser = secureStorage.getItem('user') 
+    var currentUser = secureStorage.getItem('user')
 
     
     
@@ -1074,7 +1074,7 @@ const IsoCtrl = () => {
 
 
             const data = new Blob([output], { type: 'txt' });
-            FileSaver.saveAs(data, "statusprogresspipe.pmlmac");
+            FileSaver.saveAs(data, "fromIsoTrackerTo3d.mac");
         })
     }
 
@@ -1376,7 +1376,7 @@ const IsoCtrl = () => {
     }if(currentTab === "On hold"){
         tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
-        tableContent = <StatusDataTable pagination = {pagination} role = {currentRole}/>
+        tableContent = <StatusDataTable onChange={value=> setSelected(value)} pagination = {pagination} role = {currentRole}/>
     }if(currentTab === "History"){
         tableContent = <HistoryDataTable pagination = {pagination}/>   
     }if(currentRole === "Process" || currentRole === "Instrument" || currentRole === "SpecialityLead"){
@@ -1423,9 +1423,6 @@ const IsoCtrl = () => {
     if(currentTab === "Modelled"){
         actionText = null
         actionButtons = <button className="btn btn-sm btn-success" style={{marginTop:"40px"}} onClick={()=>downloadModelled()}>Export</button>
-    }if(currentTab === "Reports"){
-        actionText=null
-        actionButtons = null
     }
     
     return (
@@ -1538,11 +1535,11 @@ const IsoCtrl = () => {
                 </div>
                     
                 
-                <div style={{height: dataTableHeight}}>
+                <div style={{position: "relative"}}>
                     <br></br>
                     <br></br> 
                     {tableContent}
-                </div>
+                
                 <div className="bottom__container">
                     <Collapse in={commentAlert}>
                         <Alert severity="error"
@@ -1561,6 +1558,7 @@ const IsoCtrl = () => {
                     </center>
                  
                     
+                </div>
                 </div>
             </div>
             <center className="navBtns__center">              

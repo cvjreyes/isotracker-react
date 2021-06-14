@@ -30,7 +30,7 @@ const CryptoJS = require("crypto-js");
         }
     });
 
-class EquipModelledDataTable extends React.Component{
+class EquipTypesDataTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
@@ -53,7 +53,7 @@ class EquipModelledDataTable extends React.Component{
         },
     }
 
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/modelled", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/types", options)
       .then(response => response.json())
       .then(json => {
         var rows = []
@@ -65,9 +65,9 @@ class EquipModelledDataTable extends React.Component{
               mod = json.rows[i].modelled
             }
             if(i % 2 === 0){
-              row = {key:i, area: json.rows[i].area, tag: json.rows[i].tag, type: json.rows[i].type, weight: json.rows[i].weight, status: json.rows[i].status, progress: json.rows[i].progress, color: "#fff"}
+              row = {key:i, code: json.rows[i].code, name: json.rows[i].name, weight: json.rows[i].weight, color: "#fff"}
             }else{
-              row = {key:i, area: json.rows[i].area, tag: json.rows[i].tag, type: json.rows[i].type, weight: json.rows[i].weight, status: json.rows[i].status, progress: json.rows[i].progress, color: "#eee"}
+                row = {key:i, code: json.rows[i].code, name: json.rows[i].name, weight: json.rows[i].weight, color: "#eee"}
             }
             
             for(let j = 0; j < this.state.steps.length; j++){
@@ -179,65 +179,36 @@ class EquipModelledDataTable extends React.Component{
 
     const columns = [
       {
-        title: <center className="dataTable__header__text">Area</center>,
-        dataIndex: 'area',
-        key: 'area',
+        title: <center className="dataTable__header__text">Code</center>,
+        dataIndex: 'code',
+        key: 'code',
         width: '5%',
-        ...this.getColumnSearchProps('area'),
+        ...this.getColumnSearchProps('code'),
         sorter:{
-          compare: (a, b) => a.area.localeCompare(b.area),
+          compare: (a, b) => a.code.localeCompare(b.code),
         },
       },
       {
-        title: <center className="dataTable__header__text">Tag</center>,
-        dataIndex: 'tag',
-        key: 'tag',
-        width: '5%',
-        ...this.getColumnSearchProps('tag'),
+        title: <center className="dataTable__header__text">Name</center>,
+        dataIndex: 'name',
+        key: 'name',
+        width: '30%',
+        ...this.getColumnSearchProps('name'),
         sorter:{
-          compare: (a, b) => a.tag.localeCompare(b.tag),
+          compare: (a, b) => a.name.localeCompare(b.name),
         },
       },
       {
-        title: <center className="dataTable__header__text">Type</center>,
-        dataIndex: 'type',
-        key: 'type',
-        width: '10%',
-        ...this.getColumnSearchProps('type'),
-        sorter:{
-          compare: (a, b) => a.type.localeCompare(b.type),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Weight</div>,
+        title: <center className="dataTable__header__text">Weight</center>,
         dataIndex: 'weight',
         key: 'weight',
-        width: '5%',
+        width: '10%',
         ...this.getColumnSearchProps('weight'),
-        sorter: {
-          compare: (a, b) => a.weight-b.weight,
-        },
-      },
-      {
-        title: <center className="dataTable__header__text">Status</center>,
-        dataIndex: 'status',
-        key: 'status',
-        width: '15%',
-        ...this.getColumnSearchProps('status'),
         sorter:{
-          compare: (a, b) => a.status.localeCompare(b.status),
+          compare: (a, b) => a.weight.localeCompare(b.weight),
         },
       },
-      {
-        title: <center className="dataTable__header__text">Progress</center>,
-        dataIndex: 'progress',
-        key: 'progress',
-        width: '5%',
-        ...this.getColumnSearchProps('progress'),
-        sorter:{
-          compare: (a, b) => a.progress.localeCompare(b.progress),
-        },
-      },
+      
     ];
     
     
@@ -264,4 +235,4 @@ class EquipModelledDataTable extends React.Component{
   }
 }
 
-export default EquipModelledDataTable;
+export default EquipTypesDataTable;
