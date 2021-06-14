@@ -472,17 +472,17 @@ class MyTrayTable extends React.Component{
     this.setState({ searchText: '' });
   };
 
-  onSelectChange = (selectedRowKeys, selectedRows) => {
-    let ids = []
-    for(let i = 0; i < selectedRows.length; i++){
-      ids.push(selectedRows[i].id.props.children)
-    }
-    this.setState({
-      selectedRowsKeys: selectedRowKeys,
-      selectedRows: selectedRows
-    })
-    this.props.onChange(ids);
-  };
+    onSelectChange = (selectedRowKeys, selectedRows) => {
+      let ids = []
+      for(let i = 0; i < selectedRows.length; i++){
+        ids.push(selectedRows[i].id.props.children)
+      }
+      this.setState({
+        selectedRowsKeys: selectedRowKeys,
+        selectedRows: selectedRows
+      })
+      this.props.onChange(ids);
+    };
 
 
   render() {
@@ -600,7 +600,7 @@ class MyTrayTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
           {totalElements}
         </div>
       </div>

@@ -1376,7 +1376,7 @@ const IsoCtrl = () => {
     }if(currentTab === "On hold"){
         tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
-        tableContent = <StatusDataTable pagination = {pagination} role = {currentRole}/>
+        tableContent = <StatusDataTable onChange={value=> setSelected(value)} pagination = {pagination} role = {currentRole}/>
     }if(currentTab === "History"){
         tableContent = <HistoryDataTable pagination = {pagination}/>   
     }if(currentRole === "Process" || currentRole === "Instrument" || currentRole === "SpecialityLead"){
@@ -1535,11 +1535,11 @@ const IsoCtrl = () => {
                 </div>
                     
                 
-                <div style={{height: dataTableHeight}}>
+                <div style={{position: "relative", marginTop: "50px"}}>
                     <br></br>
                     <br></br> 
                     {tableContent}
-                </div>
+                
                 <div className="bottom__container">
                     <Collapse in={commentAlert}>
                         <Alert severity="error"
@@ -1558,6 +1558,7 @@ const IsoCtrl = () => {
                     </center>
                  
                     
+                </div>
                 </div>
             </div>
             <center className="navBtns__center">              
