@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UploadReportPopUp from "../../components/uploadReportPopUp/uploadReportPopUp"
+import UploadEquisModelledPopUp from "../../components/uploadEquisModelledPopUp/uploadEquisModelledPopUp"
 
 export default class ReportBoxBtns extends Component {
 
@@ -17,7 +18,8 @@ export default class ReportBoxBtns extends Component {
         let adminBtns = null
         if(this.props.user === "super@user.com"){
             adminBtns = <div><UploadReportPopUp setUploading={this.setUploading.bind(this)} setErrorReport={this.setErrorReport.bind(this)}/>
-            <button className="btn btn-bg btn-info" style={{float:"left", marginTop:"10px", marginLeft:"10px", height:"150px", width:"150px"}} onClick={() => this.props.downloadStatus3D()}>Status 3D</button></div>
+            <button className="btn btn-bg btn-info" style={{float:"left", marginTop:"10px", marginLeft:"10px", height:"150px", width:"150px"}} onClick={() => this.props.downloadStatus3D()}>Status 3D</button>
+            <UploadEquisModelledPopUp setUploading={this.setUploading.bind(this)} setErrorReport={this.setErrorReport.bind(this)}/></div>
         }
         return (
             <div className="reports__container">
