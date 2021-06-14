@@ -254,7 +254,7 @@ class EquipModelledDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"
+        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination }} size="small"
          rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>

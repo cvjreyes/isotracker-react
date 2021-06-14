@@ -108,9 +108,10 @@ const Equipments = () => {
         navBtnsMargin = "1200px"
     }if(pagination === 50){
         dataTableHeight = "2250px"
-        navBtnsMargin = "2300px"
+        navBtnsMargin = "2150px"
     }if(pagination === 100){
-        dataTableHeight = "4350px"
+        dataTableHeight = "4250px"
+        navBtnsMargin = "4000px"
     }
 
     document.body.style.zoom = 0.9
