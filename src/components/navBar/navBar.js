@@ -119,13 +119,13 @@ const NavBar = (props) =>{
                     
                     </Typography>
                     <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Equipments </i>
+                        <i className="dropdown__text">Equipment </i>
                     </Button>
                     <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Isotracker </i>
                     </Button>
                     
-                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/"}><strong className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</strong></a></li>
+                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
                      
                     <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/"}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>

@@ -79,8 +79,8 @@ export default class UploadEquisModeledPopUp extends Component {
 
     render() {
         return (
-            <section style={{marginTop:"10px",float:"left"}}>
-                <input type="button"  value="Upload modelled" style={{marginLeft:"10px", height:"150px", width:"150px"}} className="btn btn-bg btn-info"  onClick={() => this.openModal()} />
+            <section style={{float:"left"}}>
+                <input type="button"  value="Upload dequis" style={{marginTop:"10px",marginLeft:"10px", height:"150px", width:"150px"}} className="btn btn-bg btn-info"  onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="650" height="180" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="popUp__container" >
