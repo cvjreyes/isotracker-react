@@ -6,16 +6,6 @@ import { SearchOutlined } from '@ant-design/icons';
 import './statusDataTable.css'
 import { Link } from 'react-router-dom';
 
-const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User',
-      // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
 
 class StatusDataTable extends React.Component{
   state = {
@@ -23,7 +13,9 @@ class StatusDataTable extends React.Component{
     searchedColumn: '',
     data: [],
     weights: [],
-    role: this.props.role
+    role: this.props.role,
+    selectedRows: [],
+    selectedRowsKeys: []
   };
   
 
@@ -368,8 +360,32 @@ class StatusDataTable extends React.Component{
     this.setState({ searchText: '' });
   };
 
+  onSelectChange = (selectedRowKeys, selectedRows) => {
+    let ids = []
+    for(let i = 0; i < selectedRows.length; i++){
+      ids.push(selectedRows[i].id.props.children)
+    }
+    this.setState({
+      selectedRowsKeys: selectedRowKeys,
+      selectedRows: selectedRows
+    })
+    this.props.onChange(ids);
+  };
+
 
   render() {
+
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.onSelectChange(selectedRowKeys, selectedRows);
+      },
+      getCheckboxProps: (record) => ({
+        disabled: record.name === 'Disabled User',
+        // Column configuration not to be checked
+        name: record.name,
+      }),
+    };
+
     const columns = [
         {
             title: <div className="dataTable__header__text">Status</div>,

@@ -332,7 +332,7 @@ class HistoryDataTable extends React.Component{
     if (this.state.data.length === 0){
       totalElements = null;
     }else{
-      totalElements = (<div style={{position: "absolute", bottom: 25, left:0}}>
+      totalElements = (<div style={{position: "absolute", bottom: 80, left:0}}>
       <b>Total elements: {this.state.data.length}</b>
      </div>);
     }
@@ -344,6 +344,7 @@ class HistoryDataTable extends React.Component{
         <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
+        
         
       </div>
     );

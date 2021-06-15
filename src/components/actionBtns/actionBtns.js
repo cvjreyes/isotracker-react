@@ -123,6 +123,12 @@ const ActionBtns = props =>{
             actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
             actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
         }
+        if(props.currentTab === "Status"){
+            actionBtn1 = null
+            actionBtn6 = null
+            actionBtn7 = null
+            actionBtn10 = null
+        }
     }
 
     return(

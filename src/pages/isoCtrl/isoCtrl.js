@@ -1535,11 +1535,11 @@ const IsoCtrl = () => {
                 </div>
                     
                 
-                <div style={{position: "relative"}}>
+                <div style={{height: dataTableHeight}}>
                     <br></br>
                     <br></br> 
                     {tableContent}
-                
+                </div>
                 <div className="bottom__container">
                     <Collapse in={commentAlert}>
                         <Alert severity="error"
@@ -1558,7 +1558,6 @@ const IsoCtrl = () => {
                     </center>
                  
                     
-                </div>
                 </div>
             </div>
             <center className="navBtns__center">              
