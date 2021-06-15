@@ -7,6 +7,7 @@ import Register from './pages/register/register';
 import LoginPage from './pages/loginPage/loginPage';
 import ChangePasswordPage from './pages/changePassword/changePassword';
 import Equipments from './pages/equipments/equipments';
+import Instrumentation from './pages/instrumentation/instrumentation';
 require('dotenv').config();
 
 
@@ -22,6 +23,7 @@ function App() {
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/login"} component={LoginPage}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/changepassword"} component={ChangePasswordPage}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/equipments"} component={Equipments}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/instrumentation"} component={Instrumentation}></Route>
         </Switch>
       </Router>
   

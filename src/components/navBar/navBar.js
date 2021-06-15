@@ -91,6 +91,10 @@ const NavBar = (props) =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/equipments");
     }
 
+    const handleClickInstrument = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/instrumentation");
+    }
+
     useEffect(() =>{
         const bodyUsername = {
             email: secureStorage.getItem("user")
@@ -118,6 +122,9 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
+                    <Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
+                        <i className="dropdown__text">Instrumentation </i>
+                    </Button>
                     <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Equipment </i>
                     </Button>

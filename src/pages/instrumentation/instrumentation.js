@@ -1,17 +1,16 @@
-import "./equipments.css"
+import "./instrumentation.css"
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
-import EquipEstimatedDataTable from "../../components/equipEstimatedDataTable/equipEstimatedDataTable"
-import EquipModelledDataTable from "../../components/equipModelledDataTable/equipModelledDataTable"
+import InstrumentationEstimatedDataTable from "../../components/instrumentationEstimatedDataTable/instrumentationEstimatedDataTable"
+import InstrumentationModelledDataTable from "../../components/instrumentationModelledDataTable/instrumentationModelledDataTable"
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
 import SelectPag from "../../components/selectPag/selectPag"
-import ProgressPlotEquipments from "../../components/progressPlotEquipments/progressPlotEquipments"
-import EquipTypesDataTable from "../../components/equipTypesDataTable/equipTypesDataTable"
-import Alert from '@material-ui/lab/Alert';
-import Collapse from '@material-ui/core/Collapse'
+import ProgressPlotInstrumentation from "../../components/progressPlotInstrumentation/progressPlotInstrumentation"
+import InstrumentationTypesDataTable from "../../components/instrumentationTypesDataTable/instrumentationTypesDataTable"
 
-const Equipments = () => {
+
+const Instrumentation = () => {
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -65,7 +64,7 @@ const Equipments = () => {
         }
        
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/weight", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrumentation/weight", options)
             .then(response => response.json())
             .then(json => {
                 setWeight(json.weight)
@@ -119,7 +118,7 @@ const Equipments = () => {
 
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("equip_tab"))
+    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("inst_tab"))
     if(currentTab === "" || currentTab === null){
         setCurrentTab("Estimated")
     }
@@ -132,14 +131,14 @@ const Equipments = () => {
 
 
     if(currentTab === "Estimated"){
-        table = <EquipEstimatedDataTable pagination = {pagination}/>
+        table = <InstrumentationEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        table = <EquipModelledDataTable pagination = {pagination}/>
+        table = <InstrumentationModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
-        table = <ProgressPlotEquipments/>
+        table = <ProgressPlotInstrumentation/>
         pageSelector = null
     }else if(currentTab === "Types"){
-        table = <EquipTypesDataTable/>
+        table = <InstrumentationTypesDataTable/>
     }
 
 
@@ -155,7 +154,7 @@ const Equipments = () => {
                             <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
                             </div>
                         <b >      
-                            <i className="iso__title">Equipment</i>
+                            <i className="iso__title">Instrumentation</i>
                         </b>
                     </h2>
                     <h3 className="iso__subtitle">{currentTab}</h3>
@@ -190,10 +189,10 @@ const Equipments = () => {
                 </div>         
             </div>
             <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
-                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Instrumentation"/>               
             </center>
          </body>
     )
 }
 
-export default Equipments;
+export default Instrumentation  ;
