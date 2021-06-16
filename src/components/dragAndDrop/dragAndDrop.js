@@ -164,6 +164,7 @@ class DragAndDrop extends React.Component{
         this.setState({
           max: max
         })
+        
         if (max === 0){
           this.setState({
             uploaded: true,
