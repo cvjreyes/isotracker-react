@@ -2,12 +2,12 @@ import "./civil.css"
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
-import EquipEstimatedDataTable from "../../components/equipEstimatedDataTable/equipEstimatedDataTable"
 import EquipModelledDataTable from "../../components/equipModelledDataTable/equipModelledDataTable"
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
 import SelectPag from "../../components/selectPag/selectPag"
 import ProgressPlotEquipments from "../../components/progressPlotEquipments/progressPlotEquipments"
 import EquipTypesDataTable from "../../components/equipTypesDataTable/equipTypesDataTable"
+import CivilEstimatedDataTable from "../../components/civilEstimatedDataTable/civilEstimatedDataTable"
 
 const Civil = () => {
 
@@ -130,7 +130,7 @@ const Civil = () => {
 
 
     if(currentTab === "Estimated"){
-        table = <EquipEstimatedDataTable pagination = {pagination}/>
+        table = <CivilEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
         table = <EquipModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
