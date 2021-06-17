@@ -98,6 +98,9 @@ const NavBar = (props) =>{
     const handleClickInstrument = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/instrumentation");
     }
+    const handleClickCivil = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/civil");
+    }
 
     useEffect(() =>{
         const bodyUsername = {
@@ -137,7 +140,15 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
-                    {progressButtons}
+                    <Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
+                        <i className="dropdown__text">Instrumentation </i>
+                    </Button>
+                    <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
+                        <i className="dropdown__text">Equipment </i>
+                    </Button>
+                    <Button onClick={handleClickCivil} style={{marginRight:"25px"}}>
+                        <i className="dropdown__text">Civil </i>
+                    </Button>
                     <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Isotracker </i>
                     </Button>
