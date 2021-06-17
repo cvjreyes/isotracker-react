@@ -1,15 +1,15 @@
-import "./civil.css"
+import "./electrical.css"
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
 import SelectPag from "../../components/selectPag/selectPag"
-import ProgressPlotCivils from "../../components/progressPlotCivils/progressPlotCivils"
-import CivilEstimatedDataTable from "../../components/civilEstimatedDataTable/civilEstimatedDataTable"
-import CivilModelledDataTable from "../../components/civilModelledDataTable/civilModelledDataTable"
-import CivilTypesDataTable from "../../components/civilTypesDataTable/civilTypesDataTable"
+import ElectricalEstimatedDataTable from "../../components/electricalEstimatedDataTable/electricalEstimatedDataTable"
+import ElectricalModelledDataTable from "../../components/electricalModelledDataTable/electricalModelledDataTable"
+import ProgressPlotElecs from "../../components/progresPlotElecs/progressPlotElecs"
+import ElecTypesDataTable from "../../components/elecTypesDataTable/elecTypesDataTable"
 
-const Civil = () => {
+const Electrical = () => {
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -63,7 +63,7 @@ const Civil = () => {
         }
        
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/weight", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/electrical/weight", options)
             .then(response => response.json())
             .then(json => {
                 setWeight(json.weight)
@@ -117,7 +117,7 @@ const Civil = () => {
 
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("civ_tab"))
+    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("elec_tab"))
     if(currentTab === "" || currentTab === null){
         setCurrentTab("Estimated")
     }
@@ -130,14 +130,14 @@ const Civil = () => {
 
 
     if(currentTab === "Estimated"){
-        table = <CivilEstimatedDataTable pagination = {pagination}/>
+        table = <ElectricalEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        table = <CivilModelledDataTable pagination = {pagination}/>
+        table = <ElectricalModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
-        table = <ProgressPlotCivils/>
+        table = <ProgressPlotElecs/>
         pageSelector = null
     }else if(currentTab === "Types"){
-        table = <CivilTypesDataTable/>
+        table = <ElecTypesDataTable/>
     }
 
 
@@ -153,7 +153,7 @@ const Civil = () => {
                             <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
                             </div>
                         <b >      
-                            <i className="iso__title">Civil</i>
+                            <i className="iso__title">Electrical</i>
                         </b>
                     </h2>
                     <h3 className="iso__subtitle">{currentTab}</h3>
@@ -194,4 +194,4 @@ const Civil = () => {
     )
 }
 
-export default Civil;
+export default Electrical;

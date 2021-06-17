@@ -101,6 +101,9 @@ const NavBar = (props) =>{
     const handleClickCivil = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/civil");
     }
+    const handleClickElectrical = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/electrical");
+    }
 
     useEffect(() =>{
         const bodyUsername = {
@@ -148,6 +151,9 @@ const NavBar = (props) =>{
                     </Button>
                     <Button onClick={handleClickCivil} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Civil </i>
+                    </Button>
+                    <Button onClick={handleClickElectrical} style={{marginRight:"25px"}}>
+                        <i className="dropdown__text">Electrical </i>
                     </Button>
                     <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Isotracker </i>

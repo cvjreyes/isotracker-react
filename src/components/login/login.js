@@ -58,6 +58,7 @@ const Login = props =>{
                     secureStorage.setItem("equip_tab", "Estimated")  
                     secureStorage.setItem("inst_tab", "Estimated")    
                     secureStorage.setItem("civ_tab", "Estimated")  
+                    secureStorage.setItem("elec_tab", "Estimated")  
                     history.replace('/'+process.env.REACT_APP_PROJECT+'/isotracker');
                     window.location.reload(false);
                     

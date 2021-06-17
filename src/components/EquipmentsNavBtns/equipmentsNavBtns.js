@@ -37,6 +37,8 @@ const EquipmentsNavBtns = props =>{
             secureStorage.setItem("inst_tab", "Estimated")
         }else if(props.discipline === "Civil"){
             secureStorage.setItem("civ_tab", "Estimated")
+        }else if(props.discipline === "Electrical"){
+            secureStorage.setItem("elec_tab", "Estimated")
         }
         
         estimatedButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Estimated</b></button>
@@ -51,6 +53,8 @@ const EquipmentsNavBtns = props =>{
             secureStorage.setItem("inst_tab", "Modelled")
         }else if(props.discipline === "Civil"){
             secureStorage.setItem("civ_tab", "Modelled")
+        }else if(props.discipline === "Electrical"){
+            secureStorage.setItem("elec_tab", "Modelled")
         }
         modelledButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Modelled</b></button>
     }else{
@@ -64,6 +68,8 @@ const EquipmentsNavBtns = props =>{
             secureStorage.setItem("inst_tab", "Progress")
         }else if(props.discipline === "Civil"){
             secureStorage.setItem("civ_tab", "Progress")
+        }else if(props.discipline === "Electrical"){
+            secureStorage.setItem("elec_tab", "Progress")
         }
         progressButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Progress</b></button>
     }else{
@@ -77,6 +83,8 @@ const EquipmentsNavBtns = props =>{
             secureStorage.setItem("inst_tab", "Types")
         }else if(props.discipline === "Civil"){
             secureStorage.setItem("civ_tab", "Types")
+        }else if(props.discipline === "Electrical"){
+            secureStorage.setItem("elec_tab", "Types")
         }
         typesButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Types</b></button>
     }else{
