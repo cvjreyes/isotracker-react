@@ -123,11 +123,17 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div><Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
-            <i className="dropdown__text">Equipments </i>
-        </Button>
-        <Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
+            setProgressButtons(<div><Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
             <i className="dropdown__text">Instrumentation </i>
+        </Button>
+        <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Equipment </i>
+        </Button>
+        <Button onClick={handleClickCivil} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Civil </i>
+        </Button>
+        <Button onClick={handleClickElectrical} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Electrical </i>
         </Button></div>)
         }
     },[])
@@ -143,18 +149,7 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
-                    <Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Instrumentation </i>
-                    </Button>
-                    <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Equipment </i>
-                    </Button>
-                    <Button onClick={handleClickCivil} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Civil </i>
-                    </Button>
-                    <Button onClick={handleClickElectrical} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Electrical </i>
-                    </Button>
+                    {progressButtons}
                     <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Isotracker </i>
                     </Button>
