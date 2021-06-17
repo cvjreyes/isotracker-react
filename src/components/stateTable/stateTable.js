@@ -58,11 +58,17 @@ const StateTable = props =>{
     const [progressIso, setProgressIso] = useState(0)
     const [realProgress, setRealProgress] = useState(0)
     const [realProgressISO, setRealProgressIso] = useState(0)
+    
 
     const [realProgressTD, setRealProgressTD] = useState()
     const [realProgressIsoTD, setRealProgressIsoTD] = useState()
     const [realProgressTDValue, setRealProgressTDValue] = useState()
     const [realProgressIsoTDValue, setRealProgressIsoTDValue] = useState()
+
+    const[progressHeader, setProgressHeader] = useState()
+    const[progressTD, setProgressTD] = useState()
+    const[totalHeader, setTotalHeader] = useState()
+    const [totalStockTD, setTotalStockTD] = useState()
 
     const [pISOHeaderTD, setpISOHeaderTD] = useState()
     const [pISOValueTD, setpISOValueTD] = useState()
@@ -71,6 +77,7 @@ const StateTable = props =>{
 
     useEffect(async ()=>{
         if(loading){
+            console.log("laoding")
             if(process.env.REACT_APP_PROGRESS === "0"){
                 fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
                 .then(response => response.json())
@@ -123,6 +130,10 @@ const StateTable = props =>{
                     setTotalDeleted(json["totalDeleted"])
                     setTotalStock(json["totalStock"])
                     
+                    setTotalHeader(<td  className="statusTable__header" style={{backgroundColor:"blue", borderRadius:"0 1em 0 0"}}>Total</td>)
+                    setTotalStockTD(<td className="statusTable__state" style={{fontWeight:"bold", color:"black", borderRadius:"0 0 1em 0"}}>{totalStock}</td>)
+
+                    setLoading(false)
                 }) 
             }else{
                 fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
@@ -194,25 +205,28 @@ const StateTable = props =>{
                         console.log(json)
                          await setProgress([json.progress, json.realprogress])
                     })
-    
+                    if(props.currentRole === "SpecialityLead"){
+                        await setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P.</td>)
+                        await setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange", borderRadius:"0 1em 0 0"}}>R.P. ISO</td>)
+                        await setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{progress[1]}%</td>)
+                        await setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[1]}%</td>)
+                        await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.ISO</td>)
+                        await setpISOValueTD(<td rowSpan="6" className="statusTable__state">{progressIso[0]}%</td>)
+                    }else{
+                        await setRealProgressTD(null)
+                        await setRealProgressIsoTD(null)
+                        await setRealProgressTDValue(null)
+                        await setRealProgressIsoTDValue(null)
+                        await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"orange", borderRadius:"0 1em 0 0"}}>P.ISO</td>)
+                        await setpISOValueTD(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[0]}%</td>)
+                    }
+                    await setProgressHeader(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.</td>)
+                    await setProgressTD(<td rowSpan="6" className="statusTable__state">{progress[0]}%</td> )
+                    await setTotalHeader(<td  className="statusTable__header" style={{backgroundColor:"blue"}}>Total</td>)
+                    await setTotalStockTD(<td className="statusTable__state" style={{fontWeight:"bold", color:"black"}}>{totalStock}</td>)
             }
 
-            if(props.currentRole === "SpecialityLead"){
-                await setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P.</td>)
-                await setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange", borderRadius:"0 1em 0 0"}}>R.P. ISO</td>)
-                await setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{progress[1]}%</td>)
-                await setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[1]}%</td>)
-                await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.ISO</td>)
-                await setpISOValueTD(<td rowSpan="6" className="statusTable__state">{progressIso[0]}%</td>)
-            }else{
-                await setRealProgressTD(null)
-                await setRealProgressIsoTD(null)
-                await setRealProgressTDValue(null)
-                await setRealProgressIsoTDValue(null)
-                await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"orange", borderRadius:"0 1em 0 0"}}>P.ISO</td>)
-                await setpISOValueTD(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[0]}%</td>)
-            }
-            console.log("eontrooorn")
+            
             await setLoading(false)
         }
         
@@ -220,7 +234,7 @@ const StateTable = props =>{
     },[loading])
 
     useEffect(async ()=>{
-        setLoading(true)
+        await setLoading(true)
     }, [props.updateData, props.currentRole])
 
     
@@ -239,8 +253,8 @@ const StateTable = props =>{
                         <td  className="statusTable__header" >Issuer</td>
                         <td  className="statusTable__header" >To issue</td>
                         <td  className="statusTable__header" style={{backgroundColor:"#00a000"}}>Issued</td>
-                        <td  className="statusTable__header" style={{backgroundColor:"blue"}}>Total</td>
-                        <td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.</td>
+                        {totalHeader}
+                        {progressHeader}
                         {pISOHeaderTD}
                         {realProgressTD}
                         {realProgressIsoTD}
@@ -255,7 +269,7 @@ const StateTable = props =>{
                         <td className="statusTable__state">{toIssueR0}</td>
                         <td className="statusTable__state">{issuedR0}</td>   
                         <td className="statusTable__state">{totalR0}</td>  
-                        <td rowSpan="6" className="statusTable__state">{progress[0]}%</td>  
+                        {progressTD} 
                         {pISOValueTD}  
                         {realProgressTDValue}
                         {realProgressIsoTDValue} 
@@ -313,7 +327,7 @@ const StateTable = props =>{
                         <td className="statusTable__state">{issuerStock}</td>
                         <td className="statusTable__state">{toIssueStock}</td>
                         <td className="statusTable__state">{issuedStock}</td>   
-                        <td className="statusTable__state" style={{fontWeight:"bold", color:"black"}}>{totalStock}</td>
+                        {totalStockTD}
                   </tr>
                 </tbody>
             </table>

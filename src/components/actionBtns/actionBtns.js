@@ -55,7 +55,8 @@ const ActionBtns = props =>{
                     actionBtn2 = <CancelIso returnIso={returnIso.bind(this)} role={props.role}/>
                 }
             }
-            if(props.role === "DesignLead" || props.role === "StressLead" || props.role === "SupportsLead"){
+            
+            if(props.role === "DesignLead" || props.role === "SupportsLead"){
                 actionBtn9 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "#8B008B", color:"white"}} onClick={() => props.transaction("Materials")}>Materials</button>
             }if(props.role === "Materials"){
                 actionBtn5 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "#FF6781", color:"white"}} onClick={() => props.transaction("Issuer")}>Issuer</button>
@@ -63,14 +64,23 @@ const ActionBtns = props =>{
                 actionBtn5 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "	#FF8C00", color:"white"}} onClick={() => props.transaction("LDE/Isocontrol")}>LOS/Isoctrl</button>
             }
             if(process.env.REACT_APP_IFC === "0"){
-                if (props.role !== "Stress" && props.role !== "StressLead"){
+                if (props.role !== "Stress" && props.role !== "StressLead" && props.role !== "Materials" && props.role !== "Issuer" && props.role !== "SpecialityLead"){
                     actionBtn3 = <button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Stress")}>Stress</button>
-                } if (props.role !== "Supports" && props.role !== "SupportsLead"){
+                } if (props.role !== "Supports" && props.role !== "SupportsLead" && props.role !== "Materials" && props.role !== "Issuer" && props.role !== "SpecialityLead"){
                     actionBtn4 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Supports")}>Support</button>
                 }
                 if(props.role !== "DesignLead" && props.role !== "StressLead" && props.role !== "SupportsLead" && props.role !== "Process" && props.role !== "Instrument"){
                     actionBtn5= <button className="btn btn-sm btn-success" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.verifyClick()}>Verify</button>
                 }
+                if(props.role === "Supports"){
+                    actionBtn6 = actionBtn5
+                    actionBtn5 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "#8B008B", color:"white"}} onClick={() => props.transaction("Materials")}>Materials</button>
+                }if(props.role === "Materials"){
+                    actionBtn5 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "#FF6781", color:"white"}} onClick={() => props.transaction("Issuer")}>Issuer</button>
+                }if(props.role === "Issuer"){
+                    actionBtn5 = <button class="btn btn-sm" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px", backgroundColor: "	#FF8C00", color:"white"}} onClick={() => props.transaction("LDE/Isocontrol")}>LOS/Isoctrl</button>
+                }
+
             }else{
                 if(props.role === "DesignLead"){
                     actionBtn3 = <button class="btn btn-sm btn-primary" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Stress")}>Stress</button>

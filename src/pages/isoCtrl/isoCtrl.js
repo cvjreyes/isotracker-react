@@ -870,7 +870,9 @@ const IsoCtrl = () => {
         localStorage.setItem("update", true)
 
         const body ={
-            file: fileName
+            file: fileName,
+            user: currentUser,
+            role: currentRole,
         }
         const options = {
             method: "POST",
@@ -897,7 +899,9 @@ const IsoCtrl = () => {
         setBlocked(false)
         localStorage.setItem("update", true)
         const body ={
-            file: fileName
+            file: fileName,
+            user: currentUser,
+            role: currentRole
         }
         const options = {
             method: "POST",
