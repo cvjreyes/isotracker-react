@@ -58,6 +58,10 @@ const NavBar = (props) =>{
     const [anchorElIso, setAnchorElIso] = React.useState(null);
     const history = useHistory();
     const[username, setUsername] = React.useState("");
+    const[progressButtons, setProgressButtons] = React.useState(null);
+
+    
+    
 
     const handleClickUser = (event) => {
         console.log(event.currentTarget)
@@ -111,7 +115,18 @@ const NavBar = (props) =>{
         .then(json => {
             setUsername(json.name);
         })
-    })
+
+        if(process.env.REACT_APP_PROGRESS === "1"){
+            setProgressButtons(<div><Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Equipments </i>
+        </Button>
+        <Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Instrumentation </i>
+        </Button></div>)
+        }
+    },[])
+
+    
     return(
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
@@ -122,12 +137,7 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
-                    <Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Instrumentation </i>
-                    </Button>
-                    <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Equipment </i>
-                    </Button>
+                    {progressButtons}
                     <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Isotracker </i>
                     </Button>
