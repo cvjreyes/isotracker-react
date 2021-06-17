@@ -2,12 +2,12 @@ import "./civil.css"
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
-import EquipModelledDataTable from "../../components/equipModelledDataTable/equipModelledDataTable"
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
 import SelectPag from "../../components/selectPag/selectPag"
-import ProgressPlotEquipments from "../../components/progressPlotEquipments/progressPlotEquipments"
-import EquipTypesDataTable from "../../components/equipTypesDataTable/equipTypesDataTable"
+import ProgressPlotCivils from "../../components/progressPlotCivils/progressPlotCivils"
 import CivilEstimatedDataTable from "../../components/civilEstimatedDataTable/civilEstimatedDataTable"
+import CivilModelledDataTable from "../../components/civilModelledDataTable/civilModelledDataTable"
+import CivilTypesDataTable from "../../components/civilTypesDataTable/civilTypesDataTable"
 
 const Civil = () => {
 
@@ -132,12 +132,12 @@ const Civil = () => {
     if(currentTab === "Estimated"){
         table = <CivilEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        table = <EquipModelledDataTable pagination = {pagination}/>
+        table = <CivilModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
-        table = <ProgressPlotEquipments/>
+        table = <ProgressPlotCivils/>
         pageSelector = null
     }else if(currentTab === "Types"){
-        table = <EquipTypesDataTable/>
+        table = <CivilTypesDataTable/>
     }
 
 
