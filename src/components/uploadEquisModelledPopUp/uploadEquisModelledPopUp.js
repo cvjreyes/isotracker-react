@@ -53,7 +53,11 @@ export default class UploadEquisModeledPopUp extends Component {
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadEquisModelledReport", options)
                 .then(response => response.json())
-                
+                .then(async json =>{
+                    if(json.invalid){
+                        this.props.setErrorReportData(json.invalid)
+                    }
+                })
             })
         }else{
             let reader = new FileReader();
@@ -69,7 +73,11 @@ export default class UploadEquisModeledPopUp extends Component {
                 console.log(readString(csv).data)
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadEquisModelledReport", options)
                 .then(response => response.json())
-
+                .then(async json =>{
+                    if(json.invalid){
+                        this.props.setErrorReportData(json.invalid)
+                    }
+                })
             }
             reader.readAsText(this.state.file)
         }

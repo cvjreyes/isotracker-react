@@ -104,6 +104,9 @@ const NavBar = (props) =>{
     const handleClickElectrical = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/electrical");
     }
+    const handleClickPiping = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/piping");
+    }
 
     useEffect(() =>{
         const bodyUsername = {
@@ -123,7 +126,9 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div><Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
+            setProgressButtons(<div><Button onClick={handleClickPiping} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Piping </i>
+        </Button><Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
             <i className="dropdown__text">Instrumentation </i>
         </Button>
         <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
@@ -154,7 +159,7 @@ const NavBar = (props) =>{
                         <i className="dropdown__text">Isotracker </i>
                     </Button>
                     
-                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
+                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/home"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
                      
                     <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/"}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>

@@ -10,12 +10,13 @@ export default class UploadInstrumentationModelledPopUp extends Component {
         this.state = {
             visible : false,
             file: null,
-            error: false
+            error: false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.uploadReport = this.uploadReport.bind(this);
         this.id = props.id;
     }
+
    
 
     openModal() {      
@@ -53,6 +54,11 @@ export default class UploadInstrumentationModelledPopUp extends Component {
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadInstModelledReport", options)
                 .then(response => response.json())
+                .then(async json =>{
+                    if(json.invalid){
+                        this.props.setErrorReportData(json.invalid)
+                    }
+                })
                 
             })
         }else{
@@ -69,12 +75,17 @@ export default class UploadInstrumentationModelledPopUp extends Component {
                 console.log(readString(csv).data)
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadInstModelledReport", options)
                 .then(response => response.json())
-
+                .then(async json =>{
+                    if(json.invalid){
+                        this.props.setErrorReportData(json.invalid)
+                    }
+                })
             }
             reader.readAsText(this.state.file)
         }
         this.closeModal()
         this.props.setUploading(false)
+        
     }
 
     render() {
@@ -89,7 +100,7 @@ export default class UploadInstrumentationModelledPopUp extends Component {
                         </div>
                         <div className="select__container">
                             <form onSubmit={this.uploadReport}>
-                                <input type="file" name="fileToUpload" id="fileToUpload" onChange={this.handleChange}/>
+                                <input type="file" name="fileToUpload" id="fileToUpload" onChange={this.handleChange} />
                                 <input type="submit" style={{marginLeft:"10px"}} className="btn btn-sm btn-success" value="Upload"/>
                             </form>
                         </div> 

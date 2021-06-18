@@ -40,6 +40,9 @@ const EquipmentsNavBtns = props =>{
         }else if(props.discipline === "Electrical"){
             secureStorage.setItem("elec_tab", "Estimated")
         }
+        else if(props.discipline === "Piping"){
+            secureStorage.setItem("piping_tab", "Estimated")
+        }
         
         estimatedButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Estimated</b></button>
     }else{
@@ -55,6 +58,8 @@ const EquipmentsNavBtns = props =>{
             secureStorage.setItem("civ_tab", "Modelled")
         }else if(props.discipline === "Electrical"){
             secureStorage.setItem("elec_tab", "Modelled")
+        }else if(props.discipline === "Piping"){
+            secureStorage.setItem("piping_tab", "Modelled")
         }
         modelledButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Modelled</b></button>
     }else{
@@ -70,6 +75,8 @@ const EquipmentsNavBtns = props =>{
             secureStorage.setItem("civ_tab", "Progress")
         }else if(props.discipline === "Electrical"){
             secureStorage.setItem("elec_tab", "Progress")
+        }else if(props.discipline === "Piping"){
+            secureStorage.setItem("piping_tab", "Progress")
         }
         progressButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Progress</b></button>
     }else{
@@ -85,6 +92,8 @@ const EquipmentsNavBtns = props =>{
             secureStorage.setItem("civ_tab", "Types")
         }else if(props.discipline === "Electrical"){
             secureStorage.setItem("elec_tab", "Types")
+        }else if(props.discipline === "Piping"){
+            secureStorage.setItem("piping_tab", "Types")
         }
         typesButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "180px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Types</b></button>
     }else{
