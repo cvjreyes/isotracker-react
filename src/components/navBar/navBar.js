@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TechnipLogo from "../../assets/images/tpenr_logo.svg"
+import HomeLogo from "../../assets/images/home.png"
 import Icapp from "../../assets/images/client.png"
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -154,6 +155,9 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
+                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_PROJECT+"/home"}>
+                        <img src={HomeLogo} alt="HomeLogo" style={{height:"30px", width:"30px"}}/>
+                    </a>
                     {progressButtons}
                     <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Isotracker </i>
