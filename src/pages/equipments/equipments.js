@@ -8,6 +8,8 @@ import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavB
 import SelectPag from "../../components/selectPag/selectPag"
 import ProgressPlotEquipments from "../../components/progressPlotEquipments/progressPlotEquipments"
 import EquipTypesDataTable from "../../components/equipTypesDataTable/equipTypesDataTable"
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 const Equipments = () => {
 
@@ -19,6 +21,7 @@ const Equipments = () => {
     const[pagination, setPagination] = useState(8)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
+
     
 
     useEffect(()=>{
@@ -134,9 +137,11 @@ const Equipments = () => {
         table = <EquipModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotEquipments/>
+        pageSelector = null
     }else if(currentTab === "Types"){
         table = <EquipTypesDataTable/>
     }
+
 
     return(
         
@@ -150,12 +155,12 @@ const Equipments = () => {
                             <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
                             </div>
                         <b >      
-                            <i className="iso__title">Equipments</i>
+                            <i className="iso__title">Equipment</i>
                         </b>
                     </h2>
                     <h3 className="iso__subtitle">{currentTab}</h3>
                 </center>
-                <div style={{position: "absolute", width:"50px"}}>
+                <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
                   {pageSelector}        
                 </div>
                 <div style={{display:"inline"}}>
@@ -185,7 +190,7 @@ const Equipments = () => {
                 </div>         
             </div>
             <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
-                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/>               
+                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
             </center>
          </body>
     )

@@ -6,6 +6,7 @@ import './home.css'
 
 const Home = () =>{
     document.title= process.env.REACT_APP_APP_NAMEPROJ
+    document.body.style.zoom = 0.8
     return(
         <body>
             <div className="home__background">

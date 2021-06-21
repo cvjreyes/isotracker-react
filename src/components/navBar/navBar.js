@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TechnipLogo from "../../assets/images/tpenr_logo.svg"
+import HomeLogo from "../../assets/images/home.png"
 import Icapp from "../../assets/images/client.png"
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -58,6 +59,10 @@ const NavBar = (props) =>{
     const [anchorElIso, setAnchorElIso] = React.useState(null);
     const history = useHistory();
     const[username, setUsername] = React.useState("");
+    const[progressButtons, setProgressButtons] = React.useState(null);
+
+    
+    
 
     const handleClickUser = (event) => {
         console.log(event.currentTarget)
@@ -91,6 +96,19 @@ const NavBar = (props) =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/equipments");
     }
 
+    const handleClickInstrument = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/instrumentation");
+    }
+    const handleClickCivil = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/civil");
+    }
+    const handleClickElectrical = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/electrical");
+    }
+    const handleClickPiping = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/piping");
+    }
+
     useEffect(() =>{
         const bodyUsername = {
             email: secureStorage.getItem("user")
@@ -107,7 +125,26 @@ const NavBar = (props) =>{
         .then(json => {
             setUsername(json.name);
         })
-    })
+
+        if(process.env.REACT_APP_PROGRESS === "1"){
+            setProgressButtons(<div><Button onClick={handleClickPiping} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Piping </i>
+        </Button><Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Instrumentation </i>
+        </Button>
+        <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Equipment </i>
+        </Button>
+        <Button onClick={handleClickCivil} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Civil </i>
+        </Button>
+        <Button onClick={handleClickElectrical} style={{marginRight:"25px"}}>
+            <i className="dropdown__text">Electrical </i>
+        </Button></div>)
+        }
+    },[])
+
+    
     return(
         <div className={classes.root}>
             <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
@@ -118,14 +155,15 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
-                    <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Equipments </i>
-                    </Button>
+                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_PROJECT+"/home"}>
+                        <img src={HomeLogo} alt="HomeLogo" style={{height:"30px", width:"30px"}}/>
+                    </a>
+                    {progressButtons}
                     <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
                         <i className="dropdown__text">Isotracker </i>
                     </Button>
                     
-                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/"}><strong className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</strong></a></li>
+                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/home"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
                      
                     <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/"}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>

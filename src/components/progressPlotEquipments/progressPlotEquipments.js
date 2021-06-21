@@ -23,7 +23,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 		.then(async json=>{
 			let weeks = []
 			for(let i = 0; i < json.rows.length; i++){
-				weeks.push({name: "WEEK "+json.rows[i].week, estimated: json.rows[i].estimated, progress: json.rows[i].progress})
+				weeks.push({name: "W"+json.rows[i].week, estimated: json.rows[i].estimated, progress: json.rows[i].progress})
 			}
 			await this.setState({data: weeks})
 			console.log(this.state.data)

@@ -61,6 +61,8 @@ const IsoCtrl = () => {
     const [errorUnclaimR, setErrorUnclaimR] = useState(false);
     const [warningSelected, setWarningSelected] = useState(false);
     const [blocked, setBlocked] = useState(false);
+    const [errorReportD, setErrorReportD] = useState(false)
+    const [errorReportDIndex, setErrorReportDIndex] = useState(0);
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -150,6 +152,7 @@ const IsoCtrl = () => {
             setLoading(false)
             setWarningSelected(false)
             setBlocked(false)
+            setErrorReportD(false)
     },[currentRole]);
 
     useEffect(()=>{
@@ -163,6 +166,7 @@ const IsoCtrl = () => {
         setSelected([])
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
     }, [currentTab])
 
     const getProgress = () =>{
@@ -179,7 +183,7 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setErrorPI(false)
         setBlocked(false)
-        console.log(selected)
+        setErrorReportD(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -255,6 +259,7 @@ const IsoCtrl = () => {
         setErrorPI(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -290,6 +295,7 @@ const IsoCtrl = () => {
         setErrorPI(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -372,6 +378,7 @@ const IsoCtrl = () => {
         setLoading(true)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         localStorage.setItem("update", true)
         const body ={
             user : currentUser,
@@ -403,6 +410,7 @@ const IsoCtrl = () => {
         setErrorPI(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -437,6 +445,7 @@ const IsoCtrl = () => {
         setTransactionSuccess(false);
         setLoading(true)
         setWarningSelected(false)
+        setErrorReportD(false)
         setBlocked(false)
         localStorage.setItem("update", true)
             
@@ -470,6 +479,7 @@ const IsoCtrl = () => {
             setErrorPI(false);
             setTransactionSuccess(false);
             setLoading(true)
+            setErrorReportD(false)
             setBlocked(false)
             if(destiny === "Design"){
                 if(comment.length > 1){
@@ -662,6 +672,7 @@ const IsoCtrl = () => {
         setErrorPI(false)
         setErrorUnclaimR(false)
         setBlocked(false)
+        setErrorReportD(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -708,6 +719,7 @@ const IsoCtrl = () => {
         setErrorUnclaimR(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -751,6 +763,7 @@ const IsoCtrl = () => {
     async function restore(){
         setErrorReports(false)
         setErrorUnclaimR(false)
+        setErrorReportD(false)
         setErrorUnclaim(false)
         setErrorCL(false)
         setTransactionSuccess(false);
@@ -807,6 +820,7 @@ const IsoCtrl = () => {
         setLoading(true)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -837,6 +851,7 @@ const IsoCtrl = () => {
         setLoading(true)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -867,10 +882,13 @@ const IsoCtrl = () => {
         setLoading(true)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         localStorage.setItem("update", true)
 
         const body ={
-            file: fileName
+            file: fileName,
+            user: currentUser,
+            role: currentRole,
         }
         const options = {
             method: "POST",
@@ -895,9 +913,12 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setLoading(true)
         setBlocked(false)
+        setErrorReportD(false)
         localStorage.setItem("update", true)
         const body ={
-            file: fileName
+            file: fileName,
+            user: currentUser,
+            role: currentRole
         }
         const options = {
             method: "POST",
@@ -925,6 +946,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1133,6 +1155,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1175,6 +1198,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setErrorUnclaim(false)
         setWarningSelected(false)
+        setErrorReportD(false)
         setBlocked(false)
         if (selected.length > 0){
             setLoading(true)
@@ -1218,6 +1242,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1251,6 +1276,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setErrorUnclaim(false)
         setWarningSelected(false)
+        setErrorReportD(false)
         setBlocked(false)
         if (selected.length > 0){
             setLoading(true)
@@ -1308,6 +1334,7 @@ const IsoCtrl = () => {
         setErrorUnclaim(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorReportD(false)
         localStorage.setItem("update", true)
 
         const body = {
@@ -1336,6 +1363,7 @@ const IsoCtrl = () => {
         setErrorCL(false)
         setErrorUnclaim(false)
         setWarningSelected(false)
+        setErrorReportD(false)
         setBlocked(false)
         localStorage.setItem("update", true)
 
@@ -1358,6 +1386,11 @@ const IsoCtrl = () => {
         setTransactionSuccess(true)
         
         setUpdateData(!updateData)
+    }
+
+    async function setErrorReportData(index){
+        setErrorReportD(true)
+        setErrorReportDIndex(index)
     }
 
     if(currentTab === "Upload IsoFiles"){
@@ -1384,7 +1417,7 @@ const IsoCtrl = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)}/>
+        tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)} setErrorReportData={setErrorReportData.bind(this)}/>
     }if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <ProgressBtn onChange={value => setCurrentTab("Progress")} currentTab = {currentTab}></ProgressBtn>
         modelledBtn = <ModelledBtn onChange={value => setCurrentTab("Modelled")} currentTab = {currentTab}></ModelledBtn>
@@ -1485,6 +1518,12 @@ const IsoCtrl = () => {
                         <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                             >
                             The isometric has been locked! Contact the administrator
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorReportD}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            The line {errorReportDIndex} of the report has an invalid type or progress!
                         </Alert>
                     </Collapse>
                     <h2 className="title__container">

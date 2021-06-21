@@ -53,7 +53,11 @@ export default class UploadEquisModeledPopUp extends Component {
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadEquisModelledReport", options)
                 .then(response => response.json())
-                
+                .then(async json =>{
+                    if(json.invalid){
+                        this.props.setErrorReportData(json.invalid)
+                    }
+                })
             })
         }else{
             let reader = new FileReader();
@@ -69,7 +73,11 @@ export default class UploadEquisModeledPopUp extends Component {
                 console.log(readString(csv).data)
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadEquisModelledReport", options)
                 .then(response => response.json())
-
+                .then(async json =>{
+                    if(json.invalid){
+                        this.props.setErrorReportData(json.invalid)
+                    }
+                })
             }
             reader.readAsText(this.state.file)
         }
@@ -79,8 +87,8 @@ export default class UploadEquisModeledPopUp extends Component {
 
     render() {
         return (
-            <section style={{marginTop:"10px",float:"left"}}>
-                <input type="button"  value="Upload modelled" style={{marginLeft:"10px", height:"150px", width:"150px"}} className="btn btn-bg btn-info"  onClick={() => this.openModal()} />
+            <section style={{float:"left"}}>
+                <input type="button"  value="Upload dequis" style={{marginTop:"10px",marginLeft:"10px", height:"150px", width:"150px"}} className="btn btn-bg btn-info"  onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="650" height="180" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="popUp__container" >

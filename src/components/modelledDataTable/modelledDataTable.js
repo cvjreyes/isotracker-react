@@ -62,6 +62,13 @@ class ModelledDataTable extends React.Component{
         var row = null
         for(let i = 0; i < json.rows.length; i++){
             row = {key:i, id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
+            if(row){
+              if(i % 2 === 0){
+                row["color"] = "#fff"
+              }else{
+                row["color"] = "#eee"
+              }
+            }
             rows.push(row)
             }
         
@@ -210,7 +217,7 @@ class ModelledDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true}  columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
+        <Table className="customTable" bordered = {true}  columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
         
