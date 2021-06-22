@@ -127,7 +127,7 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div><Button onClick={handleClickPiping} style={{marginRight:"25px"}}>
+            setProgressButtons(<div><Button onClick={handleClickPiping} style={{marginRight:"25px", marginLeft:"18px"}}>
             <i className="dropdown__text">Piping </i>
         </Button><Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
             <i className="dropdown__text">Instrumentation </i>

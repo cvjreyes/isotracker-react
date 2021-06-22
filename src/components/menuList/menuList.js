@@ -50,7 +50,8 @@ const MenuList = () =>{
     const [totalProgress, setTotalProgress] = useState()
     const [totalProgressWidth, setTotalProgressWidth] = useState()
 
-    const [progressButtons, setProgressButtons] = useState(null)
+    const [progressButtons, setProgressButtons] = useState()
+    const [refresh, setRefresh] = useState(false)
 
     
     useEffect(async ()=>{
@@ -123,13 +124,14 @@ const MenuList = () =>{
                 await setTotalWeight(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)
                 await setTotalProgress(((pipesWeight/totalWeight) * pipesProgress + (equisWeight/totalWeight) * equisProgress + (civilsWeight/totalWeight) * civilsProgress + (instsWeight/totalWeight) * instsProgress + (elecsWeight/totalWeight) * elecsProgress).toFixed(2))
                 await setTotalProgressWidth(totalProgress+"%")
-             
         
     },[])   
 
-    useEffect(async () =>{
+    //((pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * pipesProgress + (equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * equisProgress + (civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * civilsProgress + (instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * instsProgress + (elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * elecsProgress).toFixed(2)
+
+    useEffect(async() =>{
         if(process.env.REACT_APP_PROGRESS === "1"){
-            await setProgressButtons(<div><div className="panel__content__container">
+            setProgressButtons(<div><div className="panel__content__container">
             <div>
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} style={{textDecoration: "none"}}>
                     <h4 style={{backgroundColor: isoIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setIsoIsShown(true)} onMouseLeave={() => setIsoIsShown(false)} ><img src={FileIcon} alt="file" className="panel__icon"/>&nbsp;&nbsp;&nbsp;IsoTracker</h4>
@@ -138,7 +140,7 @@ const MenuList = () =>{
                     </div>
                 </a> 
             </div>
-             </div>
+            </div>
                 <div className="panel__content__container">
             <div>
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/3dprogress"} style={{textDecoration: "none"}}>
@@ -146,7 +148,7 @@ const MenuList = () =>{
                 </a>
                 <div class="progress" style={{height: "25px"}}>
                     <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: ((pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * pipesProgress + (equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * equisProgress + (civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * civilsProgress + (instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * instsProgress + (elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * elecsProgress).toFixed(2)+"%", backgroundColor: "#A0AFD9",textAlign: "center"}}>
-                        <span class="sr-only"></span><strong>{((pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * pipesProgress + (equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * equisProgress + (civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * civilsProgress + (instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * instsProgress + (elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * elecsProgress).toFixed(2)}%</strong>                                         
+                        <span class="sr-only"></span><strong>{(pipesProgress*(pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + equisProgress*(equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + instsProgress*(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + civilsProgress*(civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + elecsProgress*(elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight))).toFixed(2)}%</strong>                                         
                     </div>
                 </div>
             </div>
@@ -213,7 +215,7 @@ const MenuList = () =>{
             </div>
         </div>   </div>)
         }else{
-            await setProgressButtons(<div className="panel__content__container__last">
+            setProgressButtons(<div className="panel__content__container__last">
             <div>
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} style={{textDecoration: "none"}}>
                     <h4 style={{backgroundColor: isoIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setIsoIsShown(true)} onMouseLeave={() => setIsoIsShown(false)} ><img src={FileIcon} alt="file" className="panel__icon"/>&nbsp;&nbsp;&nbsp;IsoTracker</h4>
@@ -224,8 +226,13 @@ const MenuList = () =>{
             </div>
         </div>)
         }
-    },[totalProgressWidth])
+        console.log(totalWeight)
+    },[totalProgressWidth, refresh])
 
+    if(!refresh){
+        setRefresh(true)
+    }
+    
 
     return(
         <div class="panel__container">
