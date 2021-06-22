@@ -66,6 +66,7 @@ const Civil = () => {
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/weight", options)
             .then(response => response.json())
             .then(json => {
+                console.log(json)
                 setWeight(json.weight)
                 setProgress(json.progress)
             }

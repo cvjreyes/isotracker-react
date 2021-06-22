@@ -79,17 +79,17 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
             })    
 
         await this.setState({
-            pipesPercentage: (this.state.pipesWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100).toFixed(2),
-            equisPercentage: (this.state.equisWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100).toFixed(2),
-            instsPercentage: (this.state.instsWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100).toFixed(2),
-            civilsPercentage: (this.state.civilsWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100).toFixed(2),
-            elecsPercentage: (this.state.elecsWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100).toFixed(2)
+            pipesPercentage: (this.state.pipesWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100),
+            equisPercentage: (this.state.equisWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100),
+            instsPercentage: (this.state.instsWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100),
+            civilsPercentage: (this.state.civilsWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100),
+            elecsPercentage: (this.state.elecsWeight/(this.state.pipesWeight + this.state.equisWeight + this.state.instsWeight + this.state.civilsWeight + this.state.elecsWeight)*100)
         })
 
 		await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/gcurve", options)
 		.then(response => response.json())
 		.then(async json=>{
-            console.log(this.state.pipesPercentage)
+            console.log(this.state)
 			let weeks = []
 			for(let i = 0; i < json.rows.length; i++){
                 
