@@ -3,6 +3,7 @@ import ForceClaimPopUp from '../forceClaimPopUp/forceClaimPopUp';
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CancelIso from "../../components/cancelIso/cancelIso"
 import HoldComment from '../../components/holdComment/holdComment';
+import AddUserPopUp from '../addUserPopUp/addUserPopUp';
 
 const ActionBtns = props =>{
     function assignToUser(username){
@@ -138,6 +139,12 @@ const ActionBtns = props =>{
             actionBtn6 = null
             actionBtn7 = null
             actionBtn10 = null
+        }
+        if(props.currentTab === "Users"){
+            actionBtn6 = <AddUserPopUp/>
+            actionBtn7 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}}>Delete user</button>
+            actionBtn10 = null
+            actionBtn11 = null
         }
     }
 

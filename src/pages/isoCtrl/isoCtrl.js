@@ -34,6 +34,7 @@ import ProgressBtn from "../../components/progressBtn/progressBtn"
 import ProgressPlot from "../../components/progressPlot/progressPlot"
 import ModelledBtn from "../../components/modelledBtn/modelledBtn"
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
+import UsersDataTable from "../../components/usersDataTable/usersDataTable"
 
 
 const IsoCtrl = () => {
@@ -105,7 +106,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn, myTrayBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn, myTrayBtn, usersButton
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -1427,6 +1428,15 @@ const IsoCtrl = () => {
         tableContent = <ModelledDataTable  pagination = {pagination}></ModelledDataTable>
     }if(currentRole !== "Review"){
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+    }if(currentRole === "SpecialityLead"){
+        if (currentTab === "Users"){
+            usersButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}} onClick={() => setCurrentTab("Users")}><b>Users</b></button>
+        }else{
+            usersButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Users")}><b>Users</b></button>
+        }
+    }if(currentTab === "Users"){
+ 
+        tableContent = <UsersDataTable pagination = {pagination}/>
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -1456,6 +1466,10 @@ const IsoCtrl = () => {
     if(currentTab === "Modelled"){
         actionText = null
         actionButtons = <button className="btn btn-sm btn-success" style={{marginTop:"40px"}} onClick={()=>downloadModelled()}>Export</button>
+    }
+
+    if(currentTab === "Users"){
+        actionText = null
     }
     
     return (
@@ -1548,6 +1562,7 @@ const IsoCtrl = () => {
                             </td>
                             <td>
                                 {uploadButton}
+                                {usersButton}
                             </td>   
                             <div className="stateTable__container">
                                 
