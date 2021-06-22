@@ -60,7 +60,7 @@ const Login = props =>{
                     secureStorage.setItem("civ_tab", "Estimated")  
                     secureStorage.setItem("elec_tab", "Estimated")  
                     secureStorage.setItem("piping_tab", "Estimated")
-                    history.replace('/'+process.env.REACT_APP_PROJECT+'/isotracker');
+                    history.replace('/'+process.env.REACT_APP_PROJECT+'/home');
                     window.location.reload(false);
                     
                 }
