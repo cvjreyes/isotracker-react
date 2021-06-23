@@ -84,10 +84,12 @@
 .popUp__input{
     margin-top: 10px;
     font-size: 14px;
-    padding-left: 10%;
+    padding-left: 5%;
     padding-right: 10%;
     font-weight: bold;
-    float: left;
+    text-align: left;
+    width: 650px;
+
 }
 
 .popUp__warning__subtitle{
@@ -96,10 +98,8 @@
     background-color: yellow;
 }
 
-.popUp__buttons__container{
+.popUp__buttons__container__users{
     margin-top: 30px;
-    text-align: left;
-    margin-right: 40px;
 }
 
 .dnd__container{
@@ -114,4 +114,34 @@
 .popUp__form{
     padding-left: 25px;
     position: relative;
+}
+
+.popUp__input__text{
+    width: 300px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+.popUp__input__checkbox{
+    transform: scale(1.5);
+}
+
+.popUp__input__checkbox__label{
+    font-size: 16px;
+    margin-left: 8px;
+    margin-right: 20px;
+}
+
+.popUp__input__checkbox__group{
+    margin-top: 10px;
+    font-size: 14px;
+    padding-left: 5%;
+    padding-right: 10%;
+    font-weight: bold;
+    text-align: left;
+    width: 640px;
+    margin-left: 10px;
+    
 }
