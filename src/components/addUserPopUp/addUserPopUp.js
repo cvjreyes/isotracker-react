@@ -100,18 +100,18 @@ export default class AddUserPopUp extends Component {
             <section >
                 <input type="button"  value="Add user" className="btn btn-success"  style={{marginRight:"5px", marginLeft:"5px", width:"110px", fontSize:"14px"}} onClick={() => this.openModal()} />
                 <div>
-                    <Modal visible={this.state.visible} width="650" height="600" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="650" height="530" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="popUp__container" >
                             <center className="popUp__title"><h3>Add a new user</h3></center>
                                 
                         </div>
                         <div className="popUp__input">
-                            <h4 style={{fontWeight:"bold"}}>Username and email</h4>
+                            <h4 style={{fontWeight:"bold"}}>Name and email</h4>
                             
                         </div>
                         
                         <div className="popUp__input">
-                            <input type="text" placeholder="Username" id="username" className="popUp__input__text" value={this.state.username} onChange={(e) => this.setState({username: e.target.value})}  style={{width:"300px"}}></input>
+                            <input type="text" placeholder="Name" id="username" className="popUp__input__text" value={this.state.username} onChange={(e) => this.setState({username: e.target.value})}  style={{width:"300px"}}></input>
                         </div>
                         <div className="popUp__input">
                             <input type="text" placeholder="Email" id="email"className="popUp__input__text" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})} ></input>
@@ -142,14 +142,7 @@ export default class AddUserPopUp extends Component {
                                     <input type="checkbox" name="ISS" value="ISS" className="popUp__input__checkbox" onChange={(e) => this.setState({iss: e.target.checked})} checked={this.state.iss}/>  
                                     <label for="ISS" className="popUp__input__checkbox__label">Issuer</label>
                                 </div>
-                                <div className="checkbox">
-                                    <input type="checkbox" name="PRO" value="PRO" className="popUp__input__checkbox" onChange={(e) => this.setState({pro: e.target.checked})} checked={this.state.pro}/>  
-                                    <label for="PRO" className="popUp__input__checkbox__label">Process</label>
-                                </div>
-                                <div className="checkbox">
-                                    <input type="checkbox" name="INS" value="INS" className="popUp__input__checkbox" onChange={(e) => this.setState({ins: e.target.checked})} checked={this.state.ins}/>  
-                                    <label for="INS" className="popUp__input__checkbox__label">Instrument</label>
-                                </div>
+                                
                                 <div className="checkbox">
                                     <input type="checkbox" name="REV" value="REV" className="popUp__input__checkbox" onChange={(e) => this.setState({rev: e.target.checked})} checked={this.state.rev}/>  
                                     <label for="REV" className="popUp__input__checkbox__label">Review</label>
@@ -171,6 +164,14 @@ export default class AddUserPopUp extends Component {
                                 <div className="checkbox">
                                     <input type="checkbox" name="role" value="LOS" className="popUp__input__checkbox" onChange={(e) => this.setState({los: e.target.checked})} checked={this.state.los}/>  
                                     <label for="LOS" className="popUp__input__checkbox__label">Speciality Lead</label>
+                                </div>
+                                <div className="checkbox">
+                                    <input type="checkbox" name="PRO" value="PRO" className="popUp__input__checkbox" onChange={(e) => this.setState({pro: e.target.checked})} checked={this.state.pro}/>  
+                                    <label for="PRO" className="popUp__input__checkbox__label">Process</label>
+                                </div>
+                                <div className="checkbox">
+                                    <input type="checkbox" name="INS" value="INS" className="popUp__input__checkbox" onChange={(e) => this.setState({ins: e.target.checked})} checked={this.state.ins}/>  
+                                    <label for="INS" className="popUp__input__checkbox__label">Instrument</label>
                                 </div>
                             </div>
                             
