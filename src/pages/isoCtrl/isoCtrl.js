@@ -1394,6 +1394,10 @@ const IsoCtrl = () => {
         setErrorReportDIndex(index)
     }
 
+    async function addUser(username, email, roles){
+        console.log(username, email, roles)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
@@ -1431,6 +1435,7 @@ const IsoCtrl = () => {
     }if(currentRole === "SpecialityLead"){
         if (currentTab === "Users"){
             usersButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}} onClick={() => setCurrentTab("Users")}><b>Users</b></button>
+            secureStorage.setItem("tab", "Users")
         }else{
             usersButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Users")}><b>Users</b></button>
         }
@@ -1458,10 +1463,10 @@ const IsoCtrl = () => {
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab != "Progress" && currentTab !== "Modelled"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
     if(currentTab === "Modelled"){
         actionText = null
