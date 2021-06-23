@@ -288,7 +288,6 @@ class HistoryDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
         },
-        defaultSortOrder: 'descend'
       },
       {
         title: <div className="dataTable__header__text">From</div>,
@@ -332,7 +331,7 @@ class HistoryDataTable extends React.Component{
     if (this.state.data.length === 0){
       totalElements = null;
     }else{
-      totalElements = (<div style={{position: "absolute", bottom: 80, left:0}}>
+      totalElements = (<div style={{position: "absolute", bottom: 25, left:0}}>
       <b>Total elements: {this.state.data.length}</b>
      </div>);
     }
