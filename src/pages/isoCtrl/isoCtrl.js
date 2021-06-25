@@ -1137,6 +1137,7 @@ const IsoCtrl = () => {
 
     async function setUploading(active){
         setErrorReports(false)
+        setErrorReportD(false)
         setLoading(active)
         if(!active){
             setTransactionSuccess(true)
