@@ -5,6 +5,7 @@ import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import './usersDataTable.css'
 import { Link } from 'react-router-dom';
+import ManageRolesPopUp from '../manageRolesPopUp/manageRolesPopUp';
 
 
 class UsersDataTable extends React.Component{
@@ -17,84 +18,94 @@ class UsersDataTable extends React.Component{
     selectedRows: [],
     selectedRowsKeys: [],
     dataAux : [],
-    update: false
+    update: this.props.updateData,
+    users: [],
+    mounted: false
   };
   
   
 
   async componentDidMount(){
-
+    console.log("mount")
     const options = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        },
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json"
+      },
 
-      }
-
-      const rolesBtnsDict = {"Design": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#00FF7F"}}>DES</button>, 
-      "DesignLead": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"lightgreen"}}>LDE</button>, 
-      "Stress": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#00BFFF"}}>STR</button>, 
-      "StressLead": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#87CEEB"}}>LST</button>, 
-      "Supports": <button className="btn"  disabled style={{color: "white",fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#1E90FF"}}>SUP</button>, 
-      "SupportsLead": <button className="btn"  disabled style={{color: "white",fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#6495ED"}}>LSP</button>, 
-      "Materials": <button className="btn"  disabled style={{color:"white", fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#6A5ACD"}}>MAT</button>, 
-      "Issuer": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FFC0CB"}}>ISS</button>, 
-      "SpecialityLead": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"	#FFA500"}}>LOS</button>, 
-      "Process": <button className="btn"  disabled style={{color: "white",fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FF4500"}}>PRO</button>, 
-      "Instrument": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FFD700"}}>INS</button>, 
-      "Review": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"white"}}>REV</button>}
-      
-
-      await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/users", options)
-          .then(response => response.json())
-          .then(async json => {
-            let rows = []
-
-            for(let i = 0; i < json.length; i++){
-                let row = {username: json[i].name, email: json[i].email, roles: null}
-                
-                const body = {
-                    user: json[i].email,
-                }
-                const options = {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(body)
-                }
-
-                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
-                    .then(response => response.json())
-                    .then(json => {
-                        let roles = [rolesBtnsDict[json.roles[0]]]
-                            for(let j = 1; j < json.roles.length; j++){
-                                roles.push(rolesBtnsDict[json.roles[j]])
-                            }
-
-                        row["roles"] = <div> {roles} </div>
-                        if(i % 2 === 0){
-                            row["color"] = "#fff"
-                        }else{
-                            row["color"] = "#eee"
-                        }
-                        let currentData = this.state.dataAux
-                        currentData.push(row)
-                        this.setState({dataAux: currentData})
-                       
-                    })
-                
-            }
-        })
-        await this.setState({data: this.state.dataAux})
-        await this.setState({dataAux: []})
   }
 
+
+    const rolesBtnsDict = {"Design": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#00FF7F"}}>DES</button>, 
+    "DesignLead": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"lightgreen"}}>LDE</button>, 
+    "Stress": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#00BFFF"}}>STR</button>, 
+    "StressLead": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#87CEEB"}}>LST</button>, 
+    "Supports": <button className="btn"  disabled style={{color: "white",fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#1E90FF"}}>SUP</button>, 
+    "SupportsLead": <button className="btn"  disabled style={{color: "white",fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#6495ED"}}>LSP</button>, 
+    "Materials": <button className="btn"  disabled style={{color:"white", fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#6A5ACD"}}>MAT</button>, 
+    "Issuer": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FFC0CB"}}>ISS</button>, 
+    "SpecialityLead": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"	#FFA500"}}>LOS</button>, 
+    "Process": <button className="btn"  disabled style={{color: "white",fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FF4500"}}>PRO</button>, 
+    "Instrument": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FFD700"}}>INS</button>, 
+    "Review": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"white"}}>REV</button>}
+    
+
+    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/users", options)
+        .then(response => response.json())
+        .then(async json => {
+          let rows = []
+          for(let i = 0; i < json.length; i++){
+              let row = {user_id: json[i].id, username: json[i].name, email: json[i].email, roles: null, actions: null}
+              
+              let users = this.state.users
+              users.push(json[i].email)
+              this.setState({
+                users: users
+              })
+              const body = {
+                  user: json[i].email,
+                  id: json[i].id
+              }
+              const options = {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(body)
+              }
+
+              await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
+                  .then(response => response.json())
+                  .then(async json => {
+                      row["actions"] = <div style={{display:"flex"}}><button className="btn btn-danger" onClick={() => this.props.deleteUser(row.user_id)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"110px", marginRight: "5px", float:"left"}}>DELETE</button><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>                  
+                      let roles = [rolesBtnsDict[json.roles[0]]]
+                          for(let j = 1; j < json.roles.length; j++){
+                              roles.push(rolesBtnsDict[json.roles[j]])
+                          }
+
+                      row["roles"] = <div> {roles} </div>
+                      if(i % 2 === 0){
+                          row["color"] = "#fff"
+                      }else{
+                          row["color"] = "#eee"
+                      }
+                      
+                      let currentData = this.state.dataAux
+                      currentData.push(row)
+                      await this.setState({dataAux: currentData})
+                  })
+              
+          }
+      })
+      await this.setState({data: this.state.dataAux})
+      await this.setState({mounted: true})
+}
+  
+
+
   async componentDidUpdate(prevProps, prevState){
-   
-    if(this.state.update){
-        console.log(prevProps, this.props)
+
+    if(prevProps.updateData === false && this.props.updateData === true || prevProps.updateData === true && this.props.updateData === false && this.state.mounted === true){
         const options = {
             method: "GET",
             headers: {
@@ -116,17 +127,21 @@ class UsersDataTable extends React.Component{
           "Instrument": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FFD700"}}>INS</button>, 
           "Review": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"white"}}>REV</button>}
           
-    
+          await this.setState({dataAux: []})
+
           await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/users", options)
               .then(response => response.json())
               .then(async json => {
+                const dataLength = json.length
+                console.log("Hay ", dataLength)
                 let rows = []
-    
                 for(let i = 0; i < json.length; i++){
-                    let row = {username: json[i].name, email: json[i].email, roles: null}
+                    
+                    let row = {user_id: json[i].id, username: json[i].name, email: json[i].email, roles: null, actions: null}
                     
                     const body = {
                         user: json[i].email,
+                        id: json[i].id
                     }
                     const options = {
                         method: "POST",
@@ -138,11 +153,13 @@ class UsersDataTable extends React.Component{
     
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
                         .then(response => response.json())
-                        .then(json => {
+                        .then(async json => {
+
+                            row["actions"] = <div style={{display:"flex"}}><button className="btn btn-danger" onClick={() => this.props.deleteUser(row.user_id)} style={{fontSize:"12px", width:"110px", marginRight: "5px", float:"left"}}>DELETE</button><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>
                             let roles = [rolesBtnsDict[json.roles[0]]]
-                                for(let j = 1; j < json.roles.length; j++){
-                                    roles.push(rolesBtnsDict[json.roles[j]])
-                                }
+                            for(let j = 1; j < json.roles.length; j++){
+                                roles.push(rolesBtnsDict[json.roles[j]])
+                            }
     
                             row["roles"] = <div> {roles} </div>
                             if(i % 2 === 0){
@@ -150,15 +167,26 @@ class UsersDataTable extends React.Component{
                             }else{
                                 row["color"] = "#eee"
                             }
+
+                              
                             let currentData = this.state.dataAux
-                            currentData.push(row)
-                            this.setState({dataAux: currentData})
+                              
+                              await currentData.push(row)
+                              await this.setState({dataAux: currentData})
+                            
+                            
+                            
+                                                   
                         })
                     
                 }
             })
-            this.setState({data: this.state.dataAux})
+            await this.setState({data: this.state.dataAux})
     }
+  }
+
+  submitRoles(id, roles){
+    this.props.submitRoles(id, roles)
   }
 
   
@@ -308,6 +336,13 @@ class UsersDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.roles.localeCompare(b.roles)},
         },
+      },
+      {
+        title: <div className="dataTable__header__text">Actions</div>,
+        dataIndex: 'actions',
+        key: 'actions',
+        width: '250px',
+        ...this.getColumnSearchProps('actions'),
       }
     ];
 

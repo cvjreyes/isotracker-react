@@ -145,7 +145,7 @@ const ActionBtns = props =>{
         }
         if(props.currentTab === "Users"){
             actionBtn6 = <AddUserPopUp addUser={addUser.bind(this)}/>
-            actionBtn7 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}}>Delete user</button>
+            actionBtn7 = null
             actionBtn10 = null
             actionBtn11 = null
         }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import './addUserPopUp.css'
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 export default class AddUserPopUp extends Component {
     constructor(props) {
@@ -22,6 +24,8 @@ export default class AddUserPopUp extends Component {
             pro : false,
             ins : false,
             rev: false,
+            blankFields: false,
+            selected: "@technipenergies.com"
         }
         
     }
@@ -50,49 +54,68 @@ export default class AddUserPopUp extends Component {
             pro : false,
             ins : false,
             rev: false,
+            blankFields: false,
+            selected: "@technipenergies.com"
         });
 
     }
 
     addUser(){
-        const username = this.state.username
-        const email = this.state.email
-        
-        let roles = []
-
-        if(this.state.des){
-            roles.push("des")
-        }if(this.state.lde){
-            roles.push("lde")
-        }if(this.state.str){
-            roles.push("str")
-        }if(this.state.sup){
-            roles.push("sup")
-        }if(this.state.lsp){
-            roles.push("lsp")
-        }if(this.state.lst){
-            roles.push("lst")
-        }if(this.state.mat){
-            roles.push("mat")
-        }if(this.state.iss){
-            roles.push("iss")
-        }if(this.state.los){
-            roles.push("los")
-        }if(this.state.pro){
-            roles.push("pro")
-        }if(this.state.ins){
-            roles.push("ins")
-        }if(this.state.rev){
-            roles.push("rev")
+        let username = this.state.email.replace("-", " ")
+        username = username.replace(".", " ")
+        let splitStr = username.toLowerCase().split(' ');
+        for(let i = 0; i < splitStr.length; i++){
+            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1)
         }
+        username = splitStr.join(' ')
+        const email = this.state.email + this.state.selected
+        console.log(this.state.selected)
+        if(username === "" || username === null){
+            this.setState({
+                blankFields: true
+            })
+        }else{
+            let roles = []
 
-        this.props.addUser(username, email, roles)
-        this.closeModal()
+            if(this.state.des){
+                roles.push("des")
+            }if(this.state.lde){
+                roles.push("lde")
+            }if(this.state.str){
+                roles.push("str")
+            }if(this.state.sup){
+                roles.push("sup")
+            }if(this.state.lsp){
+                roles.push("lsp")
+            }if(this.state.lst){
+                roles.push("lst")
+            }if(this.state.mat){
+                roles.push("mat")
+            }if(this.state.iss){
+                roles.push("iss")
+            }if(this.state.los){
+                roles.push("los")
+            }if(this.state.pro){
+                roles.push("pro")
+            }if(this.state.ins){
+                roles.push("ins")
+            }if(this.state.rev){
+                roles.push("rev")
+            }
+            
+            console.log(username, email, roles)
+            this.props.addUser(username, email, roles)
+            this.closeModal()
+        }   
 
     }
 
     handleChangeUsername(event){
         this.setState({username: event.target.value});
+    }
+
+    onChange(event){
+        this.setState({selected: event.target.value});
     }
 
     render() {
@@ -101,20 +124,28 @@ export default class AddUserPopUp extends Component {
                 <input type="button"  value="Add user" className="btn btn-success"  style={{marginRight:"5px", marginLeft:"5px", width:"110px", fontSize:"14px"}} onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="650" height="530" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Collapse in={this.state.blankFields}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"-10%", transform: "translate(-50%, -50%)",zIndex:"3"}} severity="warning"
+                            >
+                            Username or email missing!
+                        </Alert>
+                    </Collapse>
                     <div className="popUp__container" >
                             <center className="popUp__title"><h3>Add a new user</h3></center>
                                 
                         </div>
                         <div className="popUp__input">
-                            <h4 style={{fontWeight:"bold"}}>Name and email</h4>
+                            <h4 style={{fontWeight:"bold"}}>Email</h4>
                             
                         </div>
                         
                         <div className="popUp__input">
-                            <input type="text" placeholder="Name" id="username" className="popUp__input__text" value={this.state.username} onChange={(e) => this.setState({username: e.target.value})}  style={{width:"300px"}}></input>
-                        </div>
-                        <div className="popUp__input">
                             <input type="text" placeholder="Email" id="email"className="popUp__input__text" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})} ></input>
+                            <select className="popUp_input_select" name="select" onChange={(e) => this.setState({selected: e.target.value})} value={this.state.selected}>
+                                <option value="@technipenergies.com" selected>@technipenergies.com</option>
+                                <option value="@external.technipenergies.com">@external.technipenergies.com</option>
+                                <option value="@tipiel.com.co">@tipiel.com.co</option>
+                            </select>
                         </div>
                         <div className="popUp__input">
                             <h4 style={{fontWeight:"bold"}}>Roles</h4>
@@ -171,7 +202,7 @@ export default class AddUserPopUp extends Component {
                                 </div>
                                 <div className="checkbox">
                                     <input type="checkbox" name="INS" value="INS" className="popUp__input__checkbox" onChange={(e) => this.setState({ins: e.target.checked})} checked={this.state.ins}/>  
-                                    <label for="INS" className="popUp__input__checkbox__label">Instrument</label>
+                                    <label for="INS" className="popUp__input__checkbox__label">Instrumentation</label>
                                 </div>
                             </div>
                             
