@@ -4,7 +4,7 @@ import '../uploadReportPopUp/uploadReportPopUp.css'
 import readXlsxFile from 'read-excel-file'
 import { readString } from 'react-papaparse'
 
-export default class UploadEquisModeledPopUp extends Component {
+export default class UploadEquisModelledPopUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,7 +61,8 @@ export default class UploadEquisModeledPopUp extends Component {
             })
         }else{
             let reader = new FileReader();
-            reader.onload = async function (e){
+            reader.onload = async() =>{
+                
                 const csv = reader.result
                 const options = {
                     method: "POST",
@@ -70,7 +71,6 @@ export default class UploadEquisModeledPopUp extends Component {
                     },
                     body: JSON.stringify(readString(csv).data)
                 }
-                console.log(readString(csv).data)
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadEquisModelledReport", options)
                 .then(response => response.json())
                 .then(async json =>{
@@ -83,6 +83,10 @@ export default class UploadEquisModeledPopUp extends Component {
         }
         this.closeModal()
         this.props.setUploading(false)
+    }
+
+    sendError(){
+        this.props.setErrorReportData(1)
     }
 
     render() {

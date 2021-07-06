@@ -61,7 +61,7 @@ export default class UploadCivilModelledPopUp extends Component {
             })
         }else{
             let reader = new FileReader();
-            reader.onload = async function (e){
+            reader.onload = async() =>{
                 const csv = reader.result
                 const options = {
                     method: "POST",

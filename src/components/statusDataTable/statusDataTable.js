@@ -74,7 +74,6 @@ class StatusDataTable extends React.Component{
               }
                           
               this.setState({data : rows, role: this.props.role});
-
               }
           )
           .catch(error => {
@@ -120,13 +119,14 @@ class StatusDataTable extends React.Component{
               }
                           
               this.setState({data : rows, role: this.props.role});
-
+              
               }
           )
           .catch(error => {
               console.log(error);
           })
     }
+    
   }
 
   async componentDidUpdate(prevProps, prevState){
@@ -232,7 +232,7 @@ class StatusDataTable extends React.Component{
                 }
                             
                 this.setState({data : rows, role: this.props.role});
-  
+                
                 }
             )
             .catch(error => {
