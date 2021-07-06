@@ -3,6 +3,7 @@ import ForceClaimPopUp from '../forceClaimPopUp/forceClaimPopUp';
 import ActionExtra from "../../components/actionExtra/actionExtra"
 import CancelIso from "../../components/cancelIso/cancelIso"
 import HoldComment from '../../components/holdComment/holdComment';
+import AddUserPopUp from '../addUserPopUp/addUserPopUp';
 
 const ActionBtns = props =>{
     function assignToUser(username){
@@ -21,6 +22,9 @@ const ActionBtns = props =>{
         props.transaction("On hold",comments)
     }
 
+    function addUser(username, email, roles){
+        props.addUser(username, email, roles)
+    }
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
@@ -138,6 +142,12 @@ const ActionBtns = props =>{
             actionBtn6 = null
             actionBtn7 = null
             actionBtn10 = null
+        }
+        if(props.currentTab === "Users"){
+            actionBtn6 = <AddUserPopUp addUser={addUser.bind(this)}/>
+            actionBtn7 = null
+            actionBtn10 = null
+            actionBtn11 = null
         }
     }
 

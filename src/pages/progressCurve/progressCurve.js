@@ -1,13 +1,7 @@
 import "./progressCurve.css"
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
-import RoleDropDown from '../../components/roleDropDown/roleDropDown'
-import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
 import SelectPag from "../../components/selectPag/selectPag"
-import ProgressPlotCivils from "../../components/progressPlotCivils/progressPlotCivils"
-import CivilEstimatedDataTable from "../../components/civilEstimatedDataTable/civilEstimatedDataTable"
-import CivilModelledDataTable from "../../components/civilModelledDataTable/civilModelledDataTable"
-import CivilTypesDataTable from "../../components/civilTypesDataTable/civilTypesDataTable"
 import ProgressPlotCurve from "../../components/progressPlotCurve/progressPlotCurve"
 
 const Civil = () => {

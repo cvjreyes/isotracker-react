@@ -34,6 +34,7 @@ import ProgressBtn from "../../components/progressBtn/progressBtn"
 import ProgressPlot from "../../components/progressPlot/progressPlot"
 import ModelledBtn from "../../components/modelledBtn/modelledBtn"
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
+import UsersDataTable from "../../components/usersDataTable/usersDataTable"
 
 
 const IsoCtrl = () => {
@@ -63,6 +64,8 @@ const IsoCtrl = () => {
     const [blocked, setBlocked] = useState(false);
     const [errorReportD, setErrorReportD] = useState(false)
     const [errorReportDIndex, setErrorReportDIndex] = useState(0);
+    const [errorDeleteUser, setErrorDeleteUser] = useState(false);
+    const [errorRoless, setErrorRoles] = useState(false)
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -105,7 +108,7 @@ const IsoCtrl = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn, myTrayBtn
+    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn, myTrayBtn, usersButton
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -153,6 +156,8 @@ const IsoCtrl = () => {
             setWarningSelected(false)
             setBlocked(false)
             setErrorReportD(false)
+            setErrorDeleteUser(false)
+            setErrorRoles(false)
     },[currentRole]);
 
     useEffect(()=>{
@@ -167,6 +172,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
     }, [currentTab])
 
     const getProgress = () =>{
@@ -184,6 +191,8 @@ const IsoCtrl = () => {
         setErrorPI(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -260,6 +269,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -296,6 +307,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -379,6 +392,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         localStorage.setItem("update", true)
         const body ={
             user : currentUser,
@@ -411,6 +426,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -447,6 +464,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setErrorReportD(false)
         setBlocked(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -481,6 +500,8 @@ const IsoCtrl = () => {
             setLoading(true)
             setErrorReportD(false)
             setBlocked(false)
+            setErrorDeleteUser(false)
+            setErrorRoles(false)
             if(destiny === "Design"){
                 if(comment.length > 1){
                     setComment(" ")
@@ -673,6 +694,8 @@ const IsoCtrl = () => {
         setErrorUnclaimR(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -720,6 +743,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -770,6 +795,8 @@ const IsoCtrl = () => {
         setErrorPI(false)
         setWarningSelected(false)
         setBlocked(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -821,6 +848,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -852,6 +881,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         localStorage.setItem("update", true)
             
             const body ={
@@ -883,6 +914,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         localStorage.setItem("update", true)
 
         const body ={
@@ -914,6 +947,8 @@ const IsoCtrl = () => {
         setLoading(true)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         localStorage.setItem("update", true)
         const body ={
             file: fileName,
@@ -947,6 +982,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1157,6 +1194,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1201,6 +1240,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setErrorReportD(false)
         setBlocked(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1244,6 +1285,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1279,6 +1322,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setErrorReportD(false)
         setBlocked(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1336,6 +1381,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorReportD(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         localStorage.setItem("update", true)
 
         const body = {
@@ -1366,6 +1413,8 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setErrorReportD(false)
         setBlocked(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
         localStorage.setItem("update", true)
 
         const body = {
@@ -1392,6 +1441,119 @@ const IsoCtrl = () => {
     async function setErrorReportData(index){
         setErrorReportD(true)
         setErrorReportDIndex(index)
+    }
+
+    async function addUser(username, email, roles){
+
+        setErrorUnclaimR(false)
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setErrorUnclaim(false)
+        setWarningSelected(false)
+        setErrorReportD(false)
+        setBlocked(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
+        localStorage.setItem("update", true)
+
+        const body = {
+            username: username,
+            email: email,
+            roles: roles
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/createUser", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                setTransactionSuccess(true)
+            }
+        })
+        setUpdateData(!updateData)
+        
+    }
+
+    async function deleteUser(id){
+
+        setErrorUnclaimR(false)
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setErrorUnclaim(false)
+        setWarningSelected(false)
+        setErrorReportD(false)
+        setBlocked(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
+        localStorage.setItem("update", true)
+
+
+        const options = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/user/"+id, options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.error){
+                setErrorDeleteUser(true)
+            }else{
+                setTransactionSuccess(true)
+            }
+        })
+
+       setUpdateData(!updateData)
+
+    }
+
+    async function submitRoles(id, roles){
+        setErrorUnclaimR(false)
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setErrorUnclaim(false)
+        setWarningSelected(false)
+        setErrorReportD(false)
+        setBlocked(false)
+        setErrorDeleteUser(false)
+        setErrorRoles(false)
+        localStorage.setItem("update", true)
+
+        const body = {
+            id: id,
+            roles: roles
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/users/manageRoles", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                setTransactionSuccess(true)
+            }else{
+                setErrorRoles(true)
+            }
+        })
+        setUpdateData(!updateData)
     }
 
     if(currentTab === "Upload IsoFiles"){
@@ -1428,6 +1590,25 @@ const IsoCtrl = () => {
         tableContent = <ModelledDataTable  pagination = {pagination}></ModelledDataTable>
     }if(currentRole !== "Review"){
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+    }if(currentRole === "SpecialityLead"){
+        if (currentTab === "Users"){
+            usersButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}} onClick={() => setCurrentTab("Users")}><b>Users</b></button>
+            secureStorage.setItem("tab", "Users")
+        }else{
+            usersButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Users")}><b>Users</b></button>
+        }
+    }if(currentTab === "Users"){
+ 
+        tableContent = <UsersDataTable pagination = {pagination} updateData={updateData} deleteUser={deleteUser.bind(this)} submitRoles={submitRoles.bind(this)}/>
+        if (pagination === 8){
+            dataTableHeight = "650px"
+        }if(pagination === 25){
+            dataTableHeight = "1500px"
+        }if(pagination === 50){
+            dataTableHeight = "2720px"
+        }if(pagination === 100){
+            dataTableHeight = "5200px"
+        }
     }
 
     if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
@@ -1449,14 +1630,18 @@ const IsoCtrl = () => {
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab != "Progress" && currentTab !== "Modelled"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
     if(currentTab === "Modelled"){
         actionText = null
         actionButtons = <button className="btn btn-sm btn-success" style={{marginTop:"40px"}} onClick={()=>downloadModelled()}>Export</button>
+    }
+
+    if(currentTab === "Users"){
+        actionText = null
     }
     
     return (
@@ -1527,6 +1712,12 @@ const IsoCtrl = () => {
                             The line {errorReportDIndex} of the report has an invalid type or progress!
                         </Alert>
                     </Collapse>
+                    <Collapse in={errorDeleteUser}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            This user has claimed isometrics and can't be deleted!
+                        </Alert>
+                    </Collapse>
                     <h2 className="title__container">
                         <div className="roleSelector__container">
                             <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
@@ -1549,6 +1740,7 @@ const IsoCtrl = () => {
                             </td>
                             <td>
                                 {uploadButton}
+                                {usersButton}
                             </td>   
                             <div className="stateTable__container">
                                 
