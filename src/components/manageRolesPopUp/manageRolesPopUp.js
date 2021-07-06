@@ -276,7 +276,7 @@ export default class ManageRolesPopUp extends Component {
     render() {
         return (
             <section >
-                <input type="button"  value="MANAGE ROLES" className="btn btn-info"  style={{marginRight:"5px", marginLeft:"5px", width:"110px", fontSize:"12px", float:"right"}} onClick={() => this.openModal()} />
+                <input type="button"  value="MANAGE" className="btn"  style={{padding:"2px 5px 2px 5px", marginRight:"5px", marginLeft:"5px", width:"70px", fontSize:"12px", float:"right", backgroundColor:"#17A2B8", color:"white"}} onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <Collapse in={this.state.blankFields}>
