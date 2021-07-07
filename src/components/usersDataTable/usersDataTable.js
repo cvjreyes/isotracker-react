@@ -155,8 +155,8 @@ class UsersDataTable extends React.Component{
                         .then(response => response.json())
                         .then(async json => {
 
-                            row["actions"] = <div style={{display:"flex"}}><button className="btn btn-danger" onClick={() => this.props.deleteUser(row.user_id)} style={{fontSize:"11px", width:"70px", marginRight: "5px", float:"left"}}>DELETE</button><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>
-                            let roles = [rolesBtnsDict[json.roles[0]]]
+                          row["actions"] = <div style={{display:"flex"}}><button className="btn" onClick={() => this.props.deleteUser(row.user_id)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#DC143C", color:"white"}}>DELETE</button><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>                  
+                          let roles = [rolesBtnsDict[json.roles[0]]]
                             for(let j = 1; j < json.roles.length; j++){
                                 roles.push(rolesBtnsDict[json.roles[j]])
                             }
