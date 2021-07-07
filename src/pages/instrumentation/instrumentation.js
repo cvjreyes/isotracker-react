@@ -8,7 +8,9 @@ import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavB
 import SelectPag from "../../components/selectPag/selectPag"
 import ProgressPlotInstrumentation from "../../components/progressPlotInstrumentation/progressPlotInstrumentation"
 import InstrumentationTypesDataTable from "../../components/instrumentationTypesDataTable/instrumentationTypesDataTable"
-
+import DownloadIcon from "../../assets/images/downloadicon.png"
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 const Instrumentation = () => {
 
@@ -128,17 +130,53 @@ const Instrumentation = () => {
 
     var dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
-
+    let downloadBtn = null
 
     if(currentTab === "Estimated"){
         table = <InstrumentationEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
+        downloadBtn = <div>
+        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", marginTop:"27px", marginLeft:"20px", float:"left"}} onClick={()=>downloadInstrumentationModelled()}/>
+    </div> 
         table = <InstrumentationModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotInstrumentation/>
         pageSelector = null
     }else if(currentTab === "Types"){
         table = <InstrumentationTypesDataTable/>
+    }
+
+    async function downloadInstrumentationModelled(){
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadInstrumentationModelled/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["AREA", "TAG", "TYPE", "WEIGHT", "STATUS", "PROGRESS"]
+            exportToExcel(JSON.parse(json), "Equipment modelled", headers)
+        })
+    }
+
+    const exportToExcel = (apiData, fileName, headers) => {
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
+        const fileExtension = ".xlsx";
+
+        let wscols = []
+        for(let i = 0; i < headers.length; i++){
+            wscols.push({width:35})
+        }
+
+        const ws = XLSX.utils.json_to_sheet(apiData);   
+        ws["!cols"] = wscols
+        for(let i = 0; i < headers.length; i++){
+            ws[header_cells[i]].v = headers[i]
+        }
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], { type: fileType });
+        FileSaver.saveAs(data, fileName + fileExtension);
+
     }
 
 
@@ -161,6 +199,7 @@ const Instrumentation = () => {
                 </center>
                 <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
                   {pageSelector}        
+                  {downloadBtn}
                 </div>
                 <div style={{display:"inline"}}>
                     <div className="equipTable__container">

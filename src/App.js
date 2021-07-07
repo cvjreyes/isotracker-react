@@ -13,6 +13,7 @@ import Electrical from './pages/electrical/electrical';
 import Home from './pages/home/home'
 import Piping from './pages/piping/piping';
 import ProgressCurve from './pages/progressCurve/progressCurve';
+import Navis from './pages/navis/navis';
 require('dotenv').config();
 
 
@@ -34,6 +35,7 @@ function App() {
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/electrical"} component={Electrical}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/piping"} component={Piping}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/3dprogress"} component={ProgressCurve}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/navis"} component={Navis}></Route>
         </Switch>
       </Router>
   

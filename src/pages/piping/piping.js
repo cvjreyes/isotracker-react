@@ -8,6 +8,9 @@ import PipingEstimatedDataTable from "../../components/pipingEstimatedDataTable/
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
 import ProgressPlotPiping from "../../components/progressPlotPiping/progressPlotPiping"
 import PipingTypesDataTable from "../../components/pipingTypesDataTable/pipingTypesDataTable"
+import DownloadIcon from "../../assets/images/downloadicon.png"
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 const Piping = () => {
 
@@ -127,11 +130,14 @@ const Piping = () => {
 
     var dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
-
+    let downloadBtn = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
+        downloadBtn = <div>
+        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", marginTop:"27px", marginLeft:"20px", float:"left"}} onClick={()=>downloadModelled()}/>
+    </div>  
         table = <ModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotPiping/>
@@ -139,6 +145,40 @@ const Piping = () => {
     }else if(currentTab === "Types"){
         table = <PipingTypesDataTable/>
     }
+
+    async function downloadModelled(){
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadModelled/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["TAG", "ISO_ID", "TYPE"]
+            exportToExcel(JSON.parse(json), "Piping modelled", headers)
+        })
+    }
+
+    const exportToExcel = (apiData, fileName, headers) => {
+        const fileType =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
+        const fileExtension = ".xlsx";
+
+        let wscols = []
+        for(let i = 0; i < headers.length; i++){
+            wscols.push({width:35})
+        }
+
+        const ws = XLSX.utils.json_to_sheet(apiData);   
+        ws["!cols"] = wscols
+        for(let i = 0; i < headers.length; i++){
+            ws[header_cells[i]].v = headers[i]
+        }
+        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], { type: fileType });
+        FileSaver.saveAs(data, fileName + fileExtension);
+
+    }
+
 
 
     return(
@@ -159,7 +199,8 @@ const Piping = () => {
                     <h3 className="iso__subtitle">{currentTab}</h3>
                 </center>
                 <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
-                  {pageSelector}        
+                  {pageSelector}  
+                  {downloadBtn}    
                 </div>
                 <div style={{display:"inline"}}>
                     <div className="equipTable__container">
