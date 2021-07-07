@@ -507,6 +507,8 @@ class DataTable extends React.Component{
       record.id.props.children
         ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
         : ''
+      ) : this.state.searchedColumn === "actions" ? (
+        record.actions.props.children[1].props.children.toString().toLowerCase().includes(value.toLowerCase())
       ) : (
         record[dataIndex]
           ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
@@ -520,14 +522,10 @@ class DataTable extends React.Component{
     },
     render: text => 
     text.props && text.type !== "div" ? (
+      
       <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
     ) : this.state.searchedColumn === dataIndex ? (
-      <Highlighter
-        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-        searchWords={[this.state.searchText]}
-        autoEscape
-        textToHighlight={text ? text : ''}
-      />
+      text
     ) : (
       text
     ),
@@ -660,9 +658,7 @@ class DataTable extends React.Component{
         dataIndex: 'actions',
         key: 'actions',
         ...this.getColumnSearchProps('actions'),
-        sorter: {
-          compare: (a, b) => a.actions.localeCompare(b.actions),
-        },
+
       },
     ];
 

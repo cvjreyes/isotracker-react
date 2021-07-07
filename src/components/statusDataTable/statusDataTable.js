@@ -328,17 +328,12 @@ class StatusDataTable extends React.Component{
         setTimeout(() => this.searchInput.select(), 100);
       }
     },
-    render: text =>
+    render:  text => 
     text != null ? (
     text.props && text.type !== "div" ? (
       <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
     ) : this.state.searchedColumn === dataIndex ? (
-      <Highlighter
-        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-        searchWords={[this.state.searchText]}
-        autoEscape
-        textToHighlight={text ? text : ''}
-      />
+      text
     ) : (
       text
     )
