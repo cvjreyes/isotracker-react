@@ -196,6 +196,7 @@ class NavisTable extends React.Component{
         sorter:{
           compare: (a, b) => a.object.localeCompare(b.object),
         },
+        align: "center"
       },
       {
         title: <center className="dataTable__header__text">Attribute</center>,
@@ -212,11 +213,10 @@ class NavisTable extends React.Component{
 
     return (
       <div>
-        <button className="btn btn-warning" style={{width:"100%", fontSize:"24px", top:"2%",left:"0",zIndex:"999", backgroundColor:"#CCCC00", position:"fixed"}} onClick={()=> this.generateXML()}>Generate XML</button>
 
-        {this.state.updateData}
+          <button className="btn btn-warning" style={{width:"78%", fontSize:"24px", top:"0",left:"11%",zIndex:"999", backgroundColor:"#CBB956", position:"fixed", color:"white", paddingTop:"13px", paddingBottom:"13px"}} onClick={()=> this.generateXML()}>Generate XML</button>
 
-        <div className="estimatedDataTable__container">
+        <div className="estimatedDataTable__container" style={{marginTop:"5px"}}>
         <Table className="customTable" bordered = {true} columns={columns} rowSelection={{type: 'checkbox', ...rowSelection}} dataSource={this.state.data} pagination={{ pageSize: this.state.data.length  }} size="small"
          rowClassName= {(record) => record.color.replace('#', '')}/>
         </div>

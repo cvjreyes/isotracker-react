@@ -1,6 +1,7 @@
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import NavisTable from '../../components/navisTable/navisTable';
+import "./navis.css"
 
 const Navis = () => {
 
@@ -127,19 +128,8 @@ const Navis = () => {
     return(
         
         <body>
-
-            <div className="equipments__container">  
-                <center>
-                    <h2 className="title__container">
-
-                        <b >      
-                            <i className="iso__title">Navis XML Generator</i>
-                        </b>
-                    </h2>
-                </center>
-
-
-                <div style={{height: dataTableHeight}}>
+            <div className="navis__container">  
+                <div>
                     <br></br>
                     <br></br> 
 
