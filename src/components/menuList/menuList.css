@@ -37,6 +37,8 @@
     text-align: left;
 }
 
+
+
 .panel__content__container__last{
     box-sizing: border-box;
     height: auto;
@@ -74,9 +76,6 @@
     padding-bottom: 5px;
 }
 
-.panel__icon__container:hover{
-    text-decoration: none;
-}
 
 .progress__bar{
     text-align: center;
