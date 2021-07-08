@@ -314,15 +314,23 @@ class StatusDataTable extends React.Component{
     ),
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
+            /*
       this.state.searchedColumn === "id" ? (
-        record.id.props.children
+        console.log(record[dataIndex], value),
+        record[dataIndex]
           ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
           : ''
         ) : (
+          console.log(record[dataIndex], value),
           record[dataIndex]
-            ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-            : ''
-        ),
+          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+          : ''
+        ),*/
+        record[dataIndex].props 
+          ? record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase())
+          : (record[dataIndex]
+            ?  record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+            : ''),
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
@@ -370,6 +378,7 @@ class StatusDataTable extends React.Component{
 
   render() {
 
+    console.log(this.state.searchedColumn)
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);

@@ -444,15 +444,14 @@ class MyTrayTable extends React.Component{
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
 
-    this.state.searchedColumn === "id" ? (
-      record.id.props.children
-        ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
-        : ''
-      ) : (
-        record[dataIndex]
-          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-          : ''
-      ),
+    record[dataIndex].props 
+          ? (record[dataIndex].props.children[0].props
+            ? true 
+            : record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase())
+            )
+          : (record[dataIndex]
+            ?  record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+            : ''),
 
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
@@ -463,12 +462,7 @@ class MyTrayTable extends React.Component{
       text.props && text.type !== UploadProcInst && text.type !== "div" ? (
       <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
     ) : this.state.searchedColumn === dataIndex ? (
-      <Highlighter
-        highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-        searchWords={[this.state.searchText]}
-        autoEscape
-        textToHighlight={text ? text : ''}
-      />
+      text
     ) : (
       text
     ),
