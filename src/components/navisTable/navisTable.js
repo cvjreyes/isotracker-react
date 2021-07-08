@@ -212,8 +212,9 @@ class NavisTable extends React.Component{
 
     return (
       <div>
+        <button className="btn btn-warning" style={{width:"100%", fontSize:"24px", top:"2%",left:"0",zIndex:"999", backgroundColor:"#CCCC00", position:"fixed"}} onClick={()=> this.generateXML()}>Generate XML</button>
+
         {this.state.updateData}
-        <button className="btn btn-warning" style={{width:"100%", fontSize:"24px", marginBottom:"10px"}} onClick={()=> this.generateXML()}>Generate XML</button>
 
         <div className="estimatedDataTable__container">
         <Table className="customTable" bordered = {true} columns={columns} rowSelection={{type: 'checkbox', ...rowSelection}} dataSource={this.state.data} pagination={{ pageSize: this.state.data.length  }} size="small"

@@ -6,6 +6,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import './usersDataTable.css'
 import { Link } from 'react-router-dom';
 import ManageRolesPopUp from '../manageRolesPopUp/manageRolesPopUp';
+import DeleteUserConfPopUp from '../deleteUserConfPopUp/deleteUserConfPopUp';
 
 
 class UsersDataTable extends React.Component{
@@ -22,6 +23,10 @@ class UsersDataTable extends React.Component{
     users: [],
     mounted: false
   };
+
+  deleteUser(id){
+    this.props.deleteUser(id)
+  }
   
   
 
@@ -77,7 +82,7 @@ class UsersDataTable extends React.Component{
               await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
                   .then(response => response.json())
                   .then(async json => {
-                      row["actions"] = <div style={{display:"flex"}}><button className="btn" onClick={() => this.props.deleteUser(row.user_id)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#DC143C", color:"white"}}>DELETE</button><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>                  
+                      row["actions"] = <div style={{display:"flex"}}><DeleteUserConfPopUp  deleteUser={this.deleteUser.bind(this)} id={row.user_id} username={row.username}/><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>                  
                       let roles = [rolesBtnsDict[json.roles[0]]]
                           for(let j = 1; j < json.roles.length; j++){
                               roles.push(rolesBtnsDict[json.roles[j]])
@@ -155,7 +160,7 @@ class UsersDataTable extends React.Component{
                         .then(response => response.json())
                         .then(async json => {
 
-                          row["actions"] = <div style={{display:"flex"}}><button className="btn" onClick={() => this.props.deleteUser(row.user_id)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#DC143C", color:"white"}}>DELETE</button><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>                  
+                          row["actions"] = <div style={{display:"flex"}}><DeleteUserConfPopUp  deleteUser={this.deleteUser.bind(this)} id={row.user_id} username={row.username}/><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>                  
                           let roles = [rolesBtnsDict[json.roles[0]]]
                             for(let j = 1; j < json.roles.length; j++){
                                 roles.push(rolesBtnsDict[json.roles[j]])

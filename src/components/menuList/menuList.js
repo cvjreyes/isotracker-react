@@ -190,8 +190,8 @@ const MenuList = () =>{
             </div>
         </div>
         <div className="panel__content__container">
-            <div>
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/instrumentation"}style={{textDecoration: "none"}}>
+            <div >
+                <a href={"/"+process.env.REACT_APP_PROJECT+"/instrumentation"}style={{textDecoration: "none"}} className="panel__content__link">
                     <h4 style={{backgroundColor: instIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setInstIsShown(true)} onMouseLeave={() => setInstIsShown(false)}><img src={InstIcon} alt= "inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Instrumentation (Weight: {instsWeight} | {(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>         
                 </a>
                 <div class="progress" style={{height: "25px"}}>
@@ -227,7 +227,7 @@ const MenuList = () =>{
         </div>)
         }
         console.log(totalWeight)
-    },[totalProgressWidth, refresh])
+    },[totalProgressWidth, refresh, isoIsShown, progIsShown, pipeIsShown, equipIsShown, civIsShown, instIsShown, elecIsShown])
 
     if(!refresh){
         setRefresh(true)
