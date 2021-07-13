@@ -1,0 +1,89 @@
+import React from 'react';
+import { HotEditorElement } from './types';
+/**
+ * Warning message for the `autoRowSize`/`autoColumnSize` compatibility check.
+ */
+export declare const AUTOSIZE_WARNING: string;
+/**
+ * Logs warn to the console if the `console` object is exposed.
+ *
+ * @param {...*} args Values which will be logged.
+ */
+export declare function warn(...args: any[]): void;
+/**
+ * Filter out and return elements of the provided `type` from the `HotColumn` component's children.
+ *
+ * @param {React.ReactNode} children HotTable children array.
+ * @param {String} type Either `'hot-renderer'` or `'hot-editor'`.
+ * @returns {Object|null} A child (React node) or `null`, if no child of that type was found.
+ */
+export declare function getChildElementByType(children: React.ReactNode, type: string): React.ReactElement | null;
+/**
+ * Get the reference to the original editor class.
+ *
+ * @param {React.ReactElement} editorElement React element of the editor class.
+ * @returns {Function} Original class of the editor component.
+ */
+export declare function getOriginalEditorClass(editorElement: HotEditorElement): any;
+/**
+ * Remove editor containers from DOM.
+ *
+ * @param {Document} [doc] Document to be used.
+ * @param {Map} editorCache The editor cache reference.
+ */
+export declare function removeEditorContainers(doc?: Document): void;
+/**
+ * Create an editor portal.
+ *
+ * @param {Document} [doc] Document to be used.
+ * @param {React.ReactElement} editorElement Editor's element.
+ * @param {Map} editorCache The editor cache reference.
+ * @returns {React.ReactPortal} The portal for the editor.
+ */
+export declare function createEditorPortal(doc: Document, editorElement: HotEditorElement, editorCache: Map<Function, React.Component>): React.ReactPortal;
+/**
+ * Get an editor element extended with a instance-emitting method.
+ *
+ * @param {React.ReactNode} children Component children.
+ * @param {Map} editorCache Component's editor cache.
+ * @returns {React.ReactElement} An editor element containing the additional methods.
+ */
+export declare function getExtendedEditorElement(children: React.ReactNode, editorCache: Map<Function, object>): React.ReactElement | null;
+/**
+ * Create a react component and render it to an external DOM done.
+ *
+ * @param {React.ReactElement} rElement React element to be used as a base for the component.
+ * @param {Object} props Props to be passed to the cloned element.
+ * @param {Function} callback Callback to be called after the component has been mounted.
+ * @param {Document} [ownerDocument] The owner document to set the portal up into.
+ * @returns {{portal: React.ReactPortal, portalContainer: HTMLElement}} An object containing the portal and its container.
+ */
+export declare function createPortal(rElement: React.ReactElement, props: any, callback: Function, ownerDocument?: Document): {
+    portal: React.ReactPortal;
+    portalContainer: HTMLElement;
+};
+/**
+ * Get an object containing the `id`, `className` and `style` keys, representing the corresponding props passed to the
+ * component.
+ *
+ * @param {Object} props Object containing the react element props.
+ * @param {Boolean} randomizeId If set to `true`, the function will randomize the `id` property when no `id` was present in the `prop` object.
+ * @returns An object containing the `id`, `className` and `style` keys, representing the corresponding props passed to the
+ * component.
+ */
+export declare function getContainerAttributesProps(props: any, randomizeId?: boolean): {
+    id: string;
+    className: string;
+    style: object;
+};
+/**
+ * Add the `UNSAFE_` prefixes to the deprecated lifecycle methods for React >= 16.3.
+ *
+ * @param {Object} instance Instance to have the methods renamed.
+ */
+export declare function addUnsafePrefixes(instance: {
+    UNSAFE_componentWillUpdate?: Function;
+    componentWillUpdate: Function;
+    UNSAFE_componentWillMount?: Function;
+    componentWillMount: Function;
+}): void;
