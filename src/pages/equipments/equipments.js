@@ -111,7 +111,6 @@ const Equipments = () => {
 
     function swapAdmin(){
         setAdmin(!admin)
-        console.log(admin)
     }
 
     var dataTableHeight = "550px"
@@ -170,9 +169,13 @@ const Equipments = () => {
         navBtns = <center className="equimentsNavBtns__center" style={{marginTop: "700px"}}>              
             <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
             </center>
-        adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
-    }else{
-        adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
+        if(currentTab === "Estimated"){
+            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
+        }
+    }else if(admin && currentTab === "Estimated"){
+        if(currentTab === "Estimated"){
+           adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
+        }
         table = <EquipExcelEdit/>
         navBtns = null
         pageSelector = null

@@ -98,7 +98,7 @@ class EquipExcelEdit extends React.Component{
 
   addRow(){
     let rows = this.state.data
-    rows.push(["","",""])
+    rows.push({"Area": "", "Type": "", "Quantity": ""})
     this.setState({data: rows})
   }
   

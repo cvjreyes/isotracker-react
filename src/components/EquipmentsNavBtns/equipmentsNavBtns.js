@@ -112,9 +112,13 @@ const EquipmentsNavBtns = props =>{
         }else if(props.discipline === "Piping"){
             secureStorage.setItem("piping_tab", "Key parameters")
         }
-        keyButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "200px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#00a000"}}><b>Key parameters</b></button>
+        if(secureStorage.getItem("role") === "Project"){
+            keyButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "200px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#00a000"}}><b>Key parameters</b></button>
+        }
     }else{
-        keyButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "200px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#4ee44e"}} onClick={() => {props.onChange("Key parameters")}}><b>Key parameters</b></button>
+        if(secureStorage.getItem("role") === "Project"){
+            keyButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "200px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#4ee44e"}} onClick={() => {props.onChange("Key parameters")}}><b>Key parameters</b></button>
+        }
     }
     
     return(

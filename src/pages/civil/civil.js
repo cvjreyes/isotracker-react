@@ -11,6 +11,8 @@ import CivilTypesDataTable from "../../components/civilTypesDataTable/civilTypes
 import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
+import CivilExcel from "../../components/civilExcel/civilExcel"
+import CivilExcelEdit from "../../components/civilExcelEdit/civilExcelEdit"
 
 const Civil = () => {
 
@@ -22,6 +24,7 @@ const Civil = () => {
     const[pagination, setPagination] = useState(8)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
+    const[admin, setAdmin] = useState(false);
 
     
 
@@ -102,6 +105,10 @@ const Civil = () => {
         }
     });
 
+    function swapAdmin(){
+        setAdmin(!admin)
+    }
+
     var dataTableHeight = "550px"
     let navBtnsMargin = "600px"
 
@@ -132,6 +139,8 @@ const Civil = () => {
     var dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
+    let adminBtn = null
+    let navBtns = null
 
     if(currentTab === "Estimated"){
         table = <CivilEstimatedDataTable pagination = {pagination}/>
@@ -145,7 +154,27 @@ const Civil = () => {
         pageSelector = null
     }else if(currentTab === "Types"){
         table = <CivilTypesDataTable/>
+    }else if(currentTab === "Key parameters"){
+        table = <CivilExcel/>
+        pageSelector = null
     }
+
+    if(!admin){
+        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: "700px"}}>              
+            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+            </center>
+        if(currentTab === "Estimated"){
+            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
+        }
+    }else if(admin && currentTab === "Estimated"){
+        if(currentTab === "Estimated"){
+            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
+        }
+        table = <CivilExcelEdit/>
+        navBtns = null
+        pageSelector = null
+    }
+
 
     async function downloadCivilModelled(){
 
@@ -201,6 +230,7 @@ const Civil = () => {
                 <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
                   {pageSelector}        
                   {downloadBtn}
+                  {adminBtn}
                 </div>
                 <div style={{display:"inline"}}>
                     <div className="equipTable__container">
@@ -228,9 +258,7 @@ const Civil = () => {
                     {table}
                 </div>         
             </div>
-            <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
-                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Civil"/>               
-            </center>
+            {navBtns}
          </body>
     )
 }
