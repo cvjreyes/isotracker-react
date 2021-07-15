@@ -11,6 +11,8 @@ import InstrumentationTypesDataTable from "../../components/instrumentationTypes
 import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
+import InstExcel from "../../components/instExcel/instExcel"
+import InstExcelEdit from "../../components/instExcelEdit/instExcelEdit"
 
 const Instrumentation = () => {
 
@@ -22,6 +24,7 @@ const Instrumentation = () => {
     const[pagination, setPagination] = useState(8)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
+    const[admin, setAdmin] = useState(false);
 
     
 
@@ -101,6 +104,11 @@ const Instrumentation = () => {
         }
     });
 
+    function swapAdmin(){
+        setAdmin(!admin)
+    }
+
+
     var dataTableHeight = "550px"
     let navBtnsMargin = "600px"
 
@@ -131,6 +139,8 @@ const Instrumentation = () => {
     var dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
+    let adminBtn = null
+    let navBtns = null
 
     if(currentTab === "Estimated"){
         table = <InstrumentationEstimatedDataTable pagination = {pagination}/>
@@ -142,9 +152,31 @@ const Instrumentation = () => {
     }else if(currentTab === "Progress"){
         table = <ProgressPlotInstrumentation/>
         pageSelector = null
+        navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
         table = <InstrumentationTypesDataTable/>
+    }else if(currentTab === "Key parameters"){
+        table = <InstExcel/>
+        pageSelector = null
+        navBtnsMargin = "700px"
     }
+
+    if(!admin){
+        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
+            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+            </center>
+        if(currentTab === "Estimated"){
+            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
+        }
+    }else if(admin && currentTab === "Estimated"){
+        if(currentTab === "Estimated"){
+            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
+        }
+        table = <InstExcelEdit/>
+        navBtns = null
+        pageSelector = null
+    }
+
 
     async function downloadInstrumentationModelled(){
 
@@ -200,6 +232,7 @@ const Instrumentation = () => {
                 <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
                   {pageSelector}        
                   {downloadBtn}
+                  {adminBtn}
                 </div>
                 <div style={{display:"inline"}}>
                     <div className="equipTable__container">
@@ -227,9 +260,7 @@ const Instrumentation = () => {
                     {table}
                 </div>         
             </div>
-            <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
-                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Instrumentation"/>               
-            </center>
+            {navBtns}
          </body>
     )
 }
