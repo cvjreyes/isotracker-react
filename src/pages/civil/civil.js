@@ -152,15 +152,17 @@ const Civil = () => {
     }else if(currentTab === "Progress"){
         table = <ProgressPlotCivils/>
         pageSelector = null
+        navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
         table = <CivilTypesDataTable/>
     }else if(currentTab === "Key parameters"){
         table = <CivilExcel/>
         pageSelector = null
+        navBtnsMargin = "700px"
     }
 
     if(!admin){
-        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: "700px"}}>              
+        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
             <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
             </center>
         if(currentTab === "Estimated"){
