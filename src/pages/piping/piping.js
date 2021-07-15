@@ -11,6 +11,8 @@ import PipingTypesDataTable from "../../components/pipingTypesDataTable/pipingTy
 import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
+import PipingExcel from "../../components/pipingExcel/pipingExcel"
+import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
 
 const Piping = () => {
 
@@ -22,7 +24,7 @@ const Piping = () => {
     const[pagination, setPagination] = useState(8)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
-
+    const[admin, setAdmin] = useState(false);
     
 
     useEffect(()=>{
@@ -101,6 +103,10 @@ const Piping = () => {
         }
     });
 
+    function swapAdmin(){
+        setAdmin(!admin)
+    }
+
     var dataTableHeight = "550px"
     let navBtnsMargin = "600px"
 
@@ -131,6 +137,8 @@ const Piping = () => {
     var dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
+    let adminBtn = null
+    let navBtns = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable pagination = {pagination}/>
@@ -142,9 +150,33 @@ const Piping = () => {
     }else if(currentTab === "Progress"){
         table = <ProgressPlotPiping/>
         pageSelector = null
+        navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
         table = <PipingTypesDataTable/>
+    }else if(currentTab === "Key parameters"){
+        table = <PipingExcel/>
+        pageSelector = null
+        navBtnsMargin = "700px"
     }
+    
+    if(!admin){
+        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
+            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+            </center>
+        if(currentTab === "Estimated" && currentRole === "Project"){
+            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
+        }else{
+            adminBtn = null
+        }
+    }else if(admin && currentTab === "Estimated"){
+        if(currentTab === "Estimated"){
+            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
+        }
+        table = <PipingExcelEdit/>
+        navBtns = null
+        pageSelector = null
+    }
+
 
     async function downloadModelled(){
 
@@ -201,6 +233,7 @@ const Piping = () => {
                 <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
                   {pageSelector}  
                   {downloadBtn}    
+                  {adminBtn}
                 </div>
                 <div style={{display:"inline"}}>
                     <div className="equipTable__container">
@@ -228,9 +261,7 @@ const Piping = () => {
                     {table}
                 </div>         
             </div>
-            <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
-                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Piping"/>               
-            </center>
+            {navBtns}
          </body>
     )
 }

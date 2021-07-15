@@ -11,6 +11,10 @@ import EquipTypesDataTable from "../../components/equipTypesDataTable/equipTypes
 import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
+import EquipExcel from "../../components/equipExcel/equipExcel"
+import EquipExcelEdit from "../../components/equipExcelEdit/equipExcelEdit"
+
+
 
 const Equipments = () => {
 
@@ -22,6 +26,7 @@ const Equipments = () => {
     const[pagination, setPagination] = useState(8)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
+    const[admin, setAdmin] = useState(false);
 
     
 
@@ -78,6 +83,8 @@ const Equipments = () => {
             })       
             
     },[]);
+
+
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -100,6 +107,11 @@ const Equipments = () => {
             return data;
         }
     });
+
+
+    function swapAdmin(){
+        setAdmin(!admin)
+    }
 
     var dataTableHeight = "550px"
     let navBtnsMargin = "600px"
@@ -130,7 +142,11 @@ const Equipments = () => {
 
     var dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+
     let downloadBtn = null
+    let adminBtn = null
+    let navBtns = null
+
 
     if(currentTab === "Estimated"){
         table = <EquipEstimatedDataTable pagination = {pagination}/>
@@ -142,8 +158,29 @@ const Equipments = () => {
     }else if(currentTab === "Progress"){
         table = <ProgressPlotEquipments/>
         pageSelector = null
+        navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
         table = <EquipTypesDataTable/>
+    }else if(currentTab === "Key parameters"){
+        table = <EquipExcel/>
+        pageSelector = null
+        navBtnsMargin = "700px"
+    }
+    
+    if(!admin){
+        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
+            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+            </center>
+        if(currentTab === "Estimated"){
+            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
+        }
+    }else if(admin && currentTab === "Estimated"){
+        if(currentTab === "Estimated"){
+           adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
+        }
+        table = <EquipExcelEdit/>
+        navBtns = null
+        pageSelector = null
     }
 
     async function downloadEquipmentModelled(){
@@ -189,6 +226,7 @@ const Equipments = () => {
                     <h2 className="title__container">
                         <div className="roleSelector__container">
                             <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
+                            
                             </div>
                         <b >      
                             <i className="iso__title">Equipment</i>
@@ -199,6 +237,7 @@ const Equipments = () => {
                 <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
                   {pageSelector}        
                   {downloadBtn}
+                  {adminBtn}
                 </div>
                 <div style={{display:"inline"}}>
                     <div className="equipTable__container">
@@ -226,9 +265,8 @@ const Equipments = () => {
                     {table}
                 </div>         
             </div>
-            <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
-                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
-            </center>
+            <br></br>
+            {navBtns}
          </body>
     )
 }

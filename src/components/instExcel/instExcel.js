@@ -1,0 +1,292 @@
+import React from 'react';
+import 'antd/dist/antd.css';
+import { HotTable } from '@handsontable/react';
+import 'handsontable/dist/handsontable.full.css';
+import Handsontable from 'handsontable';
+
+
+const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+    
+    var secureStorage = new SecureStorage(localStorage, {
+        hash: function hash(key) {
+            key = CryptoJS.SHA256(key, SECRET_KEY);
+    
+            return key.toString();
+        },
+        encrypt: function encrypt(data) {
+            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+    
+            data = data.toString();
+    
+            return data;
+        },
+        decrypt: function decrypt(data) {
+            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+    
+            data = data.toString(CryptoJS.enc.Utf8);
+    
+            return data;
+        }
+    });
+
+class InstExcel extends React.Component{
+  state = {
+    searchText: '',
+    searchedColumn: '',
+    typesData: [],
+    stepsData: [],
+    progressData: [],
+    tab: this.props.currentTab,
+    selectedRows: [],
+    selectedRowsKeys: [],
+    updateData: this.props.updateData,
+    username: "",
+    acronyms : null,
+    steps: []
+  };
+
+  async componentDidMount(){
+
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrumentation/types", options)
+    .then(response => response.json())
+    .then(json => {
+      var rows = []
+      var row = null
+      rows.push({"Code": "Code", "Name": "Name", "Weight": "Weight"})
+      for(let i = 0; i < json.rows.length; i++){
+          let mod = 0
+          if(json.rows[i].modelled){
+            mod = json.rows[i].modelled
+          }
+
+          row = {"Code": json.rows[i].code, "Name": json.rows[i].name, "Weight": json.rows[i].weight}
+
+          for(let j = 0; j < this.state.steps.length; j++){
+            let currentStep = this.state.steps[j].toString()
+            row[currentStep] = json.rows[i][currentStep]
+          }
+          rows.push(row)
+      }
+      this.setState({typesData : rows, selectedRows: []});
+
+  }) 
+
+  fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrumentation/steps", options)
+    .then(response => response.json())
+    .then(json => {
+      var rows = []
+      var row = null
+      rows.push({"Name":"Name", "Percentage":"Percentage"})
+      for(let i = 0; i < json.steps.length; i++){
+          row = {"Name": json.names[i].name, "Percentage": json.steps[i].percentage}
+
+          rows.push(row)
+      }
+      this.setState({stepsData : rows, selectedRows: []});
+
+  })
+
+  fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/ginsts", options)
+    .then(response => response.json())
+    .then(json => {
+      var rows = []
+      var row = null
+      console.log(json.rows)
+      rows.push({"Week": "Week", "Estimated": "Estimated"})
+      for(let i = 0; i < json.rows.length; i++){
+          row = {"Week": json.rows[i].week, "Estimated": json.rows[i].estimated}
+
+          rows.push(row)
+      }
+      this.setState({progressData : rows, selectedRows: []});
+
+  })
+  }
+
+  addRowTypes(){
+    let rows = this.state.typesData
+    rows.push({"Code": "", "Name":"", "Weight": ""})
+    this.setState({typesData: rows})
+  }
+  
+  submitChangesTypes(){
+    const body = {
+      rows: this.state.typesData,
+    }
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/instrumentation/types", options)
+    .then(response => response.json())
+    .then(json =>{
+      if(json.error){
+        console.log("error")
+      }else{
+        console.log("success")
+      }
+    })
+  }
+
+  addRowSteps(){
+    let rows = this.state.stepsData
+    rows.push({"Name": "", "Percentage":""})
+    this.setState({stepsData: rows})
+  }
+
+  submitChangesSteps(){
+    const body = {
+      rows: this.state.stepsData,
+    }
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/instrumentation/steps", options)
+    .then(response => response.json())
+    .then(json =>{
+      if(json.error){
+        console.log("error")
+      }else{
+        console.log("success")
+      }
+    })
+  }
+
+  addRowProgress(){
+    let rows = this.state.progressData
+    rows.push({"Week": "", "Estimated": ""})
+    this.setState({progressData: rows})
+  }
+
+  submitChangesProgress(){
+    const body = {
+      rows: this.state.progressData,
+    }
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/instrumentation/progress", options)
+    .then(response => response.json())
+    .then(json =>{
+      if(json.error){
+        console.log("error")
+      }else{
+        console.log("success")
+      }
+    })
+  }
+
+  
+
+ 
+
+  render() {
+
+    const typesSettings = {
+        licenseKey: 'non-commercial-and-evaluation',
+        colWidths: 200,
+        //... other options
+      }
+  
+      const stepsSettings = {
+        licenseKey: 'non-commercial-and-evaluation',
+        colWidths: 200,
+        //... other options
+      }
+  
+      const progressSettings = {
+        licenseKey: 'non-commercial-and-evaluation',
+        colWidths: 195,
+        //... other options
+      }
+
+      return (
+        <div className="row" style={{float:"left"}}>
+           <div className="column" style={{marginLeft:"20px"}}>
+            <div id="hot-app">
+              <HotTable
+                data={this.state.stepsData}
+                colHeaders={true}
+                rowHeaders={true}
+                width="473"
+                height="500"
+                settings={stepsSettings} 
+                manualColumnResize={true}
+                manualRowResize={true}
+                columns= {[{ data: "Name"}, {data: "Percentage", type:"numeric"}]}
+              />
+              <br></br>
+              <center>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowSteps()} style={{marginRight:"5px", fontSize:"16px", width:"60px"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesSteps()} style={{marginRight:"5px", fontSize:"16px", width:"60px"}}>Save</button>
+              </center>
+            </div>
+          </div>
+          <div className="column" style={{marginLeft:"19px"}}>
+
+            <div id="hot-app">
+              <HotTable
+                data={this.state.typesData}
+                colHeaders={true}
+                rowHeaders={true}
+                width="675"
+                height="500"
+                settings={typesSettings} 
+                manualColumnResize={true}
+                manualRowResize={true}
+                columns= {[{ data: "Code"}, { data: "Name"}, {data: "Weight", type:"numeric"}]}
+              />
+              <br></br>
+              <center>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowTypes()} style={{marginRight:"5px", fontSize:"16px",width:"60px"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesTypes()} style={{marginRight:"5px", fontSize:"16px", width:"60px"}}>Save</button>
+              </center>
+            </div>
+          </div>
+         
+          <div className="column" style={{marginLeft:"20px"}}>
+            <div id="hot-app">
+              <HotTable
+                data={this.state.progressData}
+                colHeaders={true}
+                rowHeaders={true}
+                width="465"
+                height="500"
+                settings={progressSettings} 
+                manualColumnResize={true}
+                manualRowResize={true}
+                columns= {[{ data: "Week", type:"numeric"}, {data: "Estimated", type:"numeric"}]}
+              />
+              <br></br>
+              <center>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowProgress()} style={{marginRight:"5px", fontSize:"16px",width:"60px"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesProgress()} style={{marginRight:"5px", fontSize:"16px", width:"60px"}}>Save</button>
+              </center>
+            </div>
+          </div>
+      </div>
+      );
+  }
+}
+
+export default InstExcel;
