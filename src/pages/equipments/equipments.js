@@ -140,7 +140,7 @@ const Equipments = () => {
     var currentUser = secureStorage.getItem('user')
     var table = null
 
-    var dataTableHeight = 8
+    dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
 
     let downloadBtn = null

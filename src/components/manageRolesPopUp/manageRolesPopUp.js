@@ -3,7 +3,6 @@ import Modal from 'react-awesome-modal';
 import './manageRolesPopUp.css'
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
-import { TabList } from '@material-ui/lab';
 
 export default class ManageRolesPopUp extends Component {
     constructor(props) {
@@ -37,7 +36,6 @@ export default class ManageRolesPopUp extends Component {
    
     async openModal() {      
         let selectedLeft = []
-        console.log(this.props.roles)
 
         if(this.props.roles.indexOf("Design") > -1){
             await this.setState({des: true})
@@ -257,8 +255,6 @@ export default class ManageRolesPopUp extends Component {
         }if(this.state.rev){
             roles.push("rev")
         }
-
-        console.log(this.state.id, roles)
         
         this.props.submitRoles(this.props.id, roles)
         this.closeModal()

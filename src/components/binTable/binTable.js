@@ -44,7 +44,6 @@ class BinTable extends React.Component{
     const body ={
       currentTab : this.props.currentTab
     }
-    console.log(body)
     const options = {
       method: "POST",
       headers: {
@@ -77,7 +76,6 @@ class BinTable extends React.Component{
 
     if(prevProps !== this.props){
       
-      console.log(this.state.acronyms)
       const body ={
         currentTab : this.props.currentTab
       }
@@ -94,7 +92,6 @@ class BinTable extends React.Component{
                   var rows = []
                   
                   for(let i = 0; i < json.rows.length; i++){
-                      console.log(json.rows[i].role)
                       var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}
                    
                       rows.push(row)                
@@ -122,7 +119,6 @@ class BinTable extends React.Component{
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+fileName, options)
     .then(res => res.blob())
     .then(response => {
-      console.log(response)
       const file = new Blob([response], {
         type: "application/pdf"
       });

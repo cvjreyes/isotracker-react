@@ -94,7 +94,6 @@ class DragAndDrop extends React.Component{
         this.setState({
           max: max
         })
-        console.log(max)
         if (max === 0){
           this.setState({
             uploaded: true,
@@ -134,7 +133,6 @@ class DragAndDrop extends React.Component{
           if (i > 0) {
             extension = filename.substring(i+1);
           }
-          console.log(this.props)
           if(extension === "pdf"){
             let body =  {
               file: filename,
@@ -193,20 +191,16 @@ class DragAndDrop extends React.Component{
     })
 
     await allFiles.forEach(file => {
-      console.log("Empiezo el upload de ", file)
       const formData  = new FormData(); 
       formData.append('file', file.file);  
       if(this.props.mode === "upload"){
         if(process.env.REACT_APP_PROGRESS === "0"){
           this.uploadFile(formData);
         }else{
-          console.log(file.file.name)
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+file.file.name)
           .then(response => response.json())
           .then(async json =>{
-            console.log(json)
             if(json.exists){
-              console.log("existe")
               this.uploadFile(formData);
             }else{
               let joined = this.state.pipeErrorAlerts.concat(file.file.name);

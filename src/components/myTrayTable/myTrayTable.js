@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
-import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import './myTrayTable.css'
 import UploadPopUp from '../uploadPopUp/uploadPopUp';
@@ -385,7 +384,6 @@ class MyTrayTable extends React.Component{
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+filename, options)
     .then(res => res.blob())
     .then(response => {
-      console.log(response)
       const file = new Blob([response], {
         type: "application/pdf"
       });

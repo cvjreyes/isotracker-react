@@ -28,7 +28,6 @@ const ActionBtns = props =>{
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
-            console.log("entra")
             actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
             actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
         }
@@ -133,7 +132,7 @@ const ActionBtns = props =>{
             (props.currentTab === "On hold" && (props.role === "DesignLead" || props.role === "SpecialityLead" || props.role === "Issuer"))){
             actionBtn8 = <button className="btn btn-sm btn-success" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.restoreClick()}>Restore</button>
         }
-        if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab != "Process" && props.currentTab != "Instrument"){
+        if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab !== "Process" && props.currentTab !== "Instrument"){
             actionBtn6 = <button className="btn btn-sm btn-danger" name="destination" value="stress" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={() => props.transaction("Recycle bin")}>Delete</button>
             actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
         }

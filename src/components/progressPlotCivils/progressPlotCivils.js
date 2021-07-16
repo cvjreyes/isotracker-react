@@ -26,7 +26,6 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 				weeks.push({name: "W"+json.rows[i].week, estimated: json.rows[i].estimated, progress: json.rows[i].progress})
 			}
 			await this.setState({data: weeks})
-			console.log(this.state.data)
 		})
 	}
 	

@@ -44,7 +44,6 @@ export default class UploadReportPopUp extends Component {
 
         if(this.state.file.name.substring(this.state.file.name.length-4, this.state.file.name.length) === "xlsx"){
             readXlsxFile(this.state.file).then(async(rows) => {
-                console.log(rows)
                 const options = {
                     method: "POST",
                     headers: {

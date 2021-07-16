@@ -2,34 +2,8 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 
-const CryptoJS = require("crypto-js");
-    const SecureStorage = require("secure-web-storage");
-    var SECRET_KEY = 'sanud2ha8shd72h';
-    
-    var secureStorage = new SecureStorage(localStorage, {
-        hash: function hash(key) {
-            key = CryptoJS.SHA256(key, SECRET_KEY);
-    
-            return key.toString();
-        },
-        encrypt: function encrypt(data) {
-            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
-    
-            data = data.toString();
-    
-            return data;
-        },
-        decrypt: function decrypt(data) {
-            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
-    
-            data = data.toString(CryptoJS.enc.Utf8);
-    
-            return data;
-        }
-    });
 
 class NavisTable extends React.Component{
   state = {
@@ -156,7 +130,6 @@ class NavisTable extends React.Component{
   };
 
   generateXML(){
-    console.log(this.state.selectedRows)
     let xml = "<?xml version='1.0' encoding='UTF-8' ?>\n    <exchange xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://download.autodesk.com/us/navisworks/schemas/nw-exchange-12.0.xsd'>\n      <optionset name=''>\n           <optionset name='interface'>\n              <optionset name='smart_tags'>\n                     <option name='enabled'>\n                           <data type='bool'>true</data>\n                     </option>\n                     <option name='hide_category' flags='32'>\n                           <data type='bool'>false</data>\n                     </option>\n                     <optionarray name='definitions'>\n"
     
     for(let i = 0; i < this.state.selectedRows.length; i++){
@@ -171,8 +144,6 @@ class NavisTable extends React.Component{
 
   render() {
     
-    const selectedRows = this.state.selectedRows;
-    const selectedRowsKeys = this.state.selectedRowsKeys;
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);

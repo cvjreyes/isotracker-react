@@ -3,33 +3,6 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-
-const CryptoJS = require("crypto-js");
-    const SecureStorage = require("secure-web-storage");
-    var SECRET_KEY = 'sanud2ha8shd72h';
-    
-    var secureStorage = new SecureStorage(localStorage, {
-        hash: function hash(key) {
-            key = CryptoJS.SHA256(key, SECRET_KEY);
-    
-            return key.toString();
-        },
-        encrypt: function encrypt(data) {
-            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
-    
-            data = data.toString();
-    
-            return data;
-        },
-        decrypt: function decrypt(data) {
-            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
-    
-            data = data.toString(CryptoJS.enc.Utf8);
-    
-            return data;
-        }
-    });
-
 class EquipModelledDataTable extends React.Component{
   state = {
     searchText: '',
@@ -60,10 +33,7 @@ class EquipModelledDataTable extends React.Component{
         var row = null
         
         for(let i = 0; i < json.rows.length; i++){
-            let mod = 0
-            if(json.rows[i].modelled){
-              mod = json.rows[i].modelled
-            }
+
             if(i % 2 === 0){
               row = {key:i, area: json.rows[i].area, tag: json.rows[i].tag, type: json.rows[i].type, weight: json.rows[i].weight, status: json.rows[i].status, progress: json.rows[i].progress, color: "#fff"}
             }else{
@@ -174,8 +144,6 @@ class EquipModelledDataTable extends React.Component{
   
 
   render() {
-
-    const steps = this.state.steps
 
     const columns = [
       {

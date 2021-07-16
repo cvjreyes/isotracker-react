@@ -22,7 +22,6 @@ export default class CommentPopUp extends Component {
     }
 
     render() {
-        console.log(this.props.comments)
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
                 <button class="btn btn-info" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginLeft: "5px"}} onClick={() => this.openModal()}>COMMENTS</button>

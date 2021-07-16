@@ -72,7 +72,6 @@ class DragAndDrop extends React.Component{
           fileList: aux,
         });
         let max = this.state.fileList.length;
-        console.log(max)
         if (max === 0){
           this.setState({
             uploaded: true
