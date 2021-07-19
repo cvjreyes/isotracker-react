@@ -23,27 +23,22 @@ const MenuList = () =>{
 
     const [pipesWeight, setPipesWeight] = useState()
     const [pipesProgress, setPipesProgress] = useState()
-    const [pipesProgressTotal, setPipesProgressTotal] = useState()
     const [pipesProgressWidth, setPipesProgressWidth] = useState()
 
     const [equisWeight, setEquisWeight] = useState()
     const [equisProgress, setEquisProgress] = useState()
-    const [equisProgressTotal, setEquisProgressTotal] = useState()
     const [equisProgressWidth, setEquisProgressWidth] = useState()
 
     const [civilsWeight, setCivilsWeight] = useState()
     const [civilsProgress, setCivilsProgress] = useState()
-    const [civilsProgressTotal, setCivilsProgressTotal] = useState()
     const [civilsProgressWidth, setCivilsProgressWidth] = useState()
 
     const [instsWeight, setInstsWeight] = useState()
     const [instsProgress, setInstsProgress] = useState()
-    const [instsProgressTotal, setInstsProgressTotal] = useState()
     const [instsProgressWidth, setInstsProgressWidth] = useState()
 
     const [elecsWeight, setElecsWeight] = useState()
     const [elecsProgress, setElecsProgress] = useState()
-    const [elecsProgressTotal, setElecsProgressTotal] = useState()
     const [elecsProgressWidth, setElecsProgressWidth] = useState()
 
     const [totalWeight, setTotalWeight] = useState()
@@ -226,7 +221,6 @@ const MenuList = () =>{
             </div>
         </div>)
         }
-        console.log(totalWeight)
     },[totalProgressWidth, refresh, isoIsShown, progIsShown, pipeIsShown, equipIsShown, civIsShown, instIsShown, elecIsShown])
 
     if(!refresh){

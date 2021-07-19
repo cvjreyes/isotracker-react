@@ -69,7 +69,6 @@ export default class AddUserPopUp extends Component {
         }
         username = splitStr.join(' ')
         const email = this.state.email + this.state.selected
-        console.log(this.state.selected)
         if(username === "" || username === null){
             this.setState({
                 blankFields: true
@@ -103,7 +102,6 @@ export default class AddUserPopUp extends Component {
                 roles.push("rev")
             }
             
-            console.log(username, email, roles)
             this.props.addUser(username, email, roles)
             this.closeModal()
         }   

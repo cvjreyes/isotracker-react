@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
-import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import './datatable.css'
 import { Link } from 'react-router-dom';
@@ -144,7 +143,6 @@ class DataTable extends React.Component{
                     
                     let revision = ""
                     if(this.props.currentTab === "Issued"){
-                      console.log(json.rows[i].transmittal)
                       revision = "R" + String(json.rows[i].revision - 1) + " - " + json.rows[i].transmittal + "/" + json.rows[i].issued_date
                     }else{
                       revision = "*R" + json.rows[i].revision
@@ -207,7 +205,6 @@ class DataTable extends React.Component{
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> {pButton} {iButton} {bButton} {uButton}  </div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
-                        console.log("ASDSA")
                         row = null
                       }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
                         row = null
@@ -241,7 +238,6 @@ class DataTable extends React.Component{
                   this.setState({
                     data : rows,
                   });
-                  console.log(this.state.data)
               }
           )
           .catch(error => {
@@ -327,7 +323,6 @@ class DataTable extends React.Component{
                     
                     let revision = ""
                     if(this.props.currentTab === "Issued"){
-                      console.log(json.rows[i].transmittal)
                       revision = "R" + String(json.rows[i].revision - 1) + " - " + json.rows[i].transmittal + "/" + json.rows[i].issued_date
                     }else{
                       revision = "*R" + json.rows[i].revision
@@ -390,7 +385,6 @@ class DataTable extends React.Component{
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div> {pButton} {iButton} {bButton} {uButton}  </div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
-                        console.log("ASDSA")
                         row = null
                       }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
                         row = null
@@ -443,7 +437,6 @@ class DataTable extends React.Component{
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+fileName, options)
     .then(res => res.blob())
     .then(response => {
-      console.log(response)
       const file = new Blob([response], {
         type: "application/pdf"
       });

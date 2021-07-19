@@ -23,7 +23,6 @@ const data = [
 
 const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
     getCheckboxProps: (record) => ({
       disabled: record.name === 'Disabled User',
@@ -168,8 +167,6 @@ class CheckInTable extends React.Component{
         },
       },
     ];
-
-    console.log(this.props)
 
     return (
       <div>

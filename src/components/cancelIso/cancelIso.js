@@ -33,7 +33,6 @@ export default class CancelIso extends Component {
 
     render() {
         var trayHeader, traySelect
-        console.log(this.props.role)
         trayHeader = <h4 className="cancel__header__tray">Tray</h4>
         if(this.props.role === "SpecialityLead"){
             traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>

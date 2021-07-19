@@ -55,17 +55,12 @@ const IsoCtrl = () => {
     const [errorCL, setErrorCL] = useState(false);
     const [transactionSuccess, setTransactionSuccess] = useState(false);
     const [errorReports, setErrorReports] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [realProgress, setRealProgress] = useState(0);
-    const [progressISO, setProgressISO] = useState(0);
-    const [realProgressISO, setRealProgressISO] = useState(0);
     const [errorUnclaimR, setErrorUnclaimR] = useState(false);
     const [warningSelected, setWarningSelected] = useState(false);
     const [blocked, setBlocked] = useState(false);
     const [errorReportD, setErrorReportD] = useState(false)
     const [errorReportDIndex, setErrorReportDIndex] = useState(0);
     const [errorDeleteUser, setErrorDeleteUser] = useState(false);
-    const [errorRoless, setErrorRoles] = useState(false)
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -157,7 +152,7 @@ const IsoCtrl = () => {
             setBlocked(false)
             setErrorReportD(false)
             setErrorDeleteUser(false)
-            setErrorRoles(false)
+            
     },[currentRole]);
 
     useEffect(()=>{
@@ -173,7 +168,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
     }, [currentTab])
 
     const getProgress = () =>{
@@ -192,7 +187,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -270,7 +265,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -281,7 +276,6 @@ const IsoCtrl = () => {
                     file: selected[i],
                     los: currentUser
                 }
-                console.log(body)
                 const options = {
                     method: "POST",
                     headers: {
@@ -308,7 +302,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -342,7 +336,6 @@ const IsoCtrl = () => {
                         },
                         body: JSON.stringify(body)
                     }
-                    console.log(body)
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unclaimInst", options)
                 }
             }else{
@@ -393,14 +386,13 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
         const body ={
             user : currentUser,
             file: fileName,
             role: currentRole
         }
-        console.log(body)
         const options = {
             method: "POST",
             headers: {
@@ -408,7 +400,6 @@ const IsoCtrl = () => {
             },
             body: JSON.stringify(body)
         }
-        console.log(body)
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/forceUnclaim", options)
         await setUpdateData(!updateData)
         setLoading(false)
@@ -427,7 +418,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -465,7 +456,7 @@ const IsoCtrl = () => {
         setErrorReportD(false)
         setBlocked(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
             
             const body ={
@@ -501,7 +492,7 @@ const IsoCtrl = () => {
             setErrorReportD(false)
             setBlocked(false)
             setErrorDeleteUser(false)
-            setErrorRoles(false)
+            
             if(destiny === "Design"){
                 if(comment.length > 1){
                     setComment(" ")
@@ -527,7 +518,6 @@ const IsoCtrl = () => {
                         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                         .then(response => response.json())
                         .then(json =>{
-                            console.log(json)
                             if(json.blocked){
                                 setBlocked(true)
                             }else{
@@ -578,7 +568,6 @@ const IsoCtrl = () => {
                             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                             .then(response => response.json())
                             .then(async json=>{
-                                console.log(json)
                                 if(json.error){
                                     await setErrorCL(true) 
                                 }else if(json.blocked){
@@ -695,7 +684,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -744,7 +733,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -796,7 +785,7 @@ const IsoCtrl = () => {
         setWarningSelected(false)
         setBlocked(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -819,7 +808,6 @@ const IsoCtrl = () => {
                 setTransactionSuccess(true)
             }
             await setUpdateData(!updateData)
-            console.log("restored")
             setLoading(false)
             await getProgress()
             setSelected([])
@@ -849,7 +837,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
             
             const body ={
@@ -882,7 +870,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
             
             const body ={
@@ -915,7 +903,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
 
         const body ={
@@ -948,7 +936,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
         const body ={
             file: fileName,
@@ -983,7 +971,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1195,7 +1183,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1241,7 +1229,7 @@ const IsoCtrl = () => {
         setErrorReportD(false)
         setBlocked(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1286,7 +1274,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1323,7 +1311,7 @@ const IsoCtrl = () => {
         setErrorReportD(false)
         setBlocked(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         if (selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
@@ -1349,7 +1337,6 @@ const IsoCtrl = () => {
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/returnIso", options)
                 .then(response => response.json())
                 .then(json =>{
-                    console.log(json)
                     if(json.blocked){
                         setBlocked(true)
                     }else{
@@ -1382,7 +1369,7 @@ const IsoCtrl = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
 
         const body = {
@@ -1414,7 +1401,7 @@ const IsoCtrl = () => {
         setErrorReportD(false)
         setBlocked(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
 
         const body = {
@@ -1454,7 +1441,7 @@ const IsoCtrl = () => {
         setErrorReportD(false)
         setBlocked(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
 
         const body = {
@@ -1493,7 +1480,7 @@ const IsoCtrl = () => {
         setErrorReportD(false)
         setBlocked(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
 
 
@@ -1528,7 +1515,7 @@ const IsoCtrl = () => {
         setErrorReportD(false)
         setBlocked(false)
         setErrorDeleteUser(false)
-        setErrorRoles(false)
+        
         localStorage.setItem("update", true)
 
         const body = {
@@ -1549,8 +1536,6 @@ const IsoCtrl = () => {
         .then(json =>{
             if(json.success){
                 setTransactionSuccess(true)
-            }else{
-                setErrorRoles(true)
             }
         })
         setUpdateData(!updateData)
@@ -1631,7 +1616,7 @@ const IsoCtrl = () => {
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
-    }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab != "Progress" && currentTab !== "Modelled"){
+    }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab !== "Progress" && currentTab !== "Modelled"){
         actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
@@ -1642,6 +1627,11 @@ const IsoCtrl = () => {
 
     if(currentTab === "Users"){
         actionText = null
+    }
+
+    if(currentRole === "Project"){
+        actionText = null
+        actionButtons = null
     }
     
     return (
@@ -1744,7 +1734,7 @@ const IsoCtrl = () => {
                             </td>   
                             <div className="stateTable__container">
                                 
-                                <StateTable updateData={updateData} currentRole = {currentRole} progress={progress} realProgress={realProgress} progressISO={progressISO} realProgressISO={realProgressISO}/>
+                                <StateTable updateData={updateData} currentRole = {currentRole}/>
                                
                             </div>            
 

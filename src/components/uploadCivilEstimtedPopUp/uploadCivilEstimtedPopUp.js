@@ -70,7 +70,6 @@ export default class UploadCivilEstimatedPopUp extends Component {
                     },
                     body: JSON.stringify(readString(csv).data)
                 }
-                console.log(readString(csv).data)
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadCivEstimatedReport", options)
                 .then(response => response.json())
                 .then(async json =>{

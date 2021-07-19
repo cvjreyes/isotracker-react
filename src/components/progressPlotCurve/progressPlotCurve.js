@@ -89,13 +89,11 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 		await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/gcurve", options)
 		.then(response => response.json())
 		.then(async json=>{
-            console.log(this.state)
 			let weeks = []
 			for(let i = 0; i < json.rows.length; i++){
                 
 				let progress = (json.rows[i].progress_pipes*(this.state.pipesPercentage/100) + json.rows[i].progress_equis*(this.state.equisPercentage/100) + json.rows[i].progress_insts*(this.state.instsPercentage/100) + json.rows[i].progress_civils*(this.state.civilsPercentage/100) + json.rows[i].progress_elecs*(this.state.elecsPercentage/100)).toFixed(2)
 				let estimated = (json.rows[i].estimated_pipes*(this.state.pipesPercentage/100) + json.rows[i].estimated_equis*(this.state.equisPercentage/100) + json.rows[i].estimated_insts*(this.state.instsPercentage/100) + json.rows[i].estimated_civils*(this.state.civilsPercentage/100) + json.rows[i].estimated_elecs*(this.state.elecsPercentage/100)).toFixed(2)
-                console.log(progress)
                 if(progress <= 0){
                     progress= null
                 }
@@ -103,7 +101,6 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
             }
 
 			await this.setState({data: weeks})
-			console.log(this.state.data)
 		})
 	}
 	

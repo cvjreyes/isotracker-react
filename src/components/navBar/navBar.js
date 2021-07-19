@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
 const NavBar = (props) =>{
     const classes = useStyles();
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const [anchorElIso, setAnchorElIso] = React.useState(null);
     const history = useHistory();
     const[username, setUsername] = React.useState("");
     const[progressButtons, setProgressButtons] = React.useState(null);
@@ -65,7 +64,6 @@ const NavBar = (props) =>{
     
 
     const handleClickUser = (event) => {
-        console.log(event.currentTarget)
         setAnchorElUser(event.currentTarget);
     };
 
@@ -83,12 +81,10 @@ const NavBar = (props) =>{
     };
     const handleHome = () =>{
         setAnchorElUser(null);
-        setAnchorElIso(null);
         history.push("/"+process.env.REACT_APP_PROJECT+"/isotracker");
     }
     const handleChangePassword = () =>{
         setAnchorElUser(null);
-        setAnchorElIso(null);
         history.push("/"+process.env.REACT_APP_PROJECT+"/changepassword");
     }
 

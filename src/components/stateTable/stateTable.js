@@ -56,8 +56,6 @@ const StateTable = props =>{
 
     const [progress, setProgress] = useState(0)
     const [progressIso, setProgressIso] = useState(0)
-    const [realProgress, setRealProgress] = useState(0)
-    const [realProgressISO, setRealProgressIso] = useState(0)
     
 
     const [realProgressTD, setRealProgressTD] = useState()
@@ -77,7 +75,6 @@ const StateTable = props =>{
 
     useEffect(async ()=>{
         if(loading){
-            console.log("laoding")
             if(process.env.REACT_APP_PROGRESS === "0"){
                 fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
                 .then(response => response.json())
@@ -139,7 +136,6 @@ const StateTable = props =>{
                 fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
                     .then(response => response.json())
                     .then(json => {
-                        console.log(json["model"])
                         setDesignR0(json["designR0"])
                     setDesignR1(json["designR1"])
                     setDesignR2(json["designR2"])
@@ -195,14 +191,12 @@ const StateTable = props =>{
                     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgressISO", options)
                     .then(response => response.json())
                     .then(async json =>{
-                        console.log(json)
                          await setProgressIso([json.progressISO, json.realprogressISO])
                     })
                     
                     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgress", options)
                     .then(response => response.json())
                     .then(async json =>{
-                        console.log(json)
                          await setProgress([json.progress, json.realprogress])
                     })
                     if(props.currentRole === "SpecialityLead"){

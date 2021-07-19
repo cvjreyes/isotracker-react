@@ -72,7 +72,6 @@ const Civil = () => {
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/weight", options)
             .then(response => response.json())
             .then(json => {
-                console.log(json)
                 setWeight(json.weight)
                 setProgress(json.progress)
             }
@@ -136,7 +135,7 @@ const Civil = () => {
     var currentUser = secureStorage.getItem('user')
     var table = null
 
-    var dataTableHeight = 8
+    dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
     let adminBtn = null

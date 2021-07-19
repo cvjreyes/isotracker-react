@@ -31,7 +31,6 @@ class UsersDataTable extends React.Component{
   
 
   async componentDidMount(){
-    console.log("mount")
     const options = {
       method: "GET",
       headers: {
@@ -58,7 +57,6 @@ class UsersDataTable extends React.Component{
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/users", options)
         .then(response => response.json())
         .then(async json => {
-          let rows = []
           for(let i = 0; i < json.length; i++){
               let row = {user_id: json[i].id, username: json[i].name, email: json[i].email, roles: null, actions: null}
               
@@ -110,7 +108,7 @@ class UsersDataTable extends React.Component{
 
   async componentDidUpdate(prevProps, prevState){
 
-    if(prevProps.updateData === false && this.props.updateData === true || prevProps.updateData === true && this.props.updateData === false && this.state.mounted === true){
+    if((prevProps.updateData === false && this.props.updateData === true) || (prevProps.updateData === true && this.props.updateData === false && this.state.mounted === true)){
         const options = {
             method: "GET",
             headers: {
@@ -137,9 +135,6 @@ class UsersDataTable extends React.Component{
           await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/users", options)
               .then(response => response.json())
               .then(async json => {
-                const dataLength = json.length
-                console.log("Hay ", dataLength)
-                let rows = []
                 for(let i = 0; i < json.length; i++){
                     
                     let row = {user_id: json[i].id, username: json[i].name, email: json[i].email, roles: null, actions: null}

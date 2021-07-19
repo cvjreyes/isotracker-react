@@ -33,7 +33,6 @@ const ActionExtra = (props) =>{
     }
 
     function toIssue() {
-      console.log("ASD")
       props.toIssue(transmittal,date)
     }
 

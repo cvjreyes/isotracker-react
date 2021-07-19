@@ -69,7 +69,6 @@ class procInstTable extends React.Component{
     const body ={
       type : this.props.currentTab
     }
-    console.log(body)
     const options = {
       method: "POST",
       headers: {
@@ -171,7 +170,6 @@ class procInstTable extends React.Component{
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+fileName, options)
     .then(res => res.blob())
     .then(response => {
-      console.log(response)
       const file = new Blob([response], {
         type: "application/pdf"
       });

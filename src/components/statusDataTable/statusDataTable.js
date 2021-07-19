@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
-import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import './statusDataTable.css'
 import { Link } from 'react-router-dom';
@@ -39,7 +38,6 @@ class StatusDataTable extends React.Component{
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
           .then(response => response.json())
           .then(json => {
-            console.log(this.state.weights)
               var rows = []
               var row = null;
               
@@ -90,7 +88,6 @@ class StatusDataTable extends React.Component{
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
           .then(response => response.json())
           .then(json => {
-            console.log(this.state.weights)
               var rows = []
               var row = null;
               for(let i = 0; i < json.rows.length; i++){
@@ -151,7 +148,6 @@ class StatusDataTable extends React.Component{
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
             .then(response => response.json())
             .then(json => {
-              console.log(this.state.weights)
                 var rows = []
                 var row = null;
                 
@@ -203,7 +199,6 @@ class StatusDataTable extends React.Component{
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
             .then(response => response.json())
             .then(json => {
-              console.log(this.state.weights)
                 var rows = []
                 var row = null;
                 for(let i = 0; i < json.rows.length; i++){
@@ -244,8 +239,6 @@ class StatusDataTable extends React.Component{
 
   getMaster(fileName){
 
-    console.log(fileName)
-
     const options = {
       method: "GET",
       headers: {
@@ -255,7 +248,6 @@ class StatusDataTable extends React.Component{
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+fileName, options)
     .then(res => res.blob())
     .then(response => {
-      console.log(response)
       const file = new Blob([response], {
         type: "application/pdf"
       });
@@ -314,18 +306,7 @@ class StatusDataTable extends React.Component{
     ),
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
-            /*
-      this.state.searchedColumn === "id" ? (
-        console.log(record[dataIndex], value),
-        record[dataIndex]
-          ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
-          : ''
-        ) : (
-          console.log(record[dataIndex], value),
-          record[dataIndex]
-          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-          : ''
-        ),*/
+
         record[dataIndex].props 
           ? record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase())
           : (record[dataIndex]
@@ -378,7 +359,6 @@ class StatusDataTable extends React.Component{
 
   render() {
 
-    console.log(this.state.searchedColumn)
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);

@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from 'react'
-import NavBar from '../../components/navBar/navBar'
 import NavisTable from '../../components/navisTable/navisTable';
+import "./navis.css"
 
 const Navis = () => {
 
@@ -8,11 +8,6 @@ const Navis = () => {
     const SecureStorage = require("secure-web-storage");
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
-    const [roles, setRoles] = useState();
-    const[pagination, setPagination] = useState(8)
-    const[weight, setWeight] = useState();
-    const[progress, setProgress] = useState();
-
     
 
     useEffect(()=>{
@@ -31,7 +26,6 @@ const Navis = () => {
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
             .then(response => response.json())
             .then(json => {
-                setRoles(json.roles);
                 if(secureStorage.getItem('role') !== null){
                     setCurrentRole(secureStorage.getItem('role'))
                 }else{
@@ -46,28 +40,7 @@ const Navis = () => {
             
     },[currentRole]);
 
-    useEffect(()=>{
 
-        const options = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        }
-       
-
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/weight", options)
-            .then(response => response.json())
-            .then(json => {
-                setWeight(json.weight)
-                setProgress(json.progress)
-            }
-            )
-            .catch(error => {
-                console.log(error);
-            })       
-            
-    },[]);
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -91,22 +64,7 @@ const Navis = () => {
         }
     });
 
-    var dataTableHeight = "550px"
-    let navBtnsMargin = "600px"
 
-    if (pagination === 8){
-        dataTableHeight = "550px"
-        navBtnsMargin = "600px"
-    }if(pagination === 25){
-        dataTableHeight = "1250px"
-        navBtnsMargin = "1200px"
-    }if(pagination === 50){
-        dataTableHeight = "2250px"
-        navBtnsMargin = "2150px"
-    }if(pagination === 100){
-        dataTableHeight = "4250px"
-        navBtnsMargin = "4000px"
-    }
 
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
@@ -118,7 +76,6 @@ const Navis = () => {
     var currentUser = secureStorage.getItem('user')
     var table = null
 
-    var dataTableHeight = 8
 
     table = <NavisTable/>
 
@@ -127,19 +84,8 @@ const Navis = () => {
     return(
         
         <body>
-
-            <div className="equipments__container">  
-                <center>
-                    <h2 className="title__container">
-
-                        <b >      
-                            <i className="iso__title">Navis XML Generator</i>
-                        </b>
-                    </h2>
-                </center>
-
-
-                <div style={{height: dataTableHeight}}>
+            <div className="navis__container">  
+                <div>
                     <br></br>
                     <br></br> 
 

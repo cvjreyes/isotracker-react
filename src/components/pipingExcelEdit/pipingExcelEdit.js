@@ -4,32 +4,6 @@ import { HotTable } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.css';
 
 
-const CryptoJS = require("crypto-js");
-    const SecureStorage = require("secure-web-storage");
-    var SECRET_KEY = 'sanud2ha8shd72h';
-    
-    var secureStorage = new SecureStorage(localStorage, {
-        hash: function hash(key) {
-            key = CryptoJS.SHA256(key, SECRET_KEY);
-    
-            return key.toString();
-        },
-        encrypt: function encrypt(data) {
-            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
-    
-            data = data.toString();
-    
-            return data;
-        },
-        decrypt: function decrypt(data) {
-            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
-    
-            data = data.toString(CryptoJS.enc.Utf8);
-    
-            return data;
-        }
-    });
-
 class PipingExcelEdit extends React.Component{
   state = {
     searchText: '',
@@ -85,7 +59,6 @@ class PipingExcelEdit extends React.Component{
   fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/piping/types", options)
     .then(response => response.json())
     .then(json => {
-        console.log(json)
       let types_options = []
       for(let i = 0; i < json.rows.length; i++){
         types_options.push(json.rows[i].name)
@@ -115,11 +88,7 @@ class PipingExcelEdit extends React.Component{
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/piping/estimated", options)
     .then(response => response.json())
     .then(json =>{
-      if(json.error){
-        console.log("error")
-      }else{
-        console.log("success")
-      }
+
     })
   }
 
