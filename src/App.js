@@ -14,6 +14,7 @@ import Home from './pages/home/home'
 import Piping from './pages/piping/piping';
 import ProgressCurve from './pages/progressCurve/progressCurve';
 import Navis from './pages/navis/navis';
+import WelcomeLoginF from './pages/welcomeLoginF/welcomeLoginF';
 require('dotenv').config();
 
 
@@ -36,6 +37,7 @@ function App() {
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/piping"} component={Piping}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/3dprogress"} component={ProgressCurve}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/navis"} component={Navis}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/welcomeLoginF"} component={WelcomeLoginF}></Route>
         </Switch>
       </Router>
   
