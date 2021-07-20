@@ -28,15 +28,15 @@ const SelectPag = (props) => {
     
     return(
 
-    <div style={{float:"left"}}>
+    <div style={{float:"right", width:"120px", marginRight:"40px"}}>
       <FormControl className={classes.formControl}>
-        <InputLabel id="selectPageLabel" style={{fontSize:"13.33px",  fontFamily:"Quicksand"}}>Nº of entries</InputLabel>
+        <InputLabel id="selectPageLabel" style={{fontSize:"18px",  fontFamily:"Quicksand", color:"white", width:"120px"}}>Nº of entries</InputLabel>
         <Select
           labelId="selectPage"
           id="selectPage"
           value={pag}
           onChange={handleChange}
-          style={{fontSize:"13.33px", fontFamily:"Quicksand"}}
+          style={{fontSize:"18px", fontFamily:"Quicksand",color:"white", width: "140px"}}
         >
           <MenuItem value={8} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>8</MenuItem>
           <MenuItem value={25} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>25</MenuItem>

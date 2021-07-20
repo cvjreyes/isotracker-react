@@ -4,7 +4,7 @@
     color: rgb(99, 107, 111);
     display: table-row-group;
     font-family: 'Quicksand', sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
     height: 63px;
     line-height: 22.4px;
@@ -27,13 +27,15 @@
     font-family: 'Quicksand', sans-serif;
     font-size: 14px;
     font-weight: 700;
-    height: 63px;
+    height: 280px;
+    width: 136%;
     line-height: 22.4px;
     text-indent: 0px;
     text-size-adjust: 100%;
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    
 }
 
 .statusTable__td{
@@ -53,7 +55,7 @@
     text-indent: 0px;
     text-size-adjust: 100%;
     vertical-align: middle;
-    width: 800px;
+    width: 1000px;
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -63,7 +65,7 @@
     border: 0px solid rgb(99, 107, 111);
     background-attachment: scroll;
     background-clip: border-box;
-    background-color: rgb(107, 157, 187);
+    background-color: #338df1;
     background-image: none;
     background-origin: padding-box;
     background-position-x: 0%;
@@ -74,7 +76,7 @@
     color: rgb(255, 255, 255);
     display: table-cell;
     font-family: 'Quicksand', sans-serif;
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 400;
     height: 21px;
     line-height: 20.8px;
@@ -90,6 +92,7 @@
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    
 }
 
 .statusTable__state{
@@ -100,7 +103,82 @@
     background-color: white;
     display: table-cell;
     font-family: 'Quicksand', sans-serif;
-    font-size: 13px;
+    font-size: 18px;
+    font-weight: 400;
+    height: 21px;
+    line-height: 20.8px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    text-align: center;
+    text-indent: 0px;
+    text-size-adjust: 100%;
+    vertical-align: middle;
+    -webkit-border-horizontal-spacing: 0px;
+    -webkit-border-vertical-spacing: 0px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.statusTable__state__hold{
+    border: 0px solid rgb(99, 107, 111);
+    border-collapse: collapse;
+    box-sizing: border-box;
+    color: rgb(99, 107, 111);
+    background-color: #ffc2cd;
+    display: table-cell;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 21px;
+    line-height: 20.8px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    text-align: center;
+    text-indent: 0px;
+    text-size-adjust: 100%;
+    vertical-align: middle;
+    -webkit-border-horizontal-spacing: 0px;
+    -webkit-border-vertical-spacing: 0px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.statusTable__state__deleted{
+    border: 0px solid rgb(99, 107, 111);
+    border-collapse: collapse;
+    box-sizing: border-box;
+    color: rgb(99, 107, 111);
+    background-color: #DCDCDC;
+    display: table-cell;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    height: 21px;
+    line-height: 20.8px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    text-align: center;
+    text-indent: 0px;
+    text-size-adjust: 100%;
+    vertical-align: middle;
+    -webkit-border-horizontal-spacing: 0px;
+    -webkit-border-vertical-spacing: 0px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.statusTable__state__stock{
+    border: 0px solid rgb(99, 107, 111);
+    border-collapse: collapse;
+    box-sizing: border-box;
+    color: rgb(99, 107, 111);
+    background-color: #d4f1dd;
+    display: table-cell;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
     font-weight: 400;
     height: 21px;
     line-height: 20.8px;
@@ -124,7 +202,7 @@
     color: rgb(99, 107, 111);
     display: table-cell;
     font-family: 'Quicksand', sans-serif;
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 400;
     height: 21px;
     line-height: 20.8px;
@@ -149,7 +227,7 @@
     color: rgb(99, 107, 111);
     display: table-cell;
     font-family: 'Quicksand', sans-serif;
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 400;
     height: 21px;
     line-height: 20.8px;
@@ -174,7 +252,7 @@
     color: rgb(99, 107, 111);
     display: table-cell;
     font-family: 'Quicksand', sans-serif;
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 400;
     height: 21px;
     line-height: 20.8px;
@@ -189,7 +267,7 @@
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    background-color: lightblue;
+    background-color: white;
 }
 
 .statusTable__value{
@@ -206,7 +284,7 @@
     color: rgb(99, 107, 111);
     display: table-cell;
     font-family: Quicksand, sans-serif;
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 400;
     height: 21px;
     line-height: 20.8px;

@@ -1,18 +1,15 @@
 .report__btns__container{
-    border-collapse: collapse;
-    box-sizing: border-box;
-    display: table-cell;
-    font-family: 'Quicksand', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 22.4px;
-    text-size-adjust: 100%;
-    vertical-align: middle;
-    -webkit-border-horizon: 0px;
-    -webkit-border-vertical: 0px;
-    -webkit-tap-highlight-color: rgb(0, 0, 0, 0);
+    width: 180px;
 }
 
-.td__btns{
-
+.report__buttons{
+    border-radius: 1em 0em 0em 1em;
+    width: 111%;
+    margin-left: -8px;
+    border: 0;
+    padding-right: 100px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 18px;
 }
+

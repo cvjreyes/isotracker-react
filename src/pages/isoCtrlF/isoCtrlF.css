@@ -1,0 +1,92 @@
+.isoTrackerLogo__image2{
+    width: 270.57px;
+    height: 80.57px;
+    margin-top: 110px;
+    margin-left: 100px;
+}
+
+.roleSelector__containerF{
+    width: 120px;
+    margin-left: 90px;
+    margin-top: 30px;
+}
+
+.stateTable__containerF{
+    float: right;
+    margin-top: 150px;
+    border-radius: 2em;
+}
+
+.isotracker__row{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.isotracker__column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.column1{
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+}
+
+.isotracker__table__container{
+    width: 92.5%;
+    margin-left: 100px;
+    margin-top: 60px;
+}
+
+.isotracker__table__navBar__container{
+    background-color: #0070ed;
+    columns: 2;
+    height: 60px;
+    border-radius: 1em 1em 0em 0em;
+    
+}
+
+.isotracker__table__navBar{
+    color:white;
+    border-radius: 1em 1em 0em 0em;
+}
+
+.isotracker__table__trays{
+    width: 10%;
+    height: 300px;
+    border-radius: 0em 0em 0em 1em;
+    border: 1px solid lightgray;
+    top: 0;
+    position: sticky;
+    float: top;
+}
+
+.isotracker__table__table{
+    border-radius: 0em 0em 0em 1em;
+    border: 1px solid lightgray;
+}
+
+.isotracker__table__trays__group{
+    font-size: 20px;
+    margin-bottom: 0px;
+
+}
+
+.isotracker__table__tray__and__table__container{
+    border-radius: 0em 0em 1em 1em;
+}
+
+.trays__container{
+    width: 90%;
+    height: 90%;
+    margin-left: 20px;
+    margin-top: -20px;
+    font-weight: bold;
+}
+
+.isotracker__table__table__container{
+    margin: 10px 10px 10px 10px;
+}
