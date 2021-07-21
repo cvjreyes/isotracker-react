@@ -28,17 +28,17 @@ const SelectPag = (props) => {
     
     return(
 
-    <div style={{float:"right", width:"120px", marginRight:"40px"}}>
+    <div style={{float:"right", width:"120px", marginRight:"20px", height: "40px"}}>
       <FormControl className={classes.formControl}>
-        <InputLabel id="selectPageLabel" style={{fontSize:"18px",  fontFamily:"Quicksand", color:"white", width:"120px"}}>Nº of entries</InputLabel>
+        <InputLabel id="selectPageLabel" style={{fontSize:"15px",  fontFamily:"Quicksand", color:"white", width:"100px", marginTop:"-10px"}}>Nº of entries</InputLabel>
         <Select
           labelId="selectPage"
           id="selectPage"
           value={pag}
           onChange={handleChange}
-          style={{fontSize:"18px", fontFamily:"Quicksand",color:"white", width: "140px"}}
+          style={{fontSize:"18px", fontFamily:"Quicksand",color:"white", width: "120px", height:"20px"}}
         >
-          <MenuItem value={8} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>8</MenuItem>
+          <MenuItem value={10} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>10</MenuItem>
           <MenuItem value={25} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>25</MenuItem>
           <MenuItem value={50} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>50</MenuItem>
           <MenuItem value={100} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>100</MenuItem>

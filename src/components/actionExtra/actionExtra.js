@@ -54,7 +54,7 @@ const ActionExtra = (props) =>{
                     shrink: true,
                     }}
                 />
-                <button type="button" className="btn btn-sm btn-success" name="date" value="date" style={{marginRight:"5px", marginLeft:"5px", width:"110px"}} onClick={toIssue}>To Issue</button>
+                <button type="button" className="action__btn" name="date" value="date" onClick={toIssue}>To Issue</button>
 
             </form>
 

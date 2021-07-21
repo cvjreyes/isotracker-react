@@ -5,11 +5,15 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import "./roleDropDown.css"
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
   },
+  title: {
+    fontSize: "40px"
+  }
 }));
 
 
@@ -73,9 +77,10 @@ const RoleDropDown = (props) => {
     setAnchorEl(null);
   };
 
+
   return (
     <div className={classes.root} style={{backgroundColor: "#F5F8FB"}}>
-      <List component="nav" aria-label="Device settings">
+      <List component="nav" aria-label="Device settings" >
         <ListItem
           button
           aria-haspopup="true"
@@ -83,10 +88,11 @@ const RoleDropDown = (props) => {
           aria-label="Role"
           onClick={handleClickListItem}
         >
-          <ListItemText primary="Select Role" secondary={options[selectedIndex]} />
+          <ListItemText className ={classes.title} primary="Select Role" secondary={options[selectedIndex]} />
         </ListItem>
       </List>
       <Menu
+      
         id="lock-menu"
         anchorEl={anchorEl}
         keepMounted
@@ -95,6 +101,7 @@ const RoleDropDown = (props) => {
       >
         {options.map((option, index) => (
           <MenuItem
+            style={{fontSize: "20px"}}
             key={option}
             selected={index === selectedIndex}
             onClick={(event) => handleMenuItemClick(event, index)}

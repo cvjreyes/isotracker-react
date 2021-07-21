@@ -37,12 +37,19 @@ import ModelledDataTable from "../../components/modelledDataTable/modelledDataTa
 import UsersDataTable from "../../components/usersDataTable/usersDataTable"
 
 import IsoTrackerLogo from "../../assets/images/isotracker.png"
+import Trash from "../../assets/images/Trash.png"
+import Hold from "../../assets/images/Prohibit.png"
+import Issued from "../../assets/images/FolderOpen.png"
+import Reports from "../../assets/images/Notepad.png"
+import Modelled from "../../assets/images/Cube.png"
+import ProcInst from "../../assets/images/MagnifyingGlass.png"
+import Progress from "../../assets/images/ChartBar.png"
 
 const IsoCtrlF = () => {
    
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    const[pagination, setPagination] = useState(8) //Controla el numero de entradas por pagina de la tabla
+    const[pagination, setPagination] = useState(10) //Controla el numero de entradas por pagina de la tabla
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
     const [selected, setSelected] = useState([]);
@@ -91,16 +98,16 @@ const IsoCtrlF = () => {
 
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) //Controla la tabla y botones que se muestran
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
-    var dataTableHeight = "370px"
+    var dataTableHeight = "380px"
 
-    if (pagination === 8){
-        dataTableHeight = "450px"
+    if (pagination === 10){
+        dataTableHeight = "460px"
     }if(pagination === 25){
-        dataTableHeight = "1250px"
+        dataTableHeight = "1050px"
     }if(pagination === 50){
-        dataTableHeight = "2250px"
+        dataTableHeight = "1970px"
     }if(pagination === 100){
-        dataTableHeight = "4330px"
+        dataTableHeight = "3860px"
     }
 
     //Componentes de la pagina que varian en funcion del estado
@@ -1578,22 +1585,22 @@ const IsoCtrlF = () => {
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
     }if(currentRole === "SpecialityLead"){
         if (currentTab === "Users"){
-            usersButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}} onClick={() => setCurrentTab("Users")}><b>Users</b></button>
+            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
             secureStorage.setItem("tab", "Users")
         }else{
-            usersButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Users")}><b>Users</b></button>
+            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
         }
     }if(currentTab === "Users"){
  
         tableContent = <UsersDataTable pagination = {pagination} updateData={updateData} deleteUser={deleteUser.bind(this)} submitRoles={submitRoles.bind(this)}/>
-        if (pagination === 8){
-            dataTableHeight = "650px"
+        if (pagination === 10){
+            dataTableHeight = "500px"
         }if(pagination === 25){
-            dataTableHeight = "1500px"
+            dataTableHeight = "1120px"
         }if(pagination === 50){
-            dataTableHeight = "2720px"
+            dataTableHeight = "2150px"
         }if(pagination === 100){
-            dataTableHeight = "5200px"
+            dataTableHeight = "4200px"
         }
     }
 
@@ -1623,7 +1630,7 @@ const IsoCtrlF = () => {
     }
     if(currentTab === "Modelled"){
         actionText = null
-        actionButtons = <button className="btn btn-sm btn-success" style={{marginTop:"40px"}} onClick={()=>downloadModelled()}>Export</button>
+        actionButtons = <button className="action__btn" onClick={()=>downloadModelled()}>Export</button>
     }
 
     if(currentTab === "Users"){
@@ -1635,11 +1642,134 @@ const IsoCtrlF = () => {
         actionButtons = null
     }
 
-    console.log(dataTableHeight)
+    let recycleBinBtn, onHoldBtn, issuedBtn, reportsBtn, processBtn, instrumentationBtn = null
+
+    if(currentTab === "Recycle bin"){
+        recycleBinBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Recycle bin")} style={{backgroundColor:"#0000FF", marginLeft:"232px"}}><img src={Trash} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Trash</p></button>
+    }else{
+        recycleBinBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Recycle bin")} style={{marginLeft:"232px"}}><img src={Trash} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Trash</p></button>
+    }
+
+    if(currentTab === "On hold"){
+        onHoldBtn = <button className="navBar__button" onClick={()=>setCurrentTab("On hold")} style={{backgroundColor:"#0000FF"}}><img src={Hold} alt="hold" className="navBar__icon"></img><p className="navBar__button__text">Hold</p></button>
+
+    }else{
+        onHoldBtn = <button className="navBar__button" onClick={()=>setCurrentTab("On hold")}><img src={Hold} alt="hold" className="navBar__icon"></img><p className="navBar__button__text">Hold</p></button>
+    }
+
+    if(currentTab === "Issued"){
+        issuedBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Issued")} style={{backgroundColor:"#0000FF"}}><img src={Issued} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Issued</p></button>
+
+    }else{
+        issuedBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Issued")}><img src={Issued} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text" >Issued</p></button>
+    }
+
+    if(currentTab === "Reports"){
+        reportsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Reports")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Reports</p></button>
+        pageSelector = null
+    }else{
+        reportsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Reports")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Reports</p></button>
+    }
+
+    if(currentTab === "Progress"){
+        progressBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Progress")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={Progress} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Progress</p></button>
+        pageSelector = null
+    }else{
+        progressBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Progress")} style={{width:"120px"}}><img src={Progress} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Progress</p></button>
+    }
+
+    if(currentTab === "Modelled"){
+        modelledBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Modelled")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={Modelled} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Modelled</p></button>
+
+    }else{
+        modelledBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Modelled")} style={{width:"120px"}}><img src={Modelled} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Modelled</p></button>
+    }
+
+    if(currentTab === "Process"){
+        processBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Process")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Process</p></button>
+
+    }else{
+        processBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Process")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Process</p></button>
+    }
+
+    if(currentTab === "Instrumentation"){
+        instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrumentation")} style={{backgroundColor:"#0000FF", width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
+
+    }else{
+        instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrumentation")} style={{width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
+    }
     
     return (
          
         <body>
+            <center>
+                    <Collapse in={loading}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"3"}} severity="info"
+                            >
+                            Processing...
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorPI}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            At least one isometric was on revision and wasn't sent to LDE/Isocontrol
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={transactionSuccess}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                            >
+                            Successful!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorUnclaim}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            Can't unclaim an iso assigned by LOS!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorUnclaimR}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            Can't unclaim a returned ISO!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorReports}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            Missing columns!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorCL}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            Missing clean!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={warningSelected}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="warning"
+                            >
+                            Select at least one isometric!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={blocked}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            The isometric has been locked! Contact the administrator
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorReportD}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            The line {errorReportDIndex} of the report has an invalid type or progress!
+                        </Alert>
+                    </Collapse>
+                    <Collapse in={errorDeleteUser}>
+                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                            >
+                            This user has claimed isometrics and can't be deleted!
+                        </Alert>
+                    </Collapse>
+                </center>
             <NavBar onChange={value => setCurrentTab(value)}/>
             <div className="isotracker__row">
                 <div className="isotracker__column">
@@ -1661,6 +1791,15 @@ const IsoCtrlF = () => {
             <table className="isotracker__table__container">
                     <tr className="isotracker__table__navBar__container">
                         <th  colspan="2" className="isotracker__table__navBar">
+                            {recycleBinBtn}
+                            {onHoldBtn}
+                            {issuedBtn}
+                            {reportsBtn}
+                            {progressBtn}
+                            {modelledBtn}
+                            {processBtn}
+                            {instrumentationBtn}
+                            {usersButton}
                             {pageSelector}
                         </th>
                     </tr>
@@ -1682,7 +1821,15 @@ const IsoCtrlF = () => {
                         </td>
                     </tr>
                 </table>
-
+ 
+                <center className="actionBtns__container">
+                    {actionText}     
+                </center>
+                <center className="actionBtns__container">   
+                       
+                    {actionButtons}
+                </center>
+                <br></br>
         </body>
     );
 };

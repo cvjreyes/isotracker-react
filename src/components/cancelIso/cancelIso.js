@@ -46,7 +46,7 @@ export default class CancelIso extends Component {
         
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
-                <button class="btn btn-sm" style={{backgroundColor: "grey", color:"white", width:"110px", height:"32px", marginTop:"1px"}} onClick={() => this.openModal()}>Return</button>
+                <button className="action__btn" onClick={() => this.openModal()}>Return</button>
                 <div>
                     <Modal visible={this.state.visible} width="650" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="header__container">

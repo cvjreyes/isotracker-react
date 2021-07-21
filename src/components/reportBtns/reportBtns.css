@@ -4,12 +4,25 @@
 
 .report__buttons{
     border-radius: 1em 0em 0em 1em;
-    width: 111%;
+    width: 115%;
     margin-left: -8px;
     border: 0;
     padding-right: 100px;
     padding-top: 5px;
     padding-bottom: 5px;
     font-size: 18px;
+    margin-bottom: 4px;
+    background-color: #F5F8FA;
+    transition: 0.3s;
+}
+
+.report__buttons:hover{
+    background-color: #338df1;
+    color: white;
+}
+
+.report__buttons:focus{
+    background-color: #0070ed;
+    color: white;
 }
 

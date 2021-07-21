@@ -31,15 +31,15 @@ const Report_btns = props => {
     var StatusButton, HistoryButton
     if(props.currentTab === "Status"){
         secureStorage.setItem("tab", "Status")
-        StatusButton = <button  type="button" className="report__buttons text-left" style={{backgroundColor: "#0070ed", color:'white', paddingRight:"107px"}}>Status</button>
+        StatusButton = <button  type="button" className="report__buttons text-left">Status</button>
     }else{
-        StatusButton = <button  type="button" className="report__buttons text-left"  style={{backgroundColor: "#F5F8FA", paddingRight:"107px"}} onClick={() => {props.onChange("Status")}}>Status</button>
+        StatusButton = <button  type="button" className="report__buttons text-left"  onClick={() => {props.onChange("Status")}}>Status</button>
     }
     if(props.currentTab === "History"){
         secureStorage.setItem("tab", "History")
-        HistoryButton = <button  type="button" className="report__buttons text-left" style={{backgroundColor: "#0070ed", color:'white'}}>History</button>
+        HistoryButton = <button  type="button" className="report__buttons text-left" >History</button>
     }else{
-        HistoryButton = <button  type="button" className="report__buttons text-left" style={{backgroundColor: "#F5F8FA"}} onClick={() => {props.onChange("History");}}>History</button>
+        HistoryButton = <button  type="button" className="report__buttons text-left" onClick={() => {props.onChange("History");}}>History</button>
     }
     return(
 

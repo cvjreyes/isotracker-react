@@ -26,16 +26,10 @@ const CryptoJS = require("crypto-js");
         }
     });
 const MyTrayBtn = props =>{
-    var myTrayBtn
-    if(props.currentTab === "My Tray"){
-        secureStorage.setItem("tab", "My Tray")
-        myTrayBtn = <button  type="button" className="myTray__button text-left"  style={{backgroundColor: "#0070ed", color:'white'}}>My tray</button>
-    }else{
-        myTrayBtn = <button  type="button" className="myTray__button text-left" style={{backgroundColor: "#F5F8FA"}} onClick={() => {props.onChange("My Tray")}}>My tray</button>
-    }
+
     return(
         <td className="myTrayBtn__container">
-            {myTrayBtn}
+            <button  type="button" className="myTray__button text-left" onClick={() => {props.onChange("My Tray")}}>My tray</button>
         </td>
     );
 };
