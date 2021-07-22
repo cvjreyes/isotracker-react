@@ -55,7 +55,7 @@ class StatusDataTable extends React.Component{
                   condition = "ON HOLD"
                 }
                 if(json.rows[i].tpipes_id){
-                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, condition: condition, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
+                  row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, type: json.rows[i].name, condition: condition, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
                 }else{
                   row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
                 }
@@ -165,7 +165,7 @@ class StatusDataTable extends React.Component{
                     condition = "ON HOLD"
                   }
                   if(json.rows[i].tpipes_id){
-                    row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, condition: condition, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
+                    row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, type: json.rows[i].name, condition: condition, MAXWeight: this.state.weights[json.rows[i].tpipes_id - 1],realProgress: (json.rows[i].realprogress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].realprogress + ")" , progress: (json.rows[i].progress / this.state.weights[json.rows[i].tpipes_id - 1] * 100).toFixed(2) + "% (" + json.rows[i].progress + ")"}
                   }else{
                     row = {key:i, status: json.rows[i].to, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>}
                   }
@@ -390,6 +390,15 @@ class StatusDataTable extends React.Component{
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Type</div>,
+        dataIndex: 'type',
+        key: 'type',
+        ...this.getColumnSearchProps('type'),
+        sorter: {
+          compare: (a, b) => { return a.type.localeCompare(b.type)},
         },
       },
       {
