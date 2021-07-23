@@ -122,6 +122,9 @@ const Piping = () => {
     }if(pagination === 100){
         dataTableHeight = "4250px"
         navBtnsMargin = "4000px"
+    }if(pagination === 500){
+        dataTableHeight = "19300px"
+        navBtnsMargin = "19000px"
     }
 
     document.body.style.zoom = 0.9

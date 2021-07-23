@@ -100,6 +100,8 @@ const IsoCtrl = () => {
         dataTableHeight = "2250px"
     }if(pagination === 100){
         dataTableHeight = "4330px"
+    }if(pagination === 500){
+        dataTableHeight = "19300px"
     }
 
     //Componentes de la pagina que varian en funcion del estado

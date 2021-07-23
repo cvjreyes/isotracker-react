@@ -41,7 +41,8 @@ const SelectPag = (props) => {
           <MenuItem value={8} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>8</MenuItem>
           <MenuItem value={25} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>25</MenuItem>
           <MenuItem value={50} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>50</MenuItem>
-          <MenuItem value={100} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>100</MenuItem>
+          <MenuItem value={100} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>100</MenuItem>     
+          <MenuItem value={500} style={{fontSize:"13.33px", fontFamily:"Quicksand"}}>500</MenuItem>
         </Select>
       </FormControl>
     </div>
