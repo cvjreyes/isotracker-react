@@ -108,14 +108,14 @@ const Piping = () => {
     }
 
     var dataTableHeight = "550px"
-    let navBtnsMargin = "600px"
+    let navBtnsMargin = "0px"
 
     if (pagination === 8){
         dataTableHeight = "550px"
-        navBtnsMargin = "600px"
+        navBtnsMargin = "0px"
     }if(pagination === 25){
         dataTableHeight = "1250px"
-        navBtnsMargin = "1200px"
+        navBtnsMargin = "0px"
     }if(pagination === 50){
         dataTableHeight = "2250px"
         navBtnsMargin = "2150px"
@@ -162,7 +162,7 @@ const Piping = () => {
     }
     
     if(!admin){
-        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
+        navBtns = <center className="equimentsNavBtns__center">              
             <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
             </center>
         if(currentTab === "Estimated" && currentRole === "Project"){
@@ -264,6 +264,7 @@ const Piping = () => {
                 </div>         
             </div>
             {navBtns}
+            <br></br>
          </body>
     )
 }
