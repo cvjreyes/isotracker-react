@@ -13,6 +13,8 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import InstExcel from "../../components/instExcel/instExcel"
 import InstExcelEdit from "../../components/instExcelEdit/instExcelEdit"
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 const Instrumentation = () => {
 
@@ -25,6 +27,7 @@ const Instrumentation = () => {
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[admin, setAdmin] = useState(false);
+    const[successAlert, setSuccessAlert] = useState(false);
 
     
 
@@ -106,6 +109,14 @@ const Instrumentation = () => {
 
     function swapAdmin(){
         setAdmin(!admin)
+        setSuccessAlert(false)
+    }
+
+    function success(){
+        setSuccessAlert(true)
+        setTimeout(function () {
+            setSuccessAlert(false)
+        }, 1000);
     }
 
 
@@ -159,7 +170,7 @@ const Instrumentation = () => {
     }else if(currentTab === "Types"){
         table = <InstrumentationTypesDataTable/>
     }else if(currentTab === "Key parameters"){
-        table = <InstExcel/>
+        table = <InstExcel success={success.bind(this)}/>
         pageSelector = null
         navBtnsMargin = "700px"
     }
@@ -177,7 +188,7 @@ const Instrumentation = () => {
         if(currentTab === "Estimated"){
             adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
         }
-        table = <InstExcelEdit/>
+        table = <InstExcelEdit success={success.bind(this)}/>
         navBtns = null
         pageSelector = null
     }
@@ -222,6 +233,12 @@ const Instrumentation = () => {
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
+            <Collapse in={successAlert}>
+                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                    >
+                    Success!
+                </Alert>
+            </Collapse>
             <div className="equipments__container">  
                 <center>
                     <h2 className="title__container">

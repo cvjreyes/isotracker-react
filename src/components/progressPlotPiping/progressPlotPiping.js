@@ -32,7 +32,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 	render() {
 	  return (
-		<ResponsiveContainer width="100%" height="6000%">
+		<ResponsiveContainer width="100%" height="80%">
 		  <LineChart
 			width={500}
 			height={300}

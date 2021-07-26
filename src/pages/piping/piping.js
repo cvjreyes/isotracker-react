@@ -13,6 +13,8 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import PipingExcel from "../../components/pipingExcel/pipingExcel"
 import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 const Piping = () => {
 
@@ -25,7 +27,8 @@ const Piping = () => {
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[admin, setAdmin] = useState(false);
-    
+    const[successAlert, setSuccessAlert] = useState(false);
+
 
     useEffect(()=>{
         const body = {
@@ -107,6 +110,13 @@ const Piping = () => {
         setAdmin(!admin)
     }
 
+    function success(){
+        setSuccessAlert(true)
+        setTimeout(function () {
+            setSuccessAlert(false)
+        }, 1000);
+    }
+
     var dataTableHeight = "550px"
     let navBtnsMargin = "0px"
 
@@ -156,15 +166,22 @@ const Piping = () => {
     }else if(currentTab === "Types"){
         table = <PipingTypesDataTable/>
     }else if(currentTab === "Key parameters"){
-        table = <PipingExcel/>
+        table = <PipingExcel success={success.bind(this)}/>
         pageSelector = null
         navBtnsMargin = "700px"
     }
     
     if(!admin){
-        navBtns = <center className="equimentsNavBtns__center">              
+        if(currentTab === "Key parameters"){
+            navBtns = <center className="equimentsNavBtns__center" style={{marginTop:"180px"}}>              
             <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
             </center>
+        }else{
+            navBtns = <center className="equimentsNavBtns__center">              
+            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+            </center>
+        }
+      
         if(currentTab === "Estimated" && currentRole === "Project"){
             adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
         }else{
@@ -174,7 +191,7 @@ const Piping = () => {
         if(currentTab === "Estimated"){
             adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
         }
-        table = <PipingExcelEdit/>
+        table = <PipingExcelEdit success={success.bind(this)}/>
         navBtns = null
         pageSelector = null
     }
@@ -220,6 +237,12 @@ const Piping = () => {
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
+            <Collapse in={successAlert}>
+                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                    >
+                    Success!
+                </Alert>
+            </Collapse>
             <div className="equipments__container">  
                 <center>
                     <h2 className="title__container">

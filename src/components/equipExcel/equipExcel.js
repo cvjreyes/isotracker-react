@@ -102,6 +102,7 @@ class EquipExcel extends React.Component{
     .then(json =>{
 
     })
+    this.props.success()
   }
 
   addRowSteps(){
@@ -126,6 +127,7 @@ class EquipExcel extends React.Component{
     .then(json =>{
 
     })
+    this.props.success()
   }
 
   addRowProgress(){
@@ -150,6 +152,7 @@ class EquipExcel extends React.Component{
     .then(json =>{
 
     })
+    this.props.success()
   }
 
   

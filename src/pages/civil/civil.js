@@ -13,6 +13,8 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import CivilExcel from "../../components/civilExcel/civilExcel"
 import CivilExcelEdit from "../../components/civilExcelEdit/civilExcelEdit"
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 const Civil = () => {
 
@@ -25,6 +27,7 @@ const Civil = () => {
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[admin, setAdmin] = useState(false);
+    const[successAlert, setSuccessAlert] = useState(false);
 
     
 
@@ -108,6 +111,13 @@ const Civil = () => {
         setAdmin(!admin)
     }
 
+    function success(){
+        setSuccessAlert(true)
+        setTimeout(function () {
+            setSuccessAlert(false)
+        }, 1000);
+    }
+
     var dataTableHeight = "550px"
     let navBtnsMargin = "600px"
 
@@ -158,7 +168,7 @@ const Civil = () => {
     }else if(currentTab === "Types"){
         table = <CivilTypesDataTable/>
     }else if(currentTab === "Key parameters"){
-        table = <CivilExcel/>
+        table = <CivilExcel success={success.bind(this)}/>
         pageSelector = null
         navBtnsMargin = "700px"
     }
@@ -176,7 +186,7 @@ const Civil = () => {
         if(currentTab === "Estimated"){
             adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
         }
-        table = <CivilExcelEdit/>
+        table = <CivilExcelEdit success={success.bind(this)}/>
         navBtns = null
         pageSelector = null
     }
@@ -221,6 +231,12 @@ const Civil = () => {
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
+            <Collapse in={successAlert}>
+                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                    >
+                    Success!
+                </Alert>
+            </Collapse>
             <div className="equipments__container">  
                 <center>
                     <h2 className="title__container">

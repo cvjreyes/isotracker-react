@@ -90,6 +90,7 @@ class EquipExcelEdit extends React.Component{
     .then(json =>{
 
     })
+    this.props.success()
   }
 
   render() {

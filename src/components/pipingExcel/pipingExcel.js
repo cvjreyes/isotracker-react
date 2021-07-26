@@ -67,6 +67,7 @@ class PipingExcel extends React.Component{
     .then(json =>{
 
     })
+    this.props.success()
   }
 
 
