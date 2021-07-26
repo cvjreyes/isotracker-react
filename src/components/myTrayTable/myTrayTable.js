@@ -548,7 +548,7 @@ class MyTrayTable extends React.Component{
       rowSelection.selectedRows = selectedRows;
     }
 
-    const columns = [
+    let columns = [
       {
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
@@ -618,6 +618,70 @@ class MyTrayTable extends React.Component{
         },
       },
     ];
+
+    if(process.env.REACT_APP_PROGRESS === "0"){
+      columns = [
+        {
+          title: <center className="dataTable__header__text">ISO ID</center>,
+          dataIndex: 'id',
+          key: 'id',
+          width: '15%',
+          ...this.getColumnSearchProps('id'),
+          sorter:{
+            compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+          },
+        },
+        {
+          title: <center className="dataTable__header__text">Revision</center>,
+          dataIndex: 'revision',
+          key: 'revision',
+          width: '8%',
+          ...this.getColumnSearchProps('revision'),
+          sorter:{
+            compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+          },
+        },
+        {
+          title: <div className="dataTable__header__text">Date</div>,
+          dataIndex: 'date',
+          key: 'date',
+          width: '20%',
+          ...this.getColumnSearchProps('date'),
+          sorter: {
+            compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
+          },
+        },
+        {
+          title: <div className="dataTable__header__text">From</div>,
+          dataIndex: 'from',
+          key: 'from',
+          ...this.getColumnSearchProps('from'),
+          sorter: {
+            compare: (a, b) => { return a.from.localeCompare(b.from)},
+          },
+        },
+        {
+          title: <div className="dataTable__header__text">To</div>,
+          dataIndex: 'to',
+          key: 'to',
+          ...this.getColumnSearchProps('to'),
+          sorter: {
+            compare: (a, b) => { return a.to.localeCompare(b.to)},
+          },
+        },
+        
+        {
+          title: <div className="dataTable__header__text">Actions</div>,
+          dataIndex: 'actions',
+          key: 'actions',
+          width:'20%',
+          ...this.getColumnSearchProps('actions'),
+          sorter: {
+            compare: (a, b) => a.actions.props.type - b.actions.props.type,
+          },
+        },
+      ];
+    }
 
     var totalElements = null;
     if (this.state.data.length === 0){
