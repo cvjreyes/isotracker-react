@@ -15,6 +15,7 @@ import PipingExcel from "../../components/pipingExcel/pipingExcel"
 import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
+import IsoControlDataTable from "../../components/isoControlDataTable/isoControlDataTable"
 
 const Piping = () => {
 
@@ -169,16 +170,18 @@ const Piping = () => {
         table = <PipingExcel success={success.bind(this)}/>
         pageSelector = null
         navBtnsMargin = "700px"
+    }else if(currentTab === "Isocontrol"){
+        table = <IsoControlDataTable pagination = {pagination}/>
     }
     
     if(!admin){
         if(currentTab === "Key parameters"){
             navBtns = <center className="equimentsNavBtns__center" style={{marginTop:"180px"}}>              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Piping"/>               
             </center>
         }else{
             navBtns = <center className="equimentsNavBtns__center">              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Piping"/>               
             </center>
         }
       

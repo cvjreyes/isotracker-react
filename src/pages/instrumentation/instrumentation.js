@@ -177,7 +177,7 @@ const Instrumentation = () => {
 
     if(!admin){
         navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Instrumentation"/>               
             </center>
         if(currentTab === "Estimated" && currentRole === "Project"){
             adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
