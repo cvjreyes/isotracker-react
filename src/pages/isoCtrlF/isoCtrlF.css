@@ -123,3 +123,8 @@
 .actionBtns__container{
     margin-top: 30px;
 }
+
+.content{
+    position: fixed;
+    width: 100%;
+}

@@ -44,6 +44,7 @@ import Reports from "../../assets/images/Notepad.png"
 import Modelled from "../../assets/images/Cube.png"
 import ProcInst from "../../assets/images/MagnifyingGlass.png"
 import Progress from "../../assets/images/ChartBar.png"
+import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 const IsoCtrlF = () => {
    
@@ -69,6 +70,8 @@ const IsoCtrlF = () => {
     const [errorReportD, setErrorReportD] = useState(false)
     const [errorReportDIndex, setErrorReportDIndex] = useState(0);
     const [errorDeleteUser, setErrorDeleteUser] = useState(false);
+    const [content, setContent] = useState();
+    const [navBar, setNavBar] = useState(null)
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -120,7 +123,21 @@ const IsoCtrlF = () => {
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     var currentUser = secureStorage.getItem('user')
 
-    
+    useEffect(() =>{
+
+        setContent(<LoadingScreen progress={"25"}/>)
+        setTimeout(() => {
+            setContent(<LoadingScreen progress={"75"}/>)
+        }, 1000)
+        setTimeout(() => {
+            setContent(<LoadingScreen progress={"100"}/>)
+        }, 2000)
+        setTimeout(() => {
+            setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
+            setContent(null)            
+        }, 2300);
+          
+    }, [])
     
     useEffect(()=>{
         const body = {
@@ -1699,138 +1716,141 @@ const IsoCtrlF = () => {
         instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrumentation")} style={{width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
     }
     
-    return (
-         
+    return (       
         <body>
-            <center>
-                    <Collapse in={loading}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"3"}} severity="info"
-                            >
-                            Processing...
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={errorPI}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                            >
-                            At least one isometric was on revision and wasn't sent to LDE/Isocontrol
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={transactionSuccess}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                            >
-                            Successful!
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={errorUnclaim}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                            >
-                            Can't unclaim an iso assigned by LOS!
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={errorUnclaimR}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                            >
-                            Can't unclaim a returned ISO!
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={errorReports}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                            >
-                            Missing columns!
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={errorCL}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                            >
-                            Missing clean!
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={warningSelected}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="warning"
-                            >
-                            Select at least one isometric!
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={blocked}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                            >
-                            The isometric has been locked! Contact the administrator
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={errorReportD}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                            >
-                            The line {errorReportDIndex} of the report has an invalid type or progress!
-                        </Alert>
-                    </Collapse>
-                    <Collapse in={errorDeleteUser}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                            >
-                            This user has claimed isometrics and can't be deleted!
-                        </Alert>
-                    </Collapse>
-                </center>
-            <NavBar onChange={value => setCurrentTab(value)}/>
-            <div className="isotracker__row">
-                <div className="isotracker__column">
-                    <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
-                    
-                    <div className="roleSelector__containerF">
-                            <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
-                    </div>
-                </div>
-                <div className="column1">
-                    <div className="stateTable__containerF">
-                                
-                        <StateTable updateData={updateData} currentRole = {currentRole}/>
-                               
-                    </div>  
-                </div>
-                
-            </div>
-            <table className="isotracker__table__container">
-                    <tr className="isotracker__table__navBar__container">
-                        <th  colspan="2" className="isotracker__table__navBar">
-                            {recycleBinBtn}
-                            {onHoldBtn}
-                            {issuedBtn}
-                            {reportsBtn}
-                            {progressBtn}
-                            {modelledBtn}
-                            {processBtn}
-                            {instrumentationBtn}
-                            {usersButton}
-                            {pageSelector}
-                        </th>
-                    </tr>
-                    <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
-                        <td className="isotracker__table__trays">
-                            <div className="trays__container">
-                                <p className="isotracker__table__trays__group">Home</p>
-                                
-                                {myTrayBtn}
-                                <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
-                                <p className="isotracker__table__trays__group">Trays</p>
-                                <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/>        
-                            </div>
-                        </td>
-                        <td className="isotracker__table__table" style={{height: dataTableHeight}} >
-                            <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
-                                {tableContent}
-                            </div>
-                        </td>
-                    </tr>
-                </table>
- 
-                <center className="actionBtns__container">
-                    {actionText}     
-                </center>
-                <center className="actionBtns__container">   
-                       
-                    {actionButtons}
-                </center>
-                <br></br>
-        </body>
+            {content}
+            <div className="content">
+              <center>
+                      <Collapse in={loading}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"3"}} severity="info"
+                              >
+                              Processing...
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={errorPI}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                              >
+                              At least one isometric was on revision and wasn't sent to LDE/Isocontrol
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={transactionSuccess}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                              >
+                              Successful!
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={errorUnclaim}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                              >
+                              Can't unclaim an iso assigned by LOS!
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={errorUnclaimR}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                              >
+                              Can't unclaim a returned ISO!
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={errorReports}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                              >
+                              Missing columns!
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={errorCL}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                              >
+                              Missing clean!
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={warningSelected}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="warning"
+                              >
+                              Select at least one isometric!
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={blocked}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                              >
+                              The isometric has been locked! Contact the administrator
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={errorReportD}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                              >
+                              The line {errorReportDIndex} of the report has an invalid type or progress!
+                          </Alert>
+                      </Collapse>
+                      <Collapse in={errorDeleteUser}>
+                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                              >
+                              This user has claimed isometrics and can't be deleted!
+                          </Alert>
+                      </Collapse>
+                  </center>
+              {navBar}
+              <div className="isotracker__row">
+                  <div className="isotracker__column">
+                      <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
+                      
+                      <div className="roleSelector__containerF">
+                              <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
+                      </div>
+                  </div>
+                  <div className="column1">
+                      <div className="stateTable__containerF">
+                                  
+                          <StateTable updateData={updateData} currentRole = {currentRole}/>
+                                 
+                      </div>  
+                  </div>
+                  
+              </div>
+              <table className="isotracker__table__container">
+                      <tr className="isotracker__table__navBar__container">
+                          <th  colspan="2" className="isotracker__table__navBar">
+                              {recycleBinBtn}
+                              {onHoldBtn}
+                              {issuedBtn}
+                              {reportsBtn}
+                              {progressBtn}
+                              {modelledBtn}
+                              {processBtn}
+                              {instrumentationBtn}
+                              {usersButton}
+                              {pageSelector}
+                          </th>
+                      </tr>
+                      <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
+                          <td className="isotracker__table__trays">
+                              <div className="trays__container">
+                                  <p className="isotracker__table__trays__group">Home</p>
+                                  
+                                  {myTrayBtn}
+                                  <ReportBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
+                                  <p className="isotracker__table__trays__group">Trays</p>
+                                  <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/>        
+                              </div>
+                          </td>
+                          <td className="isotracker__table__table" style={{height: dataTableHeight}} >
+                              <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                                  {tableContent}
+                              </div>
+                          </td>
+                      </tr>
+                  </table>
+   
+                  <center className="actionBtns__container">
+                      {actionText}     
+                  </center>
+                  <center className="actionBtns__container">   
+                         
+                      {actionButtons}
+                  </center>
+                  <br></br>
+                  </div>
+        </body> 
+        
     );
 };
 

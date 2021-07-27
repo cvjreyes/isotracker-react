@@ -1,0 +1,34 @@
+.logo__container{
+    position: absolute;
+    top: 32%;
+    left: 36%;
+    width: 900px;
+}
+
+.logo{
+    width: 600px;
+    height: auto;
+}
+
+.loading__screen{
+    background-color: #F4F7F9;
+    height: 100vh;
+    width: 100vh;
+    z-index: 9999;
+}
+
+.progress__bar{
+    position: absolute;
+    top: 55%;
+    left: 31%;
+    width: 0px;
+}
+
+progress {
+    -webkit-appearance: none;
+  }
+  
+::-webkit-progress-bar {
+    background-color: lightgray;
+    width: 800px;
+}
