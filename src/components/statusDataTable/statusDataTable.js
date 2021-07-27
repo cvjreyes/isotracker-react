@@ -370,7 +370,7 @@ class StatusDataTable extends React.Component{
       }),
     };
 
-    const columns = [
+    let columns = [
         {
             title: <div className="dataTable__header__text">Status</div>,
             dataIndex: 'status',
@@ -411,6 +411,42 @@ class StatusDataTable extends React.Component{
         },
       }
     ];
+
+    if(process.env.REACT_APP_PROGRESS === "0"){
+      columns = [
+        {
+            title: <div className="dataTable__header__text">Status</div>,
+            dataIndex: 'status',
+            key: 'status',
+            width: '20%',
+            ...this.getColumnSearchProps('status'),
+            sorter: {
+                compare: (a, b) => { return a.status.localeCompare(b.status)},
+            },
+        },
+          
+      {
+        title: <center className="dataTable__header__text">ISO ID</center>,
+        dataIndex: 'id',
+        key: 'id',
+        width: '20%',
+        ...this.getColumnSearchProps('id'),
+        sorter:{
+          compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Condition</div>,
+        dataIndex: 'condition',
+        key: 'condition',
+        ...this.getColumnSearchProps('condition'),
+        sorter: {
+          compare: (a, b) => { return a.condition.localeCompare(b.condition)},
+        },
+      }
+    ];
+    }
+
     if(process.env.REACT_APP_PROGRESS === "1"){
       columns.push({
         title: <div className="dataTable__header__text">MAX Weight</div>,

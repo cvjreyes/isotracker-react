@@ -101,6 +101,7 @@ class ElecExcel extends React.Component{
     .then(json =>{
 
     })
+    this.props.success()
   }
 
   addRowSteps(){
@@ -125,6 +126,7 @@ class ElecExcel extends React.Component{
     .then(json =>{
 
     })
+    this.props.success()
   }
 
   addRowProgress(){
@@ -149,6 +151,7 @@ class ElecExcel extends React.Component{
     .then(json =>{
 
     })
+    this.props.success()
   }
 
   
