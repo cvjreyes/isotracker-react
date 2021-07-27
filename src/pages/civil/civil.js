@@ -13,6 +13,7 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import CivilExcel from "../../components/civilExcel/civilExcel"
 import CivilExcelEdit from "../../components/civilExcelEdit/civilExcelEdit"
+import IsoTrackerLogo from "../../assets/images/isotracker.png"
 
 const Civil = () => {
 
@@ -112,7 +113,7 @@ const Civil = () => {
     let navBtnsMargin = "600px"
 
     if (pagination === 8){
-        dataTableHeight = "550px"
+        dataTableHeight = "50px"
         navBtnsMargin = "600px"
     }if(pagination === 25){
         dataTableHeight = "1250px"
@@ -145,7 +146,7 @@ const Civil = () => {
         table = <CivilEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
         downloadBtn = <div>
-        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", marginTop:"27px", marginLeft:"20px", float:"left"}} onClick={()=>downloadCivilModelled()}/>
+        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", float:"left"}} onClick={()=>downloadCivilModelled()}/>
     </div> 
         table = <CivilModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
@@ -161,15 +162,15 @@ const Civil = () => {
     }
 
     if(!admin){
-        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
+        navBtns = <div>              
             <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
-            </center>
+            </div>
         if(currentTab === "Estimated"){
-            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
+            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"15px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
         }
     }else if(admin && currentTab === "Estimated"){
         if(currentTab === "Estimated"){
-            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
+            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"15px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
         }
         table = <CivilExcelEdit/>
         navBtns = null
@@ -209,57 +210,54 @@ const Civil = () => {
         FileSaver.saveAs(data, fileName + fileExtension);
 
     }
-
+/*<td className="isotracker__table__table" style={{height: dataTableHeight}} >
+                              <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                                  {table}
+                              </div>
+                          </td>*/
 
     return(
         
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
-            <div className="equipments__container">  
-                <center>
-                    <h2 className="title__container">
-                        <div className="roleSelector__container">
-                            <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
-                            </div>
-                        <b >      
-                            <i className="iso__title">Civil</i>
-                        </b>
-                    </h2>
-                    <h3 className="iso__subtitle">{currentTab}</h3>
-                </center>
-                <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
-                  {pageSelector}        
-                  {downloadBtn}
-                  {adminBtn}
-                </div>
-                <div style={{display:"inline"}}>
-                    <div className="equipTable__container">
-                        <td className="equipTable__td">
-                            <table className="equipTable__table">
-                                <tbody className="equipable__body">
-                                    <tr>    
-                                        <td  className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
-                                        <td className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"0 1em 0 0"}}>Total progress</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
-                                        <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </div>
-                </div>
 
-                <div style={{height: dataTableHeight}}>
-                    <br></br>
-                    <br></br> 
-                    <br></br> 
-                    {table}
-                </div>         
-            </div>
-            {navBtns}
+                <div className="isotracker__row">
+                  <div className="isotracker__column">
+                      <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
+                      
+                      <div className="roleSelector__containerF">
+                              <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
+                      </div>
+                  </div>
+                  
+                  
+              </div>
+              <table className="isotracker__table__container">
+                      <tr className="isotracker__table__navBar__container">
+                          <th  colspan="2" className="isotracker__table__navBar">
+                            {downloadBtn}
+                            {adminBtn}
+                                <p className="progress__and__weight" style={{marginLeft:"500px"}}>Estimated weight: {weight}</p>
+                                <p className="progress__and__weight">Total progress: {progress}%</p>
+                            {pageSelector}
+                          </th>
+                      </tr>
+                      <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
+                          <td className="disciplines__table__trays">
+                              <div className="trays__container">
+                                  <p className="isotracker__table__trays__group">Trays</p>
+                                    {navBtns}
+                              </div>
+                          </td>
+                          <td className="isotracker__table__table" style={{height: dataTableHeight}} >
+                              <div  className="isotracker__table__table__container">
+                                  {table}
+                              </div>
+                          </td>
+                          
+                      </tr>
+                  </table>
          </body>
     )
 }
