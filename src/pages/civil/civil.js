@@ -22,7 +22,7 @@ const Civil = () => {
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-    const[pagination, setPagination] = useState(8)
+    const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[admin, setAdmin] = useState(false);
@@ -109,20 +109,20 @@ const Civil = () => {
         setAdmin(!admin)
     }
 
-    var dataTableHeight = "550px"
+    var dataTableHeight = "490px"
     let navBtnsMargin = "600px"
 
-    if (pagination === 8){
-        dataTableHeight = "50px"
+    if (pagination === 10){
+        dataTableHeight = "490px"
         navBtnsMargin = "600px"
     }if(pagination === 25){
-        dataTableHeight = "1250px"
+        dataTableHeight = "1050px"
         navBtnsMargin = "1200px"
     }if(pagination === 50){
-        dataTableHeight = "2250px"
+        dataTableHeight = "2000px"
         navBtnsMargin = "2150px"
     }if(pagination === 100){
-        dataTableHeight = "4250px"
+        dataTableHeight = "3900px"
         navBtnsMargin = "4000px"
     }
 
@@ -136,7 +136,6 @@ const Civil = () => {
     var currentUser = secureStorage.getItem('user')
     var table = null
 
-    dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
     let adminBtn = null
@@ -250,8 +249,8 @@ const Civil = () => {
                                     {navBtns}
                               </div>
                           </td>
-                          <td className="isotracker__table__table" style={{height: dataTableHeight}} >
-                              <div  className="isotracker__table__table__container">
+                          <td className="discplines__table__table" style={{height: dataTableHeight}} >
+                              <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
                                   {table}
                               </div>
                           </td>

@@ -1568,11 +1568,8 @@ const IsoCtrlF = () => {
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
-        uploadButton = <button  type="button" class="btn btn-info btn-lg" style={{backgroundColor: "#17a2b8", width:"180px"}}><b>Upload</b></button>
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
         pageSelector = null
-    }if(currentTab === "Design" && currentRole === "Design"){
-        uploadButton = <button  type="button" className="btn btn-info btn-lg" style={{backgroundColor: "lightblue", width:"180px"}} onClick={() => setCurrentTab("Upload IsoFiles")}><b>Upload</b></button>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
@@ -1715,6 +1712,17 @@ const IsoCtrlF = () => {
     }else{
         instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrumentation")} style={{width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
     }
+
+    if(currentRole === "Design"){
+        if(currentTab === "Upload IsoFiles"){
+            uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Upload</p></button>
+        }else{
+            uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Upload</p></button>
+        }
+    }else{
+        uploadButton = null
+    }
+
     
     return (       
         <body>
@@ -1818,6 +1826,7 @@ const IsoCtrlF = () => {
                               {processBtn}
                               {instrumentationBtn}
                               {usersButton}
+                              {uploadButton}
                               {pageSelector}
                           </th>
                       </tr>

@@ -13,6 +13,7 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import PipingExcel from "../../components/pipingExcel/pipingExcel"
 import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
+import IsoTrackerLogo from "../../assets/images/isotracker.png"
 
 const Piping = () => {
 
@@ -21,7 +22,7 @@ const Piping = () => {
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-    const[pagination, setPagination] = useState(8)
+    const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[admin, setAdmin] = useState(false);
@@ -107,20 +108,20 @@ const Piping = () => {
         setAdmin(!admin)
     }
 
-    var dataTableHeight = "550px"
+    var dataTableHeight = "490px"
     let navBtnsMargin = "600px"
 
-    if (pagination === 8){
-        dataTableHeight = "550px"
+    if (pagination === 10){
+        dataTableHeight = "490px"
         navBtnsMargin = "600px"
     }if(pagination === 25){
-        dataTableHeight = "1250px"
+        dataTableHeight = "1050px"
         navBtnsMargin = "1200px"
     }if(pagination === 50){
-        dataTableHeight = "2250px"
+        dataTableHeight = "2000px"
         navBtnsMargin = "2150px"
     }if(pagination === 100){
-        dataTableHeight = "4250px"
+        dataTableHeight = "3900px"
         navBtnsMargin = "4000px"
     }
 
@@ -159,7 +160,7 @@ const Piping = () => {
     }
     
     if(!admin){
-        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
+        navBtns = <center className="equimentsNavBtns__center">              
             <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
             </center>
         if(currentTab === "Estimated" && currentRole === "Project"){
@@ -216,52 +217,45 @@ const Piping = () => {
         
         <body>
             
-            <NavBar onChange={value => setCurrentTab(currentTab)}/>
-            <div className="equipments__container">  
-                <center>
-                    <h2 className="title__container">
-                        <div className="roleSelector__container">
-                            <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
-                            </div>
-                        <b >      
-                            <i className="iso__title">Piping</i>
-                        </b>
-                    </h2>
-                    <h3 className="iso__subtitle">{currentTab}</h3>
-                </center>
-                <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
-                  {pageSelector}  
-                  {downloadBtn}    
-                  {adminBtn}
-                </div>
-                <div style={{display:"inline"}}>
-                    <div className="equipTable__container">
-                        <td className="equipTable__td">
-                            <table className="equipTable__table">
-                                <tbody className="equipable__body">
-                                    <tr>    
-                                        <td  className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
-                                        <td className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"0 1em 0 0"}}>Total progress</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
-                                        <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </div>
-                </div>
+        <NavBar onChange={value => setCurrentTab(currentTab)}/>
 
-                <div style={{height: dataTableHeight}}>
-                    <br></br>
-                    <br></br> 
-                    <br></br> 
-                    {table}
-                </div>         
-            </div>
-            {navBtns}
-         </body>
+            <div className="isotracker__row">
+              <div className="isotracker__column">
+                  <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
+                  
+                  <div className="roleSelector__containerF">
+                          <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
+                  </div>
+              </div>
+              
+              
+          </div>
+          <table className="isotracker__table__container">
+                  <tr className="isotracker__table__navBar__container">
+                      <th  colspan="2" className="isotracker__table__navBar">
+                        {downloadBtn}
+                        {adminBtn}
+                            <p className="progress__and__weight" style={{marginLeft:"500px"}}>Estimated weight: {weight}</p>
+                            <p className="progress__and__weight">Total progress: {progress}%</p>
+                        {pageSelector}
+                      </th>
+                  </tr>
+                  <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
+                      <td className="disciplines__table__trays">
+                          <div className="trays__container">
+                              <p className="isotracker__table__trays__group">Trays</p>
+                                {navBtns}
+                          </div>
+                      </td>
+                      <td className="discplines__table__table" style={{height: dataTableHeight}} >
+                          <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                              {table}
+                          </div>
+                      </td>
+                      
+                  </tr>
+              </table>
+     </body>
     )
 }
 

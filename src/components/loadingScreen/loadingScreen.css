@@ -5,6 +5,13 @@
     width: 900px;
 }
 
+.text__container{
+    position: absolute;
+    top: 52%;
+    left: 24%;
+    width: 1100px;
+}
+
 .logo{
     width: 600px;
     height: auto;
@@ -19,7 +26,7 @@
 
 .progress__bar{
     position: absolute;
-    top: 55%;
+    top: 60%;
     left: 31%;
     width: 0px;
 }

@@ -184,3 +184,8 @@
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+.discplines__table__table{
+    border: 1px solid lightgray;
+    display: block;
+}
