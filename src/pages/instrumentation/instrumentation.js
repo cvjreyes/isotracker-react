@@ -14,6 +14,7 @@ import * as XLSX from "xlsx";
 import InstExcel from "../../components/instExcel/instExcel"
 import InstExcelEdit from "../../components/instExcelEdit/instExcelEdit"
 import IsoTrackerLogo from "../../assets/images/isotracker.png"
+import ProcInst from "../../assets/images/MagnifyingGlass.png"
 
 const Instrumentation = () => {
 
@@ -70,7 +71,7 @@ const Instrumentation = () => {
         }
        
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrumentation/weight", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/weight", options)
             .then(response => response.json())
             .then(json => {
                 setWeight(json.weight)
@@ -82,6 +83,8 @@ const Instrumentation = () => {
             })       
             
     },[]);
+
+
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -105,27 +108,23 @@ const Instrumentation = () => {
         }
     });
 
-    function swapAdmin(){
-        setAdmin(!admin)
-    }
-
-
-    var dataTableHeight = "490px"
+    var dataTableHeight = "500px"
     let navBtnsMargin = "600px"
 
     if (pagination === 10){
-        dataTableHeight = "490px"
+        dataTableHeight = "500px"
         navBtnsMargin = "600px"
     }if(pagination === 25){
-        dataTableHeight = "1050px"
+        dataTableHeight = "1100px"
         navBtnsMargin = "1200px"
     }if(pagination === 50){
-        dataTableHeight = "2000px"
+        dataTableHeight = "2080px"
         navBtnsMargin = "2150px"
     }if(pagination === 100){
-        dataTableHeight = "3900px"
+        dataTableHeight = "4040px"
         navBtnsMargin = "4000px"
     }
+
 
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
@@ -138,16 +137,17 @@ const Instrumentation = () => {
     var table = null
 
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+
     let downloadBtn = null
     let adminBtn = null
-    let navBtns = null
+    let marginProgress = null
+
 
     if(currentTab === "Estimated"){
         table = <InstrumentationEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        downloadBtn = <div>
-        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", marginTop:"27px", marginLeft:"20px", float:"left"}} onClick={()=>downloadInstrumentationModelled()}/>
-    </div> 
+        downloadBtn = <button className="navBar__button" onClick={()=>downloadInstrumentationModelled()} style={{marginLeft:"125px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
+    
         table = <InstrumentationModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotInstrumentation/>
@@ -159,24 +159,34 @@ const Instrumentation = () => {
         table = <InstExcel/>
         pageSelector = null
         navBtnsMargin = "700px"
-    }
-
-    if(!admin){
-        navBtns = <center className="equimentsNavBtns__center">              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
-            </center>
-        if(currentTab === "Estimated"){
-            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
-        }
-    }else if(admin && currentTab === "Estimated"){
-        if(currentTab === "Estimated"){
-            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
-        }
+    }else if(currentTab === "Edit"){
         table = <InstExcelEdit/>
-        navBtns = null
         pageSelector = null
     }
 
+    
+    if(currentTab === "Edit"){
+        dataTableHeight = "740px"
+    }else if(currentTab === "Key parameters"){
+        dataTableHeight = "600px"
+    }
+    
+    if(currentRole === "Project"){
+        if(currentTab === "Estimated" || currentTab === "Edit"){
+            if(currentTab === "Edit"){
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"100px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }else{
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"100px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }        }else{
+            adminBtn = null
+        }
+    }
+        
+    if(adminBtn || downloadBtn){
+        marginProgress = "55%"
+    }else{
+        marginProgress = "66%"
+    }
 
     async function downloadInstrumentationModelled(){
 
@@ -184,7 +194,7 @@ const Instrumentation = () => {
         .then(response => response.json())
         .then(json => {
             const headers = ["AREA", "TAG", "TYPE", "WEIGHT", "STATUS", "PROGRESS"]
-            exportToExcel(JSON.parse(json), "Equipment modelled", headers)
+            exportToExcel(JSON.parse(json), "Instrumentation modelled", headers)
         })
     }
 
@@ -210,7 +220,9 @@ const Instrumentation = () => {
         FileSaver.saveAs(data, fileName + fileExtension);
 
     }
-
+    /* 
+                            {adminBtn}     
+                            {pageSelector}   */
 
     return(
         
@@ -225,25 +237,44 @@ const Instrumentation = () => {
                       <div className="roleSelector__containerF">
                               <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
                       </div>
+                      
                   </div>
+
+                  <div className="isotracker__column">
+                  
+                  <table className="equipTable__table" style={{marginTop:"140px", width:"35%", marginLeft:"59%"}}>
+                        <tbody className="equipable__body">
+                            <tr>    
+                                <td  className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                <td className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>Total progress</td>
+                            </tr>
+                            <tr>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                  </div>               
                   
                   
               </div>
               <table className="isotracker__table__container">
                       <tr className="isotracker__table__navBar__container">
                           <th  colspan="2" className="isotracker__table__navBar">
-                            {downloadBtn}
+                          <text style={{marginLeft:"20px", fontSize:"18px", marginTop:"30px"}}>Instrumentation</text>
                             {adminBtn}
-                                <p className="progress__and__weight" style={{marginLeft:"500px"}}>Estimated weight: {weight}</p>
-                                <p className="progress__and__weight">Total progress: {progress}%</p>
-                            {pageSelector}
+                            {downloadBtn}
+                          {pageSelector}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="disciplines__table__trays">
                               <div className="trays__container">
                                   <p className="isotracker__table__trays__group">Trays</p>
-                                    {navBtns}
+                                  <center className="equimentsNavBtns__center">              
+                                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+                                    </center>
                               </div>
                           </td>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
@@ -258,4 +289,4 @@ const Instrumentation = () => {
     )
 }
 
-export default Instrumentation  ;
+export default Instrumentation;

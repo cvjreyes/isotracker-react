@@ -125,17 +125,23 @@ const IsoCtrlF = () => {
 
     useEffect(() =>{
 
-        setContent(<LoadingScreen progress={"25"}/>)
-        setTimeout(() => {
-            setContent(<LoadingScreen progress={"75"}/>)
-        }, 1000)
-        setTimeout(() => {
-            setContent(<LoadingScreen progress={"100"}/>)
-        }, 2000)
-        setTimeout(() => {
+        if(process.env.REACT_APP_PROGRESS === "0"){
+
+            setContent(<LoadingScreen progress={"25"}/>)
+            setTimeout(() => {
+                setContent(<LoadingScreen progress={"75"}/>)
+            }, 1000)
+            setTimeout(() => {
+                setContent(<LoadingScreen progress={"100"}/>)
+            }, 2000)
+            setTimeout(() => {
+                setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
+                setContent(null)            
+            }, 2300);
+        }else{
             setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
-            setContent(null)            
-        }, 2300);
+            setContent(null)   
+        }
           
     }, [])
     

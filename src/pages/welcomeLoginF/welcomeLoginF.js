@@ -67,6 +67,8 @@ const WelcomeLoginF = () =>{
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/login", options)
             .then(response => response.json())
             .then(json => {
+                console.log(process.env.REACT_APP_PROGRESS)
+                if(process.env.REACT_APP_PROGRESS === "1"){
                     localStorage.setItem('token', json.token);
                     secureStorage.setItem('user', json.user)
                     secureStorage.setItem('tab', "Status")   
@@ -75,11 +77,17 @@ const WelcomeLoginF = () =>{
                     secureStorage.setItem("civ_tab", "Estimated")  
                     secureStorage.setItem("elec_tab", "Estimated")  
                     secureStorage.setItem("piping_tab", "Estimated")
-                    history.push('/'+process.env.REACT_APP_PROJECT+'/home');
+                    history.replace('/'+process.env.REACT_APP_PROJECT+'/home');
                     window.location.reload(false);
-                    
+                }else{
+                    localStorage.setItem('token', json.token);
+                    secureStorage.setItem('user', json.user)
+                    secureStorage.setItem('tab', "Status")   
+                    history.replace('/'+process.env.REACT_APP_PROJECT+'/isotrackerF');
+                    window.location.reload(false);
                 }
-            )
+            })
+        
             .catch(error => {
                 setError(true);
             })               

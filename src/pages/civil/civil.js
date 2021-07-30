@@ -14,6 +14,7 @@ import * as XLSX from "xlsx";
 import CivilExcel from "../../components/civilExcel/civilExcel"
 import CivilExcelEdit from "../../components/civilExcelEdit/civilExcelEdit"
 import IsoTrackerLogo from "../../assets/images/isotracker.png"
+import ProcInst from "../../assets/images/MagnifyingGlass.png"
 
 const Civil = () => {
 
@@ -82,6 +83,8 @@ const Civil = () => {
             })       
             
     },[]);
+
+
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -105,26 +108,23 @@ const Civil = () => {
         }
     });
 
-    function swapAdmin(){
-        setAdmin(!admin)
-    }
-
-    var dataTableHeight = "490px"
+    var dataTableHeight = "500px"
     let navBtnsMargin = "600px"
 
     if (pagination === 10){
-        dataTableHeight = "490px"
+        dataTableHeight = "500px"
         navBtnsMargin = "600px"
     }if(pagination === 25){
-        dataTableHeight = "1050px"
+        dataTableHeight = "1100px"
         navBtnsMargin = "1200px"
     }if(pagination === 50){
-        dataTableHeight = "2000px"
+        dataTableHeight = "2080px"
         navBtnsMargin = "2150px"
     }if(pagination === 100){
-        dataTableHeight = "3900px"
+        dataTableHeight = "4040px"
         navBtnsMargin = "4000px"
     }
+
 
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
@@ -137,16 +137,17 @@ const Civil = () => {
     var table = null
 
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+
     let downloadBtn = null
     let adminBtn = null
-    let navBtns = null
+    let marginProgress = null
+
 
     if(currentTab === "Estimated"){
         table = <CivilEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        downloadBtn = <div>
-        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", float:"left"}} onClick={()=>downloadCivilModelled()}/>
-    </div> 
+        downloadBtn = <button className="navBar__button" onClick={()=>downloadCivilsModelled()} style={{marginLeft:"125px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
+    
         table = <CivilModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotCivils/>
@@ -158,32 +159,42 @@ const Civil = () => {
         table = <CivilExcel/>
         pageSelector = null
         navBtnsMargin = "700px"
-    }
-
-    if(!admin){
-        navBtns = <div>              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
-            </div>
-        if(currentTab === "Estimated"){
-            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"15px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
-        }
-    }else if(admin && currentTab === "Estimated"){
-        if(currentTab === "Estimated"){
-            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"15px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
-        }
+    }else if(currentTab === "Edit"){
         table = <CivilExcelEdit/>
-        navBtns = null
         pageSelector = null
     }
 
+    
+    if(currentTab === "Edit"){
+        dataTableHeight = "740px"
+    }else if(currentTab === "Key parameters"){
+        dataTableHeight = "600px"
+    }
+    
+    if(currentRole === "Project"){
+        if(currentTab === "Estimated" || currentTab === "Edit"){
+            if(currentTab === "Edit"){
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"100px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }else{
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"100px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }        }else{
+            adminBtn = null
+        }
+    }
+        
+    if(adminBtn || downloadBtn){
+        marginProgress = "55%"
+    }else{
+        marginProgress = "66%"
+    }
 
-    async function downloadCivilModelled(){
+    async function downloadCivilsModelled(){
 
-        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadCivilModelled/")
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadCivilsModelled/")
         .then(response => response.json())
         .then(json => {
             const headers = ["AREA", "TAG", "TYPE", "WEIGHT", "STATUS", "PROGRESS"]
-            exportToExcel(JSON.parse(json), "Equipment modelled", headers)
+            exportToExcel(JSON.parse(json), "Civil modelled", headers)
         })
     }
 
@@ -209,11 +220,9 @@ const Civil = () => {
         FileSaver.saveAs(data, fileName + fileExtension);
 
     }
-/*<td className="isotracker__table__table" style={{height: dataTableHeight}} >
-                              <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
-                                  {table}
-                              </div>
-                          </td>*/
+    /* 
+                            {adminBtn}     
+                            {pageSelector}   */
 
     return(
         
@@ -228,29 +237,48 @@ const Civil = () => {
                       <div className="roleSelector__containerF">
                               <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
                       </div>
+                      
                   </div>
+
+                  <div className="isotracker__column">
+                  
+                  <table className="equipTable__table" style={{marginTop:"140px", width:"35%", marginLeft:"59%"}}>
+                        <tbody className="equipable__body">
+                            <tr>    
+                                <td  className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                <td className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>Total progress</td>
+                            </tr>
+                            <tr>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                  </div>               
                   
                   
               </div>
               <table className="isotracker__table__container">
                       <tr className="isotracker__table__navBar__container">
                           <th  colspan="2" className="isotracker__table__navBar">
-                            {downloadBtn}
+                          <text style={{marginLeft:"20px", fontSize:"18px", marginTop:"30px"}}>Civil</text>
                             {adminBtn}
-                                <p className="progress__and__weight" style={{marginLeft:"500px"}}>Estimated weight: {weight}</p>
-                                <p className="progress__and__weight">Total progress: {progress}%</p>
-                            {pageSelector}
+                            {downloadBtn}
+                          {pageSelector}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="disciplines__table__trays">
                               <div className="trays__container">
                                   <p className="isotracker__table__trays__group">Trays</p>
-                                    {navBtns}
+                                  <center className="equimentsNavBtns__center">              
+                                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+                                    </center>
                               </div>
                           </td>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
-                              <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                              <div  style={{height: dataTableHeight}} className="isotracker__table__table__container">
                                   {table}
                               </div>
                           </td>

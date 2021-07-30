@@ -12,10 +12,3 @@
     margin-left: -40px;
 }
 
-.home__background{
-    background-image: url("../../assets/images/refinery3.png");
-    height: 100vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}

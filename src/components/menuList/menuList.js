@@ -48,7 +48,7 @@ const MenuList = () =>{
     const [progressButtons, setProgressButtons] = useState()
     const [refresh, setRefresh] = useState(false)
 
-    
+
     useEffect(async ()=>{
             const options = {
                 method: "GET",
@@ -127,22 +127,14 @@ const MenuList = () =>{
     useEffect(async() =>{
         if(process.env.REACT_APP_PROGRESS === "1"){
             setProgressButtons(<div><div className="panel__content__container">
-            <div>
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} style={{textDecoration: "none"}}>
-                    <h4 style={{backgroundColor: isoIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setIsoIsShown(true)} onMouseLeave={() => setIsoIsShown(false)} ><img src={FileIcon} alt="file" className="panel__icon"/>&nbsp;&nbsp;&nbsp;IsoTracker</h4>
-                    <div className="progress__bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
-                        <span class="sr-only"></span><strong>Open</strong>
-                    </div>
-                </a> 
-            </div>
             </div>
                 <div className="panel__content__container">
             <div>
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/3dprogress"} style={{textDecoration: "none"}}>
-                    <h4 style={{backgroundColor: progIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setProgIsShown(true)} onMouseLeave={() => setProgIsShown(false)}><img src={ChartColorIcon} alt="chart" className="panel__icon"/>&nbsp;&nbsp;&nbsp;3D Progress (Weight: {pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight} | 100%)</h4>
+                    <h4 style={{backgroundColor: progIsShown ? "#d4f1dd":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setProgIsShown(true)} onMouseLeave={() => setProgIsShown(false)}><img src={ChartColorIcon} alt="chart" className="panel__icon"/>&nbsp;&nbsp;&nbsp;3D Progress (Weight: {pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight} | 100%)</h4>
                 </a>
-                <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: ((pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * pipesProgress + (equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * equisProgress + (civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * civilsProgress + (instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * instsProgress + (elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * elecsProgress).toFixed(2)+"%", backgroundColor: "#A0AFD9",textAlign: "center"}}>
+                <div class="progress" style={{height: "30px"}}>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: ((pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * pipesProgress + (equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * equisProgress + (civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * civilsProgress + (instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * instsProgress + (elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * elecsProgress).toFixed(2)+"%", backgroundColor: "#94dcaa",textAlign: "center"}}>
                         <span class="sr-only"></span><strong>{(pipesProgress*(pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + equisProgress*(equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + instsProgress*(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + civilsProgress*(civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + elecsProgress*(elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight))).toFixed(2)}%</strong>                                         
                     </div>
                 </div>
@@ -151,10 +143,10 @@ const MenuList = () =>{
         <div className="panel__content__container">
             <div>
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/piping"} style={{textDecoration: "none"}}>
-                    <h4 style={{backgroundColor: pipeIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setPipeIsShown(true)} onMouseLeave={() => setPipeIsShown(false)}><img src={PipeIcon} alt="pipe" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Piping (Weight: {pipesWeight} | {(pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>        
+                    <h4 style={{backgroundColor: pipeIsShown ? "#d4f1dd":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setPipeIsShown(true)} onMouseLeave={() => setPipeIsShown(false)}><img src={PipeIcon} alt="pipe" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Piping (Weight: {pipesWeight} | {(pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>        
                 </a>
                 <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: pipesProgressWidth, backgroundColor: "#A0AFD9",textAlign: "center"}}>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: pipesProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
                         <span class="sr-only"></span><strong>{pipesProgress}%</strong>                                       
                     </div>
                 </div>          
@@ -163,10 +155,10 @@ const MenuList = () =>{
         <div className="panel__content__container">
             <div>
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/equipments"}style={{textDecoration: "none"}}>
-                    <h4 style={{backgroundColor: equipIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setEquipIsShown(true)} onMouseLeave={() => setEquipIsShown(false)}><img src={EquiIcon} alt="equi" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Equipment (Weight: {equisWeight} | {(equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>                   
+                    <h4 style={{backgroundColor: equipIsShown ? "#d4f1dd":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setEquipIsShown(true)} onMouseLeave={() => setEquipIsShown(false)}><img src={EquiIcon} alt="equi" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Equipment (Weight: {equisWeight} | {(equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>                   
                 </a>
                 <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: equisProgressWidth, backgroundColor: "#A0AFD9",textAlign: "center"}}>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: equisProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
                         <span class="sr-only"></span><strong>{equisProgress}%</strong>                                         
                     </div>
                 </div>
@@ -175,10 +167,10 @@ const MenuList = () =>{
         <div className="panel__content__container">
             <div>
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/civil"}style={{textDecoration: "none"}}>
-                    <h4 style={{backgroundColor: civIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setCivIsShown(true)} onMouseLeave={() => setCivIsShown(false)}><img src={StruIcon} alt="stru" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Civil (Weight: {civilsWeight} | {(civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4> 
+                    <h4 style={{backgroundColor: civIsShown ? "#d4f1dd":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setCivIsShown(true)} onMouseLeave={() => setCivIsShown(false)}><img src={StruIcon} alt="stru" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Civil (Weight: {civilsWeight} | {(civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4> 
                 </a>
                 <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: civilsProgressWidth, backgroundColor: "#A0AFD9",textAlign: "center"}}>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: civilsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
                         <span class="sr-only"></span><strong>{civilsProgress}%</strong>                                        
                     </div>
                 </div>         
@@ -187,10 +179,10 @@ const MenuList = () =>{
         <div className="panel__content__container">
             <div >
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/instrumentation"}style={{textDecoration: "none"}} className="panel__content__link">
-                    <h4 style={{backgroundColor: instIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setInstIsShown(true)} onMouseLeave={() => setInstIsShown(false)}><img src={InstIcon} alt= "inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Instrumentation (Weight: {instsWeight} | {(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>         
+                    <h4 style={{backgroundColor: instIsShown ? "#d4f1dd":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setInstIsShown(true)} onMouseLeave={() => setInstIsShown(false)}><img src={InstIcon} alt= "inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Instrumentation (Weight: {instsWeight} | {(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>         
                 </a>
                 <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: instsProgressWidth, backgroundColor: "#A0AFD9",textAlign: "center"}}>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: instsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
                         <span class="sr-only"></span><strong>{instsProgress}%</strong>                                         
                     </div>
                 </div>   
@@ -198,11 +190,11 @@ const MenuList = () =>{
         </div>
         <div className="panel__content__container__last">
             <div>
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/electrical"} style={{textDecoration: "none"}}>
-                    <h4 style={{backgroundColor: elecIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setElecIsShown(true)} onMouseLeave={() => setElecIsShown(false)}><img src={ElecIcon} alt="inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Electrical (Weight: {elecsWeight} | {(elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>
+                <a href={"/"+process.env.REACT_APP_PROJECT+"/electrical"} style={{textDecoration: "none"}} className="panel__content__link">
+                    <h4 style={{backgroundColor: elecIsShown ? "#d4f1dd":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setElecIsShown(true)} onMouseLeave={() => setElecIsShown(false)}><img src={ElecIcon} alt="inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Electrical (Weight: {elecsWeight} | {(elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>
                 </a>
                 <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: elecsProgressWidth, backgroundColor: "#A0AFD9",textAlign: "center"}}>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: elecsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
                         <span class="sr-only"></span><strong>{elecsProgress}%</strong>                                         
                     </div>
                 </div>
@@ -213,7 +205,7 @@ const MenuList = () =>{
             setProgressButtons(<div className="panel__content__container__last">
             <div>
                 <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} style={{textDecoration: "none"}}>
-                    <h4 style={{backgroundColor: isoIsShown ? "lightgray":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setIsoIsShown(true)} onMouseLeave={() => setIsoIsShown(false)} ><img src={FileIcon} alt="file" className="panel__icon"/>&nbsp;&nbsp;&nbsp;IsoTracker</h4>
+                    <h4 style={{backgroundColor: isoIsShown ? "#d4f1dd":"white", transition: "background-color 0.5s"}} className="panel__icon__container" onMouseEnter={() => setIsoIsShown(true)} onMouseLeave={() => setIsoIsShown(false)} ><img src={FileIcon} alt="file" className="panel__icon"/>&nbsp;&nbsp;&nbsp;IsoTracker</h4>
                     <div className="progress__bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
                         <span class="sr-only"></span><strong>Open</strong>
                     </div>
@@ -232,11 +224,24 @@ const MenuList = () =>{
         <div class="panel__container">
             <div className="panel__heading__container">
                 <h4>
-                    <b className="panel__heading__text">3D Progress Control v2</b>
+                    <text className="panel__heading__text"><strong style={{fontWeight:"700"}}>3D</strong>Tracker</text>
                 </h4>
             </div>
+
+            <div className="elements__container">
+                <div className="menu">
+                    <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} style={{textDecoration: "none"}}>
+                    <h4 className="click__text">Click here to open</h4>
+                    <h4 className="iso__title__menu">ISO<text style={{fontWeight:"100"}}>Tracker</text></h4>
+                    </a>
+                    <h4 className="disciplines__text">You can also click any of the items below to check disciplines.</h4>
+
+                    {progressButtons}
+                </div>
+                
+            </div>
             
-            {progressButtons}
+            
         </div>
     );
 };

@@ -59,10 +59,7 @@ const NavBar = (props) =>{
     const history = useHistory();
     const[username, setUsername] = React.useState("");
     const[progressButtons, setProgressButtons] = React.useState(null);
-
     
-    
-
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -123,7 +120,10 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div><Button onClick={handleClickPiping} style={{marginRight:"25px", marginLeft:"18px"}}>
+            setProgressButtons(<div>
+                <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_PROJECT+"/home"}>
+                        <img src={HomeLogo} alt="HomeLogo" style={{height:"30px", width:"30px"}}/>
+                    </a><Button onClick={handleClickPiping} style={{marginRight:"25px", marginLeft:"18px"}}>
             <i className="dropdown__text">Piping </i>
         </Button><Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
             <i className="dropdown__text">Instrumentation </i>
@@ -136,7 +136,10 @@ const NavBar = (props) =>{
         </Button>
         <Button onClick={handleClickElectrical} style={{marginRight:"25px"}}>
             <i className="dropdown__text">Electrical </i>
-        </Button></div>)
+        </Button>
+        <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
+                        <i className="dropdown__text">Isotracker </i>
+                    </Button></div>)
         }
     },[])
 
@@ -151,15 +154,11 @@ const NavBar = (props) =>{
                     <Typography variant="h6" className={classes.title}>
                     
                     </Typography>
-                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_PROJECT+"/home"}>
-                        <img src={HomeLogo} alt="HomeLogo" style={{height:"30px", width:"30px"}}/>
-                    </a>
-                    {progressButtons}
-                    <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Isotracker </i>
-                    </Button>
                     
-                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/home"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
+                    {progressButtons}
+                    
+                    
+                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/welcomeLoginF"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
                      
                     <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/"}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>

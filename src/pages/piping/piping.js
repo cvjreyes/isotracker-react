@@ -14,6 +14,7 @@ import * as XLSX from "xlsx";
 import PipingExcel from "../../components/pipingExcel/pipingExcel"
 import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
 import IsoTrackerLogo from "../../assets/images/isotracker.png"
+import ProcInst from "../../assets/images/MagnifyingGlass.png"
 
 const Piping = () => {
 
@@ -104,9 +105,6 @@ const Piping = () => {
         }
     });
 
-    function swapAdmin(){
-        setAdmin(!admin)
-    }
 
     var dataTableHeight = "490px"
     let navBtnsMargin = "600px"
@@ -138,14 +136,13 @@ const Piping = () => {
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
     let adminBtn = null
-    let navBtns = null
+    let marginProgress = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        downloadBtn = <div>
-        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", marginTop:"27px", marginLeft:"20px", float:"left"}} onClick={()=>downloadModelled()}/>
-    </div>  
+        downloadBtn = <button className="navBar__button" onClick={()=>downloadModelled()} style={{marginLeft:"125px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
+    
         table = <ModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotPiping/>
@@ -157,26 +154,34 @@ const Piping = () => {
         table = <PipingExcel/>
         pageSelector = null
         navBtnsMargin = "700px"
-    }
-    
-    if(!admin){
-        navBtns = <center className="equimentsNavBtns__center">              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
-            </center>
-        if(currentTab === "Estimated" && currentRole === "Project"){
-            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
-        }else{
-            adminBtn = null
-        }
-    }else if(admin && currentTab === "Estimated"){
-        if(currentTab === "Estimated"){
-            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
-        }
+    }else if(currentTab === "Edit"){
         table = <PipingExcelEdit/>
-        navBtns = null
         pageSelector = null
     }
 
+    
+    if(currentTab === "Edit"){
+        dataTableHeight = "740px"
+    }else if(currentTab === "Key parameters"){
+        dataTableHeight = "600px"
+    }
+    
+    if(currentRole === "Project"){
+        if(currentTab === "Estimated" || currentTab === "Edit"){
+            if(currentTab === "Edit"){
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"100px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }else{
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"100px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }        }else{
+            adminBtn = null
+        }
+    }
+        
+    if(adminBtn || downloadBtn){
+        marginProgress = "55%"
+    }else{
+        marginProgress = "66%"
+    }
 
     async function downloadModelled(){
 
@@ -217,45 +222,64 @@ const Piping = () => {
         
         <body>
             
-        <NavBar onChange={value => setCurrentTab(currentTab)}/>
+            <NavBar onChange={value => setCurrentTab(currentTab)}/>
 
-            <div className="isotracker__row">
-              <div className="isotracker__column">
-                  <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
-                  
-                  <div className="roleSelector__containerF">
-                          <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
-                  </div>
-              </div>
-              
-              
-          </div>
-          <table className="isotracker__table__container">
-                  <tr className="isotracker__table__navBar__container">
-                      <th  colspan="2" className="isotracker__table__navBar">
-                        {downloadBtn}
-                        {adminBtn}
-                            <p className="progress__and__weight" style={{marginLeft:"500px"}}>Estimated weight: {weight}</p>
-                            <p className="progress__and__weight">Total progress: {progress}%</p>
-                        {pageSelector}
-                      </th>
-                  </tr>
-                  <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
-                      <td className="disciplines__table__trays">
-                          <div className="trays__container">
-                              <p className="isotracker__table__trays__group">Trays</p>
-                                {navBtns}
-                          </div>
-                      </td>
-                      <td className="discplines__table__table" style={{height: dataTableHeight}} >
-                          <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
-                              {table}
-                          </div>
-                      </td>
+                <div className="isotracker__row">
+                  <div className="isotracker__column">
+                      <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
                       
-                  </tr>
-              </table>
-     </body>
+                      <div className="roleSelector__containerF">
+                              <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
+                      </div>
+                      
+                  </div>
+
+                  <div className="isotracker__column">
+                  
+                  <table className="equipTable__table" style={{marginTop:"140px", width:"35%", marginLeft:"59%"}}>
+                        <tbody className="equipable__body">
+                            <tr>    
+                                <td  className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                <td className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>Total progress</td>
+                            </tr>
+                            <tr>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                  </div>               
+                  
+                  
+              </div>
+              <table className="isotracker__table__container">
+                      <tr className="isotracker__table__navBar__container">
+                          <th  colspan="2" className="isotracker__table__navBar">
+                          <text style={{marginLeft:"20px", fontSize:"18px", marginTop:"30px"}}>Piping</text>
+                            {adminBtn}
+                            {downloadBtn}
+                          {pageSelector}
+                          </th>
+                      </tr>
+                      <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
+                          <td className="disciplines__table__trays">
+                              <div className="trays__container">
+                                  <p className="isotracker__table__trays__group">Trays</p>
+                                  <center className="equimentsNavBtns__center">              
+                                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+                                    </center>
+                              </div>
+                          </td>
+                          <td className="discplines__table__table" style={{height: dataTableHeight}} >
+                              <div  style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                                  {table}
+                              </div>
+                          </td>
+                          
+                      </tr>
+                  </table>
+         </body>
     )
 }
 
