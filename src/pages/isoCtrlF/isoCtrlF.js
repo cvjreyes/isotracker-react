@@ -44,6 +44,8 @@ import Reports from "../../assets/images/Notepad.png"
 import Modelled from "../../assets/images/Cube.png"
 import ProcInst from "../../assets/images/MagnifyingGlass.png"
 import Progress from "../../assets/images/ChartBar.png"
+import UploadIcon from "../../assets/images/upload.png"
+import UsersIcon from "../../assets/images/user.png"
 import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 const IsoCtrlF = () => {
@@ -1605,10 +1607,10 @@ const IsoCtrlF = () => {
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
     }if(currentRole === "SpecialityLead"){
         if (currentTab === "Users"){
-            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
+            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"120px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
             secureStorage.setItem("tab", "Users")
         }else{
-            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
+            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"120px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
         }
     }if(currentTab === "Users"){
  
@@ -1721,9 +1723,9 @@ const IsoCtrlF = () => {
 
     if(currentRole === "Design"){
         if(currentTab === "Upload IsoFiles"){
-            uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Upload</p></button>
+            uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={UploadIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Upload</p></button>
         }else{
-            uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Upload</p></button>
+            uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{width:"120px"}}><img src={UploadIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Upload</p></button>
         }
     }else{
         uploadButton = null

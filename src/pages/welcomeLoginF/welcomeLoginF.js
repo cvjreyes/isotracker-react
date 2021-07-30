@@ -2,6 +2,7 @@ import React from "react";
 import './welcomeLoginF.css'
 import TechnipLogo from "../../assets/images/technip.png"
 import IsoTrackerLogo from "../../assets/images/isotracker.png"
+import FullTrackerLogo from "../../assets/images/3dtracker.png"
 import { useState } from "react";
 import Eye from "../../assets/images/eye.png"
 import GreenCircle from "../../assets/images/green_circle.png"
@@ -93,6 +94,14 @@ const WelcomeLoginF = () =>{
             })               
         
     }
+    
+    let logo = null
+
+    if(process.env.REACT_APP_PROGRESS === "0"){
+        logo = IsoTrackerLogo
+    }else{
+        logo = FullTrackerLogo
+    }
 
     return(
         <body>
@@ -102,7 +111,7 @@ const WelcomeLoginF = () =>{
             <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/>
             
             <div className="login__form">
-                <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image"/>
+                <img src={logo} alt="isoTrackerLogo" className="isoTrackerLogo__image"/>
                 <text className="welcome__text">Welcome</text>
                 <text className="enter__text">Please, enter you e-mail account and password.</text>
                 <text className="email__label">E-mail</text>

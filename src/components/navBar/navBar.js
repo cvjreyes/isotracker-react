@@ -138,7 +138,7 @@ const NavBar = (props) =>{
             <i className="dropdown__text">Electrical </i>
         </Button>
         <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">Isotracker </i>
+                        <i className="dropdown__text">IsoTracker </i>
                     </Button></div>)
         }
     },[])

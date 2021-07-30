@@ -13,8 +13,9 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import PipingExcel from "../../components/pipingExcel/pipingExcel"
 import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
-import IsoTrackerLogo from "../../assets/images/isotracker.png"
-import ProcInst from "../../assets/images/MagnifyingGlass.png"
+import IsoTrackerLogo from "../../assets/images/3dtracker.png"
+import ExportIcon from "../../assets/images/downloadicon.png"
+import EditIcon from "../../assets/images/edit.png"
 
 const Piping = () => {
 
@@ -141,7 +142,7 @@ const Piping = () => {
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        downloadBtn = <button className="navBar__button" onClick={()=>downloadModelled()} style={{marginLeft:"125px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
+        downloadBtn = <button className="navBar__button" onClick={()=>downloadModelled()} style={{marginLeft:"125px"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
     
         table = <ModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
@@ -169,9 +170,9 @@ const Piping = () => {
     if(currentRole === "Project"){
         if(currentTab === "Estimated" || currentTab === "Edit"){
             if(currentTab === "Edit"){
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"100px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"100px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
             }else{
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"100px"}}><img src={ProcInst} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"100px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
             }        }else{
             adminBtn = null
         }
