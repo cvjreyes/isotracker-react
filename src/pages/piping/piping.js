@@ -164,7 +164,7 @@ const Piping = () => {
         pageSelector = null
         navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
-        table = <PipingTypesDataTable/>
+        table = <PipingTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <PipingExcel success={success.bind(this)}/>
         pageSelector = null

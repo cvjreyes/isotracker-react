@@ -164,7 +164,7 @@ const Electrical = () => {
         pageSelector = null
         navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
-        table = <ElecTypesDataTable/>
+        table = <ElecTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <ElecExcel success={success.bind(this)}/>
         pageSelector = null

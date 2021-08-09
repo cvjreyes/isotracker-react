@@ -166,7 +166,7 @@ const Civil = () => {
         pageSelector = null
         navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
-        table = <CivilTypesDataTable/>
+        table = <CivilTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <CivilExcel success={success.bind(this)}/>
         pageSelector = null

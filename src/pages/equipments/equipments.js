@@ -171,7 +171,7 @@ const Equipments = () => {
         pageSelector = null
         navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
-        table = <EquipTypesDataTable/>
+        table = <EquipTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <EquipExcel success={success.bind(this)}/>
         pageSelector = null
