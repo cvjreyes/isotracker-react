@@ -146,7 +146,7 @@ const Equipments = () => {
     if(currentTab === "Estimated"){
         table = <EquipEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        downloadBtn = <button className="navBar__button" onClick={()=>downloadEquipmentModelled()} style={{marginLeft:"125px"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
+        downloadBtn = <button className="navBar__button" onClick={()=>downloadEquipmentModelled()} style={{marginLeft:"230px", width:"115px"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
     
         table = <EquipModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
@@ -174,9 +174,9 @@ const Equipments = () => {
     if(currentRole === "Project"){
         if(currentTab === "Estimated" || currentTab === "Edit"){
             if(currentTab === "Edit"){
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"125px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
             }else{
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"125px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
             }        }else{
             adminBtn = null
         }
@@ -229,7 +229,9 @@ const Equipments = () => {
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
-
+            <div style={{position:"absolute", marginTop:"145px", marginLeft:"47%"}}>
+                <i className="discipline__title" style={{fontStyle:"normal"}}>Equipment</i>
+            </div>
                 <div className="isotracker__row">
                   <div className="isotracker__column">
                       <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
@@ -262,7 +264,6 @@ const Equipments = () => {
               <table className="isotracker__table__container">
                       <tr className="isotracker__table__navBar__container">
                           <th  colspan="2" className="isotracker__table__navBar">
-                          <text style={{marginLeft:"20px", fontSize:"18px", marginTop:"30px"}}>Equipment</text>
                             {adminBtn}
                             {downloadBtn}
                           {pageSelector}

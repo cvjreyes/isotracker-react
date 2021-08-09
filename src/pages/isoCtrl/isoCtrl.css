@@ -12,8 +12,6 @@
 
 .iso__title{
     box-sizing: border-box;
-    font-style: italic;
-    font-weight: 700;
     font-size: 30px;
     font-family: 'Quicksand', sans-serif;
     line-height: 1.1;
@@ -115,7 +113,7 @@ body{
 
 .isoTrackerLogo__image{
     width: 343.57px;
-    height: 104.57px;
+    height: auto;
 }
 
 

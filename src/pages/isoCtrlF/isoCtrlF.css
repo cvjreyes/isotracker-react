@@ -1,6 +1,6 @@
 .isoTrackerLogo__image2{
     width: 270.57px;
-    height: 80.57px;
+    height: auto;
     margin-top: 110px;
     margin-left: 110px;
 }
@@ -129,3 +129,7 @@
     width: 100%;
 }
 
+.discipline__title{
+    font-size: 36px;
+    font-weight: bold;
+}

@@ -28,7 +28,7 @@ const SelectPag = (props) => {
     
     return(
 
-    <div style={{float:"right", width:"120px", marginRight:"20px", height: "40px"}}>
+    <div style={{float:"right", width:"120px", marginRight:"20px", height: "40px", position:"relative"}}>
       <FormControl className={classes.formControl}>
         <InputLabel id="selectPageLabel" style={{fontSize:"15px",  fontFamily:"Quicksand", color:"white", width:"100px", marginTop:"-10px"}}>Nº of entries</InputLabel>
         <Select

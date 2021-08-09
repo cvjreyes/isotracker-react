@@ -25,11 +25,10 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/"} component={Welcome}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} component={IsoCtrl}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/login"} component={WelcomeLoginF}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} component={IsoCtrlF}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/home"} component={Home}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/register"} component={Register}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/login"} component={LoginPage}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/changepassword"} component={ChangePasswordPage}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/equipments"} component={Equipments}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/instrumentation"} component={Instrumentation}></Route>
@@ -38,8 +37,6 @@ function App() {
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/piping"} component={Piping}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/3dprogress"} component={ProgressCurve}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/navis"} component={Navis}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/welcomeLoginF"} component={WelcomeLoginF}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/isoTrackerF"} component={IsoCtrlF}></Route>
         </Switch>
       </Router>
   

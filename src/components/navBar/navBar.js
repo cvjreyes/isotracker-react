@@ -74,12 +74,9 @@ const NavBar = (props) =>{
 
     const handleLogOut = () => {
         localStorage.clear();
-        history.push("/"+process.env.REACT_APP_PROJECT);
+        history.push("/"+process.env.REACT_APP_PROJECT+"/login");
     };
-    const handleHome = () =>{
-        setAnchorElUser(null);
-        history.push("/"+process.env.REACT_APP_PROJECT+"/isotracker");
-    }
+
     const handleChangePassword = () =>{
         setAnchorElUser(null);
         history.push("/"+process.env.REACT_APP_PROJECT+"/changepassword");
@@ -158,9 +155,9 @@ const NavBar = (props) =>{
                     {progressButtons}
                     
                     
-                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/welcomeLoginF"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
+                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/login"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
                      
-                    <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/"}>
+                    <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/home"}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>
                     </a>
                     
@@ -182,7 +179,6 @@ const NavBar = (props) =>{
                             }
                         }}
                     >
-                    <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleHome}>Home</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleChangePassword}>Change password</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleLogOut}><b>Logout</b></MenuItem>
                     </Menu>

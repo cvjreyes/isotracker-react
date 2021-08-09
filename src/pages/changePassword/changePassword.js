@@ -1,9 +1,15 @@
 import React, { useState} from 'react'
-import {useHistory} from "react-router";
 import './changePassword.css';
 import NavBar from '../../components/navBar/navBar'
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
+import TechnipLogo from "../../assets/images/technip.png"
+import IsoTrackerLogo from "../../assets/images/isotracker.png"
+import FullTrackerLogo from "../../assets/images/3dtracker.png"
+import Eye from "../../assets/images/eye.png"
+import GreenCircle from "../../assets/images/green_circle.png"
+import BlueCircle from "../../assets/images/blue_circle.png"
+import {useHistory} from "react-router";
 
 //Página de home con el menú para ir a las aplicaciones de isotracker
 
@@ -99,6 +105,14 @@ const ChangePasswordPage = () =>{
 
     }
 
+    let logo = null
+
+    if(process.env.REACT_APP_PROGRESS === "0"){
+        logo = IsoTrackerLogo
+    }else{
+        logo = FullTrackerLogo
+    }
+
     return(
         <body>
             <NavBar onChange={value => history.replace("/"+process.env.REACT_APP_PROJECT+"/isotracker")}/>
@@ -127,28 +141,38 @@ const ChangePasswordPage = () =>{
                 </Alert>
             </Collapse>
             
-            <div className="home__background">
-                <div className="login__form__container">
-                    <center><h3>Change password</h3></center>
-                    <br></br>
-
-                    <div className="form-group">
-                        <label>Current Password</label>
-                        <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} />
-                    </div>
-
-                    <div className="form-group">
-                        <label>New Password</label>
-                        <input type="password" className="form-control" onChange={(e) => setNewPassword(e.target.value)}/>
-                    </div>
-                    <div className="form-group">
-                        <label>Confirm New Password</label>
-                        <input type="password" className="form-control" onChange={(e) => setConfPassword(e.target.value)}/>
-                    </div>
-                    <button className="btn btn-dark btn-lg btn-block" style={{marginTop:"30px", backgroundColor: "#17a2b8"}}  onClick={handelChangePassword}>Change Password</button>
-
-                </div> 
-            </div>         
+            
+        <div className="background">
+            <img src={TechnipLogo} alt="technipLogo" className="technipLogo__image"/>
+            <img src={GreenCircle} alt="greenCircle" className="greenCircle__image"/>
+            <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/>
+            
+            <div className="login__form">
+                <img src={logo} alt="isoTrackerLogo" className="isoTrackerLogo__image"/>
+                <text className="welcome__text">Change password</text>
+                <text className="enter__text">Please, enter your current password, current password confirmation and new password.</text>
+                <text className="email__label">Current password</text>
+                <div>
+                    <input className="password__input" type={passwordShown1 ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}/>
+                    <img onClick={togglePassword1} src={Eye} alt="eye" className="eye__image"></img>
+                </div>
+                <text className="password__label">Confirm current password</text>
+                <div>
+                    <input className="password__input" type={passwordShown2 ? "text" : "password"} onChange={(e) => setConfPassword(e.target.value)}/>
+                    <img onClick={togglePassword2} src={Eye} alt="eye" className="eye__image"></img>
+                </div>
+                <text className="password__label">new password</text>
+                <div>
+                    <input className="password__input" type={passwordShown3 ? "text" : "password"} onChange={(e) => setNewPassword(e.target.value)}/>
+                    <img onClick={togglePassword3} src={Eye} alt="eye" className="eye__image"></img>
+                </div>
+                <div className="login__buttons">
+                    <button className="login__button" onClick={handelChangePassword}>Change password</button>
+                    {error && <p className="error__message" style={{color: "red", position:"absolute"}}>Current password incorrect. Try again.</p>} 
+            </div>
+            </div>
+            
+        </div>
         </body>
     );
 };
