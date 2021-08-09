@@ -1,5 +1,5 @@
 .MuiTypography-body1 {
-    font-size: 25px !important;
+    font-size: 20px !important;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: bold;
     line-height: 1.5;
@@ -7,7 +7,7 @@
 }
 
 .MuiTypography-body2 {
-    font-size: 20px !important;
+    font-size: 16px !important;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-weight: 400;
     line-height: 1.43;

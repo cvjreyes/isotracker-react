@@ -101,7 +101,7 @@ const RoleDropDown = (props) => {
       >
         {options.map((option, index) => (
           <MenuItem
-            style={{fontSize: "20px"}}
+            style={{fontSize: "16px"}}
             key={option}
             selected={index === selectedIndex}
             onClick={(event) => handleMenuItemClick(event, index)}
