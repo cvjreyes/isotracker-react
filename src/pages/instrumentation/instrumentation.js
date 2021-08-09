@@ -168,7 +168,7 @@ const Instrumentation = () => {
         pageSelector = null
         navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
-        table = <InstrumentationTypesDataTable/>
+        table = <InstrumentationTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <InstExcel success={success.bind(this)}/>
         pageSelector = null

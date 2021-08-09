@@ -55,6 +55,8 @@ class DataTable extends React.Component{
     this.props.rename(newName, oldName)
   }
 
+ 
+
   componentDidMount(){
 
     
@@ -442,6 +444,8 @@ class DataTable extends React.Component{
 
   }
 
+  
+
   getMaster(fileName){
     const options = {
       method: "GET",
@@ -458,7 +462,27 @@ class DataTable extends React.Component{
       //Build a URL from the file
       const fileURL = URL.createObjectURL(file);
       //Open the URL on new Window
-      window.open(fileURL);
+      let w = window.open(fileURL);
+
+        w.addEventListener("load", function() {
+          setTimeout(()=> w.document.title = fileName
+          , 300);
+
+
+        });
+
+        // create <a> tag dinamically
+        var fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+
+        // it forces the name of the downloaded file
+        fileLink.download = fileName;
+
+        // triggers the click event
+        fileLink.click();
+
+
+      
     })
     .catch(error => {
       console.log(error);
@@ -615,7 +639,7 @@ class DataTable extends React.Component{
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
-        width: '15%',
+        width: '23%',
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
@@ -625,7 +649,7 @@ class DataTable extends React.Component{
         title: <center className="dataTable__header__text">Type</center>,
         dataIndex: 'type',
         key: 'type',
-        width: '10%',
+        width: '5%',
         ...this.getColumnSearchProps('type'),
         sorter:{
           compare: (a, b) => { return a.type.localeCompare(b.type)},
