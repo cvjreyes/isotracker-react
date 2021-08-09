@@ -123,7 +123,7 @@ class CheckInTable extends React.Component{
         title: 'ISO ID',
         dataIndex: 'id',
         key: 'id',
-        width: '20%',
+        width: '23%',
         ...this.getColumnSearchProps('id'),
         sorter: {
           compare: (a, b) => a.id - b.id,
