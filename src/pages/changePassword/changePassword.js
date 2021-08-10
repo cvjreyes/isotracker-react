@@ -47,6 +47,11 @@ const ChangePasswordPage = () =>{
     const [password, setPassword] = useState(null);
     const [newPassword, setNewPassword] = useState(null);
     const [confPassword, setConfPassword] = useState(null);
+    
+    const [passwordShown1, setPasswordShown1] = useState(false);
+    const [passwordShown2, setPasswordShown2] = useState(false); 
+    const [passwordShown3, setPasswordShown3] = useState(false);
+
     const [blankError, setBlankError] = useState(false);
     const [wrongPassError, setWrongPassError] = useState(false);
     const [notCoincideError, setNotCoincideError] = useState(false);
@@ -105,6 +110,23 @@ const ChangePasswordPage = () =>{
 
     }
 
+    const togglePassword1 = () => {
+        setPasswordShown1(!passwordShown1);
+    };
+
+    const togglePassword2 = () => {
+        setPasswordShown2(!passwordShown2);
+    };
+
+    const togglePassword3 = () => {
+        setPasswordShown3(!passwordShown3);
+    };
+
+    const cancel = async() =>{
+        history.goBack()
+    }
+
+
     let logo = null
 
     if(process.env.REACT_APP_PROGRESS === "0"){
@@ -115,27 +137,26 @@ const ChangePasswordPage = () =>{
 
     return(
         <body>
-            <NavBar onChange={value => history.replace("/"+process.env.REACT_APP_PROJECT+"/isotracker")}/>
             <Collapse in={blankError}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"5%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                     >
                     At least one field is blank!
                 </Alert>
             </Collapse>
             <Collapse in={wrongPassError}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"5%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                     >
                     The current password is not correct!
                 </Alert>
             </Collapse>
             <Collapse in={notCoincideError}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
+                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"5%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
                     >
-                    The new password doesn't match!
+                    The passwords don't match!
                 </Alert>
             </Collapse>
             <Collapse in={successful}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"5%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
                     >
                     The password changed successfully!
                 </Alert>
@@ -149,26 +170,26 @@ const ChangePasswordPage = () =>{
             
             <div className="login__form">
                 <img src={logo} alt="isoTrackerLogo" className="isoTrackerLogo__image"/>
-                <text className="welcome__text">Change password</text>
+                <text className="welcome__text" style={{width:"250px"}}>Change password</text>
                 <text className="enter__text">Please, enter your current password, current password confirmation and new password.</text>
-                <text className="email__label">Current password</text>
+                <text className="email__label" style={{width:"120px"}}>Current password</text>
                 <div>
-                    <input className="password__input" type={passwordShown1 ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}/>
-                    <img onClick={togglePassword1} src={Eye} alt="eye" className="eye__image"></img>
+                    <input className="current__password__input" type={passwordShown1 ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}/>
+                    <img onClick={togglePassword1} src={Eye} alt="eye" className="current__password__eye__image"></img>
                 </div>
-                <text className="password__label">Confirm current password</text>
+                <text className="password__label" style={{width:"220px"}}>Confirm current password</text>
                 <div>
-                    <input className="password__input" type={passwordShown2 ? "text" : "password"} onChange={(e) => setConfPassword(e.target.value)}/>
-                    <img onClick={togglePassword2} src={Eye} alt="eye" className="eye__image"></img>
+                    <input className="conf__password__input" type={passwordShown2 ? "text" : "password"} onChange={(e) => setConfPassword(e.target.value)}/>
+                    <img onClick={togglePassword2} src={Eye} alt="eye" className="conf__password__eye__image"></img>
                 </div>
-                <text className="password__label">new password</text>
+                <text className="new__password__label" style={{width:"120px"}}>New password</text>
                 <div>
-                    <input className="password__input" type={passwordShown3 ? "text" : "password"} onChange={(e) => setNewPassword(e.target.value)}/>
-                    <img onClick={togglePassword3} src={Eye} alt="eye" className="eye__image"></img>
+                    <input className="new__password__input" type={passwordShown3 ? "text" : "password"} onChange={(e) => setNewPassword(e.target.value)}/>
+                    <img onClick={togglePassword3} src={Eye} alt="eye" className="new__password__eye__image"></img>
                 </div>
-                <div className="login__buttons">
+                <div className="login__buttons" style={{top:"420px"}}>
                     <button className="login__button" onClick={handelChangePassword}>Change password</button>
-                    {error && <p className="error__message" style={{color: "red", position:"absolute"}}>Current password incorrect. Try again.</p>} 
+                    <button className="cancel__button" onClick={cancel}>Cancel</button>
             </div>
             </div>
             

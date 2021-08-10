@@ -8,7 +8,7 @@
 .technipLogo__image{
     position: absolute;
     width: 147.14px;
-    height: 85px;
+    height: auto;
     left: 85%;
     top: 5%;
 }
@@ -16,7 +16,7 @@
 .isoTrackerLogo__image{
     position: absolute;
     width: 343.57px;
-    height: 104.57px;
+    height: auto;
 
     top: -190px;
 }
