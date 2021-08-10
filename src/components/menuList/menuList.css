@@ -42,12 +42,11 @@
 
 .panel__content__container__last{
     box-sizing: border-box;
-    height: 150px;
+    height: 140px;
     display: block;
     padding-right: 15px;
     padding-left: 15px;
     padding-bottom: 25px;
-    padding-top: 15px;
     color: rgb(99, 107, 111);
     background-color: white;
     margin-left: 20px;
@@ -115,11 +114,24 @@ h4{
 }
 
 .iso__title__menu{
-    margin-left: 30px;
+    margin-left: 20px;
     font-weight: 900;
     font-size: 40px;
-    height: 70px;
+    height: 60px;
+    transition: 0.3s;
+    padding-top: 10px;
+    width:94%;
+    border-radius: 20px 20px 20px 20px;
+    padding-left: 10px;
 }
+
+.iso__title__menu:hover{
+    background-color: #d4f1dd;
+}
+
+.iso__title__menu:hover:active{
+    background-color: #94dcaa;
+  }
 
 .disciplines__text{
     margin-left: 30px;

@@ -133,7 +133,7 @@ const Piping = () => {
         dataTableHeight = "3900px"
         navBtnsMargin = "4000px"
     }if(pagination === 500){
-        dataTableHeight = "19300px"
+        dataTableHeight = "19000px"
         navBtnsMargin = "19000px"
     }
 
@@ -284,7 +284,7 @@ const Piping = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="disciplines__table__trays">
                               <div className="trays__container">
-                                  <p className="isotracker__table__trays__group">Trays</p>
+                                  <p className="isotracker__table__trays__group">Options</p>
                                   <center className="equimentsNavBtns__center">              
                                     <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
                                     </center>

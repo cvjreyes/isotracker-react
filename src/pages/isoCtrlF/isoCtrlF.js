@@ -113,6 +113,8 @@ const IsoCtrlF = () => {
         dataTableHeight = "1970px"
     }if(pagination === 100){
         dataTableHeight = "3860px"
+    }if(pagination === 500){
+        dataTableHeight = "19000px"
     }
 
     //Componentes de la pagina que varian en funcion del estado

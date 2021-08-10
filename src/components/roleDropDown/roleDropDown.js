@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   title: {
-    fontSize: "40px"
+    fontSize: "40px",
   }
 }));
 
@@ -101,7 +101,7 @@ const RoleDropDown = (props) => {
       >
         {options.map((option, index) => (
           <MenuItem
-            style={{fontSize: "16px"}}
+            style={{fontSize: "16px", fontFamily:"Quicksand"}}
             key={option}
             selected={index === selectedIndex}
             onClick={(event) => handleMenuItemClick(event, index)}

@@ -230,10 +230,10 @@ const MenuList = () =>{
 
             <div className="elements__container">
                 <div className="menu">
-                    <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} style={{textDecoration: "none"}}>
-                    <h4 className="click__text">Click here to open</h4>
-                    <h4 className="iso__title__menu">ISO<text style={{fontWeight:"100"}}>Tracker</text></h4>
-                    </a>
+                        <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} style={{textDecoration: "none"}}>
+                        <h4 className="click__text">Click here to open</h4>
+                        <h4 className="iso__title__menu">ISO<text style={{fontWeight:"100"}}>Tracker</text></h4>
+                        </a>
                     <h4 className="disciplines__text">You can also click any of the items below to check disciplines.</h4>
 
                     {progressButtons}
