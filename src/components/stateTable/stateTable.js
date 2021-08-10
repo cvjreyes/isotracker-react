@@ -128,7 +128,7 @@ const StateTable = props =>{
                     setTotalStock(json["totalStock"])
                     
                     setTotalHeader(<td  className="statusTable__header" style={{backgroundColor:"blue", borderRadius:"0 1em 0 0"}}>Total</td>)
-                    setTotalStockTD(<td className="statusTable__state" style={{fontWeight:"bold", color:"black", borderRadius:"0 0 1em 0"}}>{totalStock}</td>)
+                    setTotalStockTD(<td className="statusTable__state__stock" style={{fontWeight:"bold", color:"black", borderRadius:"0 0 1em 0"}}>{totalStock}</td>)
 
                     setLoading(false)
                 }) 

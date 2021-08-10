@@ -129,12 +129,18 @@ const IsoCtrlF = () => {
 
         if(process.env.REACT_APP_PROGRESS === "0"){
 
-            setContent(<LoadingScreen progress={"25"}/>)
+            setContent(<div className="content">
+            <LoadingScreen progress={"25"}/>
+            </div>)
             setTimeout(() => {
-                setContent(<LoadingScreen progress={"75"}/>)
+                setContent(<div className="content">
+                <LoadingScreen progress={"75"}/>
+                </div>)
             }, 1000)
             setTimeout(() => {
-                setContent(<LoadingScreen progress={"100"}/>)
+                setContent(<div className="content">
+                <LoadingScreen progress={"100"}/>
+                </div>)
             }, 2000)
             setTimeout(() => {
                 setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
@@ -1601,16 +1607,17 @@ const IsoCtrlF = () => {
         modelledBtn = <ModelledBtn onChange={value => setCurrentTab("Modelled")} currentTab = {currentTab}></ModelledBtn>
     }if(currentTab === "Progress"){
         tableContent = <ProgressPlot></ProgressPlot>
+        dataTableHeight = "500px"
     }if(currentTab === "Modelled"){
         tableContent = <ModelledDataTable  pagination = {pagination}></ModelledDataTable>
     }if(currentRole !== "Review"){
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
     }if(currentRole === "SpecialityLead"){
         if (currentTab === "Users"){
-            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"120px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
+            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"100px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
             secureStorage.setItem("tab", "Users")
         }else{
-            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"120px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
+            usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"100px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
         }
     }if(currentTab === "Users"){
  
@@ -1706,20 +1713,40 @@ const IsoCtrlF = () => {
     }else{
         modelledBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Modelled")} style={{width:"120px"}}><img src={Modelled} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Modelled</p></button>
     }
-
-    if(currentTab === "Process"){
-        processBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Process")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Process</p></button>
-
+    if(currentRole === "Process"){
+        if(currentTab === "Process"){
+            processBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Process")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Process</p></button>
+    
+        }else{
+            processBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Process")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Process</p></button>
+        }
+    }else if(currentRole === "Instrument"){
+        if(currentTab === "Instrument"){
+            instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrument")} style={{backgroundColor:"#0000FF", width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
+    
+        }else{
+            instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrument")} style={{width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
+        }
+    }else if(currentRole === "SpecialityLead"){
+        if(currentTab === "Process"){
+            processBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Process")} style={{backgroundColor:"#0000FF", width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Process</p></button>
+    
+        }else{
+            processBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Process")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Process</p></button>
+        }
+        if(currentTab === "Instrument"){
+            instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrument")} style={{backgroundColor:"#0000FF", width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
+    
+        }else{
+            instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrument")} style={{width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
+        }
     }else{
-        processBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Process")} style={{width:"120px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Process</p></button>
+        processBtn = null
+        instrumentationBtn = null
     }
+    
 
-    if(currentTab === "Instrumentation"){
-        instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrumentation")} style={{backgroundColor:"#0000FF", width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
-
-    }else{
-        instrumentationBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Instrumentation")} style={{width:"170px"}}><img src={ProcInst} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Instrumentation</p></button>
-    }
+    
 
     if(currentRole === "Design"){
         if(currentTab === "Upload IsoFiles"){
@@ -1735,7 +1762,8 @@ const IsoCtrlF = () => {
     return (       
         <body>
             {content}
-            <div className="content">
+            
+            <div>
               <center>
                       <Collapse in={loading}>
                           <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"3"}} severity="info"

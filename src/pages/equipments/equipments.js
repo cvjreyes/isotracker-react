@@ -15,6 +15,8 @@ import EquipExcelEdit from "../../components/equipExcelEdit/equipExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3dtracker.png"
 import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 const Equipments = () => {
 
@@ -84,7 +86,13 @@ const Equipments = () => {
             
     },[]);
 
-
+    function success(){
+        setSuccessAlert(true)
+        setTimeout(function () {
+            setSuccessAlert(false)
+        }, 1000);
+    }
+    
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -163,14 +171,12 @@ const Equipments = () => {
         pageSelector = null
         navBtnsMargin = "700px"
     }else if(currentTab === "Edit"){
-        table = <EquipExcelEdit/>
+        table = <EquipExcelEdit success={success.bind(this)}/>
         pageSelector = null
     }
 
     
-    if(currentTab === "Edit"){
-        dataTableHeight = "740px"
-    }else if(currentTab === "Key parameters"){
+    if(currentTab === "Edit" || currentTab === "Key parameters"){
         dataTableHeight = "600px"
     }
     
@@ -232,6 +238,12 @@ const Equipments = () => {
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
+            <Collapse in={successAlert}>
+                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                    >
+                    Success!
+                </Alert>
+            </Collapse>
             <div style={{position:"absolute", marginTop:"145px", marginLeft:"47%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Equipment</i>
             </div>

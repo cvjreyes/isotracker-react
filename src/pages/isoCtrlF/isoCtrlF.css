@@ -127,6 +127,9 @@
 .content{
     position: fixed;
     width: 100%;
+    z-index: 9999;
+    background-color: #F5F8FA;
+    height: 100%;
 }
 
 .discipline__title{

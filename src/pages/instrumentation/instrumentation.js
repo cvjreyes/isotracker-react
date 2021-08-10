@@ -16,6 +16,8 @@ import InstExcelEdit from "../../components/instExcelEdit/instExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3dtracker.png"
 import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 
 const Instrumentation = () => {
 
@@ -86,7 +88,13 @@ const Instrumentation = () => {
             
     },[]);
 
-
+    function success(){
+        setSuccessAlert(true)
+        setTimeout(function () {
+            setSuccessAlert(false)
+        }, 1000);
+    }
+    
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -165,21 +173,19 @@ const Instrumentation = () => {
         pageSelector = null
         navBtnsMargin = "700px"
     }else if(currentTab === "Edit"){
-        table = <InstExcelEdit/>
+        table = <InstExcelEdit success={success.bind(this)}/>
         pageSelector = null
     }
 
     
-    if(currentTab === "Edit"){
-        dataTableHeight = "740px"
-    }else if(currentTab === "Key parameters"){
+    if(currentTab === "Edit" || currentTab === "Key parameters"){
         dataTableHeight = "600px"
     }
     
     if(currentRole === "Project"){
         if(currentTab === "Estimated" || currentTab === "Edit"){
             if(currentTab === "Edit"){
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"120px", position:"relative"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"230px", position:"relative"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
             }else{
                 adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"230px", position:"relative"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
             }        }else{
@@ -234,6 +240,12 @@ const Instrumentation = () => {
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
+            <Collapse in={successAlert}>
+                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                    >
+                    Success!
+                </Alert>
+            </Collapse>
             <div style={{position:"absolute", marginTop:"145px", marginLeft:"44%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Instrumentation</i>
             </div>

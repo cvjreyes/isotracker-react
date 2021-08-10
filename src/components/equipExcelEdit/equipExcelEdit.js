@@ -110,7 +110,7 @@ class EquipExcelEdit extends React.Component{
                 colHeaders={true}
                 rowHeaders={true}
                 width="1276"
-                height="650"
+                height="520"
                 settings={settings} 
                 manualColumnResize={true}
                 manualRowResize={true}
