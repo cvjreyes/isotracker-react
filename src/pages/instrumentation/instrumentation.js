@@ -246,7 +246,7 @@ const Instrumentation = () => {
                     Success!
                 </Alert>
             </Collapse>
-            <div style={{position:"absolute", marginTop:"145px", marginLeft:"44%"}}>
+            <div style={{position:"absolute", marginTop:"180px", marginLeft:"46%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Instrumentation</i>
             </div>
                 <div className="isotracker__row">
@@ -262,7 +262,7 @@ const Instrumentation = () => {
 
                   <div className="isotracker__column">
                   
-                  <table className="equipTable__table" style={{marginTop:"140px", width:"35%", marginLeft:"59%"}}>
+                  <table className="equipTable__table" style={{marginTop:"270px", width:"35%", marginLeft:"59%"}}>
                         <tbody className="equipable__body">
                             <tr>    
                                 <td  className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"1em 0 0 0"}}>Estimated weight</td>

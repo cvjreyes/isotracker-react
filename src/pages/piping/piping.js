@@ -241,7 +241,7 @@ const Piping = () => {
                     Success!
                 </Alert>
             </Collapse>
-            <div style={{position:"absolute", marginTop:"145px", marginLeft:"48%"}}>
+            <div style={{position:"absolute", marginTop:"180px", marginLeft:"48%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Piping</i>
             </div>
                 <div className="isotracker__row">
@@ -256,7 +256,7 @@ const Piping = () => {
 
                   <div className="isotracker__column">
                   
-                  <table className="equipTable__table" style={{marginTop:"140px", width:"35%", marginLeft:"59%"}}>
+                  <table className="equipTable__table" style={{marginTop:"270px", width:"35%", marginLeft:"59%"}}>
                         <tbody className="equipable__body">
                             <tr>    
                                 <td  className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"1em 0 0 0"}}>Estimated weight</td>

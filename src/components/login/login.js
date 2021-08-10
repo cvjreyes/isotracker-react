@@ -67,7 +67,7 @@ const Login = props =>{
                         localStorage.setItem('token', json.token);
                         secureStorage.setItem('user', json.user)
                         secureStorage.setItem('tab', "Status")   
-                        history.replace('/'+process.env.REACT_APP_PROJECT+'/isotrackerF');
+                        history.replace('/'+process.env.REACT_APP_PROJECT+'/isotracker');
                         window.location.reload(false);
                     }
                 }

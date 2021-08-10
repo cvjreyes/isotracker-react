@@ -98,6 +98,12 @@ const NavBar = (props) =>{
     const handleClickPiping = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/piping");
     }
+    const handleClickProject = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/login");
+    }
+    const handleClickHome = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/home");
+    }
 
     useEffect(() =>{
         const bodyUsername = {
@@ -117,52 +123,55 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div>
-                <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_PROJECT+"/home"}>
-                        <img src={HomeLogo} alt="HomeLogo" style={{height:"30px", width:"30px"}}/>
-                    </a><Button onClick={handleClickPiping} style={{marginRight:"25px", marginLeft:"18px"}}>
+            setProgressButtons(<div style={{width:"1050px", marginLeft: "16%"}}>
+                <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
+            <i className="dropdown__text">Home </i>
+        </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Piping </i>
-        </Button><Button onClick={handleClickInstrument} style={{marginRight:"25px"}}>
+        </Button><Button class="btn nohover" onClick={handleClickInstrument} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Instrumentation </i>
         </Button>
-        <Button onClick={handleClickEquipments} style={{marginRight:"25px"}}>
+        <Button class="btn nohover" onClick={handleClickEquipments} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Equipment </i>
         </Button>
-        <Button onClick={handleClickCivil} style={{marginRight:"25px"}}>
+        <Button class="btn nohover" onClick={handleClickCivil} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Civil </i>
         </Button>
-        <Button onClick={handleClickElectrical} style={{marginRight:"25px"}}>
+        <Button class="btn nohover" onClick={handleClickElectrical} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Electrical </i>
         </Button>
-        <Button onClick={handleClickIsotracker} style={{marginRight:"25px"}}>
-                        <i className="dropdown__text">IsoTracker </i>
+        <Button class="btn nohover" onClick={handleClickIsotracker} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text" >IsoTracker </i>
                     </Button></div>)
         }
     },[])
 
-    
+    let projectBtn = null
+    if(process.env.REACT_APP_PROGRESS === "1"){
+        projectBtn = <Button onClick={handleClickProject} class="btn nohover" style={{marginRight:"50px"}}>
+                        <i className="dropdown__text" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
+                    </Button>
+    }else{
+        projectBtn = <Button onClick={handleClickProject} class="btn nohover" style={{marginLeft:"41%", marginRight:"50px"}}>
+                        <i className="dropdown__text" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
+                    </Button>
+    }
     return(
         <div className={classes.root}>
-            <AppBar position="fixed" className="navBar__container" style={{borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "white"}}>
+            <div style={{display:"flex"}}>
+            <AppBar position="fixed" className="navBar__container" style={{height:"62px",borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "#383838"}}>
+            
                 <Toolbar>
-                    <a className="navbar-brand" style={{float:"left", paddingLeft: "20px"}} href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"}>
-                        <img src={TechnipLogo} alt="technipLogo" style={{height:"50px"}}/>
-                    </a>
-                    <Typography variant="h6" className={classes.title}>
-                    
-                    </Typography>
                     
                     {progressButtons}
+                    {projectBtn}
                     
-                    
-                    <li className="icapp__button"><a href={"/"+process.env.REACT_APP_PROJECT+"/login"}><p className="icapp__text">{process.env.REACT_APP_APP_NAMEPROJ}</p></a></li>
-                     
-                    <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/home"}>
+                    <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/home"} style={{marginRight:"50px"}}>
                         <img src={Icapp} className="icapp__image" alt="icappImage"/>
                     </a>
                     
-                    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickUser}>
-                    <i className="dropdown__text">{username}</i>&nbsp;<b className="dropdown__arrow">▼</b>
+                    <Button aria-controls="simple-menu" aria-haspopup="true" class="btn nohover" onClick={handleClickUser} style={{float:"left"}}>
+                    <i className="dropdown__text">{username}&nbsp;🠗</i>
                     </Button>
                     <Menu
                         id="simple-menu"
@@ -175,7 +184,7 @@ const NavBar = (props) =>{
                         PaperProps={{
                             style: {
                             left: '50%',
-                            transform: 'translateX(+140%)',
+                            transform: 'translateX(+70%)',
                             }
                         }}
                     >
@@ -184,9 +193,10 @@ const NavBar = (props) =>{
                     </Menu>
  
                     
-
+                    
                 </Toolbar>
             </AppBar>
+            </div>
         </div>
     );
 };
