@@ -128,7 +128,7 @@ const StateTable = props =>{
                     setTotalStock(json["totalStock"])
                     
                     setTotalHeader(<td  className="statusTable__header" style={{backgroundColor:"blue", borderRadius:"0 1em 0 0"}}>Total</td>)
-                    setTotalStockTD(<td className="statusTable__state" style={{fontWeight:"bold", color:"black", borderRadius:"0 0 1em 0"}}>{totalStock}</td>)
+                    setTotalStockTD(<td className="statusTable__state__stock" style={{fontWeight:"bold", color:"black", borderRadius:"0 0 1em 0"}}>{totalStock}</td>)
 
                     setLoading(false)
                 }) 
@@ -200,24 +200,24 @@ const StateTable = props =>{
                          await setProgress([json.progress, json.realprogress])
                     })
                     if(props.currentRole === "SpecialityLead"){
-                        await setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>R.P.</td>)
-                        await setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"orange", borderRadius:"0 1em 0 0"}}>R.P. ISO</td>)
+                        await setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"#0070ed"}}>R.P.</td>)
+                        await setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>R.P. ISO</td>)
                         await setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{progress[1]}%</td>)
                         await setRealProgressIsoTDValue(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[1]}%</td>)
-                        await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.ISO</td>)
+                        await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"#0070ed"}}>P.ISO</td>)
                         await setpISOValueTD(<td rowSpan="6" className="statusTable__state">{progressIso[0]}%</td>)
                     }else{
                         await setRealProgressTD(null)
                         await setRealProgressIsoTD(null)
                         await setRealProgressTDValue(null)
                         await setRealProgressIsoTDValue(null)
-                        await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"orange", borderRadius:"0 1em 0 0"}}>P.ISO</td>)
+                        await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>P.ISO</td>)
                         await setpISOValueTD(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[0]}%</td>)
                     }
-                    await setProgressHeader(<td  className="statusTable__header" style={{backgroundColor:"orange"}}>P.</td>)
+                    await setProgressHeader(<td  className="statusTable__header" style={{backgroundColor:"#0070ed"}}>P.</td>)
                     await setProgressTD(<td rowSpan="6" className="statusTable__state">{progress[0]}%</td> )
-                    await setTotalHeader(<td  className="statusTable__header" style={{backgroundColor:"blue"}}>Total</td>)
-                    await setTotalStockTD(<td className="statusTable__state" style={{fontWeight:"bold", color:"black"}}>{totalStock}</td>)
+                    await setTotalHeader(<td  className="statusTable__header">Total</td>)
+                    await setTotalStockTD(<td className="statusTable__state__stock" style={{fontWeight:"bold", color:"black"}}>{totalStock}</td>)
             }
 
             
@@ -246,7 +246,7 @@ const StateTable = props =>{
                         <td  className="statusTable__header" >Materials</td>
                         <td  className="statusTable__header" >Issuer</td>
                         <td  className="statusTable__header" >To issue</td>
-                        <td  className="statusTable__header" style={{backgroundColor:"#00a000"}}>Issued</td>
+                        <td  className="statusTable__header" >Issued</td>
                         {totalHeader}
                         {progressHeader}
                         {pISOHeaderTD}
@@ -254,7 +254,7 @@ const StateTable = props =>{
                         {realProgressIsoTD}
                     </tr>
                     <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"white", color:"gray"}}>R0</td>
+                        <td className="statusTable__header" style={{backgroundColor:"white", color:"black", fontWeight:"bold"}}>R0</td>
                         <td className="statusTable__state">{designR0}</td>
                         <td className="statusTable__state">{stressR0}</td>
                         <td className="statusTable__state">{supportsR0}</td>
@@ -269,7 +269,7 @@ const StateTable = props =>{
                         {realProgressIsoTDValue} 
                     </tr>
                     <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"#d1ebf7", color:"gray"}}>R1</td>
+                        <td className="statusTable__header" style={{backgroundColor:"#d1ebf7", color:"black", fontWeight:"bold"}}>R1</td>
                         <td className="statusTable__state_R1">{designR1}</td>
                         <td className="statusTable__state_R1">{stressR1}</td>
                         <td className="statusTable__state_R1">{supportsR1}</td>
@@ -280,7 +280,7 @@ const StateTable = props =>{
                         <td className="statusTable__state_R1">{totalR1}</td> 
                   </tr>
                   <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"lightblue", color:"gray"}}>R2</td>
+                        <td className="statusTable__header" style={{backgroundColor:"white", color:"black", fontWeight:"bold"}}>R2</td>
                         <td className="statusTable__state_R2">{designR2}</td>
                         <td className="statusTable__state_R2">{stressR2}</td>
                         <td className="statusTable__state_R2">{supportsR2}</td>
@@ -291,36 +291,36 @@ const StateTable = props =>{
                         <td className="statusTable__state_R2">{totalR2}</td> 
                   </tr>
                   <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"red"}}>On hold</td>
-                        <td className="statusTable__state">{designHold}</td>
-                        <td className="statusTable__state">{stressHold}</td>
-                        <td className="statusTable__state">{supportsHold}</td>
-                        <td className="statusTable__state">{materialsHold}</td>
-                        <td className="statusTable__state">{issuerHold}</td>
-                        <td className="statusTable__state">{toIssueHold}</td>
-                        <td className="statusTable__state">-</td>   
-                        <td className="statusTable__state">{totalHold}</td> 
+                        <td className="statusTable__header" style={{backgroundColor:"#ff3358", color:"black", fontWeight:"bold"}}>On hold</td>
+                        <td className="statusTable__state__hold">{designHold}</td>
+                        <td className="statusTable__state__hold">{stressHold}</td>
+                        <td className="statusTable__state__hold">{supportsHold}</td>
+                        <td className="statusTable__state__hold">{materialsHold}</td>
+                        <td className="statusTable__state__hold">{issuerHold}</td>
+                        <td className="statusTable__state__hold">{toIssueHold}</td>
+                        <td className="statusTable__state__hold">-</td>   
+                        <td className="statusTable__state__hold">{totalHold}</td> 
                   </tr>
                   <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"grey"}}>Deleted</td>
-                        <td className="statusTable__state">{designDeleted}</td>
-                        <td className="statusTable__state">{stressDeleted}</td>
-                        <td className="statusTable__state">{supportsDeleted}</td>
-                        <td className="statusTable__state">{materialsDeleted}</td>
-                        <td className="statusTable__state">{issuerDeleted}</td>
-                        <td className="statusTable__state">{toIssueDeleted}</td>
-                        <td className="statusTable__state">{issuedDeleted}</td>   
-                        <td className="statusTable__state">{totalDeleted}</td> 
+                        <td className="statusTable__header" style={{backgroundColor:"#C0C0C0", color:"black", fontWeight:"bold"}}>Deleted</td>
+                        <td className="statusTable__state__deleted">{designDeleted}</td>
+                        <td className="statusTable__state__deleted">{stressDeleted}</td>
+                        <td className="statusTable__state__deleted">{supportsDeleted}</td>
+                        <td className="statusTable__state__deleted">{materialsDeleted}</td>
+                        <td className="statusTable__state__deleted">{issuerDeleted}</td>
+                        <td className="statusTable__state__deleted">{toIssueDeleted}</td>
+                        <td className="statusTable__state__deleted">{issuedDeleted}</td>   
+                        <td className="statusTable__state__deleted">{totalDeleted}</td> 
                   </tr>
                   <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"blue", borderRadius:"0 0 0 1em"}}>Stock</td>
-                        <td className="statusTable__state">{designStock}</td>
-                        <td className="statusTable__state">{stressStock}</td>
-                        <td className="statusTable__state">{supportsStock}</td>
-                        <td className="statusTable__state">{materialsStock}</td>
-                        <td className="statusTable__state">{issuerStock}</td>
-                        <td className="statusTable__state">{toIssueStock}</td>
-                        <td className="statusTable__state">{issuedStock}</td>   
+                        <td className="statusTable__header" style={{backgroundColor:"#94dcaa", borderRadius:"0 0 0 1em", color:"black", fontWeight:"bold"}}>Stock</td>
+                        <td className="statusTable__state__stock">{designStock}</td>
+                        <td className="statusTable__state__stock">{stressStock}</td>
+                        <td className="statusTable__state__stock">{supportsStock}</td>
+                        <td className="statusTable__state__stock">{materialsStock}</td>
+                        <td className="statusTable__state__stock">{issuerStock}</td>
+                        <td className="statusTable__state__stock">{toIssueStock}</td>
+                        <td className="statusTable__state__stock">{issuedStock}</td>   
                         {totalStockTD}
                   </tr>
                 </tbody>

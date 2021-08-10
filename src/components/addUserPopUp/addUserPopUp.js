@@ -119,7 +119,7 @@ export default class AddUserPopUp extends Component {
     render() {
         return (
             <section >
-                <input type="button"  value="Add user" className="btn btn-success"  style={{marginRight:"5px", marginLeft:"5px", width:"110px", fontSize:"14px"}} onClick={() => this.openModal()} />
+                <input type="button"  value="Add user" className="action__btn" onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="650" height="530" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <Collapse in={this.state.blankFields}>

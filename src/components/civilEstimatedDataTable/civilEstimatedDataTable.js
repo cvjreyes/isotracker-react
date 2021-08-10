@@ -175,7 +175,7 @@ class CivilEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Type</center>,
         dataIndex: 'type',
         key: 'type',
-        width: '280px',
+        width: '300px',
         ...this.getColumnSearchProps('type'),
         sorter:{
           compare: (a, b) => a.type.localeCompare(b.type),

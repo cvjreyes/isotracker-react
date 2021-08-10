@@ -8,14 +8,15 @@ import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavB
 import SelectPag from "../../components/selectPag/selectPag"
 import ProgressPlotEquipments from "../../components/progressPlotEquipments/progressPlotEquipments"
 import EquipTypesDataTable from "../../components/equipTypesDataTable/equipTypesDataTable"
-import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import EquipExcel from "../../components/equipExcel/equipExcel"
 import EquipExcelEdit from "../../components/equipExcelEdit/equipExcelEdit"
+import IsoTrackerLogo from "../../assets/images/3dtracker.png"
+import ExportIcon from "../../assets/images/downloadicon.png"
+import EditIcon from "../../assets/images/edit.png"
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
-
 
 const Equipments = () => {
 
@@ -24,7 +25,7 @@ const Equipments = () => {
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-    const[pagination, setPagination] = useState(8)
+    const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[admin, setAdmin] = useState(false);
@@ -85,7 +86,13 @@ const Equipments = () => {
             
     },[]);
 
-
+    function success(){
+        setSuccessAlert(true)
+        setTimeout(function () {
+            setSuccessAlert(false)
+        }, 1000);
+    }
+    
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -109,37 +116,26 @@ const Equipments = () => {
         }
     });
 
-
-    function swapAdmin(){
-        setAdmin(!admin)
-    }
-
-    function success(){
-        setSuccessAlert(true)
-        setTimeout(function () {
-            setSuccessAlert(false)
-        }, 1000);
-    }
-
-    var dataTableHeight = "550px"
+    var dataTableHeight = "500px"
     let navBtnsMargin = "600px"
 
-    if (pagination === 8){
-        dataTableHeight = "550px"
+    if (pagination === 10){
+        dataTableHeight = "500px"
         navBtnsMargin = "600px"
     }if(pagination === 25){
-        dataTableHeight = "1250px"
+        dataTableHeight = "1100px"
         navBtnsMargin = "1200px"
     }if(pagination === 50){
-        dataTableHeight = "2250px"
+        dataTableHeight = "2080px"
         navBtnsMargin = "2150px"
     }if(pagination === 100){
-        dataTableHeight = "4250px"
+        dataTableHeight = "4040px"
         navBtnsMargin = "4000px"
     }if(pagination === 500){
         dataTableHeight = "19300px"
         navBtnsMargin = "19000px"
     }
+
 
     document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
@@ -151,20 +147,18 @@ const Equipments = () => {
     var currentUser = secureStorage.getItem('user')
     var table = null
 
-    dataTableHeight = 8
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
 
     let downloadBtn = null
     let adminBtn = null
-    let navBtns = null
+    let marginProgress = null
 
 
     if(currentTab === "Estimated"){
         table = <EquipEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        downloadBtn = <div>
-        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", marginTop:"27px", marginLeft:"20px", float:"left"}} onClick={()=>downloadEquipmentModelled()}/>
-    </div> 
+        downloadBtn = <button className="navBar__button" onClick={()=>downloadEquipmentModelled()} style={{marginLeft:"230px", width:"115px"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
+    
         table = <EquipModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotEquipments/>
@@ -176,24 +170,31 @@ const Equipments = () => {
         table = <EquipExcel success={success.bind(this)}/>
         pageSelector = null
         navBtnsMargin = "700px"
+    }else if(currentTab === "Edit"){
+        table = <EquipExcelEdit success={success.bind(this)}/>
+        pageSelector = null
+    }
+
+    
+    if(currentTab === "Edit" || currentTab === "Key parameters"){
+        dataTableHeight = "600px"
     }
     
-    if(!admin){
-        navBtns = <center className="equimentsNavBtns__center" style={{marginTop: navBtnsMargin}}>              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
-            </center>
-        if(currentTab === "Estimated" && currentRole === "Project"){
-            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
-        }else{
+    if(currentRole === "Project"){
+        if(currentTab === "Estimated" || currentTab === "Edit"){
+            if(currentTab === "Edit"){
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }else{
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }        }else{
             adminBtn = null
         }
-    }else if(admin && currentTab === "Estimated"){
-        if(currentTab === "Estimated"){
-           adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
-        }
-        table = <EquipExcelEdit success={success.bind(this)}/>
-        navBtns = null
-        pageSelector = null
+    }
+        
+    if(adminBtn || downloadBtn){
+        marginProgress = "55%"
+    }else{
+        marginProgress = "66%"
     }
 
     async function downloadEquipmentModelled(){
@@ -228,6 +229,9 @@ const Equipments = () => {
         FileSaver.saveAs(data, fileName + fileExtension);
 
     }
+    /* 
+                            {adminBtn}     
+                            {pageSelector}   */
 
     return(
         
@@ -240,52 +244,63 @@ const Equipments = () => {
                     Success!
                 </Alert>
             </Collapse>
-            <div className="equipments__container">  
-                <center>
-                    <h2 className="title__container">
-                        <div className="roleSelector__container">
-                            <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
-                            
-                            </div>
-                        <b >      
-                            <i className="iso__title">Equipment</i>
-                        </b>
-                    </h2>
-                    <h3 className="iso__subtitle">{currentTab}</h3>
-                </center>
-                <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
-                  {pageSelector}        
-                  {downloadBtn}
-                  {adminBtn}
-                </div>
-                <div style={{display:"inline"}}>
-                    <div className="equipTable__container">
-                        <td className="equipTable__td">
-                            <table className="equipTable__table">
-                                <tbody className="equipable__body">
-                                    <tr>    
-                                        <td  className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
-                                        <td className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"0 1em 0 0"}}>Total progress</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
-                                        <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </div>
-                </div>
-
-                <div style={{height: dataTableHeight}}>
-                    <br></br>
-                    <br></br> 
-                    <br></br> 
-                    {table}
-                </div>         
+            <div style={{position:"absolute", marginTop:"145px", marginLeft:"47%"}}>
+                <i className="discipline__title" style={{fontStyle:"normal"}}>Equipment</i>
             </div>
-            <br></br>
-            {navBtns}
+                <div className="isotracker__row">
+                  <div className="isotracker__column">
+                      <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
+                      
+                      <div className="roleSelector__containerF">
+                              <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
+                      </div>
+                      
+                  </div>
+
+                  <div className="isotracker__column">
+                  
+                  <table className="equipTable__table" style={{marginTop:"140px", width:"35%", marginLeft:"59%"}}>
+                        <tbody className="equipable__body">
+                            <tr>    
+                                <td  className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                <td className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>Total progress</td>
+                            </tr>
+                            <tr>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                  </div>               
+                  
+                  
+              </div>
+              <table className="isotracker__table__container">
+                      <tr className="isotracker__table__navBar__container">
+                          <th  colspan="2" className="isotracker__table__navBar">
+                            {adminBtn}
+                            {downloadBtn}
+                          {pageSelector}
+                          </th>
+                      </tr>
+                      <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
+                          <td className="disciplines__table__trays">
+                              <div className="trays__container">
+                                  <p className="isotracker__table__trays__group">Trays</p>
+                                  <center className="equimentsNavBtns__center">              
+                                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+                                    </center>
+                              </div>
+                          </td>
+                          <td className="discplines__table__table" style={{height: dataTableHeight}} >
+                              <div  style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                                  {table}
+                              </div>
+                          </td>
+                          
+                      </tr>
+                  </table>
          </body>
     )
 }

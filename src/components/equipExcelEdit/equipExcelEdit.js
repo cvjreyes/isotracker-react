@@ -110,7 +110,7 @@ class EquipExcelEdit extends React.Component{
                 colHeaders={true}
                 rowHeaders={true}
                 width="1276"
-                height="650"
+                height="520"
                 settings={settings} 
                 manualColumnResize={true}
                 manualRowResize={true}
@@ -121,6 +121,7 @@ class EquipExcelEdit extends React.Component{
                   <button class="btn btn-sm btn-info" onClick={() => this.addRow()} style={{marginRight:"5px", fontSize:"16px", width:"60px"}}>Add</button>
                   <button class="btn btn-sm btn-success" onClick={() => this.submitChanges()} style={{marginRight:"5px", fontSize:"16px", width:"60px"}}>Save</button>
               </div>
+              <br></br>
             </div>
           </div>
       );

@@ -216,7 +216,7 @@ class EquipEstimatedDataTable extends React.Component{
         },
       })
     }
-
+ 
     var totalElements = null;
     if (this.state.data.length === 0){
       totalElements = null;

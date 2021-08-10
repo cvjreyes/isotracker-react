@@ -31,7 +31,7 @@ export default class holdComment extends Component {
         
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
-                <button class="btn btn-sm" style={{backgroundColor: "brown", color:"white", width:"110px", height:"33px"}} onClick={() => this.openModal()}>Hold</button>
+                <button className="action__btn"  onClick={() => this.openModal()}>Hold</button>
                 <div>
                     <Modal visible={this.state.visible} width="550" height="220" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div style={{marginTop:"10px"}}>   
