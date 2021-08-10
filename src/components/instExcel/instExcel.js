@@ -240,6 +240,7 @@ class InstExcel extends React.Component{
                   <button class="btn btn-sm btn-info" onClick={() => this.addRowProgress()} style={{marginRight:"5px", fontSize:"16px",width:"60px"}}>Add</button>
                   <button class="btn btn-sm btn-success" onClick={() => this.submitChangesProgress()} style={{marginRight:"5px", fontSize:"16px", width:"60px"}}>Save</button>
               </center>
+              <br></br>
             </div>
           </div>
       </div>

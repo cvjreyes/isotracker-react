@@ -13,8 +13,9 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import PipingExcel from "../../components/pipingExcel/pipingExcel"
 import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
-import Alert from '@material-ui/lab/Alert';
-import Collapse from '@material-ui/core/Collapse'
+import IsoTrackerLogo from "../../assets/images/3dtracker.png"
+import ExportIcon from "../../assets/images/downloadicon.png"
+import EditIcon from "../../assets/images/edit.png"
 
 const Piping = () => {
 
@@ -23,7 +24,7 @@ const Piping = () => {
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-    const[pagination, setPagination] = useState(8)
+    const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[admin, setAdmin] = useState(false);
@@ -106,31 +107,21 @@ const Piping = () => {
         }
     });
 
-    function swapAdmin(){
-        setAdmin(!admin)
-    }
 
-    function success(){
-        setSuccessAlert(true)
-        setTimeout(function () {
-            setSuccessAlert(false)
-        }, 1000);
-    }
+    var dataTableHeight = "490px"
+    let navBtnsMargin = "600px"
 
-    var dataTableHeight = "550px"
-    let navBtnsMargin = "0px"
-
-    if (pagination === 8){
-        dataTableHeight = "550px"
-        navBtnsMargin = "0px"
+    if (pagination === 10){
+        dataTableHeight = "490px"
+        navBtnsMargin = "600px"
     }if(pagination === 25){
-        dataTableHeight = "1250px"
-        navBtnsMargin = "0px"
+        dataTableHeight = "1050px"
+        navBtnsMargin = "1200px"
     }if(pagination === 50){
-        dataTableHeight = "2250px"
+        dataTableHeight = "2000px"
         navBtnsMargin = "2150px"
     }if(pagination === 100){
-        dataTableHeight = "4250px"
+        dataTableHeight = "3900px"
         navBtnsMargin = "4000px"
     }if(pagination === 500){
         dataTableHeight = "19300px"
@@ -150,14 +141,13 @@ const Piping = () => {
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
     let adminBtn = null
-    let navBtns = null
+    let marginProgress = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
-        downloadBtn = <div>
-        <input type="image" src={DownloadIcon} alt="issued" style={{width:"25px", marginTop:"27px", marginLeft:"20px", float:"left"}} onClick={()=>downloadModelled()}/>
-    </div>  
+        downloadBtn = <button className="navBar__button" onClick={()=>downloadModelled()} style={{marginLeft:"230px", width:"115px"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
+    
         table = <ModelledDataTable pagination = {pagination}/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotPiping/>
@@ -169,33 +159,34 @@ const Piping = () => {
         table = <PipingExcel success={success.bind(this)}/>
         pageSelector = null
         navBtnsMargin = "700px"
-    }
-    
-    if(!admin){
-        if(currentTab === "Key parameters"){
-            navBtns = <center className="equimentsNavBtns__center" style={{marginTop:"180px"}}>              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
-            </center>
-        }else{
-            navBtns = <center className="equimentsNavBtns__center">              
-            <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
-            </center>
-        }
-      
-        if(currentTab === "Estimated" && currentRole === "Project"){
-            adminBtn =<button class="btn btn-sm btn-info" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Edit</button>
-        }else{
-            adminBtn = null
-        }
-    }else if(admin && currentTab === "Estimated"){
-        if(currentTab === "Estimated"){
-            adminBtn =<button class="btn btn-sm btn-danger" style={{marginRight:"5px", marginLeft:"15px", marginTop:"25px", width:"60px"}} onClick={() => swapAdmin()}>Back</button>
-        }
-        table = <PipingExcelEdit success={success.bind(this)}/>
-        navBtns = null
+    }else if(currentTab === "Edit"){
+        table = <PipingExcelEdit/>
         pageSelector = null
     }
 
+    
+    if(currentTab === "Edit"){
+        dataTableHeight = "740px"
+    }else if(currentTab === "Key parameters"){
+        dataTableHeight = "600px"
+    }
+    
+    if(currentRole === "Project"){
+        if(currentTab === "Estimated" || currentTab === "Edit"){
+            if(currentTab === "Edit"){
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }else{
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+            }        }else{
+            adminBtn = null
+        }
+    }
+        
+    if(adminBtn || downloadBtn){
+        marginProgress = "55%"
+    }else{
+        marginProgress = "66%"
+    }
 
     async function downloadModelled(){
 
@@ -237,57 +228,63 @@ const Piping = () => {
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
-            <Collapse in={successAlert}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                    >
-                    Success!
-                </Alert>
-            </Collapse>
-            <div className="equipments__container">  
-                <center>
-                    <h2 className="title__container">
-                        <div className="roleSelector__container">
-                            <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
-                            </div>
-                        <b >      
-                            <i className="iso__title">Piping</i>
-                        </b>
-                    </h2>
-                    <h3 className="iso__subtitle">{currentTab}</h3>
-                </center>
-                <div style={{position: "absolute", width:"500px", display:"inline-block"}}>
-                  {pageSelector}  
-                  {downloadBtn}    
-                  {adminBtn}
-                </div>
-                <div style={{display:"inline"}}>
-                    <div className="equipTable__container">
-                        <td className="equipTable__td">
-                            <table className="equipTable__table">
-                                <tbody className="equipable__body">
-                                    <tr>    
-                                        <td  className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
-                                        <td className="equipTable__header" style={{backgroundColor:"rgb(107, 157, 187)", borderRadius:"0 1em 0 0"}}>Total progress</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
-                                        <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </div>
-                </div>
-
-                <div style={{height: dataTableHeight}}>
-                    <br></br>
-                    <br></br> 
-                    <br></br> 
-                    {table}
-                </div>         
+            <div style={{position:"absolute", marginTop:"145px", marginLeft:"48%"}}>
+                <i className="discipline__title" style={{fontStyle:"normal"}}>Piping</i>
             </div>
-            {navBtns}
-            <br></br>
+                <div className="isotracker__row">
+                  <div className="isotracker__column">
+                      <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
+                      
+                      <div className="roleSelector__containerF">
+                              <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
+                      </div>
+                      
+                  </div>
+
+                  <div className="isotracker__column">
+                  
+                  <table className="equipTable__table" style={{marginTop:"140px", width:"35%", marginLeft:"59%"}}>
+                        <tbody className="equipable__body">
+                            <tr>    
+                                <td  className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                <td className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>Total progress</td>
+                            </tr>
+                            <tr>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
+                                <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                  </div>               
+                  
+                  
+              </div>
+              <table className="isotracker__table__container">
+                      <tr className="isotracker__table__navBar__container">
+                          <th  colspan="2" className="isotracker__table__navBar">
+                            {adminBtn}
+                            {downloadBtn}
+                          {pageSelector}
+                          </th>
+                      </tr>
+                      <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
+                          <td className="disciplines__table__trays">
+                              <div className="trays__container">
+                                  <p className="isotracker__table__trays__group">Trays</p>
+                                  <center className="equimentsNavBtns__center">              
+                                    <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
+                                    </center>
+                              </div>
+                          </td>
+                          <td className="discplines__table__table" style={{height: dataTableHeight}} >
+                              <div  style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                                  {table}
+                              </div>
+                          </td>
+                          
+                      </tr>
+                  </table>
          </body>
     )
 }

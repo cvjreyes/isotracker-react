@@ -189,7 +189,7 @@ class ModelledDataTable extends React.Component{
     return (
       <div>
         {this.state.updateData}
-        <div className="dataTable__container">
+        <div className="dataTable__container" style={{float:"top", position:"relative"}}>
         <Table className="customTable" bordered = {true}  columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>

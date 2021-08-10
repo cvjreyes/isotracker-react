@@ -14,6 +14,8 @@ import Home from './pages/home/home'
 import Piping from './pages/piping/piping';
 import ProgressCurve from './pages/progressCurve/progressCurve';
 import Navis from './pages/navis/navis';
+import WelcomeLoginF from './pages/welcomeLoginF/welcomeLoginF';
+import IsoCtrlF from './pages/isoCtrlF/isoCtrlF';
 require('dotenv').config();
 
 
@@ -23,11 +25,10 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/"} component={Welcome}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} component={IsoCtrl}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/login"} component={WelcomeLoginF}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} component={IsoCtrlF}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/home"} component={Home}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/register"} component={Register}></Route>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/login"} component={LoginPage}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/changepassword"} component={ChangePasswordPage}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/equipments"} component={Equipments}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/instrumentation"} component={Instrumentation}></Route>

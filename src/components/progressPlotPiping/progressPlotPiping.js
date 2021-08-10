@@ -32,10 +32,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 	render() {
 	  return (
-		<ResponsiveContainer width="100%" height="80%">
+		<ResponsiveContainer width="100%" height="90%">
 		  <LineChart
 			width={500}
-			height={300}
+			height={400}
 			data={this.state.data}
 			margin={{
 			  top: 35,

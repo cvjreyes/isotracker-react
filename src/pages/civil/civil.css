@@ -18,7 +18,6 @@
 
 .iso__title{
     box-sizing: border-box;
-    font-style: italic;
     font-weight: 700;
     font-size: 30px;
     font-family: 'Quicksand', sans-serif;
@@ -183,4 +182,23 @@
     -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.disciplines__table__trays{
+    width: 20px;
+    height: 400px;
+    border-radius: 0em 0em 0em 1em;
+    border: 1px solid lightgray;
+    top: 0;
+    position: sticky;
+    float: top;
+    padding: 0px 0px 0px 0px;   
+}
+
+.progress__and__weight{
+    font-size: 15px;
+}
+
+.disciplines__table__navBar{
+    display: inline-block;
 }
