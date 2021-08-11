@@ -123,7 +123,7 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div style={{width:"1050px", marginLeft: "16%"}}>
+            setProgressButtons(<div style={{width:"1050px", marginLeft: "18%"}}>
                 <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Home </i>
         </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -148,11 +148,11 @@ const NavBar = (props) =>{
 
     let projectBtn = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-        projectBtn = <Button onClick={handleClickProject} class="btn nohover" style={{marginRight:"50px"}}>
-                        <i className="dropdown__text" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
+        projectBtn = <Button class="btn nohover" disabled style={{marginRight:"50px"}}>
+                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
                     </Button>
     }else{
-        projectBtn = <Button onClick={handleClickProject} class="btn nohover" style={{marginLeft:"41%", marginRight:"50px"}}>
+        projectBtn = <Button  class="btn nohover" disabled style={{marginLeft:"43%", marginRight:"50px"}}>
                         <i className="dropdown__text" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
                     </Button>
     }
@@ -166,9 +166,7 @@ const NavBar = (props) =>{
                     {progressButtons}
                     {projectBtn}
                     
-                    <a className="navbar-brand" href={"/"+process.env.REACT_APP_PROJECT+"/home"} style={{marginRight:"50px"}}>
-                        <img src={Icapp} className="icapp__image" alt="icappImage"/>
-                    </a>
+                  
                     
                     <Button aria-controls="simple-menu" aria-haspopup="true" class="btn nohover" onClick={handleClickUser} style={{float:"left"}}>
                     <i className="dropdown__text">{username}&nbsp;🠗</i>

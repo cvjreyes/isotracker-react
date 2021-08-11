@@ -49,3 +49,13 @@ img{
     font-size: 9px;
     font-family: 'Quicksand', sans-serif;
 }
+
+.dropdown__text__projectname{
+    font-family: 'Quicksand', sans-serif;
+    text-transform: none;
+    font-size: 18px;
+    font-style: normal;
+    
+    opacity: 0.8;
+    color: white
+}
