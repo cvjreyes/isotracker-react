@@ -25,7 +25,7 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/login"} component={WelcomeLoginF}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/"} component={WelcomeLoginF}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} component={IsoCtrlF}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/home"} component={Home}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/register"} component={Register}></Route>

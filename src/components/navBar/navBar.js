@@ -75,7 +75,7 @@ const NavBar = (props) =>{
 
     const handleLogOut = () => {
         localStorage.clear();
-        history.push("/"+process.env.REACT_APP_PROJECT+"/login");
+        history.push("/"+process.env.REACT_APP_PROJECT+"/");
     };
 
     const handleChangePassword = () =>{
@@ -100,7 +100,7 @@ const NavBar = (props) =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/piping");
     }
     const handleClickProject = () =>{
-        history.push("/"+process.env.REACT_APP_PROJECT+"/login");
+        history.push("/"+process.env.REACT_APP_PROJECT+"/");
     }
     const handleClickHome = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/home");

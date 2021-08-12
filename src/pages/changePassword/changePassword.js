@@ -98,7 +98,7 @@ const ChangePasswordPage = () =>{
                         .then(async response => {
                             await setSuccessful(true)
                             await localStorage.clear();
-                            setTimeout(()=> {history.replace("/"+process.env.REACT_APP_PROJECT+"/login")}, 2000)
+                            setTimeout(()=> {history.replace("/"+process.env.REACT_APP_PROJECT+"/")}, 2000)
                         })
                         .catch(err=> console.log(err))
                     }else{
