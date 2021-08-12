@@ -45,7 +45,7 @@ const EquipmentsNavBtns = props =>{
             secureStorage.setItem("piping_tab", "Estimated")
         }
         
-        estimatedButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#0070ed", color:"white"}} >Estimated</button>
+        estimatedButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Estimated</button>
     }else{
         estimatedButton = <button  type="button" className="trays__navBtns text-left" onClick={() => {props.onChange("Estimated")}}>Estimated</button>
         
@@ -62,7 +62,7 @@ const EquipmentsNavBtns = props =>{
         }else if(props.discipline === "Piping"){
             secureStorage.setItem("piping_tab", "Modelled")
         }
-        modelledButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#0070ed", color:"white"}} >Modelled</button>
+        modelledButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
     }else{
         modelledButton = <button  type="button" className="trays__navBtns text-left" onClick={() => {props.onChange("Modelled")}}>Modelled</button>
         
@@ -79,7 +79,7 @@ const EquipmentsNavBtns = props =>{
         }else if(props.discipline === "Piping"){
             secureStorage.setItem("piping_tab", "Progress")
         }
-        progressButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#0070ed", color:"white"}} >Progress</button>
+        progressButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Progress</button>
     }else{
         progressButton = <button  type="button" className="trays__navBtns text-left" onClick={() => {props.onChange("Progress")}}>Progress</button>
         
@@ -96,7 +96,7 @@ const EquipmentsNavBtns = props =>{
         }else if(props.discipline === "Piping"){
             secureStorage.setItem("piping_tab", "Types")
         }
-        typesButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#0070ed", color:"white"}} >Types</button>
+        typesButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Types</button>
     }else{
         typesButton = <button  type="button" className="trays__navBtns text-left" onClick={() => {props.onChange("Types")}}>Types</button>
     }

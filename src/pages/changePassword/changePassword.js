@@ -42,7 +42,7 @@ var secureStorage = new SecureStorage(localStorage, {
 
 const ChangePasswordPage = () =>{
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    document.body.style.zoom = 1
+    document.body.style.zoom = 0.8
 
     const [password, setPassword] = useState(null);
     const [newPassword, setNewPassword] = useState(null);
@@ -177,18 +177,18 @@ const ChangePasswordPage = () =>{
                     <input className="current__password__input" type={passwordShown1 ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}/>
                     <img onClick={togglePassword1} src={Eye} alt="eye" className="current__password__eye__image"></img>
                 </div>
-                <text className="password__label" style={{width:"220px"}}>Confirm current password</text>
+                <text className="password__label" style={{width:"220px"}}>New password</text>
                 <div>
                     <input className="conf__password__input" type={passwordShown2 ? "text" : "password"} onChange={(e) => setConfPassword(e.target.value)}/>
                     <img onClick={togglePassword2} src={Eye} alt="eye" className="conf__password__eye__image"></img>
                 </div>
-                <text className="new__password__label" style={{width:"120px"}}>New password</text>
+                <text className="new__password__label" style={{width:"160px"}}>Confirm new password</text>
                 <div>
                     <input className="new__password__input" type={passwordShown3 ? "text" : "password"} onChange={(e) => setNewPassword(e.target.value)}/>
                     <img onClick={togglePassword3} src={Eye} alt="eye" className="new__password__eye__image"></img>
                 </div>
                 <div className="login__buttons" style={{top:"420px"}}>
-                    <button className="login__button" onClick={handelChangePassword}>Change password</button>
+                    <button className="login__button" onClick={handelChangePassword}>Save</button>
                     <button className="cancel__button" onClick={cancel}>Cancel</button>
             </div>
             </div>

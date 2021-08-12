@@ -212,7 +212,7 @@ const StateTable = props =>{
                         await setRealProgressTDValue(null)
                         await setRealProgressIsoTDValue(null)
                         await setpISOHeaderTD(<td  className="statusTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>P.ISO</td>)
-                        await setpISOValueTD(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0"}}>{progressIso[0]}%</td>)
+                        await setpISOValueTD(<td rowSpan="6" className="statusTable__state" style={{borderRadius:"0 0 1em 0", borderCollapse:"collapse"}}>{progressIso[0]}%</td>)
                     }
                     await setProgressHeader(<td  className="statusTable__header" style={{backgroundColor:"#0070ed"}}>P.</td>)
                     await setProgressTD(<td rowSpan="6" className="statusTable__state">{progress[0]}%</td> )
@@ -313,7 +313,7 @@ const StateTable = props =>{
                         <td className="statusTable__state__deleted">{totalDeleted}</td> 
                   </tr>
                   <tr>
-                        <td className="statusTable__header" style={{backgroundColor:"#94dcaa", borderRadius:"0 0 0 1em", color:"black", fontWeight:"bold"}}>Stock</td>
+                        <td className="statusTable__header" style={{backgroundColor:"#94dcaa", borderRadius:"0 0 0 1em", color:"black", fontWeight:"bold", border: "0px solid black"}}>Stock</td>
                         <td className="statusTable__state__stock">{designStock}</td>
                         <td className="statusTable__state__stock">{stressStock}</td>
                         <td className="statusTable__state__stock">{supportsStock}</td>

@@ -139,7 +139,7 @@ const Instrumentation = () => {
     }
 
 
-    document.body.style.zoom = 0.9
+    document.body.style.zoom = 0.73
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("inst_tab"))
     if(currentTab === "" || currentTab === null){

@@ -3,7 +3,7 @@
 }
 
 .myTray__button{
-    border-radius: 1em 0em 0em 1em;
+    border-radius: 10px 0px 0px 10px;
     width: 116%;
     margin-left: -8px;
     border: 0;
@@ -13,15 +13,12 @@
     font-size: 16px;
     margin-bottom: 4px;
     transition: 0.3s;
-    background-color: #F5F8FA;
+    background-color: white;
+    padding-left: 10px;
+    height: 36px;
 }
 
 .myTray__button:hover{
-    background-color: #338df1;
-    color: white;
+    background-color: #99C6F8;
 }
 
-.myTray__button:focus{
-    background-color: #0070ed;
-    color: white;
-}

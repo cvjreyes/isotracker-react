@@ -152,7 +152,7 @@ const ActionBtns = props =>{
     }
 
     return(
-        <div style={{display:"flex", marginTop:"20px"}}>
+        <div style={{display:"flex", marginTop:"10px"}}>
             {actionBtn1}
             {actionBtn2}
             {actionBtn3}

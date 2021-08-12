@@ -18,7 +18,7 @@
 }
 
 .loading__screen{
-    background-color: #F4F7F9;
+    background-color: white;
     height: 100vh;
     width: 100vh;
     z-index: 9999;
@@ -39,3 +39,7 @@ progress {
     background-color: lightgray;
     width: 800px;
 }
+
+progress::-moz-progress-bar { background: #94DCAA; }
+progress::-webkit-progress-value { background: #94DCAA; }
+progress { color: #94DCAA; }

@@ -35,7 +35,7 @@ const Home = () =>{
     }, [])
 
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    document.body.style.zoom = 0.9
+    document.body.style.zoom = 0.73
     return(
         <body>
             {circles}

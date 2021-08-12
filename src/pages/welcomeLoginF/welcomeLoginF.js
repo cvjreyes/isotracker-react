@@ -38,7 +38,7 @@ var secureStorage = new SecureStorage(localStorage, {
 //Página de welcome que actua como portada
 
 const WelcomeLoginF = () =>{
-    document.body.style.zoom = 1.
+    document.body.style.zoom = 0.9
     document.title= process.env.REACT_APP_APP_NAMEPROJ
 
     const [passwordShown, setPasswordShown] = useState(false);

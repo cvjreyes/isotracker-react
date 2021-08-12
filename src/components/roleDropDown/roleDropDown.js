@@ -9,7 +9,7 @@ import "./roleDropDown.css"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "white",
   },
   title: {
     fontSize: "40px",
@@ -79,7 +79,7 @@ const RoleDropDown = (props) => {
 
 
   return (
-    <div className={classes.root} style={{backgroundColor: "#F5F8FB"}}>
+    <div className={classes.root}>
       <List component="nav" aria-label="Device settings" >
         <ListItem
           button

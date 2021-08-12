@@ -30,7 +30,7 @@ const MyTrayBtn = props =>{
     let btn = null
     if(props.currentTab === "My Tray"){
         secureStorage.setItem("tab", "My Tray")
-        btn = <button  type="button" className="myTray__button text-left" style={{backgroundColor:"#0070ed", color:"white"}} onClick={() => {props.onChange("My Tray")}}>My tray</button>
+        btn = <button  type="button" className="myTray__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} onClick={() => {props.onChange("My Tray")}}>My tray</button>
     }else{
         btn = <button  type="button" className="myTray__button text-left" onClick={() => {props.onChange("My Tray")}}>My tray</button>
     }

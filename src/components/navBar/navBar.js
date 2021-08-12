@@ -59,6 +59,7 @@ const NavBar = (props) =>{
     const history = useHistory();
     const[username, setUsername] = React.useState("");
     const[progressButtons, setProgressButtons] = React.useState(null);
+    let menubtn = null
     
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -105,7 +106,7 @@ const NavBar = (props) =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/home");
     }
 
-    useEffect(() =>{
+    useEffect(async() =>{
         const bodyUsername = {
             email: secureStorage.getItem("user")
           }
@@ -116,14 +117,14 @@ const NavBar = (props) =>{
         },
         body: JSON.stringify(bodyUsername)
         }
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/findByEmail", optionsUsername)
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/findByEmail", optionsUsername)
         .then(response => response.json())
         .then(json => {
             setUsername(json.name);
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div style={{width:"1050px", marginLeft: "18%"}}>
+            setProgressButtons(<div style={{width:"100%", marginLeft: "23%"}}>
                 <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Home </i>
         </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -143,34 +144,36 @@ const NavBar = (props) =>{
         <Button class="btn nohover" onClick={handleClickIsotracker} style={{marginRight:"50px"}}>
                         <i className="dropdown__text" >IsoTracker </i>
                     </Button></div>)
+        
+
         }
     },[])
 
     let projectBtn = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-        projectBtn = <Button class="btn nohover" disabled style={{marginRight:"50px"}}>
+        projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"15%"}}>
                         <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
                     </Button>
     }else{
-        projectBtn = <Button  class="btn nohover" disabled style={{marginLeft:"43%", marginRight:"50px"}}>
-                        <i className="dropdown__text" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
+        projectBtn = <Button  class="btn nohover" disabled style={{marginLeft:"89%", marginRight:"50px"}}>
+                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
                     </Button>
     }
     return(
         <div className={classes.root}>
             <div style={{display:"flex"}}>
-            <AppBar position="fixed" className="navBar__container" style={{height:"62px",borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "#383838"}}>
+            <AppBar position="fixed" className="navBar__container" style={{height:"62px", borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "#383838"}}>
             
                 <Toolbar>
                     
                     {progressButtons}
-                    {projectBtn}
+                    
                     
                   
-                    
-                    <Button aria-controls="simple-menu" aria-haspopup="true" class="btn nohover" onClick={handleClickUser} style={{float:"left"}}>
+                    <Button aria-controls="simple-menu" aria-haspopup="true" class="btn nohover" onClick={handleClickUser}>
                     <i className="dropdown__text">{username}&nbsp;🠗</i>
                     </Button>
+                    
                     <Menu
                         id="simple-menu"
                         anchorEl={anchorElUser}
@@ -190,9 +193,10 @@ const NavBar = (props) =>{
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleLogOut}><b>Logout</b></MenuItem>
                     </Menu>
  
-                    
+                    {projectBtn}
                     
                 </Toolbar>
+
             </AppBar>
             </div>
         </div>
