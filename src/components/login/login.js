@@ -51,22 +51,22 @@ const Login = props =>{
         }
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/login", options)
             .then(response => response.json())
-            .then(json => {
+            .then(async json => {
                     if(process.env.REACT_APP_PROGRESS === "1"){
-                        localStorage.setItem('token', json.token);
-                        secureStorage.setItem('user', json.user)
-                        secureStorage.setItem('tab', "Status")   
-                        secureStorage.setItem("equip_tab", "Estimated")  
-                        secureStorage.setItem("inst_tab", "Estimated")    
-                        secureStorage.setItem("civ_tab", "Estimated")  
-                        secureStorage.setItem("elec_tab", "Estimated")  
-                        secureStorage.setItem("piping_tab", "Estimated")
+                        await localStorage.setItem('token', json.token);
+                        await secureStorage.setItem('user', json.user)
+                        await secureStorage.setItem('tab', "Status")   
+                        await secureStorage.setItem("equip_tab", "Estimated")  
+                        await secureStorage.setItem("inst_tab", "Estimated")    
+                        await secureStorage.setItem("civ_tab", "Estimated")  
+                        await secureStorage.setItem("elec_tab", "Estimated")  
+                        await secureStorage.setItem("piping_tab", "Estimated")
                         history.replace('/'+process.env.REACT_APP_PROJECT+'/home');
                         window.location.reload(false);
                     }else{
-                        localStorage.setItem('token', json.token);
-                        secureStorage.setItem('user', json.user)
-                        secureStorage.setItem('tab', "Status")   
+                        await localStorage.setItem('token', json.token);
+                        await secureStorage.setItem('user', json.user)
+                        await secureStorage.setItem('tab', "Status")   
                         history.replace('/'+process.env.REACT_APP_PROJECT+'/isotracker');
                         window.location.reload(false);
                     }
