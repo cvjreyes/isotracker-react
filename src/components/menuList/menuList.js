@@ -50,6 +50,8 @@ const MenuList = () =>{
 
 
     useEffect(async ()=>{
+
+            if(process.env.REACT_APP_PROGRESS === "1"){
             const options = {
                 method: "GET",
                 headers: {
@@ -119,6 +121,7 @@ const MenuList = () =>{
                 await setTotalWeight(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)
                 await setTotalProgress(((pipesWeight/totalWeight) * pipesProgress + (equisWeight/totalWeight) * equisProgress + (civilsWeight/totalWeight) * civilsProgress + (instsWeight/totalWeight) * instsProgress + (elecsWeight/totalWeight) * elecsProgress).toFixed(2))
                 await setTotalProgressWidth(totalProgress+"%")
+            }
         
     },[])   
 

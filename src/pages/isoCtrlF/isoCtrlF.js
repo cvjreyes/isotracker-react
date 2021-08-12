@@ -50,7 +50,7 @@ import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 const IsoCtrlF = () => {
    
-    document.body.style.zoom = 0.73
+    document.body.style.zoom = 0.8
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const[pagination, setPagination] = useState(10) //Controla el numero de entradas por pagina de la tabla
     const [currentRole, setCurrentRole] = useState();

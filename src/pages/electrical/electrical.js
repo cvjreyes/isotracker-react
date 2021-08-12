@@ -139,7 +139,7 @@ const Electrical = () => {
     }
 
 
-    document.body.style.zoom = 0.73
+    document.body.style.zoom = 0.8
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("elec_tab"))
     if(currentTab === "" || currentTab === null){
@@ -185,7 +185,7 @@ const Electrical = () => {
     if(currentRole === "Project"){
         if(currentTab === "Estimated" || currentTab === "Edit"){
             if(currentTab === "Edit"){
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#0000FF", marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
+                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#99C6F8", marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
             }else{
                 adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
             }        }else{
@@ -264,8 +264,8 @@ const Electrical = () => {
                   <table className="equipTable__table" style={{marginTop:"270px", width:"35%", marginLeft:"59%"}}>
                         <tbody className="equipable__body">
                             <tr>    
-                                <td  className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
-                                <td className="equipTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>Total progress</td>
+                                <td  className="equipTable__header" style={{backgroundColor:"#338DF1", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                <td className="equipTable__header" style={{backgroundColor:"#338DF1", borderRadius:"0 1em 0 0"}}>Total progress</td>
                             </tr>
                             <tr>
                                 <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>

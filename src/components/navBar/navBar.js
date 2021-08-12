@@ -124,7 +124,7 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div style={{width:"100%", marginLeft: "23%"}}>
+            setProgressButtons(<div style={{ marginLeft: "20%"}}>
                 <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Home </i>
         </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -151,7 +151,7 @@ const NavBar = (props) =>{
 
     let projectBtn = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-        projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"15%"}}>
+        projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"11%"}}>
                         <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
                     </Button>
     }else{
