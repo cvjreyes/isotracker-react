@@ -8,7 +8,6 @@ import PipingEstimatedDataTable from "../../components/pipingEstimatedDataTable/
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
 import ProgressPlotPiping from "../../components/progressPlotPiping/progressPlotPiping"
 import PipingTypesDataTable from "../../components/pipingTypesDataTable/pipingTypesDataTable"
-import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import PipingExcel from "../../components/pipingExcel/pipingExcel"
@@ -16,7 +15,7 @@ import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3dtracker.png"
 import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
-import Alert from '@material-ui/lab/Alert';
+import AlertF from "../../components/alert/alert"
 import Collapse from '@material-ui/core/Collapse'
 
 const Piping = () => {
@@ -236,10 +235,7 @@ const Piping = () => {
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
             <Collapse in={successAlert}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                    >
-                    Success!
-                </Alert>
+                <AlertF type="success" text="Changes saved!" margin="0px"/>
             </Collapse>
             <div style={{position:"absolute", marginTop:"180px", marginLeft:"48%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Piping</i>

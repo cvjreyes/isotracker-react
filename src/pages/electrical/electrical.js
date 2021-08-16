@@ -8,7 +8,6 @@ import ElectricalEstimatedDataTable from "../../components/electricalEstimatedDa
 import ElectricalModelledDataTable from "../../components/electricalModelledDataTable/electricalModelledDataTable"
 import ProgressPlotElecs from "../../components/progresPlotElecs/progressPlotElecs"
 import ElecTypesDataTable from "../../components/elecTypesDataTable/elecTypesDataTable"
-import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import ElecExcel from "../../components/elecExcel/elecExcel"
@@ -16,7 +15,7 @@ import ElecExcelEdit from "../../components/elecExcelEdit/elecExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3dtracker.png"
 import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
-import Alert from '@material-ui/lab/Alert';
+import AlertF from "../../components/alert/alert"
 import Collapse from '@material-ui/core/Collapse'
 
 const Electrical = () => {
@@ -241,10 +240,7 @@ const Electrical = () => {
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
             <Collapse in={successAlert}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                    >
-                    Success!
-                </Alert>
+                <AlertF type="success" text="Changes saved!" margin="0px"/>
             </Collapse>
             <div style={{position:"absolute", marginTop:"180px", marginLeft:"47%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Electrical</i>

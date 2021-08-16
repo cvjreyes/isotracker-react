@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import './manageRolesPopUp.css'
-import Alert from '@material-ui/lab/Alert';
+import AlertF from "../../components/alert/alert"
+
 import Collapse from '@material-ui/core/Collapse'
 
 export default class ManageRolesPopUp extends Component {
@@ -276,10 +277,7 @@ export default class ManageRolesPopUp extends Component {
                 <div>
                     <Modal visible={this.state.visible} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <Collapse in={this.state.blankFields}>
-                        <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"-10%", transform: "translate(-50%, -50%)",zIndex:"3"}} severity="warning"
-                            >
-                            Username or email missing!
-                        </Alert>
+                        <AlertF type="warning" text="Username or email missing!" popUp={true}/>
                     </Collapse>
                     <div className="popUp__container" >
                             <center className="popUp__title"><h3><strong>Manage roles</strong></h3></center>

@@ -8,7 +8,6 @@ import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavB
 import SelectPag from "../../components/selectPag/selectPag"
 import ProgressPlotInstrumentation from "../../components/progressPlotInstrumentation/progressPlotInstrumentation"
 import InstrumentationTypesDataTable from "../../components/instrumentationTypesDataTable/instrumentationTypesDataTable"
-import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import InstExcel from "../../components/instExcel/instExcel"
@@ -16,7 +15,7 @@ import InstExcelEdit from "../../components/instExcelEdit/instExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3dtracker.png"
 import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
-import Alert from '@material-ui/lab/Alert';
+import AlertF from "../../components/alert/alert"
 import Collapse from '@material-ui/core/Collapse'
 
 const Instrumentation = () => {
@@ -241,10 +240,7 @@ const Instrumentation = () => {
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
             <Collapse in={successAlert}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                    >
-                    Success!
-                </Alert>
+                <AlertF type="success" text="Changes saved!" margin="0px"/>
             </Collapse>
             <div style={{position:"absolute", marginTop:"180px", marginLeft:"46%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Instrumentation</i>

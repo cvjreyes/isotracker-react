@@ -1,7 +1,5 @@
 import React, { useState} from 'react'
 import './changePassword.css';
-import NavBar from '../../components/navBar/navBar'
-import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
 import TechnipLogo from "../../assets/images/technip.png"
 import IsoTrackerLogo from "../../assets/images/isotracker.png"
@@ -10,6 +8,8 @@ import Eye from "../../assets/images/eye.png"
 import GreenCircle from "../../assets/images/green_circle.png"
 import BlueCircle from "../../assets/images/blue_circle.png"
 import {useHistory} from "react-router";
+import AlertF from "../../components/alert/alert"
+
 
 //Página de home con el menú para ir a las aplicaciones de isotracker
 
@@ -138,28 +138,16 @@ const ChangePasswordPage = () =>{
     return(
         <body>
             <Collapse in={blankError}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"5%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                    >
-                    At least one field is blank!
-                </Alert>
+                <AlertF type="error" subtext="At least one field is blank!" change={true}/>
             </Collapse>
             <Collapse in={wrongPassError}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"5%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                    >
-                    The current password is not correct!
-                </Alert>
+                <AlertF type="error" subtext="The current password is not correct!" change={true}/>
             </Collapse>
             <Collapse in={notCoincideError}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"5%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                    >
-                    The passwords don't match!
-                </Alert>
+            <AlertF type="error" subtext="The passwords don't match!" change={true}/>
             </Collapse>
             <Collapse in={successful}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "51%", top:"5%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                    >
-                    The password changed successfully!
-                </Alert>
+                <AlertF type="success" change={true} text="Password changed successfully!"/>
             </Collapse>
             
             

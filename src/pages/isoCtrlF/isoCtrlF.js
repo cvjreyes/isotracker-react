@@ -48,6 +48,8 @@ import UploadIcon from "../../assets/images/upload.png"
 import UsersIcon from "../../assets/images/user.png"
 import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
+import AlertF from "../../components/alert/alert"
+
 const IsoCtrlF = () => {
    
     document.body.style.zoom = 0.8
@@ -1760,6 +1762,11 @@ const IsoCtrlF = () => {
         uploadButton = null
     }
 
+    /*<Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
+                              >
+                              Successful!
+                          </Alert> */
+
     
     return (       
         <body>
@@ -1774,64 +1781,35 @@ const IsoCtrlF = () => {
                           </Alert>
                       </Collapse>
                       <Collapse in={errorPI}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                              >
-                              At least one isometric was on revision and wasn't sent to LDE/Isocontrol
-                          </Alert>
+                         <AlertF type="error" subtext="At least one isometric was on revision and wasn't sent to LDE/Isocontrol" margin="-5px"/>                            
                       </Collapse>
                       <Collapse in={transactionSuccess}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                              >
-                              Successful!
-                          </Alert>
+                          <AlertF type="success" text="The action has been completed."/>
                       </Collapse>
                       <Collapse in={errorUnclaim}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                              >
-                              Can't unclaim an iso assigned by LOS!
-                          </Alert>
+                        <AlertF type="error" subtext="Can't unclaim an iso forced by LOS" margin="-105px"/>                            
+
                       </Collapse>
                       <Collapse in={errorUnclaimR}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                              >
-                              Can't unclaim a returned ISO!
-                          </Alert>
+                        <AlertF type="error" subtext="Can't unclaim a returned ISO!" margin="-118px"/>   
                       </Collapse>
                       <Collapse in={errorReports}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                              >
-                              Missing columns!
-                          </Alert>
+                         <AlertF type="error" subtext="Missing columns!" margin="-155px"/>   
                       </Collapse>
                       <Collapse in={errorCL}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                              >
-                              Missing clean!
-                          </Alert>
+                        <AlertF type="error" subtext="Missing clean!" margin="-160px"/>  
                       </Collapse>
                       <Collapse in={warningSelected}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="warning"
-                              >
-                              Select at least one isometric!
-                          </Alert>
+                          <AlertF type="warning" text="Select at least one isometric!" margin="-120px"/>   
                       </Collapse>
                       <Collapse in={blocked}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                              >
-                              The isometric has been locked! Contact the administrator
-                          </Alert>
+                         <AlertF type="error" subtext="The isometric has been locked! Contact the administrator." margin="-45px"/>          
                       </Collapse>
                       <Collapse in={errorReportD}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                              >
-                              The line {errorReportDIndex} of the report has an invalid type or progress!
-                          </Alert>
+                          <AlertF type="error" subtext="There is a line of the report has an invalid type or progress!" margin="-35px"/>          
                       </Collapse>
                       <Collapse in={errorDeleteUser}>
-                          <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="error"
-                              >
-                              This user has claimed isometrics and can't be deleted!
-                          </Alert>
+                          <AlertF type="error" subtext="This user has claimed isometrics and can't be deleted!" margin="-40px"/>          
                       </Collapse>
                   </center>
               {navBar}

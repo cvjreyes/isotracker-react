@@ -96,7 +96,7 @@ class MyTrayTable extends React.Component{
             var rows = []
             var row = null;
             let pButton, iButton, fButton, rButton, bButton = null;
-            
+
             for(let i = 0; i < json.rows.length; i++){
               if(this.state.role !== "SpecialityLead"){
                 switch(json.rows[i].spo){
@@ -196,7 +196,7 @@ class MyTrayTable extends React.Component{
                 }else{
                   if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                     row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions: <div><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px", marginRight: "5px"}}>CANCEL VERIFY</button> {pButton} {iButton} {fButton} {rButton} {bButton}</div>}
-                  }else{
+                  }else{  
                     row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  role={this.state.role} currentUser = {this.state.user} /> {pButton} {iButton} {fButton} {rButton} {bButton}</div>}
                   }
                 }

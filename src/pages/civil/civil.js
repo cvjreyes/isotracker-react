@@ -8,7 +8,6 @@ import ProgressPlotCivils from "../../components/progressPlotCivils/progressPlot
 import CivilEstimatedDataTable from "../../components/civilEstimatedDataTable/civilEstimatedDataTable"
 import CivilModelledDataTable from "../../components/civilModelledDataTable/civilModelledDataTable"
 import CivilTypesDataTable from "../../components/civilTypesDataTable/civilTypesDataTable"
-import DownloadIcon from "../../assets/images/downloadicon.png"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import CivilExcel from "../../components/civilExcel/civilExcel"
@@ -16,8 +15,9 @@ import CivilExcelEdit from "../../components/civilExcelEdit/civilExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3dtracker.png"
 import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
-import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
+import AlertF from "../../components/alert/alert"
+
 
 const Civil = () => {
 
@@ -241,10 +241,7 @@ const Civil = () => {
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
             <Collapse in={successAlert}>
-                <Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                    >
-                    Success!
-                </Alert>
+                <AlertF type="success" text="Changes saved!" margin="0px"/>
             </Collapse>
             <div style={{position:"absolute", marginTop:"180px", marginLeft:"49%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Civil</i>
