@@ -1792,7 +1792,7 @@ const IsoCtrlF = () => {
                         className={`alert alert-success ${transactionSuccess ? 'alert-shown' : 'alert-hidden'}`}
                         onTransitionEnd={() => setTransactionSuccess(false)}
                         >
-                          <AlertF type="success" text="The action has been completed."/>
+                          <AlertF type="success" margin="-30px" text="The action has been completed."/>
                       </div>
                       <div
                         className={`alert alert-success ${errorUnclaim ? 'alert-shown' : 'alert-hidden'}`}
@@ -1818,13 +1818,13 @@ const IsoCtrlF = () => {
                         className={`alert alert-success ${errorCL ? 'alert-shown' : 'alert-hidden'}`}
                         onTransitionEnd={() => setErrorCL(false)}
                         >
-                        <AlertF type="error" subtext="Missing clean!" margin="-160px"/>  
+                        <AlertF type="error" subtext="Missing clean!" margin="-150px"/>  
                       </div>
                       <div
                         className={`alert alert-success ${warningSelected ? 'alert-shown' : 'alert-hidden'}`}
                         onTransitionEnd={() => setWarningSelected(false)}
                         >
-                          <AlertF type="warning" text="Select at least one isometric!" margin="-120px"/>   
+                          <AlertF type="warning" text="Select at least one isometric!" margin="-40px"/>   
                       </div>
                       <div
                         className={`alert alert-success ${blocked ? 'alert-shown' : 'alert-hidden'}`}
