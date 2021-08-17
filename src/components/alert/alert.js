@@ -20,7 +20,6 @@ export default class Alert extends Component {
 
     componentDidMount(){
         let alertComponent = null
-        console.log(this.props.margin)
         if(this.state.type === "success"){
             if(this.state.change){
                 alertComponent = <div className="alert__success">
@@ -96,9 +95,12 @@ export default class Alert extends Component {
         }
     }
 
+    
+
     render() {
+
         return (
-            <div>
+            <div className="alert__container__fade">
                 {this.state.alert}
             </div>           
         );

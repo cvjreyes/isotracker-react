@@ -1,6 +1,5 @@
 import React, { useState} from 'react'
 import './changePassword.css';
-import Collapse from '@material-ui/core/Collapse'
 import TechnipLogo from "../../assets/images/technip.png"
 import IsoTrackerLogo from "../../assets/images/isotracker.png"
 import FullTrackerLogo from "../../assets/images/3dtracker.png"
@@ -137,18 +136,31 @@ const ChangePasswordPage = () =>{
 
     return(
         <body>
-            <Collapse in={blankError}>
+            <div
+            className={`alert alert-success ${blankError ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setBlankError(false)}
+            >
                 <AlertF type="error" subtext="At least one field is blank!" change={true}/>
-            </Collapse>
-            <Collapse in={wrongPassError}>
+            </div>
+            <div
+            className={`alert alert-success ${wrongPassError ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setWrongPassError(false)}
+            >
                 <AlertF type="error" subtext="The current password is not correct!" change={true}/>
-            </Collapse>
-            <Collapse in={notCoincideError}>
-            <AlertF type="error" subtext="The passwords don't match!" change={true}/>
-            </Collapse>
-            <Collapse in={successful}>
+            </div>
+            <div
+            className={`alert alert-success ${notCoincideError ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setNotCoincideError(false)}
+            >
+                <AlertF type="error" subtext="The passwords don't match!" change={true}/>
+            </div>
+            <div
+            className={`alert alert-success ${successful ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setSuccessful(false)}
+            >
                 <AlertF type="success" change={true} text="Password changed successfully!"/>
-            </Collapse>
+            </div>
+
             
             
         <div className="background">

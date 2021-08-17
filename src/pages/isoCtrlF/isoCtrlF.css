@@ -136,3 +136,15 @@
     font-weight: 500;
     color: black;
 }
+
+.alert-shown {
+    opacity: 1;
+    transition: all 250ms linear;
+    position: fixed
+  }
+
+.alert-hidden {
+    opacity: 0;
+    transition: all 250ms linear 4s;
+    position: fixed
+}

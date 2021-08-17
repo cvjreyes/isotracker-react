@@ -16,7 +16,6 @@ import IsoTrackerLogo from "../../assets/images/3dtracker.png"
 import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
 import AlertF from "../../components/alert/alert"
-import Collapse from '@material-ui/core/Collapse'
 
 const Equipments = () => {
 
@@ -238,9 +237,12 @@ const Equipments = () => {
         <body>
             
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
-            <Collapse in={successAlert}>
+            <div
+            className={`alert alert-success ${successAlert ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setSuccessAlert(false)}
+            >
                 <AlertF type="success" text="Changes saved!" margin="0px"/>
-            </Collapse>
+            </div>
             <div style={{position:"absolute", marginTop:"180px", marginLeft:"47%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Equipment</i>
             </div>

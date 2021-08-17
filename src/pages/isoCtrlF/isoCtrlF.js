@@ -20,16 +20,13 @@ import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
-import OnHoldBtn from "../../components/onHoldBtn/onHoldBtn"
 import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
-import ReportsBtn from "../../components/reportsBtn/reportsBtn"
 import ProcInstTable from "../../components/procInstTable/procInstTable"
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import ReportBoxBtns from "../../components/reportBoxBtns/reportBoxBtns"
-import IssuedBtn from "../../components/issuedBtn/issuedBtn"
 import ProgressBtn from "../../components/progressBtn/progressBtn"
 import ProgressPlot from "../../components/progressPlot/progressPlot"
 import ModelledBtn from "../../components/modelledBtn/modelledBtn"
@@ -213,6 +210,14 @@ const IsoCtrlF = () => {
         setErrorDeleteUser(false)
         
     }, [currentTab])
+
+
+    const successAlert = () =>{
+        setTransactionSuccess(true)
+        setTimeout(function () {
+            setTransactionSuccess(false)
+        }, 3000);     
+    }
 
     const getProgress = () =>{
         setUpdateData(!updateData)
@@ -564,7 +569,7 @@ const IsoCtrlF = () => {
                             if(json.blocked){
                                 setBlocked(true)
                             }else{
-                                setTransactionSuccess(true)
+                                successAlert()
                             }
                         })
                         
@@ -618,7 +623,7 @@ const IsoCtrlF = () => {
                                 }
                             })
                             if(!errorCL && !blocked){
-                                setTransactionSuccess(true)
+                                successAlert()
                             }
                             
                         }
@@ -662,7 +667,7 @@ const IsoCtrlF = () => {
                             if(json.blocked){
                                 setBlocked(true)
                             }else{
-                                setTransactionSuccess(true)
+                                successAlert()
                             }
                         })
                 }
@@ -702,7 +707,7 @@ const IsoCtrlF = () => {
                             if(json.blocked){
                                 setBlocked(true)
                             }else{
-                                setTransactionSuccess(true)
+                                successAlert()
                             }
                         })
                 }
@@ -752,7 +757,7 @@ const IsoCtrlF = () => {
                             if(json.blocked){
                                 setBlocked(true)
                             }else{
-                                setTransactionSuccess(true)
+                                successAlert()
                             }
                         })
             }
@@ -800,7 +805,7 @@ const IsoCtrlF = () => {
                     if(json.blocked){
                         setBlocked(true)
                     }else{
-                        setTransactionSuccess(true)
+                        successAlert()
                     }
                 })
             }
@@ -848,7 +853,7 @@ const IsoCtrlF = () => {
                     body: JSON.stringify(body)
                 }
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/restore", options)
-                setTransactionSuccess(true)
+                successAlert()
             }
             await setUpdateData(!updateData)
             setLoading(false)
@@ -1208,7 +1213,7 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setLoading(active)
         if(!active){
-            setTransactionSuccess(true)
+            successAlert()
         }
     }
 
@@ -1251,7 +1256,7 @@ const IsoCtrlF = () => {
                     if(json.blocked){
                         setBlocked(true)
                     }else{
-                        setTransactionSuccess(true)
+                        successAlert()
                     }
                 })
             }
@@ -1296,7 +1301,7 @@ const IsoCtrlF = () => {
                     if(json.blocked){
                         setBlocked(true)
                     }else{
-                        setTransactionSuccess(true)
+                        successAlert()
                     }
                 })
             }
@@ -1383,7 +1388,7 @@ const IsoCtrlF = () => {
                     if(json.blocked){
                         setBlocked(true)
                     }else{
-                        setTransactionSuccess(true)
+                        successAlert()
                     }
                 })
                 
@@ -1398,7 +1403,7 @@ const IsoCtrlF = () => {
     }
 
     async function success(){
-        setTransactionSuccess(true)
+        successAlert()
     }
 
     async function unlock(filename){
@@ -1463,7 +1468,7 @@ const IsoCtrlF = () => {
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/rename", options)
         .then(response => console.log("Cambiado"))
 
-        setTransactionSuccess(true)
+        successAlert()
         
         setUpdateData(!updateData)
     }
@@ -1505,7 +1510,7 @@ const IsoCtrlF = () => {
         .then(response => response.json())
         .then(json =>{
             if(json.success){
-                setTransactionSuccess(true)
+                successAlert()
             }
         })
         setUpdateData(!updateData)
@@ -1540,7 +1545,7 @@ const IsoCtrlF = () => {
             if(json.error){
                 setErrorDeleteUser(true)
             }else{
-                setTransactionSuccess(true)
+                successAlert()
             }
         })
 
@@ -1578,7 +1583,7 @@ const IsoCtrlF = () => {
         .then(response => response.json())
         .then(json =>{
             if(json.success){
-                setTransactionSuccess(true)
+                successAlert()
             }
         })
         setUpdateData(!updateData)
@@ -1707,14 +1712,14 @@ const IsoCtrlF = () => {
     if(currentTab === "Progress"){
         progressBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Progress")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Progress} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Progress</p></button>
         pageSelector = null
-    }else{
+    }else if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Progress")} style={{width:"120px"}}><img src={Progress} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Progress</p></button>
     }
 
     if(currentTab === "Modelled"){
         modelledBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Modelled")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Modelled} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Modelled</p></button>
 
-    }else{
+    }else if(process.env.REACT_APP_PROGRESS === "1"){
         modelledBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Modelled")} style={{width:"120px"}}><img src={Modelled} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Modelled</p></button>
     }
     if(currentRole === "Process"){
@@ -1762,10 +1767,6 @@ const IsoCtrlF = () => {
         uploadButton = null
     }
 
-    /*<Alert style={{fontSize:"22px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)", zIndex:"3"}} severity="success"
-                              >
-                              Successful!
-                          </Alert> */
 
     
     return (       
@@ -1780,37 +1781,69 @@ const IsoCtrlF = () => {
                               Processing...
                           </Alert>
                       </Collapse>
-                      <Collapse in={errorPI}>
-                         <AlertF type="error" subtext="At least one isometric was on revision and wasn't sent to LDE/Isocontrol" margin="-5px"/>                            
-                      </Collapse>
-                      <Collapse in={transactionSuccess}>
+                      <div
+                        className={`alert alert-success ${errorPI ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setErrorPI(false)}
+                        >
+                            <AlertF type="error" subtext="At least one isometric was on revision and wasn't sent to LDE/Isocontrol" margin="-5px"/>                            
+                      </div>
+ 
+                      <div
+                        className={`alert alert-success ${transactionSuccess ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setTransactionSuccess(false)}
+                        >
                           <AlertF type="success" text="The action has been completed."/>
-                      </Collapse>
-                      <Collapse in={errorUnclaim}>
+                      </div>
+                      <div
+                        className={`alert alert-success ${errorUnclaim ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setErrorUnclaim(false)}
+                        >
                         <AlertF type="error" subtext="Can't unclaim an iso forced by LOS" margin="-105px"/>                            
-
-                      </Collapse>
-                      <Collapse in={errorUnclaimR}>
+                      </div>
+                      <div
+                        className={`alert alert-success ${errorUnclaimR ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setErrorUnclaimR(false)}
+                        >
                         <AlertF type="error" subtext="Can't unclaim a returned ISO!" margin="-118px"/>   
-                      </Collapse>
-                      <Collapse in={errorReports}>
+                      </div>
+
+                      <div
+                        className={`alert alert-success ${errorReports ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setErrorReports(false)}
+                        >
                          <AlertF type="error" subtext="Missing columns!" margin="-155px"/>   
-                      </Collapse>
-                      <Collapse in={errorCL}>
+                      </div>
+  
+                      <div
+                        className={`alert alert-success ${errorCL ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setErrorCL(false)}
+                        >
                         <AlertF type="error" subtext="Missing clean!" margin="-160px"/>  
-                      </Collapse>
-                      <Collapse in={warningSelected}>
+                      </div>
+                      <div
+                        className={`alert alert-success ${warningSelected ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setWarningSelected(false)}
+                        >
                           <AlertF type="warning" text="Select at least one isometric!" margin="-120px"/>   
-                      </Collapse>
-                      <Collapse in={blocked}>
+                      </div>
+                      <div
+                        className={`alert alert-success ${blocked ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setBlocked(false)}
+                        >
                          <AlertF type="error" subtext="The isometric has been locked! Contact the administrator." margin="-45px"/>          
-                      </Collapse>
-                      <Collapse in={errorReportD}>
+                      </div>
+                      <div
+                        className={`alert alert-success ${errorReportD ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setErrorReportD(false)}
+                        >
                           <AlertF type="error" subtext="There is a line of the report has an invalid type or progress!" margin="-35px"/>          
-                      </Collapse>
-                      <Collapse in={errorDeleteUser}>
+                      </div>
+                      <div
+                        className={`alert alert-success ${errorDeleteUser ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setErrorDeleteUser(false)}
+                        >
                           <AlertF type="error" subtext="This user has claimed isometrics and can't be deleted!" margin="-40px"/>          
-                      </Collapse>
+                      </div>
                   </center>
               {navBar}
               <div className="isotracker__row">

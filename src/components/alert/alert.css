@@ -1,5 +1,5 @@
 .alert__success{
-    position: absolute;
+    position: fixed;
     display: flex;
     width: 841px;
     height: 93px;
@@ -10,8 +10,9 @@
     margin-top: 80px;
 }
 
+
 .alert__error{
-    position: absolute;
+    position: fixed;
     display: flex;
     width: 841px;
     height: 93px;
@@ -23,7 +24,7 @@
 }
 
 .alert__warning{
-    position: absolute;
+    position: fixed;
     display: flex;
     width: 841px;
     height: 93px;

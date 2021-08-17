@@ -133,7 +133,7 @@ const ActionBtns = props =>{
             (props.currentTab === "On hold" && (props.role === "DesignLead" || props.role === "SpecialityLead" || props.role === "Issuer"))){
             actionBtn8 = <button className="action__btn" onClick={() => props.restoreClick()}>Restore</button>
         }
-        if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab !== "Process" && props.currentTab !== "Instrument"){
+        if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab !== "Process" && props.currentTab !== "Instrument" && props.currentTab !== "Issued"){
             actionBtn6 = <button className="action__btn" name="destination" value="stress" onClick={() => props.transaction("Recycle bin")}>Delete</button>
             actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
         }

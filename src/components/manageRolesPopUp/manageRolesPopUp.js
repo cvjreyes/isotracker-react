@@ -3,7 +3,6 @@ import Modal from 'react-awesome-modal';
 import './manageRolesPopUp.css'
 import AlertF from "../../components/alert/alert"
 
-import Collapse from '@material-ui/core/Collapse'
 
 export default class ManageRolesPopUp extends Component {
     constructor(props) {
@@ -276,9 +275,12 @@ export default class ManageRolesPopUp extends Component {
                 <input type="button"  value="MANAGE" className="btn"  style={{padding:"2px 5px 2px 5px", marginRight:"5px", marginLeft:"5px", width:"70px", fontSize:"12px", float:"right", backgroundColor:"#17A2B8", color:"white"}} onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                    <Collapse in={this.state.blankFields}>
+                    <div
+                        className={`alert alert-success ${this.state.blankFields ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => this.setState({blankFields: false})}
+                        >
                         <AlertF type="warning" text="Username or email missing!" popUp={true}/>
-                    </Collapse>
+                      </div>
                     <div className="popUp__container" >
                             <center className="popUp__title"><h3><strong>Manage roles</strong></h3></center>
                                 
