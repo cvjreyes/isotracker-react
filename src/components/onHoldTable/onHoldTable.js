@@ -120,7 +120,26 @@ class OnHoldTable extends React.Component{
       //Build a URL from the file
       const fileURL = URL.createObjectURL(file);
       //Open the URL on new Window
-      window.open(fileURL);
+      let w = window.open(fileURL);
+
+        w.addEventListener("load", function() {
+          setTimeout(()=> w.document.title = fileName
+          , 300);
+
+
+        });
+
+        // create <a> tag dinamically
+        var fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+
+        // it forces the name of the downloaded file
+        fileLink.download = fileName;
+
+        // triggers the click event
+        fileLink.click();
+
+
     })
     .catch(error => {
       console.log(error);
