@@ -33,7 +33,7 @@ import ModelledBtn from "../../components/modelledBtn/modelledBtn"
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
 import UsersDataTable from "../../components/usersDataTable/usersDataTable"
 
-import IsoTrackerLogo from "../../assets/images/isotracker.png"
+import IsoTrackerLogo from "../../assets/images/IsoTracker.svg"
 import Trash from "../../assets/images/Trash.png"
 import Hold from "../../assets/images/Prohibit.png"
 import Issued from "../../assets/images/FolderOpen.png"
@@ -102,10 +102,10 @@ const IsoCtrlF = () => {
 
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) //Controla la tabla y botones que se muestran
     //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
-    var dataTableHeight = "380px"
+    var dataTableHeight = "500px"
 
     if (pagination === 10){
-        dataTableHeight = "460px"
+        dataTableHeight = "520px"
     }if(pagination === 25){
         dataTableHeight = "1050px"
     }if(pagination === 50){

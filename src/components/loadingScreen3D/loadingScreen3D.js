@@ -1,4 +1,4 @@
-import IsoTrackerLogo from "../../assets/images/3dtracker.png"
+import IsoTrackerLogo from "../../assets/images/3DTracker.svg"
 
 const LoadingScreen3D = props =>{
 

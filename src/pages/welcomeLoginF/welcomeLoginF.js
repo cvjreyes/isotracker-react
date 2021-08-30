@@ -1,8 +1,8 @@
 import React from "react";
 import './welcomeLoginF.css'
 import TechnipLogo from "../../assets/images/technip.png"
-import IsoTrackerLogo from "../../assets/images/isotracker.png"
-import FullTrackerLogo from "../../assets/images/3dtracker.png"
+import IsoTrackerLogo from "../../assets/images/IsoTracker.svg"
+import FullTrackerLogo from "../../assets/images/3DTracker.svg"
 import { useState } from "react";
 import Eye from "../../assets/images/eye.png"
 import GreenCircle from "../../assets/images/green_circle.png"

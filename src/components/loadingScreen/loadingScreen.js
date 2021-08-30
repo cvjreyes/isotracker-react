@@ -1,4 +1,4 @@
-import IsoTrackerLogo from "../../assets/images/isotracker.png"
+import IsoTrackerLogo from "../../assets/images/IsoTracker.svg"
 import "./loadingScreen.css"
 
 const LoadingScreen = props =>{

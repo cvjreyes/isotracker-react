@@ -12,7 +12,7 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import CivilExcel from "../../components/civilExcel/civilExcel"
 import CivilExcelEdit from "../../components/civilExcelEdit/civilExcelEdit"
-import IsoTrackerLogo from "../../assets/images/3dtracker.png"
+import IsoTrackerLogo from "../../assets/images/3DTracker.svg"
 import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
 import AlertF from "../../components/alert/alert"

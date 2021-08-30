@@ -116,7 +116,7 @@ class MyTrayTable extends React.Component{
                     pButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"orange", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
                     break;
                   case 5:
-                    pButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelProcessClick(json.rows[i].filename)} style={{backgroundColor:"lightgray", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
+                    pButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelProcessClick(json.rows[i].filename)} style={{backgroundColor:"	#696969",color:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
                     break;
                   default:  
                     pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>      
@@ -138,7 +138,7 @@ class MyTrayTable extends React.Component{
                     iButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"orange", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
                     break;
                   case 5:
-                    iButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} style={{backgroundColor:"lightgray", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
+                    iButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} style={{backgroundColor:"	#696969",color:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
                     break;
                   default:  
                     iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>      
@@ -283,7 +283,7 @@ class MyTrayTable extends React.Component{
                       pButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"orange", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
                       break;
                     case 5:
-                      pButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelProcessClick(json.rows[i].filename)} style={{backgroundColor:"lightgray", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
+                      pButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelProcessClick(json.rows[i].filename)} style={{backgroundColor:"	#696969",color:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
                       break;
                     default:  
                       pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>      
@@ -305,7 +305,7 @@ class MyTrayTable extends React.Component{
                       iButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"orange", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
                       break;
                     case 5:
-                      iButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} style={{backgroundColor:"lightgray", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
+                      iButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} style={{backgroundColor:"	#696969",color:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
                       break;
                     default:  
                       iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>      

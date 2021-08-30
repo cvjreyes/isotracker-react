@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -48,7 +48,14 @@ const useStyles = makeStyles((theme) => ({
     title: {
       flexGrow: 1,
     },
+    label: {
+        width: '300%',
+      },
+      label2: {
+        width: '145%',
+      },
   }));
+
 
 const NavBar = (props) =>{
     const classes = useStyles();
@@ -149,11 +156,11 @@ const NavBar = (props) =>{
     let projectBtn = null
     if(process.env.REACT_APP_PROGRESS === "1"){
         projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"11%"}}>
-                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
+                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
                     </Button>
     }else{
-        projectBtn = <Button  class="btn nohover" disabled style={{marginLeft:"89%", marginRight:"50px"}}>
-                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ} </i>
+        projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"87%", marginRight:"50px"}}>
+                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ} asd</i>
                     </Button>
     }
     return(
@@ -163,11 +170,9 @@ const NavBar = (props) =>{
             
                 <Toolbar>
                     
-                    {progressButtons}
-                    
-                    
+                    {progressButtons}           
                   
-                    <Button aria-controls="simple-menu" aria-haspopup="true" class="btn nohover" onClick={handleClickUser}>
+                    <Button  class="btn nohover" classes={{label: classes.label}} onClick={handleClickUser}>
                     <i className="dropdown__text">{username}&nbsp;🠗</i>
                     </Button>
                     
