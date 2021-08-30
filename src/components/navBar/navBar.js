@@ -6,9 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import TechnipLogo from "../../assets/images/tpenr_logo.svg"
-import HomeLogo from "../../assets/images/home.png"
-import Icapp from "../../assets/images/client.png"
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import './navBar.css';
