@@ -160,7 +160,7 @@ const NavBar = (props) =>{
                     </Button>
     }else{
         projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"87%", marginRight:"50px"}}>
-                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ} asd</i>
+                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
                     </Button>
     }
     return(
