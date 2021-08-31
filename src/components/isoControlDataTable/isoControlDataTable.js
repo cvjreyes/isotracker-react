@@ -225,6 +225,16 @@ class IsoControlDataTable extends React.Component{
         },
       },
       {
+        title: <div className="dataTable__header__text">Spec code</div>,
+        dataIndex: 'spec_code',
+        key: 'spec_code',
+        widht: '10%',
+        ...this.getColumnSearchProps('spec_code'),
+        sorter: {
+          compare: (a, b) => { return a.spec_code.localeCompare(b.spec_code)},
+        },
+      },
+      {
         title: <center className="dataTable__header__text">Iso ID</center>,
         dataIndex: 'iso_id',
         key: 'iso_id',
