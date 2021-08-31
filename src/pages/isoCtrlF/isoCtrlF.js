@@ -100,8 +100,8 @@ const IsoCtrlF = () => {
         }
     });
 
-    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) //Controla la tabla y botones que se muestran
-    //La altura de la tabla es fija en funcion de la paginacion para evitar que los botones se muevan
+    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) 
+
     var dataTableHeight = "500px"
 
     if (pagination === 10){
@@ -1184,6 +1184,18 @@ const IsoCtrlF = () => {
         })
     }
 
+    async function downloadUsers(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadUsers")
+        .then(response => response.json())
+        .then(json => {
+            console.log(json)
+            const headers = ["USERNAME", "EMAIL", "ROLE"]
+            exportToExcel(json, "Users", headers)
+        })
+    }
+
     const exportToExcel = (apiData, fileName, headers) => {
         setErrorReports(false)
         const fileType =
@@ -1610,7 +1622,7 @@ const IsoCtrlF = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)} setErrorReportData={setErrorReportData.bind(this)}/>
+        tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)} downloadUsers={downloadUsers.bind(this)} setErrorReportData={setErrorReportData.bind(this)}/>
     }if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <ProgressBtn onChange={value => setCurrentTab("Progress")} currentTab = {currentTab}></ProgressBtn>
         modelledBtn = <ModelledBtn onChange={value => setCurrentTab("Modelled")} currentTab = {currentTab}></ModelledBtn>
