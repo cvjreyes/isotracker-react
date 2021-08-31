@@ -176,7 +176,6 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">Line</div>,
         dataIndex: 'line',
         key: 'line',
-        width: '10%',
         ...this.getColumnSearchProps('line'),
         sorter: {
           compare: (a, b) => a.line.localeCompare(b.line),
@@ -195,7 +194,6 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">Fluid</div>,
         dataIndex: 'fluid',
         key: 'fluid',
-        widht: '10%',
         ...this.getColumnSearchProps('fluid'),
         sorter: {
           compare: (a, b) => { return a.fluid.localeCompare(b.fluid)},
@@ -205,7 +203,6 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">Sequential</div>,
         dataIndex: 'seq',
         key: 'seq',
-        widht: '10%',
         ...this.getColumnSearchProps('seq'),
         sorter: {
           compare: (a, b) => { return a.seq.localeCompare(b.seq)},
@@ -215,7 +212,6 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">Line ID</div>,
         dataIndex: 'line_id',
         key: 'line_id',
-        widht: '10%',
         ...this.getColumnSearchProps('line_id'),
         sorter: {
           compare: (a, b) => { return a.line_id.localeCompare(b.line_id)},
@@ -225,7 +221,6 @@ class IsoControlDataTable extends React.Component{
         title: <center className="dataTable__header__text">Iso ID</center>,
         dataIndex: 'iso_id',
         key: 'iso_id',
-        width: '10%',
         ...this.getColumnSearchProps('iso_id'),
         sorter:{
           compare: (a, b) => a.iso_id.localeCompare(b.iso_id),
@@ -245,7 +240,6 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">Diameter</div>,
         dataIndex: 'diameter',
         key: 'diameter',
-        widht: '10%',
         ...this.getColumnSearchProps('diameter'),
         sorter: {
           compare: (a, b) => { return a.diameter - b.diameter},
@@ -255,7 +249,6 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">P&ID</div>,
         dataIndex: 'pid',
         key: 'pid',
-        widht: '10%',
         ...this.getColumnSearchProps('pid'),
         sorter: {
           compare: (a, b) => { return a.pid.localeCompare(b.pid)},
@@ -265,7 +258,6 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">Stress level</div>,
         dataIndex: 'stress_level',
         key: 'stress_level',
-        widht: '10%',
         ...this.getColumnSearchProps('stress_level'),
         sorter: {
           compare: (a, b) => { return a.stress_level.localeCompare(b.stress_level)},
@@ -275,7 +267,6 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">Calculation notes</div>,
         dataIndex: 'calc_notes',
         key: 'calc_notes',
-        widht: '10%',
         ...this.getColumnSearchProps('calc_notes'),
         sorter: {
           compare: (a, b) => { return a.calc_notes.localeCompare(b.calc_notes)},
@@ -285,10 +276,27 @@ class IsoControlDataTable extends React.Component{
         title: <div className="dataTable__header__text">Insulation</div>,
         dataIndex: 'insulation',
         key: 'insulation',
-        widht: '10%',
         ...this.getColumnSearchProps('insulation'),
         sorter: {
           compare: (a, b) => { return a.insulation.localeCompare(b.insulation)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Weight</div>,
+        dataIndex: 'weight',
+        key: 'weight',
+        ...this.getColumnSearchProps('weight'),
+        sorter: {
+          compare: (a, b) => { return a.weight - b.weight},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Total weight</div>,
+        dataIndex: 'total_weight',
+        key: 'total_weight',
+        ...this.getColumnSearchProps('total_weight'),
+        sorter: {
+          compare: (a, b) => { return a.total_weight - b.total_weight},
         },
       },
     ];
