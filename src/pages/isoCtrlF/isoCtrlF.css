@@ -148,3 +148,26 @@
     transition: all 250ms linear 4s;
     position: fixed
 }
+
+.isoControl__btn{
+    border-radius: 10px 0px 0px 10px;
+    width: 104%;
+    margin-left: -8px;
+    border: 0;
+    padding-right: 100px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 18px;
+    margin-bottom: 4px;
+    margin-bottom: 4px;
+    transition: 0.3s;
+    background-color: white;
+    padding-left: 12px;
+    height: 36px;
+    font-weight: 700;
+}
+
+
+.isoControl__btn:hover{
+    background-color: #99C6F8;
+}

@@ -46,6 +46,7 @@ import UsersIcon from "../../assets/images/user.png"
 import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 import AlertF from "../../components/alert/alert"
+import IsoControlDataTable from "../../components/isoControlDataTable/isoControlDataTable"
 
 const IsoCtrlF = () => {
    
@@ -1765,7 +1766,15 @@ const IsoCtrlF = () => {
         processBtn = null
         instrumentationBtn = null
     }
-    
+    let isoControlBtn = null
+    if(currentTab === "IsoControl"){
+        secureStorage.setItem("tab", "IsoControl")
+        isoControlBtn = <button  type="button" className="isoControl__btn text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
+        tableContent = <IsoControlDataTable/>
+    }else{
+        isoControlBtn = <button  type="button" className="isoControl__btn text-left"  onClick={() => {setCurrentTab("IsoControl")}}>IsoControl</button>
+        
+    }
 
     
 
@@ -1894,6 +1903,7 @@ const IsoCtrlF = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
+                                  {isoControlBtn}
                                   <p className="isotracker__table__trays__group">Home</p>
                                   
                                   {myTrayBtn}
