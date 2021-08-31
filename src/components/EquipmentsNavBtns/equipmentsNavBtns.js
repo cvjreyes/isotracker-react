@@ -30,7 +30,7 @@ const CryptoJS = require("crypto-js");
     });
 
 const EquipmentsNavBtns = props =>{
-    var estimatedButton, modelledButton, progressButton, typesButton, keyButton
+    var estimatedButton, modelledButton, progressButton, typesButton, keyButton, isoControlButton
     if(props.currentTab === "Estimated"){
         if(props.discipline === "Equipment"){
             secureStorage.setItem("equip_tab", "Estimated")
@@ -121,6 +121,19 @@ const EquipmentsNavBtns = props =>{
             keyButton = <button  type="button" className="trays__navBtns text-left" onClick={() => {props.onChange("Key parameters")}}>KeyParams</button>
         }
     }
+    if(props.discipline === "Piping"/*&& secureStorage.getItem("role") === "SpecialityLead"*/){
+        
+        if(props.currentTab === "Isocontrol"){
+            if(props.discipline === "Piping"){
+                secureStorage.setItem("piping_tab", "Isocontrol")
+            }
+            
+            isoControlButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "200px", marginLeft:"10px", marginRight:"10px", backgroundColor: "#17a2b8"}}><b>Isocontrol</b></button>
+        }else{
+            isoControlButton = <button  type="button" class="btn btn-default btn-lg" style={{border:"1px solid lightgray", width: "200px", marginLeft:"10px", marginRight:"10px", backgroundColor: "white"}} onClick={() => {props.onChange("Isocontrol")}}><b>Isocontrol</b></button>
+            
+        }
+    }
     
     return(
         <div>
@@ -128,6 +141,7 @@ const EquipmentsNavBtns = props =>{
             {modelledButton}
             {progressButton}
             {typesButton}
+            {isoControlButton}
             {keyButton}
         </div>
     );
