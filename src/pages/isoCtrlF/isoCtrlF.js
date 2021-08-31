@@ -1770,7 +1770,7 @@ const IsoCtrlF = () => {
     if(currentTab === "IsoControl"){
         secureStorage.setItem("tab", "IsoControl")
         isoControlBtn = <button  type="button" className="isoControl__btn text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
-        tableContent = <IsoControlDataTable/>
+        tableContent = <IsoControlDataTable pagination={pagination}/>
     }else{
         isoControlBtn = <button  type="button" className="isoControl__btn text-left"  onClick={() => {setCurrentTab("IsoControl")}}>IsoControl</button>
         
