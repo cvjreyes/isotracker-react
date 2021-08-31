@@ -28,7 +28,6 @@ const Civil = () => {
     const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
-    const[admin, setAdmin] = useState(false);
     const[successAlert, setSuccessAlert] = useState(false);
 
     
@@ -118,23 +117,17 @@ const Civil = () => {
     });
 
     var dataTableHeight = "500px"
-    let navBtnsMargin = "600px"
 
     if (pagination === 10){
         dataTableHeight = "500px"
-        navBtnsMargin = "600px"
     }if(pagination === 25){
         dataTableHeight = "1100px"
-        navBtnsMargin = "1200px"
     }if(pagination === 50){
         dataTableHeight = "2080px"
-        navBtnsMargin = "2150px"
     }if(pagination === 100){
         dataTableHeight = "4040px"
-        navBtnsMargin = "4000px"
     }if(pagination === 500){
-        dataTableHeight = "19000px"        
-        navBtnsMargin = "19000px"
+        dataTableHeight = "19000px"   
     }
 
 
@@ -152,7 +145,6 @@ const Civil = () => {
 
     let downloadBtn = null
     let adminBtn = null
-    let marginProgress = null
 
 
     if(currentTab === "Estimated"){
@@ -164,13 +156,11 @@ const Civil = () => {
     }else if(currentTab === "Progress"){
         table = <ProgressPlotCivils/>
         pageSelector = null
-        navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
         table = <CivilTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <CivilExcel success={success.bind(this)}/>
         pageSelector = null
-        navBtnsMargin = "700px"
     }else if(currentTab === "Edit"){
         table = <CivilExcelEdit success={success.bind(this)}/>
         pageSelector = null
@@ -190,12 +180,6 @@ const Civil = () => {
             }        }else{
             adminBtn = null 
         }
-    }
-        
-    if(adminBtn || downloadBtn){
-        marginProgress = "55%"
-    }else{
-        marginProgress = "66%"
     }
 
     async function downloadCivilsModelled(){

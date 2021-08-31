@@ -24,7 +24,7 @@ export default class Alert extends Component {
             if(this.state.change){
                 alertComponent = <div className="alert__success">
                                     
-                <img src={SuccessIcon} className="alert__icon"></img>
+                <img src={SuccessIcon} alt="success" className="alert__icon"></img>
                 <div className="text__alert__container">
                     <text className="alert__title">Excellent!</text>
                     <text className="alert__text" style={{marginLeft:"0px"}}>{this.props.text}</text>
@@ -34,7 +34,7 @@ export default class Alert extends Component {
             }else{
                 alertComponent = <div className="alert__success">
                                     
-                                    <img src={SuccessIcon} className="alert__icon"></img>
+                                    <img src={SuccessIcon} alt="success" className="alert__icon"></img>
                                     <div className="text__alert__container">
                                         <text className="alert__title">Excellent!</text>
                                         <text className="alert__text" style={{marginLeft:this.props.margin}}>{this.props.text}</text>
@@ -47,7 +47,7 @@ export default class Alert extends Component {
             if(this.state.change){
                 alertComponent = <div className="alert__error">
                                     
-                <img src={ErrorIcon} className="alert__icon"></img>
+                <img src={ErrorIcon} alt="error" className="alert__icon"></img>
                 <div className="text__alert__container">
                     <text className="alert__title">Oops!</text>
                     <text className="alert__error__text" style={{marginLeft:"0px"}}>Something has failed:</text>
@@ -58,7 +58,7 @@ export default class Alert extends Component {
             }else{
                 alertComponent = <div className="alert__error">
                                     
-                                    <img src={ErrorIcon} className="alert__icon"></img>
+                                    <img src={ErrorIcon} alt="error" className="alert__icon"></img>
                                     <div className="text__alert__container">
                                         <text className="alert__title">Oops!</text>
                                         <text className="alert__error__text">Something has failed:</text>
@@ -72,7 +72,7 @@ export default class Alert extends Component {
             if(this.state.popUp){
                 alertComponent = <div className="alert__warning" style={{marginTop:"-200px"}}>
                                     
-                                    <img src={WarningIcon} className="alert__icon"></img>
+                                    <img src={WarningIcon} alt="warning" className="alert__icon"></img>
                                     <div className="text__alert__container">
                                         <text className="alert__title">Warning</text>
                                         <text className="alert__text" >{this.props.text}</text>
@@ -82,7 +82,7 @@ export default class Alert extends Component {
             }else{
                 alertComponent = <div className="alert__warning">
                                     
-                                    <img src={WarningIcon} className="alert__icon"></img>
+                                    <img src={WarningIcon} alt="warning" className="alert__icon"></img>
                                     <div className="text__alert__container">
                                         <text className="alert__title">Warning</text>
                                         <text className="alert__text" style={{marginLeft:this.props.margin}}>{this.props.text}</text>

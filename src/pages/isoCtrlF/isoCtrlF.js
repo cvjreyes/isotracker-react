@@ -11,7 +11,6 @@ import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
 import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"
 import MyTrayTable from "../../components/myTrayTable/myTrayTable"
-import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
 import OnHoldTable from "../../components/onHoldTable/onHoldTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
@@ -20,7 +19,6 @@ import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
-import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
 import ProcInstTable from "../../components/procInstTable/procInstTable"
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
@@ -58,7 +56,6 @@ const IsoCtrlF = () => {
     const [selected, setSelected] = useState([]);
     const [updateData, setUpdateData] = useState();
     const [comment, setComment] = useState(" ");
-    const [commentAlert, setCommentAlert] = useState(false);
     const [downloadZip, setDownloadzip] = useState(new JSZip());
     const [loading, setLoading] = useState(false);
     const [errorUnclaim, setErrorUnclaim] = useState(false);
@@ -70,7 +67,6 @@ const IsoCtrlF = () => {
     const [warningSelected, setWarningSelected] = useState(false);
     const [blocked, setBlocked] = useState(false);
     const [errorReportD, setErrorReportD] = useState(false)
-    const [errorReportDIndex, setErrorReportDIndex] = useState(0);
     const [errorDeleteUser, setErrorDeleteUser] = useState(false);
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null)
@@ -118,7 +114,7 @@ const IsoCtrlF = () => {
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn, myTrayBtn, usersButton
+    var uploadButton, actionButtons, tableContent, progressBtn, modelledBtn, myTrayBtn, usersButton
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -545,7 +541,6 @@ const IsoCtrlF = () => {
             if(destiny === "Design"){
                 if(comment.length > 1){
                     setComment(" ")
-                    setCommentAlert(false)
                     localStorage.setItem("update", true)
                     for (let i = 0; i < selected.length; i++){
                         const body ={
@@ -576,7 +571,6 @@ const IsoCtrlF = () => {
                         
                     }
                 }else{
-                    setCommentAlert(true)
                 }
             }else if (destiny === "LDE/Isocontrol"){
                 for (let i = 0; i < selected.length; i++){
@@ -594,7 +588,6 @@ const IsoCtrlF = () => {
                             setErrorPI(true);
                             setTransactionSuccess(false);
                         }else{
-                            setCommentAlert(false)
                             localStorage.setItem("update", true)
                             let deleted, hold = 0
                     
@@ -633,7 +626,6 @@ const IsoCtrlF = () => {
                 await setUpdateData(!updateData)
                 setLoading(false)
             }else if(destiny === "On hold"){
-                setCommentAlert(false)
                 localStorage.setItem("update", true)
                 let deleted, hold = 0
 
@@ -673,7 +665,6 @@ const IsoCtrlF = () => {
                         })
                 }
             }else{
-                setCommentAlert(false)
                 localStorage.setItem("update", true)
                 let deleted, hold = 0
 
@@ -819,10 +810,6 @@ const IsoCtrlF = () => {
         }
     }
 
-    function handleComment(event){
-        setComment(event.target.value)
-    }
-
     async function restore(){
         setErrorReports(false)
         setErrorUnclaimR(false)
@@ -862,16 +849,6 @@ const IsoCtrlF = () => {
             setSelected([])
         }else{
             setWarningSelected(true)
-        }
-    }
-
-    function procOrInst(tab) {
-        if(tab === "Process" || tab === "Instrument"){
-            setCurrentTab(tab)
-        }else if (currentRole === "Process"){
-            setCurrentTab("Process")
-        }else{
-            setCurrentTab("Instrument")
         }
     }
 
@@ -1024,49 +1001,6 @@ const IsoCtrlF = () => {
         if(selected.length > 0){
             setLoading(true)
             localStorage.setItem("update", true)
-            /*
-            if(selected.length === 1){
-                localStorage.setItem("update", true)
-                for (let i = 0; i < selected.length; i++){
-                    const options = {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/pdf"
-                        }
-                    }
-                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
-                    .then(res => res.blob())
-                        .then(response =>{
-                            console.log("Se descarga")
-                            download(new Blob([response]), selected[i], "application/pdf")
-                        })
-                }
-            }else if (selected.length > 1){
-                localStorage.setItem("update", true)
-                for (let i = 0; i < selected.length; i++){
-
-                    const options = {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/pdf"
-                        }
-                    }
-                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
-                    .then(res => res.blob())
-                        .then(response =>{
-                            setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
-                        })
-                }
-                const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
-                downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
-                    saveAs(blob,  zipname)
-                })
-                
-            }
-            await setUpdateData(!updateData)
-            await setDownloadzip(new JSZip())   
-            setLoading(false)
-            */
             for (let i = 0; i < selected.length; i++){
 
                 const options = {
@@ -1488,7 +1422,6 @@ const IsoCtrlF = () => {
 
     async function setErrorReportData(index){
         setErrorReportD(true)
-        setErrorReportDIndex(index)
     }
 
     async function addUser(username, email, roles){
@@ -1618,8 +1551,6 @@ const IsoCtrlF = () => {
         tableContent = <StatusDataTable onChange={value=> setSelected(value)} pagination = {pagination} role = {currentRole}/>
     }if(currentTab === "History"){
         tableContent = <HistoryDataTable pagination = {pagination}/>   
-    }if(currentRole === "Process" || currentRole === "Instrument" || currentRole === "SpecialityLead"){
-        procInsBtn = <ProcInsBtn onChange={value => procOrInst(value)} currentTab = {currentTab} />
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
@@ -1655,11 +1586,7 @@ const IsoCtrlF = () => {
         }
     }
 
-    if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
-        commentBox = <div>
-            <textarea placeholder="Comments" class="comments" cols="100" rows="2" required="" maxlength="400" name="comments" value={comment} onChange={handleComment}></textarea>
-        </div>
-    }
+
 
     
 
@@ -1673,23 +1600,16 @@ const IsoCtrlF = () => {
     currentRole === "SpecialityLead" && currentTab !== "Progress") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
-        actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab !== "Progress" && currentTab !== "Modelled"){
-        actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
     }
     if(currentTab === "Modelled"){
-        actionText = null
         actionButtons = <button className="action__btn" onClick={()=>downloadModelled()}>Export</button>
     }
 
-    if(currentTab === "Users"){
-        actionText = null
-    }
 
     if(currentRole === "Project"){
-        actionText = null
         actionButtons = null
     }
 
@@ -1771,6 +1691,7 @@ const IsoCtrlF = () => {
         secureStorage.setItem("tab", "IsoControl")
         isoControlBtn = <button  type="button" className="isoControl__btn text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
         tableContent = <IsoControlDataTable pagination={pagination}/>
+        actionButtons = null
     }else{
         isoControlBtn = <button  type="button" className="isoControl__btn text-left"  onClick={() => {setCurrentTab("IsoControl")}}>IsoControl</button>
         

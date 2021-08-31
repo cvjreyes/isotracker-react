@@ -27,7 +27,6 @@ const Electrical = () => {
     const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
-    const[admin, setAdmin] = useState(false);
     const[successAlert, setSuccessAlert] = useState(false);
 
     
@@ -117,23 +116,17 @@ const Electrical = () => {
     });
 
     var dataTableHeight = "500px"
-    let navBtnsMargin = "600px"
 
     if (pagination === 10){
         dataTableHeight = "500px"
-        navBtnsMargin = "600px"
     }if(pagination === 25){
         dataTableHeight = "1100px"
-        navBtnsMargin = "1200px"
     }if(pagination === 50){
         dataTableHeight = "2080px"
-        navBtnsMargin = "2150px"
     }if(pagination === 100){
         dataTableHeight = "4040px"
-        navBtnsMargin = "4000px"
     }if(pagination === 500){
         dataTableHeight = "19000px"
-        navBtnsMargin = "19000px"
     }
 
 
@@ -151,7 +144,6 @@ const Electrical = () => {
 
     let downloadBtn = null
     let adminBtn = null
-    let marginProgress = null
 
 
     if(currentTab === "Estimated"){
@@ -163,13 +155,11 @@ const Electrical = () => {
     }else if(currentTab === "Progress"){
         table = <ProgressPlotElecs/>
         pageSelector = null
-        navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
         table = <ElecTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <ElecExcel success={success.bind(this)}/>
         pageSelector = null
-        navBtnsMargin = "700px"
     }else if(currentTab === "Edit"){
         table = <ElecExcelEdit success={success.bind(this)}/>
         pageSelector = null
@@ -191,11 +181,6 @@ const Electrical = () => {
         }
     }
         
-    if(adminBtn || downloadBtn){
-        marginProgress = "55%"
-    }else{
-        marginProgress = "66%"
-    }
 
     async function downloadCivilsModelled(){
 

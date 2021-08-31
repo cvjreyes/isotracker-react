@@ -5,7 +5,6 @@ import './home.css'
 import LoadingScreen3D from '../../components/loadingScreen3D/loadingScreen3D';
 import GreenCircle from "../../assets/images/green_circle.png"
 import BlueCircle from "../../assets/images/blue_circle.png"
-import FullTrackerLogo from "../../assets/images/3dtracker.png"
 
 //Página de home con el menú para ir a las aplicaciones de isotracker
 

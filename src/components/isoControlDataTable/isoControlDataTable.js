@@ -3,33 +3,6 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-
-const CryptoJS = require("crypto-js");
-    const SecureStorage = require("secure-web-storage");
-    var SECRET_KEY = 'sanud2ha8shd72h';
-    
-    var secureStorage = new SecureStorage(localStorage, {
-        hash: function hash(key) {
-            key = CryptoJS.SHA256(key, SECRET_KEY);
-    
-            return key.toString();
-        },
-        encrypt: function encrypt(data) {
-            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
-    
-            data = data.toString();
-    
-            return data;
-        },
-        decrypt: function decrypt(data) {
-            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
-    
-            data = data.toString(CryptoJS.enc.Utf8);
-    
-            return data;
-        }
-    });
-
 class IsoControlDataTable extends React.Component{
   state = {
     searchText: '',
@@ -67,6 +40,10 @@ class IsoControlDataTable extends React.Component{
 
             json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
             json.rows[i].iso_id = json.rows[i].unit + json.rows[i].area + json.rows[i].line + json.rows[i].train
+
+            if(!json.rows[i].spec_code){
+              json.rows[i].spec_code = ""
+            }
 
             if(i % 2 === 0){
                 json.rows[i].color = "#fff"
@@ -215,6 +192,26 @@ class IsoControlDataTable extends React.Component{
         },
       },
       {
+        title: <div className="dataTable__header__text">Fluid</div>,
+        dataIndex: 'fluid',
+        key: 'fluid',
+        widht: '10%',
+        ...this.getColumnSearchProps('fluid'),
+        sorter: {
+          compare: (a, b) => { return a.fluid.localeCompare(b.fluid)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Sequential</div>,
+        dataIndex: 'seq',
+        key: 'seq',
+        widht: '10%',
+        ...this.getColumnSearchProps('seq'),
+        sorter: {
+          compare: (a, b) => { return a.seq.localeCompare(b.seq)},
+        },
+      },
+      {
         title: <div className="dataTable__header__text">Line ID</div>,
         dataIndex: 'line_id',
         key: 'line_id',
@@ -222,6 +219,16 @@ class IsoControlDataTable extends React.Component{
         ...this.getColumnSearchProps('line_id'),
         sorter: {
           compare: (a, b) => { return a.line_id.localeCompare(b.line_id)},
+        },
+      },
+      {
+        title: <center className="dataTable__header__text">Iso ID</center>,
+        dataIndex: 'iso_id',
+        key: 'iso_id',
+        width: '10%',
+        ...this.getColumnSearchProps('iso_id'),
+        sorter:{
+          compare: (a, b) => a.iso_id.localeCompare(b.iso_id),
         },
       },
       {
@@ -235,13 +242,53 @@ class IsoControlDataTable extends React.Component{
         },
       },
       {
-        title: <center className="dataTable__header__text">Iso ID</center>,
-        dataIndex: 'iso_id',
-        key: 'iso_id',
-        width: '10%',
-        ...this.getColumnSearchProps('iso_id'),
-        sorter:{
-          compare: (a, b) => a.iso_id.localeCompare(b.iso_id),
+        title: <div className="dataTable__header__text">Diameter</div>,
+        dataIndex: 'diameter',
+        key: 'diameter',
+        widht: '10%',
+        ...this.getColumnSearchProps('diameter'),
+        sorter: {
+          compare: (a, b) => { return a.diameter - b.diameter},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">P&ID</div>,
+        dataIndex: 'pid',
+        key: 'pid',
+        widht: '10%',
+        ...this.getColumnSearchProps('pid'),
+        sorter: {
+          compare: (a, b) => { return a.pid.localeCompare(b.pid)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Stress level</div>,
+        dataIndex: 'stress_level',
+        key: 'stress_level',
+        widht: '10%',
+        ...this.getColumnSearchProps('stress_level'),
+        sorter: {
+          compare: (a, b) => { return a.stress_level.localeCompare(b.stress_level)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Calculation notes</div>,
+        dataIndex: 'calc_notes',
+        key: 'calc_notes',
+        widht: '10%',
+        ...this.getColumnSearchProps('calc_notes'),
+        sorter: {
+          compare: (a, b) => { return a.calc_notes.localeCompare(b.calc_notes)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Insulation</div>,
+        dataIndex: 'insulation',
+        key: 'insulation',
+        widht: '10%',
+        ...this.getColumnSearchProps('insulation'),
+        sorter: {
+          compare: (a, b) => { return a.insulation.localeCompare(b.insulation)},
         },
       },
     ];

@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -63,7 +62,6 @@ const NavBar = (props) =>{
     const history = useHistory();
     const[username, setUsername] = React.useState("");
     const[progressButtons, setProgressButtons] = React.useState(null);
-    let menubtn = null
     
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -102,9 +100,6 @@ const NavBar = (props) =>{
     }
     const handleClickPiping = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/piping");
-    }
-    const handleClickProject = () =>{
-        history.push("/"+process.env.REACT_APP_PROJECT+"/");
     }
     const handleClickHome = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/home");

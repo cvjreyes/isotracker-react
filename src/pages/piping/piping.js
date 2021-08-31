@@ -27,7 +27,6 @@ const Piping = () => {
     const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
-    const[admin, setAdmin] = useState(false);
     const[successAlert, setSuccessAlert] = useState(false);
 
 
@@ -116,23 +115,17 @@ const Piping = () => {
 
 
     var dataTableHeight = "490px"
-    let navBtnsMargin = "600px"
 
     if (pagination === 10){
         dataTableHeight = "490px"
-        navBtnsMargin = "600px"
     }if(pagination === 25){
         dataTableHeight = "1050px"
-        navBtnsMargin = "1200px"
     }if(pagination === 50){
         dataTableHeight = "2000px"
-        navBtnsMargin = "2150px"
     }if(pagination === 100){
         dataTableHeight = "3900px"
-        navBtnsMargin = "4000px"
     }if(pagination === 500){
         dataTableHeight = "19000px"
-        navBtnsMargin = "19000px"
     }
 
     document.body.style.zoom = 0.8
@@ -148,7 +141,6 @@ const Piping = () => {
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
     let adminBtn = null
-    let marginProgress = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable pagination = {pagination}/>
@@ -159,13 +151,11 @@ const Piping = () => {
     }else if(currentTab === "Progress"){
         table = <ProgressPlotPiping/>
         pageSelector = null
-        navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
         table = <PipingTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <PipingExcel success={success.bind(this)}/>
         pageSelector = null
-        navBtnsMargin = "700px"
     }else if(currentTab === "Edit"){
         table = <PipingExcelEdit success={success.bind(this)}/>
         pageSelector = null
@@ -187,11 +177,6 @@ const Piping = () => {
         }
     }
         
-    if(adminBtn || downloadBtn){
-        marginProgress = "55%"
-    }else{
-        marginProgress = "66%"
-    }
 
     async function downloadModelled(){
 
