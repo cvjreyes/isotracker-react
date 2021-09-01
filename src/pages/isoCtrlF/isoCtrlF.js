@@ -73,6 +73,7 @@ const IsoCtrlF = () => {
     const [errorDeleteUser, setErrorDeleteUser] = useState(false);
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null)
+    const [alreadyOnRev, setAlreadyOnRev] = useState(false)
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -1312,6 +1313,8 @@ const IsoCtrlF = () => {
                     
                     if(json.blocked){
                         setBlocked(true)
+                    }else if(json.already){
+                        setAlreadyOnRev(true)
                     }else{
                         successAlert()
                     }
@@ -1837,6 +1840,12 @@ const IsoCtrlF = () => {
                         onTransitionEnd={() => setWarningSelected(false)}
                         >
                           <AlertF type="warning" text="Select at least one isometric!" margin="-40px"/>   
+                      </div>
+                      <div
+                        className={`alert alert-success ${alreadyOnRev ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setAlreadyOnRev(false)}
+                        >
+                          <AlertF type="warning" text="Already on a new revision!" margin="-40px"/>   
                       </div>
                       <div
                         className={`alert alert-success ${blocked ? 'alert-shown' : 'alert-hidden'}`}
