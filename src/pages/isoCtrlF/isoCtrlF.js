@@ -225,22 +225,7 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
 
-        /*if((currentTab === "IsoControl" || currentTab === "IsoControlNotMod") && modelledWeight === "..."){
-            const options = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }
-            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolWeights", options)
-                .then(response => response.json())
-                .then(async json => {
-                    await setModelledWeight(json.modelledWeight)
-                    await setNotModelledWeight(json.notModelledWeight)
-                    await setTotalIsocontrolWeight(modelledWeight + notModelledWeight)
-                })
-        }
-        */
+        
     }, [currentTab])
 
     const setIsoModelledWeight = (weight) =>{
@@ -1735,6 +1720,7 @@ const IsoCtrlF = () => {
     }
     let isoControlBtn = null
     if(currentTab === "IsoControl"){
+        secureStorage.setItem("tab", "IsoControl")
         isoControlBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
         tableContent = <IsoControlModelledDataTable pagination={pagination}/>
         actionButtons = null
@@ -1745,6 +1731,7 @@ const IsoCtrlF = () => {
 
     let isoControlNotModBtn = null
     if(currentTab === "IsoControlNotMod"){
+        secureStorage.setItem("tab", "IsoControlNotMod")
         isoControlNotModBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Not modelled</button>
         tableContent = <IsoControlNotModelledDataTable pagination={pagination}/>
         actionButtons = null

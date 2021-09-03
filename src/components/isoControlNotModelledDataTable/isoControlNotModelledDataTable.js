@@ -37,9 +37,18 @@ class IsoControlNotModelledDataTable extends React.Component{
     .then(json =>{
         let rows = []
         for(let i = 0; i < json.rows.length; i++){
+            if(json.rows[i].BOM === "In BOM"){
+              json.rows[i].line_id = json.rows[i].bom_unit + json.rows[i].line
+              json.rows[i].iso_id = json.rows[i].bom_unit + json.rows[i].area + json.rows[i].line + json.rows[i].train
 
-            json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
-            json.rows[i].iso_id = json.rows[i].unit + json.rows[i].area + json.rows[i].line + json.rows[i].train
+              json.rows[i].unit = json.rows[i].bom_unit
+            }else{
+              json.rows[i].line_id = json.rows[i].LDL_unit + json.rows[i].fluid + json.rows[i].seq
+              json.rows[i].iso_id = json.rows[i].LDL_unit + /*json.rows[i].area +*/ json.rows[i].fluid + json.rows[i].seq //+ json.rows[i].train
+
+              json.rows[i].unit = json.rows[i].LDL_unit
+              json.rows[i].line = json.rows[i].fluid + json.rows[i].seq
+            }
 
             if(!json.rows[i].spec_code){
               json.rows[i].spec_code = ""
@@ -225,6 +234,24 @@ class IsoControlNotModelledDataTable extends React.Component{
         ...this.getColumnSearchProps('total_weight'),
         sorter: {
           compare: (a, b) => { return a.total_weight - b.total_weight},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">BOM</div>,
+        dataIndex: 'BOM',
+        key: 'BOM',
+        ...this.getColumnSearchProps('BOM'),
+        sorter: {
+          compare: (a, b) => { a.BOM.localeCompare(b.BOM)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">LDL</div>,
+        dataIndex: 'LDL',
+        key: 'LDL',
+        ...this.getColumnSearchProps('LDL'),
+        sorter: {
+          compare: (a, b) => { a.LDL.localeCompare(b.LDL)},
         },
       },
     ];
