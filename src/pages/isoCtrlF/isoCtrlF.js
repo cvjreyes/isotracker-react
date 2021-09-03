@@ -163,9 +163,9 @@ const IsoCtrlF = () => {
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolWeights", options)
             .then(response => response.json())
             .then(async json => {
-                await setModelledWeight(json.modelledWeight)
-                await setNotModelledWeight(json.notModelledWeight)
-                await setTotalIsocontrolWeight(modelledWeight + notModelledWeight)
+                await setModelledWeight((json.modelledWeight/1000).toFixed(2))
+                await setNotModelledWeight((json.notModelledWeight/1000).toFixed(2))
+                await setTotalIsocontrolWeight((json.modelledWeight/1000 + (json.notModelledWeight/1000)).toFixed(2))
             })
           
     }, [])
@@ -227,14 +227,6 @@ const IsoCtrlF = () => {
 
         
     }, [currentTab])
-
-    const setIsoModelledWeight = (weight) =>{
-        setModelledWeight(weight)
-    }
-
-    const setIsoNotModelledWeight = (weight) =>{
-        setModelledWeight(weight)
-    }
 
     useEffect(()=>{
         setTotalIsocontrolWeight(modelledWeight + notModelledWeight)
@@ -1743,7 +1735,7 @@ const IsoCtrlF = () => {
     let isocontrolWeightsComponent = null
     if(currentTab === "IsoControl" || currentTab === "IsoControlNotMod"){
         isocontrolWeightsComponent = 
-            <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight}   &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight}</button>
+            <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button>
 
     }
 
