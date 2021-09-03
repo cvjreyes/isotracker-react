@@ -44,7 +44,8 @@ import UsersIcon from "../../assets/images/user.png"
 import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 import AlertF from "../../components/alert/alert"
-import IsoControlDataTable from "../../components/isoControlDataTable/isoControlDataTable"
+import IsoControlModelledDataTable from "../../components/isoControlModelledDataTable/isoControlModelledDataTable"
+import IsoControlNotModelledDataTable from "../../components/isoControlNotModelledDataTable/isoControlNotModelledDataTable"
 
 const IsoCtrlF = () => {
    
@@ -70,6 +71,10 @@ const IsoCtrlF = () => {
     const [errorDeleteUser, setErrorDeleteUser] = useState(false);
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null)
+
+    const [modelledWeight, setModelledWeight] = useState("...")
+    const [notModelledWeight, setNotModelledWeight] = useState("...")
+    const [totalIsocontrolWeight, setTotalIsocontrolWeight] = useState("...")
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -148,6 +153,20 @@ const IsoCtrlF = () => {
             setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
             setContent(null)   
         }
+
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolWeights", options)
+            .then(response => response.json())
+            .then(async json => {
+                await setModelledWeight(json.modelledWeight)
+                await setNotModelledWeight(json.notModelledWeight)
+                await setTotalIsocontrolWeight(modelledWeight + notModelledWeight)
+            })
           
     }, [])
     
@@ -205,9 +224,37 @@ const IsoCtrlF = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
-        
+
+        /*if((currentTab === "IsoControl" || currentTab === "IsoControlNotMod") && modelledWeight === "..."){
+            const options = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            }
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolWeights", options)
+                .then(response => response.json())
+                .then(async json => {
+                    await setModelledWeight(json.modelledWeight)
+                    await setNotModelledWeight(json.notModelledWeight)
+                    await setTotalIsocontrolWeight(modelledWeight + notModelledWeight)
+                })
+        }
+        */
     }, [currentTab])
 
+    const setIsoModelledWeight = (weight) =>{
+        setModelledWeight(weight)
+    }
+
+    const setIsoNotModelledWeight = (weight) =>{
+        setModelledWeight(weight)
+    }
+
+    useEffect(()=>{
+        setTotalIsocontrolWeight(modelledWeight + notModelledWeight)
+        
+    }, [modelledWeight, notModelledWeight])
 
     const successAlert = () =>{
         setTransactionSuccess(true)
@@ -1688,13 +1735,29 @@ const IsoCtrlF = () => {
     }
     let isoControlBtn = null
     if(currentTab === "IsoControl"){
-        secureStorage.setItem("tab", "IsoControl")
-        isoControlBtn = <button  type="button" className="isoControl__btn text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
-        tableContent = <IsoControlDataTable pagination={pagination}/>
+        isoControlBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
+        tableContent = <IsoControlModelledDataTable pagination={pagination}/>
         actionButtons = null
     }else{
-        isoControlBtn = <button  type="button" className="isoControl__btn text-left"  onClick={() => {setCurrentTab("IsoControl")}}>IsoControl</button>
+        isoControlBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControl")}}>Modelled</button>
         
+    }
+
+    let isoControlNotModBtn = null
+    if(currentTab === "IsoControlNotMod"){
+        isoControlNotModBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Not modelled</button>
+        tableContent = <IsoControlNotModelledDataTable pagination={pagination}/>
+        actionButtons = null
+    }else{
+        isoControlNotModBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlNotMod")}}>Not modelled</button>
+        
+    }
+    
+    let isocontrolWeightsComponent = null
+    if(currentTab === "IsoControl" || currentTab === "IsoControlNotMod"){
+        isocontrolWeightsComponent = 
+            <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight}   &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight}</button>
+
     }
 
     
@@ -1709,8 +1772,8 @@ const IsoCtrlF = () => {
         uploadButton = null
     }
 
+    console.log(modelledWeight, notModelledWeight, totalIsocontrolWeight)
 
-    
     return (       
         <body>
             {content}
@@ -1819,12 +1882,15 @@ const IsoCtrlF = () => {
                               {usersButton}
                               {uploadButton}
                               {pageSelector}
+                              {isocontrolWeightsComponent}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
+                                    <p className="isotracker__table__trays__group">IsoControl</p>
                                   {isoControlBtn}
+                                  {isoControlNotModBtn}
                                   <p className="isotracker__table__trays__group">Home</p>
                                   
                                   {myTrayBtn}

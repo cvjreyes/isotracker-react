@@ -285,3 +285,13 @@ body{
     width: 343.57px;
     height: auto;
 }
+
+.isocontrol__weigths{
+    height: 50px;
+    width: 500px;
+    border: 0;
+    background-color: transparent;
+    border-radius: 1em 1em 1em 1em;
+    float:right;
+    margin-left:50px;
+}

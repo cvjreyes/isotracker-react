@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-class IsoControlDataTable extends React.Component{
+class IsoControlNotModelledDataTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
@@ -32,7 +32,7 @@ class IsoControlDataTable extends React.Component{
             "Content-Type": "application/json"
         }
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getBom", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getNotModelled", options)
     .then(response => response.json())
     .then(json =>{
         let rows = []
@@ -191,24 +191,6 @@ class IsoControlDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Fluid</div>,
-        dataIndex: 'fluid',
-        key: 'fluid',
-        ...this.getColumnSearchProps('fluid'),
-        sorter: {
-          compare: (a, b) => { return a.fluid.localeCompare(b.fluid)},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Sequential</div>,
-        dataIndex: 'seq',
-        key: 'seq',
-        ...this.getColumnSearchProps('seq'),
-        sorter: {
-          compare: (a, b) => { return a.seq.localeCompare(b.seq)},
-        },
-      },
-      {
         title: <div className="dataTable__header__text">Line ID</div>,
         dataIndex: 'line_id',
         key: 'line_id',
@@ -234,60 +216,6 @@ class IsoControlDataTable extends React.Component{
         ...this.getColumnSearchProps('spec_code'),
         sorter: {
           compare: (a, b) => { return a.spec_code.localeCompare(b.spec_code)},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Diameter</div>,
-        dataIndex: 'diameter',
-        key: 'diameter',
-        ...this.getColumnSearchProps('diameter'),
-        sorter: {
-          compare: (a, b) => { return a.diameter - b.diameter},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">P&ID</div>,
-        dataIndex: 'pid',
-        key: 'pid',
-        ...this.getColumnSearchProps('pid'),
-        sorter: {
-          compare: (a, b) => { return a.pid.localeCompare(b.pid)},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Stress level</div>,
-        dataIndex: 'stress_level',
-        key: 'stress_level',
-        ...this.getColumnSearchProps('stress_level'),
-        sorter: {
-          compare: (a, b) => { return a.stress_level.localeCompare(b.stress_level)},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Calculation notes</div>,
-        dataIndex: 'calc_notes',
-        key: 'calc_notes',
-        ...this.getColumnSearchProps('calc_notes'),
-        sorter: {
-          compare: (a, b) => { return a.calc_notes.localeCompare(b.calc_notes)},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Insulation</div>,
-        dataIndex: 'insulation',
-        key: 'insulation',
-        ...this.getColumnSearchProps('insulation'),
-        sorter: {
-          compare: (a, b) => { return a.insulation.localeCompare(b.insulation)},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Weight</div>,
-        dataIndex: 'weight',
-        key: 'weight',
-        ...this.getColumnSearchProps('weight'),
-        sorter: {
-          compare: (a, b) => { return a.weight - b.weight},
         },
       },
       {
@@ -325,4 +253,4 @@ class IsoControlDataTable extends React.Component{
   }
 }
 
-export default IsoControlDataTable;
+export default IsoControlNotModelledDataTable;
