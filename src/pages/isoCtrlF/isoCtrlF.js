@@ -165,7 +165,7 @@ const IsoCtrlF = () => {
             .then(async json => {
                 await setModelledWeight((json.modelledWeight/1000).toFixed(2))
                 await setNotModelledWeight((json.notModelledWeight/1000).toFixed(2))
-                await setTotalIsocontrolWeight((json.modelledWeight/1000 + (json.notModelledWeight/1000)).toFixed(2))
+                await setTotalIsocontrolWeight(((json.modelledWeight/1000) + (json.notModelledWeight/1000)).toFixed(2))
             })
           
     }, [])
@@ -1578,7 +1578,7 @@ const IsoCtrlF = () => {
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)} downloadUsers={downloadUsers.bind(this)} setErrorReportData={setErrorReportData.bind(this)}/>
+        tableContent = <ReportBoxBtns user={currentUser} role={currentRole} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)} downloadUsers={downloadUsers.bind(this)} setErrorReportData={setErrorReportData.bind(this)}/>
     }if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <ProgressBtn onChange={value => setCurrentTab("Progress")} currentTab = {currentTab}></ProgressBtn>
         modelledBtn = <ModelledBtn onChange={value => setCurrentTab("Modelled")} currentTab = {currentTab}></ModelledBtn>

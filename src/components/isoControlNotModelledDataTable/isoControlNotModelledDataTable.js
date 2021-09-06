@@ -48,6 +48,7 @@ class IsoControlNotModelledDataTable extends React.Component{
 
               json.rows[i].unit = json.rows[i].LDL_unit
               json.rows[i].line = json.rows[i].fluid + json.rows[i].seq
+              json.rows[i].spec_code = json.rows[i].spec_code_ldl
             }
 
             if(!json.rows[i].spec_code){

@@ -9,6 +9,7 @@ import UploadCivilModelledPopUp from '../uploadCivilModelledPopUp/uploadCivilMod
 import UploadElectricalEstimatedPopUp from '../uploadElectricalEstimatedPopUp/uploadElectricalEstimatedPopUp';
 import UploadElectricalModelledPopUp from '../uploadElectricalModelledPopUp/uploadElectricalModelledPopUp';
 import UploadPipesEstimatedPopUp from '../uploadPipesEstimatedPopUp/uploadPipesEstimatedPopUp';
+import UploadBOMPopUp from '../updateBOMPopUp/updateBOMPopUp';
 
 export default class ReportBoxBtns extends Component {
 
@@ -27,7 +28,7 @@ export default class ReportBoxBtns extends Component {
 
 
     render() {
-        let adminBtns, modelledBtn = null
+        let adminBtns, modelledBtn, bomBtn = null
         if(this.props.user === "super@user.com"){
             adminBtns = <div><button className="btn btn-bg btn-info" style={{float:"left", marginTop:"10px", marginLeft:"10px", height:"150px", width:"150px"}} onClick={() => this.props.downloadStatus3D()}>Status 3D</button>
             <UploadReportPopUp setUploading={this.setUploading.bind(this)} setErrorReport={this.setErrorReport.bind(this)}/>
@@ -44,6 +45,11 @@ export default class ReportBoxBtns extends Component {
 
         }
 
+
+        if(this.props.role === "Materials" || this.props.role === "SpecialityLead"){
+            bomBtn = <UploadBOMPopUp setUploading={this.setUploading.bind(this)} setErrorReport={this.setErrorReport.bind(this)}/>
+        }
+
         if(process.env.REACT_APP_PROGRESS === "1"){
             modelledBtn = <button className="btn btn-bg btn-success" style={{float:"left", marginTop:"10px", marginLeft:"10px", height:"150px", width:"150px"}} onClick={() => this.props.downloadModelled()}>Modelled</button>
 
@@ -57,6 +63,7 @@ export default class ReportBoxBtns extends Component {
                 <button className="btn btn-bg btn-success" style={{float:"left", marginTop:"10px", marginLeft:"10px", height:"150px", width:"150px"}} onClick={() => this.props.downloadPI()}>SPO-SIT</button>
                 <button className="btn btn-bg btn-success" style={{float:"left", marginTop:"10px", marginLeft:"10px", height:"150px", width:"150px"}} onClick={() => this.props.downloadIssued()}>Issued</button>
                 <button className="btn btn-bg btn-success" style={{float:"left", marginTop:"10px", marginLeft:"10px", height:"150px", width:"150px"}} onClick={() => this.props.downloadUsers()}>Users</button>
+                {bomBtn}
                 {modelledBtn}
                 {adminBtns}
                 
