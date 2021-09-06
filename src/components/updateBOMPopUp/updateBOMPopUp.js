@@ -44,7 +44,7 @@ export default class UploadBOMPopUp extends Component {
 
         if(this.state.file.name.substring(this.state.file.name.length-4, this.state.file.name.length) === "xlsx"){
             const formData  = new FormData(); 
-            formData.append('file', this.state.file);
+            formData.append('file', this.state.file, "marian.xlsx");
             const options = {
                 method: "POST",
                 body: formData
