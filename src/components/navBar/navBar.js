@@ -104,6 +104,9 @@ const NavBar = (props) =>{
     const handleClickHome = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/home");
     }
+    const handleClickSP = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/csptracker");
+    }
 
     useEffect(async() =>{
         const bodyUsername = {
@@ -123,46 +126,94 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div style={{ marginLeft: "25%"}}>
-                <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
-            <i className="dropdown__text">Home </i>
-        </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
-            <i className="dropdown__text">Piping </i>
-        </Button><Button class="btn nohover" onClick={handleClickInstrument} style={{marginRight:"50px"}}>
-            <i className="dropdown__text">Instrumentation </i>
-        </Button>
-        <Button class="btn nohover" onClick={handleClickEquipments} style={{marginRight:"50px"}}>
-            <i className="dropdown__text">Equipment </i>
-        </Button>
-        <Button class="btn nohover" onClick={handleClickCivil} style={{marginRight:"50px"}}>
-            <i className="dropdown__text">Civil </i>
-        </Button>
-        <Button class="btn nohover" onClick={handleClickElectrical} style={{marginRight:"50px"}}>
-            <i className="dropdown__text">Electrical </i>
-        </Button>
-        <Button class="btn nohover" onClick={handleClickIsotracker} style={{marginRight:"50px"}}>
+            if(process.env.REACT_APP_SP === "1"){
+                setProgressButtons(<div style={{ marginLeft: "22%"}}>
+                    <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Home </i>
+                    </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Piping </i>
+                    </Button><Button class="btn nohover" onClick={handleClickInstrument} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Instrumentation </i>
+                    </Button>
+                    <Button class="btn nohover" onClick={handleClickEquipments} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Equipment </i>
+                    </Button>
+                    <Button class="btn nohover" onClick={handleClickCivil} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Civil </i>
+                    </Button>
+                    <Button class="btn nohover" onClick={handleClickElectrical} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Electrical </i>
+                    </Button>
+                    <Button class="btn nohover" onClick={handleClickIsotracker} style={{marginRight:"50px"}}>
+                                    <i className="dropdown__text" >IsoTracker </i>
+                    </Button></div>)
+            }else{
+                setProgressButtons(<div style={{ marginLeft: "25%"}}>
+                    <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Home </i>
+                    </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Piping </i>
+                    </Button><Button class="btn nohover" onClick={handleClickInstrument} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Instrumentation </i>
+                    </Button>
+                    <Button class="btn nohover" onClick={handleClickEquipments} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Equipment </i>
+                    </Button>
+                    <Button class="btn nohover" onClick={handleClickCivil} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Civil </i>
+                    </Button>
+                    <Button class="btn nohover" onClick={handleClickElectrical} style={{marginRight:"50px"}}>
+                        <i className="dropdown__text">Electrical </i>
+                    </Button>
+                    <Button class="btn nohover" onClick={handleClickIsotracker} style={{marginRight:"50px"}}>
                         <i className="dropdown__text" >IsoTracker </i>
                     </Button></div>)
-        
+            }
 
         }
     },[])
 
-    let projectBtn, userButton = null
+    let projectBtn, userButton, spButton, spButtonProgress = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-        projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"19%"}}>
-                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
-                    </Button>
+        if(process.env.REACT_APP_SP === "1"){
+            projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"14%"}}>
+            <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
+        </Button>
+        }else{
+            projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"19%"}}>
+            <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
+        </Button>
+        }
+        
         userButton = <Button  class="btn nohover" classes={{label: classes.label}} onClick={handleClickUser}>
         <i className="dropdown__text">{username}&nbsp;🠗</i>
         </Button>
     }else{
-        projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"84%", marginRight:"50px"}}>
-                        <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
-                    </Button>
+        if(process.env.REACT_APP_SP === "1"){
+            projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"78%", marginRight:"50px"}}>
+            <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
+        </Button>
+        }else{
+            projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"83%", marginRight:"50px"}}>
+            <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
+        </Button>
+        }
+        
         userButton= <Button  class="btn nohover" style={{marginLeft: "80px"}} classes={{label: classes.label}} onClick={handleClickUser}>
         <i className="dropdown__text">{username}&nbsp;🠗</i>
         </Button>
+    }
+
+    if(process.env.REACT_APP_SP === "1"){
+        if(process.env.REACT_APP_PROGRESS === "1"){
+            spButtonProgress = <Button class="btn nohover" onClick={handleClickSP} style={{marginRight:"50px"}}>
+            <i className="dropdown__text" >CSPTracker</i>
+            </Button>
+        }else{
+            spButton = <Button class="btn nohover" onClick={handleClickSP} style={{marginLeft:"50px"}}>
+            <i className="dropdown__text" >CSPTracker</i>
+            </Button>
+        }    
     }
     return(
         <div className={classes.root}>
@@ -172,9 +223,10 @@ const NavBar = (props) =>{
                 <Toolbar>
                     
                     {progressButtons}           
-                  
+                    {spButtonProgress}
                     {userButton}
-                    
+                    {spButton}
+
                     <Menu
                         id="simple-menu"
                         anchorEl={anchorElUser}
