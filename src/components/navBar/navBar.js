@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -49,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     label: {
-        width: '300%',
+        width: '100%',
       },
       label2: {
         width: '145%',
@@ -63,7 +62,6 @@ const NavBar = (props) =>{
     const history = useHistory();
     const[username, setUsername] = React.useState("");
     const[progressButtons, setProgressButtons] = React.useState(null);
-    let menubtn = null
     
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -103,9 +101,6 @@ const NavBar = (props) =>{
     const handleClickPiping = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/piping");
     }
-    const handleClickProject = () =>{
-        history.push("/"+process.env.REACT_APP_PROJECT+"/");
-    }
     const handleClickHome = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/home");
     }
@@ -128,7 +123,7 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div style={{ marginLeft: "20%"}}>
+            setProgressButtons(<div style={{ marginLeft: "25%"}}>
                 <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Home </i>
         </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -153,15 +148,21 @@ const NavBar = (props) =>{
         }
     },[])
 
-    let projectBtn = null
+    let projectBtn, userButton = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-        projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"11%"}}>
+        projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"19%"}}>
                         <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
                     </Button>
+        userButton = <Button  class="btn nohover" classes={{label: classes.label}} onClick={handleClickUser}>
+        <i className="dropdown__text">{username}&nbsp;🠗</i>
+        </Button>
     }else{
-        projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"87%", marginRight:"50px"}}>
+        projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"84%", marginRight:"50px"}}>
                         <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
                     </Button>
+        userButton= <Button  class="btn nohover" style={{marginLeft: "80px"}} classes={{label: classes.label}} onClick={handleClickUser}>
+        <i className="dropdown__text">{username}&nbsp;🠗</i>
+        </Button>
     }
     return(
         <div className={classes.root}>
@@ -172,9 +173,7 @@ const NavBar = (props) =>{
                     
                     {progressButtons}           
                   
-                    <Button  class="btn nohover" classes={{label: classes.label}} onClick={handleClickUser}>
-                    <i className="dropdown__text">{username}&nbsp;🠗</i>
-                    </Button>
+                    {userButton}
                     
                     <Menu
                         id="simple-menu"
