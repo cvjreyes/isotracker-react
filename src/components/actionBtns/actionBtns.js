@@ -26,6 +26,14 @@ const ActionBtns = props =>{
     function addUser(username, email, roles){
         props.addUser(username, email, roles)
     }
+
+    function exportModelled(){
+        props.exportModelled()
+    }
+
+    function exportNotModelled(){
+        props.exportNotModelled()
+    }
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
@@ -145,6 +153,20 @@ const ActionBtns = props =>{
         }
         if(props.currentTab === "Users"){
             actionBtn6 = <AddUserPopUp addUser={addUser.bind(this)}/>
+            actionBtn7 = null
+            actionBtn10 = null
+            actionBtn11 = null
+        }
+
+        if(props.currentTab === "IsoControl"){
+            actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportModelled()}>Export</button>
+            actionBtn6 = null
+            actionBtn7 = null
+            actionBtn10 = null
+            actionBtn11 = null
+        }else if(props.currentTab === "IsoControlNotMod"){
+            actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportNotModelled()}>Export</button>
+            actionBtn6 = null
             actionBtn7 = null
             actionBtn10 = null
             actionBtn11 = null

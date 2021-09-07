@@ -1154,7 +1154,7 @@ const IsoCtrlF = () => {
         setErrorReports(false)
         const fileType =
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
+        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1']
         const fileExtension = ".xlsx";
 
         let wscols = []
@@ -1162,9 +1162,12 @@ const IsoCtrlF = () => {
             wscols.push({width:35})
         }
 
+        console.log(wscols)
+
         const ws = XLSX.utils.json_to_sheet(apiData);   
         ws["!cols"] = wscols
         for(let i = 0; i < headers.length; i++){
+            console.log(ws[header_cells[i]])
             ws[header_cells[i]].v = headers[i]
         }
         const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
@@ -1554,6 +1557,28 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
+    async function exportModelled(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportModelled/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["UNIT", "AREA", "LINE", "TRAIN Nº", "FLUID", "SEQUENTIAL", "LINE ID", "ISO ID", "SPEC CODE", "DIAMETER", "P&ID", "STRESS LEVEL", "CALCULATION NOTES", "INSULATION", "TOTAL WEIGHT"]
+            exportToExcel(JSON.parse(json), "Isocontrol modelled", headers)
+        })
+    }
+
+    async function exportNotModelled(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportNotModelled/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["UNIT", "AREA", "LINE", "TRAIN Nº", "LINE ID", "ISO ID", "SPEC CODE", "TOTAL WEIGHT", "LDL", "BOM"]
+            exportToExcel(JSON.parse(json), "Isocontrol not modelled", headers)
+        })
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
@@ -1619,9 +1644,9 @@ const IsoCtrlF = () => {
     currentRole === "SpecialityLead" && currentTab !== "Progress") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab !== "Progress" && currentTab !== "Modelled"){
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)}/>
     }
     if(currentTab === "Modelled"){
         actionButtons = <button className="action__btn" onClick={()=>downloadModelled()}>Export</button>
@@ -1705,36 +1730,38 @@ const IsoCtrlF = () => {
         processBtn = null
         instrumentationBtn = null
     }
+
     let isoControlBtn = null
-    if(currentTab === "IsoControl"){
-        secureStorage.setItem("tab", "IsoControl")
-        isoControlBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
-        tableContent = <IsoControlModelledDataTable pagination={pagination}/>
-        actionButtons = null
-    }else{
-        isoControlBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControl")}}>Modelled</button>
-        
-    }
-
     let isoControlNotModBtn = null
-    if(currentTab === "IsoControlNotMod"){
-        secureStorage.setItem("tab", "IsoControlNotMod")
-        isoControlNotModBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Not modelled</button>
-        tableContent = <IsoControlNotModelledDataTable pagination={pagination}/>
-        actionButtons = null
-    }else{
-        isoControlNotModBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlNotMod")}}>Not modelled</button>
-        
-    }
-    
     let isocontrolWeightsComponent = null
-    if(currentTab === "IsoControl" || currentTab === "IsoControlNotMod"){
-        isocontrolWeightsComponent = 
-            <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button>
+    let isoControlTitle = null
 
-    }
-
+    if(process.env.REACT_APP_PROGRESS === "1"){
+        isoControlTitle = <p className="isotracker__table__trays__group">IsoControl</p>
+        if(currentTab === "IsoControl"){
+            secureStorage.setItem("tab", "IsoControl")
+            isoControlBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
+            tableContent = <IsoControlModelledDataTable pagination={pagination}/>
+        }else{
+            isoControlBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControl")}}>Modelled</button>
+            
+        }
+        if(currentTab === "IsoControlNotMod"){
+            secureStorage.setItem("tab", "IsoControlNotMod")
+            isoControlNotModBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Not modelled</button>
+            tableContent = <IsoControlNotModelledDataTable pagination={pagination}/>
+        }else{
+            isoControlNotModBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlNotMod")}}>Not modelled</button>
+            
+        }
+        
+        
+        if(currentTab === "IsoControl" || currentTab === "IsoControlNotMod"){
+            isocontrolWeightsComponent = 
+                <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button>
     
+        }
+    }
 
     if(currentRole === "Design"){
         if(currentTab === "Upload IsoFiles"){
@@ -1860,7 +1887,7 @@ const IsoCtrlF = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
-                                    <p className="isotracker__table__trays__group">IsoControl</p>
+                                  {isoControlTitle}
                                   {isoControlBtn}
                                   {isoControlNotModBtn}
                                   <p className="isotracker__table__trays__group">Home</p>
