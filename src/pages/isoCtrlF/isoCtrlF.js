@@ -1776,6 +1776,10 @@ const IsoCtrlF = () => {
         processBtn = null
         instrumentationBtn = null
     }
+
+    if(currentTab === "History"){
+        actionButtons = null
+    }
     
 
     
