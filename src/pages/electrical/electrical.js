@@ -98,7 +98,7 @@ const Electrical = () => {
     
     function handleOnIdle(){
         secureStorage.clear()
-        history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
+        history.push("/" + process.env.REACT_APP_PROJECT)
     }
     
     var secureStorage = new SecureStorage(localStorage, {

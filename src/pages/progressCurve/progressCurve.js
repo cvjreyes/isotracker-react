@@ -76,7 +76,7 @@ const Civil = () => {
 
 
     document.body.style.zoom = 0.8
-    document.title= process.env.REACT_APP_APP_NAMEPROJ
+    document.title= process.env.REACT_APP_PROJECT
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("civ_tab"))
     if(currentTab === "" || currentTab === null){
         setCurrentTab("Estimated")

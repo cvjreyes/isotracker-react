@@ -1609,7 +1609,7 @@ const IsoCtrlF = () => {
 
     function handleOnIdle(){
         secureStorage.clear()
-        history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
+        history.push("/" + process.env.REACT_APP_PROJECT)
     }
 
     if(currentTab === "Upload IsoFiles"){
