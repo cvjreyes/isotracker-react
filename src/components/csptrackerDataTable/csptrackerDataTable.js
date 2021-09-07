@@ -133,7 +133,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <center className="dataTable__header__text">Description</center>,
+        title: <center className="dataTable__header__text">DESCRIPTION</center>,
         dataIndex: 'description',
         key: 'description',
         ...this.getColumnSearchProps('description'),
@@ -142,7 +142,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Description plane</div>,
+        title: <div className="dataTable__header__text">DESCRIPTION PLANE</div>,
         dataIndex: 'description_plane',
         key: 'description_plane',
         ...this.getColumnSearchProps('description_plane'),
@@ -151,13 +151,133 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Iso description</div>,
+        title: <div className="dataTable__header__text">ISO DESCRIPTION</div>,
         dataIndex: 'description_iso',
         key: 'description_iso',
         ...this.getColumnSearchProps('description_iso'),
         sorter: {
           compare: (a, b) => a.modelled-b.modelled,
         },
+      },
+      {
+        title: <div className="dataTable__header__text">IDENT</div>,
+        dataIndex: 'ident',
+        key: 'ident',
+        ...this.getColumnSearchProps('ident'),
+        sorter: {
+          compare: (a, b) => a.ident-b.ident,
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">P1BORE</div>,
+        dataIndex: 'p1bore',
+        key: 'p1bore',
+        ...this.getColumnSearchProps('p1bore'),
+        sorter: {
+          compare: (a, b) => a.p1bore-b.p1bore,
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">P2BORE</div>,
+        dataIndex: 'p2bore',
+        key: 'p2bore',
+        ...this.getColumnSearchProps('p2bore'),
+        sorter: {
+          compare: (a, b) => a.p2bore-b.p2bore,
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">P3BORE</div>,
+        dataIndex: 'p3bore',
+        key: 'p3bore',
+        ...this.getColumnSearchProps('p3bore'),
+        sorter: {
+          compare: (a, b) => a.p3bore-b.p3bore,
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">RATING</div>,
+        dataIndex: 'rating',
+        key: 'rating',
+        ...this.getColumnSearchProps('rating'),
+        sorter: {
+            compare: (a, b) => a.rating.localeCompare(b.rating),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">SPEC</div>,
+        dataIndex: 'spec',
+        key: 'spec',
+        ...this.getColumnSearchProps('spec'),
+        sorter: {
+            compare: (a, b) => a.spec.localeCompare(b.spec),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">FACE-TO-FACE</div>,
+        dataIndex: 'spec',
+        key: 'spec',
+        ...this.getColumnSearchProps('spec'),
+        sorter: {
+            compare: (a, b) => a.spec.localeCompare(b.spec),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">END PREPARATION</div>,
+        dataIndex: 'end_preparation',
+        key: 'end_preparation',
+        ...this.getColumnSearchProps('end_preparation'),
+        sorter: {
+            compare: (a, b) => a.end_preparation.localeCompare(b.end_preparation),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">DRAWING</div>,
+        dataIndex: 'drawing',
+        key: 'drawing',
+        ...this.getColumnSearchProps('drawing'),
+        sorter: {
+            compare: (a, b) => a.drawing.localeCompare(b.drawing),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">BOLTS</div>,
+        dataIndex: 'bolts',
+        key: 'bolts',
+        ...this.getColumnSearchProps('bolts'),
+        sorter: {
+            compare: (a, b) => a.bolts.localeCompare(b.bolts),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">BOLT TYPE</div>,
+        dataIndex: 'bolts_type',
+        key: 'bolts_type',
+        ...this.getColumnSearchProps('bolts_type'),
+        sorter: {
+            compare: (a, b) => a.bolts_type.localeCompare(b.bolts_type),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">READY TO LOAD</div>,
+        dataIndex: 'ready_load',
+        key: 'ready_load',
+        ...this.getColumnSearchProps('ready_load'),
+        sorter: {
+            compare: (a, b) => a.ready_load.localeCompare(b.ready_load),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">READY IN E3D</div>,
+        dataIndex: 'ready_e3d',
+        key: 'ready_e3d',
+        ...this.getColumnSearchProps('ready_e3d'),
+      },
+      {
+        title: <div className="dataTable__header__text">COMMENTS</div>,
+        dataIndex: 'comments',
+        key: 'comments',
+        ...this.getColumnSearchProps('comments'),
       },
     ];
     

@@ -7,8 +7,7 @@ import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
 import SelectPag from "../../components/selectPag/selectPag"
-import EditIcon from "../../assets/images/edit.png"
-import View from "../../assets/images/Notepad.png"
+import CSPTrackerdDataTable from "../../components/csptrackerDataTable/csptrackerDataTable"
 
 const CSPTracker = () => {
 
@@ -39,7 +38,7 @@ const CSPTracker = () => {
     });
 
     const [currentRole, setCurrentRole] = useState();
-    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("inst_tab"))
+    const [currentTab, setCurrentTab] = useState("View")
     const [roles, setRoles] = useState();
     const[pagination, setPagination] = useState(10)
     const[successAlert, setSuccessAlert] = useState(false);
@@ -91,6 +90,14 @@ const CSPTracker = () => {
         secureStorage.clear()
         history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
     }
+
+    async function handleToggle(){
+        if(currentTab === "View"){
+            await setCurrentTab("Edit")
+        }else{
+            await setCurrentTab("View")
+        }
+    }
     
 
     document.body.style.zoom = 0.8
@@ -112,13 +119,21 @@ const CSPTracker = () => {
     }
 
     let editBtn = null
+    let table = <CSPTrackerdDataTable/>
 
     if(currentRole === "Materials"){
         editBtn =  <label class="switchBtn">
-                        <input type="checkbox"/>
+                        <input type="checkbox" id="edit" onClick={()=>handleToggle()}/>
                         <div class="slide round">Edit mode</div>
                     </label>    
     }
+
+    if(currentTab === "View"){
+        table = <CSPTrackerdDataTable/>
+    }else{
+        table = null
+    }
+
 
 
     return(
@@ -151,7 +166,7 @@ const CSPTracker = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
                               <div  style={{height: dataTableHeight}} className="isotracker__table__table__container">
-                                  
+                                {table}
                               </div>
                           </td>
                           
