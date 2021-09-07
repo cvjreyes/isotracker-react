@@ -228,11 +228,6 @@ const IsoCtrlF = () => {
         
     }, [currentTab])
 
-    useEffect(()=>{
-        setTotalIsocontrolWeight(modelledWeight + notModelledWeight)
-        
-    }, [modelledWeight, notModelledWeight])
-
     const successAlert = () =>{
         setTransactionSuccess(true)
         setTimeout(function () {
@@ -1750,8 +1745,6 @@ const IsoCtrlF = () => {
     }else{
         uploadButton = null
     }
-
-    console.log(modelledWeight, notModelledWeight, totalIsocontrolWeight)
 
     return (       
         <body>
