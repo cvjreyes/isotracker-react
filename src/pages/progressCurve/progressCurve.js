@@ -3,6 +3,9 @@ import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import ProgressPlotCurve from "../../components/progressPlotCurve/progressPlotCurve"
 
+import IdleTimer from 'react-idle-timer'
+import {useHistory} from "react-router";
+
 const Civil = () => {
 
     const CryptoJS = require("crypto-js");
@@ -10,7 +13,7 @@ const Civil = () => {
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
 
-    
+    const history = useHistory()
 
     useEffect(()=>{
         const body = {
@@ -42,7 +45,11 @@ const Civil = () => {
             
     },[currentRole]);
 
-    
+    function handleOnIdle(){
+        secureStorage.clear()
+        history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
+    }
+
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
             key = CryptoJS.SHA256(key, SECRET_KEY);
@@ -85,7 +92,11 @@ const Civil = () => {
     return(
         
         <body>
-            
+            <IdleTimer
+                timeout={1000 * 60 * 15}
+                onIdle={handleOnIdle}
+                debounce={250}
+            />
             <NavBar/>
             <div className="equipments__container">  
                 <center>

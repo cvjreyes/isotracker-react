@@ -11,7 +11,6 @@ import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
 import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"
 import MyTrayTable from "../../components/myTrayTable/myTrayTable"
-import BinBtn from '../../components/binBtn/binBtn'
 import BinTable from "../../components/binTable/binTable"
 import OnHoldTable from "../../components/onHoldTable/onHoldTable"
 import StatusDataTable from "../../components/statusDataTable/statusDataTable"
@@ -46,6 +45,8 @@ import UsersIcon from "../../assets/images/user.png"
 import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 import AlertF from "../../components/alert/alert"
+import IdleTimer from 'react-idle-timer'
+import {useHistory} from "react-router";
 
 const IsoCtrlF = () => {
    
@@ -74,6 +75,8 @@ const IsoCtrlF = () => {
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null)
     const [alreadyOnRev, setAlreadyOnRev] = useState(false)
+
+    const history = useHistory()
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -1604,6 +1607,11 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
+    function handleOnIdle(){
+        secureStorage.clear()
+        history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
@@ -1786,6 +1794,11 @@ const IsoCtrlF = () => {
     
     return (       
         <body>
+            <IdleTimer
+                timeout={1000 * 60 * 15}
+                onIdle={handleOnIdle}
+                debounce={250}
+            />
             {content}
             
             <div>

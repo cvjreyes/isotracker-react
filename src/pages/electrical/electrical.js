@@ -17,6 +17,9 @@ import ExportIcon from "../../assets/images/downloadicon.png"
 import EditIcon from "../../assets/images/edit.png"
 import AlertF from "../../components/alert/alert"
 
+import IdleTimer from 'react-idle-timer'
+import {useHistory} from "react-router";
+
 const Electrical = () => {
 
     const CryptoJS = require("crypto-js");
@@ -30,7 +33,7 @@ const Electrical = () => {
     const[admin, setAdmin] = useState(false);
     const[successAlert, setSuccessAlert] = useState(false);
 
-    
+    const history = useHistory()
 
     useEffect(()=>{
         const body = {
@@ -93,6 +96,10 @@ const Electrical = () => {
         }, 1000);
     }
     
+    function handleOnIdle(){
+        secureStorage.clear()
+        history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
+    }
     
     var secureStorage = new SecureStorage(localStorage, {
         hash: function hash(key) {
@@ -233,7 +240,11 @@ const Electrical = () => {
     return(
         
         <body>
-            
+            <IdleTimer
+                timeout={1000 * 60 * 15}
+                onIdle={handleOnIdle}
+                debounce={250}
+            />
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
             <div
             className={`alert alert-success ${successAlert ? 'alert-shown' : 'alert-hidden'}`}

@@ -20,6 +20,7 @@
     "react-dom": "^17.0.1",
     "react-dropzone-uploader": "^2.11.0",
     "react-highlight-words": "^0.17.0",
+    "react-idle-timer": "^4.6.4",
     "react-papaparse": "^3.15.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
