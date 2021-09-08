@@ -26,6 +26,26 @@ class CSPTrackerdDataTable extends React.Component{
         },
     }
 
+
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker", options)
+        .then(response => response.json())
+        .then(async json => {
+          var rows = []
+          var row = null
+          
+          for(let i = 0; i < json.rows.length; i++){
+              if(i % 2 === 0){
+                row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plane, color: "#fff"}
+              }else{
+                row = {key:i, area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, color: "#eee"}
+              }
+              rows.push(row)
+          }
+        })
+        .catch(error => {
+            console.log(error);
+        })       
+
   }
 
   
@@ -131,6 +151,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.tag.localeCompare(b.tag),
         },
+        fixed: "left"
       },
       {
         title: <center className="dataTable__header__text">DESCRIPTION</center>,
@@ -142,12 +163,21 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">DESCRIPTION PLANE</div>,
+        title: <div className="dataTable__header__text">DRAWING DESCRIPION</div>,
         dataIndex: 'description_plane',
         key: 'description_plane',
         ...this.getColumnSearchProps('description_plane'),
         sorter: {
           compare: (a, b) => a.description_plane-b.description_plane,
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">DRAWING</div>,
+        dataIndex: 'drawing',
+        key: 'drawing',
+        ...this.getColumnSearchProps('drawing'),
+        sorter: {
+            compare: (a, b) => a.drawing.localeCompare(b.drawing),
         },
       },
       {
@@ -232,15 +262,6 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">DRAWING</div>,
-        dataIndex: 'drawing',
-        key: 'drawing',
-        ...this.getColumnSearchProps('drawing'),
-        sorter: {
-            compare: (a, b) => a.drawing.localeCompare(b.drawing),
-        },
-      },
-      {
         title: <div className="dataTable__header__text">BOLTS</div>,
         dataIndex: 'bolts',
         key: 'bolts',
@@ -259,6 +280,12 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
+        title: <div className="dataTable__header__text">COMMENTS</div>,
+        dataIndex: 'comments',
+        key: 'comments',
+        ...this.getColumnSearchProps('comments'),
+      },
+      {
         title: <div className="dataTable__header__text">READY TO LOAD</div>,
         dataIndex: 'ready_load',
         key: 'ready_load',
@@ -266,18 +293,14 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.ready_load.localeCompare(b.ready_load),
         },
+        fixed: "right"
       },
       {
         title: <div className="dataTable__header__text">READY IN E3D</div>,
         dataIndex: 'ready_e3d',
         key: 'ready_e3d',
         ...this.getColumnSearchProps('ready_e3d'),
-      },
-      {
-        title: <div className="dataTable__header__text">COMMENTS</div>,
-        dataIndex: 'comments',
-        key: 'comments',
-        ...this.getColumnSearchProps('comments'),
+        fixed: "right"
       },
     ];
     
@@ -307,8 +330,8 @@ class CSPTrackerdDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"
-         rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table  className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"
+         rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:3800}}/>
           {totalElements}
         </div>
         
