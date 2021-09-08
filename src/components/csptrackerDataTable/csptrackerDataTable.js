@@ -1,7 +1,9 @@
 import React from 'react';
+import './csptrackerDataTable.css'
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import UploadDrawingPopUp from '../uploadDrawingPopUp/uploadDrawingPopUp';
 
 class CSPTrackerdDataTable extends React.Component{
   state = {
@@ -16,6 +18,55 @@ class CSPTrackerdDataTable extends React.Component{
     acronyms : null,
     steps: []
   };
+
+  async readyE3D(tag){
+
+    const body = {
+      tag: tag
+    }
+
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+
+
+  fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/readye3d", options)
+      .then(response => response.json())
+      .then(
+        this.props.updateDataMethod()
+      )
+  }
+
+  async updateDrawing(name){
+    console.log(name)
+  }
+
+  async cancelReadyE3D(tag){
+
+    const body = {
+      tag: tag
+    }
+
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+
+
+  fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/cancelreadye3d", options)
+      .then(response => response.json())
+      .then(
+        this.props.updateDataMethod()
+        )
+  }
+
 
   async componentDidMount(){
 
@@ -32,21 +83,166 @@ class CSPTrackerdDataTable extends React.Component{
         .then(async json => {
           var rows = []
           var row = null
-          
-          for(let i = 0; i < json.rows.length; i++){
-              if(i % 2 === 0){
-                row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plane, color: "#fff"}
+          if(process.env.REACT_APP_MMDN === "0"){
+            for(let i = 0; i < json.rows.length; i++){
+              row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}
+
+              if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
+                row.drawing = <div className="drawing__column">{json.rows[i].drawing_filename}<button  class="update__btn btn-sm btn-info" onClick={() => this.updateDrawing(row.drawing_filename)}>UPDATE</button></div>
+              }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
+                row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane}/>
               }else{
-                row = {key:i, area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, color: "#eee"}
+                row.drawing = null
               }
+
+              if(row.ready_load === 1){
+                row.ready_load = "READY"
+                if(row.ready_e3d === 1){
+                  row.color = "#ggg"
+                  row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(row.tag)}>CANCEL</button>
+                }else{
+                  row.color = "#yyy"
+                  row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(row.tag)}>READY</button>
+                }
+                
+              }else{
+                row.ready_load = "NOT READY"
+                row.color = "white"
+                row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+              }
+
               rows.push(row)
+            }
+          }else{
+            for(let i = 0; i < json.rows.length; i++){
+              row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}              
+              
+              if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
+                row.drawing = <div className="drawing__column">{json.rows[i].drawing_filename}<button  class="update__btn btn-sm btn-info" onClick={() => this.updateDrawing(row.drawing_filename)}>UPDATE</button></div>
+              }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
+                row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane}/>
+              }else{
+                row.drawing = null
+              }
+
+              if(row.ready_load === 1){
+                row.ready_load = "READY"
+                if(row.ready_e3d === 1){
+                  row.color = "#ggg"
+                  row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(row.tag)}>CANCEL</button>
+                }else{
+                  row.color = "#yyy"
+                  row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(row.tag)}>READY</button>
+                }
+                
+              }else{
+                row.ready_load = "NOT READY"
+                row.color = "white"
+                row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+              }
+
+              rows.push(row)
+            }
           }
+          this.setState({data: rows})
+          
         })
         .catch(error => {
             console.log(error);
         })       
 
   }
+
+
+  async componentDidUpdate(prevProps, prevState){
+
+    
+    if(prevProps !== this.props){
+
+      const options = {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json"
+          },
+      }
+
+
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker", options)
+          .then(response => response.json())
+          .then(async json => {
+            var rows = []
+            var row = null
+            if(process.env.REACT_APP_MMDN === "0"){
+              for(let i = 0; i < json.rows.length; i++){
+                row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}
+
+                if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
+                  row.drawing = <div className="drawing__column">{json.rows[i].drawing_filename}<button  class="update__btn btn-sm btn-info" onClick={() => this.updateDrawing(row.drawing_filename)}>UPDATE</button></div>
+                }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
+                  row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane}/>
+                }else{
+                  row.drawing = null
+                }
+
+                if(row.ready_load === 1){
+                  row.ready_load = "READY"
+                  if(row.ready_e3d === 1){
+                    row.color = "#ggg"
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(row.tag)}>CANCEL</button>
+                  }else{
+                    row.color = "#yyy"
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(row.tag)}>READY</button>
+                  }
+                  
+                }else{
+                  row.ready_load = "NOT READY"
+                  row.color = "white"
+                  row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                }
+
+                rows.push(row)
+              }
+            }else{
+              for(let i = 0; i < json.rows.length; i++){
+                row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}              
+                
+                if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
+                  row.drawing = <div className="drawing__column">{json.rows[i].drawing_filename}<button  class="update__btn btn-sm btn-info" onClick={() => this.updateDrawing(row.drawing_filename)}>UPDATE</button></div>
+                }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
+                  row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane}/>
+                }else{
+                  row.drawing = null
+                }
+
+                if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
+                  row.ready_load = "READY"
+                  if(row.ready_e3d === 1){
+                    row.color = "#ggg"
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(row.tag)}>CANCEL</button>
+                  }else{
+                    row.color = "#yyy"
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(row.tag)}>READY</button>
+                  }
+                  
+                }else{
+                  row.ready_load = "NOT READY"
+                  row.color = "white"
+                  row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                }
+
+                rows.push(row)
+              }
+            }
+            this.setState({data: rows})
+            
+          })
+          .catch(error => {
+              console.log(error);
+          })       
+      }
+
+  }
+  
 
   
   getColumnSearchProps = dataIndex => ({
@@ -330,7 +526,7 @@ class CSPTrackerdDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container">
-        <Table  className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"
+        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"
          rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:3800}}/>
           {totalElements}
         </div>

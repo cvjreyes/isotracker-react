@@ -62,9 +62,7 @@ const CSPTracker = () => {
     const [endPreparationData, setEndPrepartaionData] = useState()
     const [boltTypesData, setBoltTypesData] = useState()
 
-
-
-    
+    const [updateData, setUpdateData] = useState(false)    
 
     const history = useHistory()
 
@@ -132,6 +130,10 @@ const CSPTracker = () => {
         console.log(editData)
     }
 
+    async function updateDataMethod(){
+        setUpdateData(!updateData)
+    }
+
     document.body.style.zoom = 0.8
 
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
@@ -151,7 +153,7 @@ const CSPTracker = () => {
     }
 
     let editBtn, addRowBtn, saveBtn, upload = null
-    let table = <CSPTrackerdDataTable/>
+    let table = <CSPTrackerdDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData}/>
 
     if(currentRole === "Materials"){
         editBtn =  <label class="switchBtn">
@@ -161,8 +163,12 @@ const CSPTracker = () => {
     }
 
     if(currentTab === "View"){
-        table = <CSPTrackerdDataTable/>
-        pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+        table = <CSPTrackerdDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData}/>
+        if(currentRole === "Materials" || currentRole === "Speciality Lead"){
+            pageSelector = <div style={{marginLeft:"87%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
+        }else{
+            pageSelector = <div style={{marginLeft:"94%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
+        }
         addRowBtn = null
         saveBtn = null
     }else{
@@ -212,11 +218,8 @@ const CSPTracker = () => {
                           <th  className="isotracker__table__navBar">
                               <div style={{display:"flex"}}>
                                 {editBtn}
-                                {saveBtn}  
-                                <div style={{marginLeft:"87%"}}>
-                                    {pageSelector}  
-                                </div> 
-                                         
+                                {saveBtn} 
+                                {pageSelector}  
                               </div>                           
                                
                           </th>

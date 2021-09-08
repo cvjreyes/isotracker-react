@@ -51,3 +51,11 @@ input:checked + .slide:before {
 .slide.round:before {
     border-radius: 50%;
 }
+
+.yyy{
+    background: #ffff9d;
+  }
+
+.ggg{
+    background: #00c800;
+}

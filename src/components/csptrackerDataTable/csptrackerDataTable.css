@@ -1,0 +1,27 @@
+.ready__disabled{
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+    opacity: 0.6;
+}
+
+.ready__btn{
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+}
+
+.update__btn{
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+    float:right;
+    margin-left: 10px;
+}
+
+.upload__btn{
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+}
+
+.drawing__column{
+    display: inline-block;
+    width: 100%;
+}
