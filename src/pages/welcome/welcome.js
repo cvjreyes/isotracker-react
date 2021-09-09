@@ -4,6 +4,7 @@ import './welcome.css'
 //Página de welcome que actua como portada
 
 const Welcome = () =>{
+
     document.body.style.zoom = 1.
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     return(

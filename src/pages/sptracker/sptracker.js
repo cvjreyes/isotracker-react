@@ -62,6 +62,9 @@ const CSPTracker = () => {
     const [endPreparationData, setEndPrepartaionData] = useState()
     const [boltTypesData, setBoltTypesData] = useState()
 
+    const [busy, setBusy] = useState(false)
+    const [editingUser, setEditingUser] = useState()
+
     const [updateData, setUpdateData] = useState(false)    
 
     const history = useHistory()
@@ -99,6 +102,24 @@ const CSPTracker = () => {
             
     },[currentRole]);
 
+    useEffect(()=>{
+        const body = {
+            user: currentUser,
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+
+            })
+    },[])
+
     function success(){
         setSuccessAlert(true)
         setTimeout(function () {
@@ -107,16 +128,70 @@ const CSPTracker = () => {
     }
     
     function handleOnIdle(){
+        const body = {
+            user: currentUser,
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+
+            })
         secureStorage.clear()
         history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
     }
 
     async function handleToggle(){
         if(currentTab === "View"){
-            await setCurrentTab("Edit")
+            const body = {
+                user: currentUser,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/editCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+                if(json.user){
+                    console.log(json)
+                    await setBusy(true)
+                    await setEditingUser(json.user)
+                }else{
+                    await setBusy(false)
+                }
+                await setCurrentTab("Edit")
+            })
+            
         }else{
-            await saveChanges()
-            await setCurrentTab("View")
+            const body = {
+                user: currentUser,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+                if(json.success){
+                    await saveChanges()
+                    await setCurrentTab("View")
+                }
+            })
+            
         }
     }
 
@@ -162,6 +237,7 @@ const CSPTracker = () => {
                     </label>    
     }
 
+
     if(currentTab === "View"){
         table = <CSPTrackerdDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData}/>
         if(currentRole === "Materials" || currentRole === "Speciality Lead"){
@@ -171,24 +247,29 @@ const CSPTracker = () => {
         }
         addRowBtn = null
         saveBtn = null
-    }else{
-        table = <HotTable
-        data={editData}
-        colHeaders = {["TAG", "DESCRIPTION", "DRAWING DESCRIPION", "DESCRIPTION ISO", "IDENT", "P1BORE", "P2BORE", "P3BORE", "RATING", "SPEC", "FACE TO FACE", "END PREPARATION", "BOLTS", "TYPE OF BOLT"]}
-        rowHeaders={true}
-        width="2200"
-        height="635"
-        settings={settings} 
-        manualColumnResize={true}
-        manualRowResize={true}
-        columns= {[{ data: "tag", type:'text'}, { data: "description", type:'text'}, {data: "description_plane", type:"dropdown", strict:"false", source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "Ident", type:"text"}, {data: "p1bore", type:"dropdown", strict:"true", source: p1boreData}, {data: "p2bore", type:"dropdown", strict:"true", source: p2boreData}, {data: "p3bore", type:"dropdown", strict:"true", source: p3boreData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: "face_to_face", type:"numeric"},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData},{data: "bolts", type:"dropdown", strict:"true", source:["yes", "no"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}]}
-        />
         
-        pageSelector = null
-        dataTableHeight= "700px"
-        addRowBtn = <button class="btn btn-sm btn-success" onClick={() => addRow()} style={{marginRight:"5px", fontSize:"18px", width:"35px", height:"35px", borderRadius:"10px", float:"right", marginTop:"8px"}}>+</button>
-
-        saveBtn = <button className="navBar__button" onClick={()=> saveChanges()} style={{marginTop:"7px"}}><img src={SaveIcon} alt="save" className="navBar__icon"></img><p className="navBar__button__text">Save</p></button>
+    }else{
+        if(!busy){
+            table = <HotTable
+            data={editData}
+            colHeaders = {["TAG", "DESCRIPTION", "DRAWING DESCRIPION", "DESCRIPTION ISO", "IDENT", "P1BORE", "P2BORE", "P3BORE", "RATING", "SPEC", "FACE TO FACE", "END PREPARATION", "BOLTS", "TYPE OF BOLT"]}
+            rowHeaders={true}
+            width="2200"
+            height="635"
+            settings={settings} 
+            manualColumnResize={true}
+            manualRowResize={true}
+            columns= {[{ data: "tag", type:'text'}, { data: "description", type:'text'}, {data: "description_plane", type:"dropdown", strict:"false", source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "Ident", type:"text"}, {data: "p1bore", type:"dropdown", strict:"true", source: p1boreData}, {data: "p2bore", type:"dropdown", strict:"true", source: p2boreData}, {data: "p3bore", type:"dropdown", strict:"true", source: p3boreData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: "face_to_face", type:"numeric"},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData},{data: "bolts", type:"dropdown", strict:"true", source:["yes", "no"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}]}
+            />
+            
+            pageSelector = null
+            dataTableHeight= "700px"
+            addRowBtn = <button class="btn btn-sm btn-success" onClick={() => addRow()} style={{marginRight:"5px", fontSize:"18px", width:"35px", height:"35px", borderRadius:"10px", float:"right", marginTop:"8px"}}>+</button>
+    
+            saveBtn = <button className="navBar__button" onClick={()=> saveChanges()} style={{marginTop:"7px"}}><img src={SaveIcon} alt="save" className="navBar__icon"></img><p className="navBar__button__text">Save</p></button>
+        }else{
+            table = <div className="connected__panel"><p className="connected__text">The user {editingUser} is already editing!</p></div>
+        }    
 
     }
 

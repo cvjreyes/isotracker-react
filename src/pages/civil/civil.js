@@ -69,7 +69,7 @@ const Civil = () => {
 
     useEffect(()=>{
 
-        const options = {
+        let options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -86,7 +86,23 @@ const Civil = () => {
             )
             .catch(error => {
                 console.log(error);
-            })       
+            })  
+            
+            const body = {
+                user: currentUser,
+            }
+            options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+                .then(response => response.json())
+                .then(async json => {
+    
+                })
             
     },[]);
 
@@ -98,6 +114,21 @@ const Civil = () => {
     }
 
     function handleOnIdle(){
+        const body = {
+            user: currentUser,
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+
+            })
         secureStorage.clear()
         history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
     }

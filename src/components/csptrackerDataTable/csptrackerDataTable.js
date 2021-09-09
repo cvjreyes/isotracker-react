@@ -4,6 +4,8 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import UploadDrawingPopUp from '../uploadDrawingPopUp/uploadDrawingPopUp';
+import UpdateDrawingPopUp from '../updateDrawingPopUp/updateDrawingPopUp';
+import { Link } from 'react-router-dom';
 
 class CSPTrackerdDataTable extends React.Component{
   state = {
@@ -20,7 +22,6 @@ class CSPTrackerdDataTable extends React.Component{
   };
 
   async readyE3D(tag){
-
     const body = {
       tag: tag
     }
@@ -41,12 +42,7 @@ class CSPTrackerdDataTable extends React.Component{
       )
   }
 
-  async updateDrawing(name){
-    console.log(name)
-  }
-
   async cancelReadyE3D(tag){
-
     const body = {
       tag: tag
     }
@@ -67,6 +63,53 @@ class CSPTrackerdDataTable extends React.Component{
         )
   }
 
+  async updateData(){
+    this.props.updateDataMethod()
+  }
+
+  async getDrawing(fileName){
+    const options = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/pdf"
+      }
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getDrawing/"+fileName, options)
+    .then(res => res.blob())
+    .then(response => {
+      console.log(response)
+      const file = new Blob([response], {
+        type: "application/pdf"
+      });
+      //Build a URL from the file
+      const fileURL = URL.createObjectURL(file);
+      //Open the URL on new Window
+      let w = window.open(fileURL);
+
+        w.addEventListener("load", function() {
+          setTimeout(()=> w.document.title = fileName
+          , 300);
+
+
+        });
+
+        // create <a> tag dinamically
+        var fileLink = document.createElement('a');
+        fileLink.href = fileURL;
+
+        // it forces the name of the downloaded file
+        fileLink.download = fileName;
+
+        // triggers the click event
+        fileLink.click();
+
+
+      
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
 
   async componentDidMount(){
 
@@ -88,21 +131,21 @@ class CSPTrackerdDataTable extends React.Component{
               row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}
 
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
-                row.drawing = <div className="drawing__column">{json.rows[i].drawing_filename}<button  class="update__btn btn-sm btn-info" onClick={() => this.updateDrawing(row.drawing_filename)}>UPDATE</button></div>
+                row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane}/></div>
               }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
-                row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane}/>
+                row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)}/>
               }else{
                 row.drawing = null
               }
 
-              if(row.ready_load === 1){
+              if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                 row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
-                  row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(row.tag)}>CANCEL</button>
+                  row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                 }else{
                   row.color = "#yyy"
-                  row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(row.tag)}>READY</button>
+                  row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                 }
                 
               }else{
@@ -118,21 +161,21 @@ class CSPTrackerdDataTable extends React.Component{
               row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}              
               
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
-                row.drawing = <div className="drawing__column">{json.rows[i].drawing_filename}<button  class="update__btn btn-sm btn-info" onClick={() => this.updateDrawing(row.drawing_filename)}>UPDATE</button></div>
+                row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane}/></div>
               }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
-                row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane}/>
+                row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)}/>
               }else{
                 row.drawing = null
               }
 
-              if(row.ready_load === 1){
+              if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                 row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
-                  row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(row.tag)}>CANCEL</button>
+                  row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                 }else{
                   row.color = "#yyy"
-                  row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(row.tag)}>READY</button>
+                  row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                 }
                 
               }else{
@@ -158,7 +201,6 @@ class CSPTrackerdDataTable extends React.Component{
 
     
     if(prevProps !== this.props){
-
       const options = {
           method: "GET",
           headers: {
@@ -167,7 +209,7 @@ class CSPTrackerdDataTable extends React.Component{
       }
 
 
-      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker", options)
+      await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker", options)
           .then(response => response.json())
           .then(async json => {
             var rows = []
@@ -177,21 +219,21 @@ class CSPTrackerdDataTable extends React.Component{
                 row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}
 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
-                  row.drawing = <div className="drawing__column">{json.rows[i].drawing_filename}<button  class="update__btn btn-sm btn-info" onClick={() => this.updateDrawing(row.drawing_filename)}>UPDATE</button></div>
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane}/></div>
                 }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
-                  row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane}/>
+                  row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)}/>
                 }else{
                   row.drawing = null
                 }
 
-                if(row.ready_load === 1){
+                if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                   row.ready_load = "READY"
                   if(row.ready_e3d === 1){
                     row.color = "#ggg"
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(row.tag)}>CANCEL</button>
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                   }else{
                     row.color = "#yyy"
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(row.tag)}>READY</button>
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                   }
                   
                 }else{
@@ -207,21 +249,22 @@ class CSPTrackerdDataTable extends React.Component{
                 row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}              
                 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
-                  row.drawing = <div className="drawing__column">{json.rows[i].drawing_filename}<button  class="update__btn btn-sm btn-info" onClick={() => this.updateDrawing(row.drawing_filename)}>UPDATE</button></div>
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane}/></div>
                 }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
-                  row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane}/>
-                }else{
-                  row.drawing = null
-                }
+                    row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)}/>
+                  }else{
+                    row.drawing = null
+                  }
+
 
                 if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                   row.ready_load = "READY"
                   if(row.ready_e3d === 1){
                     row.color = "#ggg"
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(row.tag)}>CANCEL</button>
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                   }else{
                     row.color = "#yyy"
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(row.tag)}>READY</button>
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                   }
                   
                 }else{
@@ -233,7 +276,7 @@ class CSPTrackerdDataTable extends React.Component{
                 rows.push(row)
               }
             }
-            this.setState({data: rows})
+            await this.setState({data: rows})
             
           })
           .catch(error => {

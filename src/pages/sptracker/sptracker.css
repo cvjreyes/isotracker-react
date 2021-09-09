@@ -59,3 +59,17 @@ input:checked + .slide:before {
 .ggg{
     background: #00c800;
 }
+
+.connected__panel{
+    height: 200px;
+    border: 1px solid red;
+    padding: 50px;
+    padding-top:70px;
+    margin: 20px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.connected__text{
+    font-size: 22px;
+}

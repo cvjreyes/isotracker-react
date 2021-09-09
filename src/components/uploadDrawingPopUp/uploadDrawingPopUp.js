@@ -40,8 +40,10 @@ export default class UploadDrawingPopUp extends Component {
     }
 
     async uploadReport(){
+        const extension = this.state.file.name.split('.').pop();
+        const fileName = this.props.description_plan_code + "." + extension
         const file  = new FormData(); 
-        file.append('file', this.state.file);
+        file.append('file', this.state.file, fileName);
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadDrawing", {
             method: 'POST',
             body: file,
@@ -52,7 +54,7 @@ export default class UploadDrawingPopUp extends Component {
                 }else{
                     const body = {
                         description_plan_code: this.props.description_plan_code,
-                        filename: this.state.file.name
+                        filename: fileName
                       }
                   
                       const options = {
@@ -65,7 +67,9 @@ export default class UploadDrawingPopUp extends Component {
                     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadDrawingDB", options)
                     .then(response => response.json())
                     .then(json=>{
-
+                        if(json.success){
+                            this.props.updateDataMethod()
+                        }
                     }) 
                     this.setState({
                         file: null,
