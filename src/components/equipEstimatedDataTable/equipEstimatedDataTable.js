@@ -166,7 +166,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Area</center>,
         dataIndex: 'area',
         key: 'area',
-        width: '5%',
         ...this.getColumnSearchProps('area'),
         sorter:{
           compare: (a, b) => a.area.localeCompare(b.area),
@@ -176,7 +175,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Type</center>,
         dataIndex: 'type',
         key: 'type',
-        width: '280px',
         ...this.getColumnSearchProps('type'),
         sorter:{
           compare: (a, b) => a.type.localeCompare(b.type),
@@ -186,7 +184,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <div className="dataTable__header__text">Qty</div>,
         dataIndex: 'quantity',
         key: 'quantity',
-        width: '5%',
         ...this.getColumnSearchProps('quantity'),
         sorter: {
           compare: (a, b) => a.quantity-b.quantity,
@@ -196,7 +193,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <div className="dataTable__header__text">Modelled</div>,
         dataIndex: 'modelled',
         key: 'modelled',
-        width: '5%',
         ...this.getColumnSearchProps('modelled'),
         sorter: {
           compare: (a, b) => a.modelled-b.modelled,

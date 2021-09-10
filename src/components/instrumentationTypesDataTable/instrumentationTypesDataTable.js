@@ -151,7 +151,6 @@ class InstrumentationTypesDataTable extends React.Component{
         title: <center className="dataTable__header__text">Code</center>,
         dataIndex: 'code',
         key: 'code',
-        width: '5%',
         ...this.getColumnSearchProps('code'),
         sorter:{
           compare: (a, b) => a.code.localeCompare(b.code),
@@ -161,7 +160,6 @@ class InstrumentationTypesDataTable extends React.Component{
         title: <center className="dataTable__header__text">Name</center>,
         dataIndex: 'name',
         key: 'name',
-        width: '30%',
         ...this.getColumnSearchProps('name'),
         sorter:{
           compare: (a, b) => a.name.localeCompare(b.name),
@@ -171,7 +169,6 @@ class InstrumentationTypesDataTable extends React.Component{
         title: <center className="dataTable__header__text">Weight</center>,
         dataIndex: 'weight',
         key: 'weight',
-        width: '10%',
         ...this.getColumnSearchProps('weight'),
         sorter:{
           compare: (a, b) => a.weight.localeCompare(b.weight),

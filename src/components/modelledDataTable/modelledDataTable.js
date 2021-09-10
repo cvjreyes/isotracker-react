@@ -149,7 +149,6 @@ class ModelledDataTable extends React.Component{
         title: <center className="dataTable__header__text">TAG</center>,
         dataIndex: 'tag',
         key: 'tag',
-        width: '40%',
         ...this.getColumnSearchProps('tag'),
         sorter:{
           compare: (a, b) => a.tag.localeCompare(b.tag),
@@ -159,7 +158,6 @@ class ModelledDataTable extends React.Component{
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
-        width: '40%',
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id.localeCompare(b.id),
@@ -169,7 +167,6 @@ class ModelledDataTable extends React.Component{
         title: <div className="dataTable__header__text">Type</div>,
         dataIndex: 'type',
         key: 'type',
-        width: '20%',
         ...this.getColumnSearchProps('type'),
         sorter: {
           compare: (a, b) => a.type.localeCompare(b.type),

@@ -148,3 +148,5 @@
     transition: all 250ms linear 4s;
     position: fixed
 }
+
+.ant-table table { font-size: 18px; }

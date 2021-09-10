@@ -150,7 +150,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Area</center>,
         dataIndex: 'area',
         key: 'area',
-        width: '5%',
         ...this.getColumnSearchProps('area'),
         sorter:{
           compare: (a, b) => a.area.localeCompare(b.area),
@@ -160,7 +159,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Tag</center>,
         dataIndex: 'tag',
         key: 'tag',
-        width: '5%',
         ...this.getColumnSearchProps('tag'),
         sorter:{
           compare: (a, b) => a.tag.localeCompare(b.tag),
@@ -170,7 +168,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Type</center>,
         dataIndex: 'type',
         key: 'type',
-        width: '10%',
         ...this.getColumnSearchProps('type'),
         sorter:{
           compare: (a, b) => a.type.localeCompare(b.type),
@@ -180,7 +177,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <div className="dataTable__header__text">Weight</div>,
         dataIndex: 'weight',
         key: 'weight',
-        width: '5%',
         ...this.getColumnSearchProps('weight'),
         sorter: {
           compare: (a, b) => a.weight-b.weight,
@@ -190,7 +186,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Status</center>,
         dataIndex: 'status',
         key: 'status',
-        width: '15%',
         ...this.getColumnSearchProps('status'),
         sorter:{
           compare: (a, b) => a.status.localeCompare(b.status),
@@ -200,7 +195,6 @@ class EquipEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Progress</center>,
         dataIndex: 'progress',
         key: 'progress',
-        width: '5%',
         ...this.getColumnSearchProps('progress'),
         sorter:{
           compare: (a, b) => a.progress.localeCompare(b.progress),

@@ -106,18 +106,18 @@ const IsoCtrlF = () => {
 
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) 
 
-    var dataTableHeight = "500px"
+    var dataTableHeight = "530px"
 
     if (pagination === 10){
-        dataTableHeight = "520px"
+        dataTableHeight = "530px"
     }if(pagination === 25){
-        dataTableHeight = "1050px"
+        dataTableHeight = "1200px"
     }if(pagination === 50){
-        dataTableHeight = "1970px"
+        dataTableHeight = "2300px"
     }if(pagination === 100){
-        dataTableHeight = "3860px"
+        dataTableHeight = "4490px"
     }if(pagination === 500){
-        dataTableHeight = "19000px"
+        dataTableHeight = "21960px"
     }
 
     //Componentes de la pagina que varian en funcion del estado

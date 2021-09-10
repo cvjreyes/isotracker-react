@@ -123,24 +123,18 @@ const Instrumentation = () => {
         }
     });
 
-    var dataTableHeight = "500px"
-    let navBtnsMargin = "600px"
+    var dataTableHeight = "540px"
 
     if (pagination === 10){
-        dataTableHeight = "500px"
-        navBtnsMargin = "600px"
+        dataTableHeight = "540px"
     }if(pagination === 25){
-        dataTableHeight = "1100px"
-        navBtnsMargin = "1200px"
+        dataTableHeight = "1200px"
     }if(pagination === 50){
-        dataTableHeight = "2080px"
-        navBtnsMargin = "2150px"
+        dataTableHeight = "2300px"
     }if(pagination === 100){
-        dataTableHeight = "4040px"
-        navBtnsMargin = "4000px"
+        dataTableHeight = "4490px"
     }if(pagination === 500){
-        dataTableHeight = "19000px"        
-        navBtnsMargin = "19000px"
+        dataTableHeight = "21960px"
     }
 
 
@@ -170,13 +164,11 @@ const Instrumentation = () => {
     }else if(currentTab === "Progress"){
         table = <ProgressPlotInstrumentation/>
         pageSelector = null
-        navBtnsMargin = "600px"
     }else if(currentTab === "Types"){
         table = <InstrumentationTypesDataTable pagination = {pagination}/>
     }else if(currentTab === "Key parameters"){
         table = <InstExcel success={success.bind(this)}/>
         pageSelector = null
-        navBtnsMargin = "700px"
     }else if(currentTab === "Edit"){
         table = <InstExcelEdit success={success.bind(this)}/>
         pageSelector = null

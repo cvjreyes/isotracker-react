@@ -157,7 +157,6 @@ class PipingEstimatedDataTable extends React.Component{
         title: <center className="dataTable__header__text">Area</center>,
         dataIndex: 'area',
         key: 'area',
-        width: '15%',
         ...this.getColumnSearchProps('area'),
         sorter:{
           compare: (a, b) => a.area.localeCompare(b.area),
@@ -176,7 +175,6 @@ class PipingEstimatedDataTable extends React.Component{
         title: <div className="dataTable__header__text">Qty</div>,
         dataIndex: 'quantity',
         key: 'quantity',
-        width: '15%',
         ...this.getColumnSearchProps('quantity'),
         sorter: {
           compare: (a, b) => a.quantity-b.quantity,
