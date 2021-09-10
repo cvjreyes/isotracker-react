@@ -54,9 +54,7 @@ const CSPTracker = () => {
     const [viewData, setViewData] = useState()
     const [editData, setEditData] = useState()
     const [descriptionPlaneData, setDescriptionPlaneData] = useState()
-    const [p1boreData, setP1boreData] = useState()
-    const [p2boreData, setP2boreData] = useState()
-    const [p3boreData, setP3boreData] = useState()
+    const [diametersData, setDiametersData] = useState()
     const [ratingData, setRatingData] = useState()
     const [specData, setSpecData] = useState()
     const [endPreparationData, setEndPrepartaionData] = useState()
@@ -70,6 +68,18 @@ const CSPTracker = () => {
     const history = useHistory()
 
     var currentUser = secureStorage.getItem('user')
+
+    let p1bore, p2bore, p3bore = ""
+
+    if(process.env.REACT_APP_APP_MMDN === "0"){
+        p1bore = "p1diameter_nps"
+        p2bore = "p2diameter_nps"
+        p3bore = "p3diameter_nps"
+    }else{
+        p1bore = "p1diameter_dn"
+        p2bore = "p2diameter_dn"
+        p3bore = "p3diameter_dn"
+    }
 
     useEffect(()=>{
         const body = {
@@ -106,7 +116,7 @@ const CSPTracker = () => {
         const body = {
             user: currentUser,
         }
-        const options = {
+        let options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -118,7 +128,38 @@ const CSPTracker = () => {
             .then(async json => {
 
             })
-    },[])
+
+    },[updateData])
+
+    useEffect(async()=>{
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker", options)
+            .then(response => response.json())
+            .then(async json => {
+                console.log(json.rows)
+                await setEditData(json.rows)
+            })
+
+        if(currentTab === "View"){  
+    
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getListsData", options)
+            .then(response => response.json())
+            .then(async json => {
+                await setDescriptionPlaneData(json.descriptionPlaneData)
+                await setDiametersData(json.diametersData)
+                await setRatingData(json.ratingData)
+                await setSpecData(json.specData)
+                await setEndPrepartaionData(json.endPreparationData)
+                await setBoltTypesData(json.boltTypesData)
+            })
+        }    
+    }, [currentTab, updateData])
 
     function success(){
         setSuccessAlert(true)
@@ -128,6 +169,7 @@ const CSPTracker = () => {
     }
     
     function handleOnIdle(){
+        saveChanges()
         const body = {
             user: currentUser,
         }
@@ -173,6 +215,7 @@ const CSPTracker = () => {
             })
             
         }else{
+            saveChanges()
             const body = {
                 user: currentUser,
             }
@@ -197,12 +240,27 @@ const CSPTracker = () => {
 
     async function addRow(){
         let rows = editData
-        rows.push({"tag": "", "description": "", "description_plane": "","description_iso": "", "ident": "", "p1bore": "", "p2bore": "", "p3bore": "", "rating": "", "p1bore": "", "spec": "", "face_to_face": "", "end_preparation": "", "bolts": "", "bolt_type": ""})
-        setEditData(rows)
+        rows.push({tag:"", description: "", description_plan_code: "", drawing_filename: "", description_iso: "", ident: "", p1diameter_dn: "", p1diameter_nps: "", p2diameter_dn: "", p2diameter_nps: "", p3diameter_dn: "", p3diameter_nps: "", rating: "", spec: "", face_to_face: "",end_preparation: "", description_drawing: "", bolts: "", bolt_type: "", ready_load: "", ready_e3d: "", comments: ""})
+        await setEditData(rows)
+        await setUpdateData(!updateData)
       }
 
     async function saveChanges(){
-        console.log(editData)
+        const body = {
+            rows: editData,
+          }
+          const options = {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify(body)
+          }
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitCSP", options)
+          .then(response => response.json())
+          .then(json =>{
+      
+          })
     }
 
     async function updateDataMethod(){
@@ -259,8 +317,10 @@ const CSPTracker = () => {
             settings={settings} 
             manualColumnResize={true}
             manualRowResize={true}
-            columns= {[{ data: "tag", type:'text'}, { data: "description", type:'text'}, {data: "description_plane", type:"dropdown", strict:"false", source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "Ident", type:"text"}, {data: "p1bore", type:"dropdown", strict:"true", source: p1boreData}, {data: "p2bore", type:"dropdown", strict:"true", source: p2boreData}, {data: "p3bore", type:"dropdown", strict:"true", source: p3boreData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: "face_to_face", type:"numeric"},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData},{data: "bolts", type:"dropdown", strict:"true", source:["yes", "no"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}]}
+            columns= {[{ data: "tag", type:'text'}, { data: "description", type:'text'}, {data: "description_drawing", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: "face_to_face", type:"numeric"},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData},{data: "bolts", type:"dropdown", strict:"true", source:["yes", "no"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"comments", type:"text"}]}
             />
+
+            
             
             pageSelector = null
             dataTableHeight= "700px"
@@ -271,13 +331,12 @@ const CSPTracker = () => {
             table = <div className="connected__panel"><p className="connected__text">The user {editingUser} is already editing!</p></div>
         }    
 
-    }
-
-
+    }    
 
     return(
         
         <body>
+            {updateData}
             <IdleTimer
                 timeout={1000 * 60 * 15}
                 onIdle={handleOnIdle}
