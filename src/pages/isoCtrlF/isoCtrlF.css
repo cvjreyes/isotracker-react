@@ -148,3 +148,9 @@
     transition: all 250ms linear 4s;
     position: fixed
 }
+
+.alert-error-hidden{
+    opacity: 0;
+    transition: all 250ms linear 5s;
+    position: fixed
+}

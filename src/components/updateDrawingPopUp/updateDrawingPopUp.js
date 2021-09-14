@@ -50,8 +50,10 @@ export default class UpdateDrawingPopUp extends Component {
             })
             .then(response =>{
                 if (response.status !== 200){
-                    console.log("ya existe")
+                    this.props.drawingUploadError()
                 }else{
+                    this.props.updateDrawingSuccess()
+
                     this.setState({
                         file: null,
                         error: false

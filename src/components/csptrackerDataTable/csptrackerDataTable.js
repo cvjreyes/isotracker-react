@@ -67,6 +67,18 @@ class CSPTrackerdDataTable extends React.Component{
     this.props.updateDataMethod()
   }
 
+  async uploadDrawingSuccess(){
+    this.props.uploadDrawingSuccess()
+  }
+
+  async updateDrawingSuccess(){
+    this.props.updateDrawingSuccess()
+  }
+
+  async drawingUploadError(){
+    this.props.drawingUploadError()
+  }
+
   async getDrawing(fileName){
     const options = {
       method: "GET",
@@ -128,12 +140,20 @@ class CSPTrackerdDataTable extends React.Component{
           var row = null
           if(process.env.REACT_APP_MMDN === "0"){
             for(let i = 0; i < json.rows.length; i++){
-              row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}
-
+              row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}
+              
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
-                row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane}/></div>
+                if(this.props.currentRole === "Materials"){
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
+                }else{
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link></div>
+                }
               }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
-                row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)}/>
+                if(this.props.currentRole === "Materials"){
+                  row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)} uploadDrawingSuccess={this.uploadDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/>
+                }else{
+                  row.drawing = null
+                }
               }else{
                 row.drawing = null
               }
@@ -142,28 +162,48 @@ class CSPTrackerdDataTable extends React.Component{
                 row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
-                  row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                  if(this.props.currentRole === "3D Admin"){
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                  }else{
+                    row.ready_e3d = null
+                  }
                 }else{
                   row.color = "#yyy"
-                  row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                  if(this.props.currentRole === "3D Admin"){
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                  }else{
+                    row.ready_e3d = null
+                  }
                 }
                 
               }else{
                 row.ready_load = "NOT READY"
                 row.color = "white"
-                row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                if(this.props.currentRole === "3D Admin"){
+                  row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                }else{
+                  row.ready_e3d = null
+                }
               }
 
               rows.push(row)
             }
           }else{
             for(let i = 0; i < json.rows.length; i++){
-              row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}              
+              row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}              
               
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
-                row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane}/></div>
+                if(this.props.currentRole === "Materials"){
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
+                }else{
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link></div>
+                }
               }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
-                row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)}/>
+                if(this.props.currentRole === "Materials"){
+                  row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)} uploadDrawingSuccess={this.uploadDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/>
+                }else{
+                  row.drawing = null
+                }
               }else{
                 row.drawing = null
               }
@@ -172,16 +212,28 @@ class CSPTrackerdDataTable extends React.Component{
                 row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
-                  row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                  if(this.props.currentRole === "3D Admin"){
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                  }else{
+                    row.ready_e3d = null
+                  }
                 }else{
                   row.color = "#yyy"
-                  row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                  if(this.props.currentRole === "3D Admin"){
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                  }else{
+                    row.ready_e3d = null
+                  }
                 }
                 
               }else{
                 row.ready_load = "NOT READY"
                 row.color = "white"
-                row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                if(this.props.currentRole === "3D Admin"){
+                  row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                }else{
+                  row.ready_e3d = null
+                }
               }
 
               rows.push(row)
@@ -216,12 +268,20 @@ class CSPTrackerdDataTable extends React.Component{
             var row = null
             if(process.env.REACT_APP_MMDN === "0"){
               for(let i = 0; i < json.rows.length; i++){
-                row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}
+                row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}
 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
-                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane}/></div>
+                  if(this.props.currentRole === "Materials"){
+                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
+                  }else{
+                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link></div>
+                  }
                 }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
-                  row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)}/>
+                  if(this.props.currentRole === "Materials"){
+                    row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)} uploadDrawingSuccess={this.uploadDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/>
+                  }else{
+                    row.drawing = null
+                  }
                 }else{
                   row.drawing = null
                 }
@@ -230,48 +290,81 @@ class CSPTrackerdDataTable extends React.Component{
                   row.ready_load = "READY"
                   if(row.ready_e3d === 1){
                     row.color = "#ggg"
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                    if(this.props.currentRole === "3D Admin"){
+                      row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                    }else{
+                      row.ready_e3d = null
+                    }
                   }else{
                     row.color = "#yyy"
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                    if(this.props.currentRole === "3D Admin"){
+                      row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                    }else{
+                      row.ready_e3d = null
+                    }
                   }
                   
                 }else{
                   row.ready_load = "NOT READY"
                   row.color = "white"
-                  row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                  if(this.props.currentRole === "3D Admin"){
+                    row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                  }else{
+                    row.ready_e3d = null
+                  }
                 }
 
                 rows.push(row)
               }
             }else{
               for(let i = 0; i < json.rows.length; i++){
-                row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d}              
+                row = {key:i, tag: json.rows[i].tag, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, face_to_face: json.rows[i].face_to_face, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}              
+                
                 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
-                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane}/></div>
+                  if(this.props.currentRole === "Materials"){
+                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
+                  }else{
+                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link></div>
+                  }
                 }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
-                    row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)}/>
+                  if(this.props.currentRole === "Materials"){
+                    row.drawing = <UploadDrawingPopUp description_plan_code={row.description_plane} updateDataMethod = {this.updateData.bind(this)} uploadDrawingSuccess={this.uploadDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/>
                   }else{
                     row.drawing = null
                   }
-
-
-                if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
-                  row.ready_load = "READY"
-                  if(row.ready_e3d === 1){
-                    row.color = "#ggg"
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
-                  }else{
-                    row.color = "#yyy"
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
-                  }
-                  
                 }else{
-                  row.ready_load = "NOT READY"
-                  row.color = "white"
-                  row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                  row.drawing = null
                 }
+
+
+                  if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
+                    row.ready_load = "READY"
+                    if(row.ready_e3d === 1){
+                      row.color = "#ggg"
+                      if(this.props.currentRole === "3D Admin"){
+                        row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                      }else{
+                        row.ready_e3d = null
+                      }
+                    }else{
+                      row.color = "#yyy"
+                      if(this.props.currentRole === "3D Admin"){
+                        row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                      }else{
+                        row.ready_e3d = null
+                      }
+                    }
+                    
+                  }else{
+                    row.ready_load = "NOT READY"
+                    row.color = "white"
+                    if(this.props.currentRole === "3D Admin"){
+                      row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
+                    }else{
+                      row.ready_e3d = null
+                    }
+                  }
 
                 rows.push(row)
               }
@@ -484,11 +577,11 @@ class CSPTrackerdDataTable extends React.Component{
       },
       {
         title: <div className="dataTable__header__text">FACE-TO-FACE</div>,
-        dataIndex: 'spec',
-        key: 'spec',
-        ...this.getColumnSearchProps('spec'),
+        dataIndex: 'face_to_face',
+        key: 'face_to_face',
+        ...this.getColumnSearchProps('face_to_face'),
         sorter: {
-            compare: (a, b) => a.spec.localeCompare(b.spec),
+            compare: (a, b) => a.face_to_face - b.face_to_face,
         },
       },
       {

@@ -11,6 +11,7 @@ import CSPTrackerdDataTable from "../../components/csptrackerDataTable/csptracke
 import HotTable from "@handsontable/react"
 
 import SaveIcon from "../../assets/images/FolderOpen.png"
+import AlertF from "../../components/alert/alert"
 
 const CSPTracker = () => {
 
@@ -49,7 +50,14 @@ const CSPTracker = () => {
     const [currentTab, setCurrentTab] = useState("View")
     const [roles, setRoles] = useState();
     const [pagination, setPagination] = useState(10)
+
     const [successAlert, setSuccessAlert] = useState(false);
+    const [uploadDrawingSuccess, setUploadDrawingSuccess] = useState(false);
+    const [updateDrawingSuccess, setUpdateDrawingSuccess] = useState(false);
+    const [drawingError, setDrawingError] = useState(false);
+    const [noTagError, setNoTagError] = useState(false);
+    const [invalidFieldError, setInvalidFieldError] = useState(false);
+    const [errorIndex, setErrorIndex] = useState(null);
 
     const [viewData, setViewData] = useState()
     const [editData, setEditData] = useState()
@@ -71,7 +79,7 @@ const CSPTracker = () => {
 
     let p1bore, p2bore, p3bore = ""
 
-    if(process.env.REACT_APP_APP_MMDN === "0"){
+    if(process.env.REACT_APP_MMDN === "0"){
         p1bore = "p1diameter_nps"
         p2bore = "p2diameter_nps"
         p3bore = "p3diameter_nps"
@@ -142,7 +150,6 @@ const CSPTracker = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker", options)
             .then(response => response.json())
             .then(async json => {
-                console.log(json.rows)
                 await setEditData(json.rows)
             })
 
@@ -159,15 +166,20 @@ const CSPTracker = () => {
                 await setBoltTypesData(json.boltTypesData)
             })
         }    
-    }, [currentTab, updateData])
+    }, [currentTab])
 
-    function success(){
-        setSuccessAlert(true)
-        setTimeout(function () {
-            setSuccessAlert(false)
-        }, 1000);
+    function uploadSuccess(){
+        setUploadDrawingSuccess(true)
     }
-    
+
+    function updateSuccess(){
+        setUpdateDrawingSuccess(true)
+    }
+
+    function drawingUploadError(){
+        setDrawingError(true)
+    }
+
     function handleOnIdle(){
         saveChanges()
         const body = {
@@ -205,7 +217,6 @@ const CSPTracker = () => {
             .then(response => response.json())
             .then(async json => {
                 if(json.user){
-                    console.log(json)
                     await setBusy(true)
                     await setEditingUser(json.user)
                 }else{
@@ -215,7 +226,6 @@ const CSPTracker = () => {
             })
             
         }else{
-            saveChanges()
             const body = {
                 user: currentUser,
             }
@@ -240,27 +250,78 @@ const CSPTracker = () => {
 
     async function addRow(){
         let rows = editData
-        rows.push({tag:"", description: "", description_plan_code: "", drawing_filename: "", description_iso: "", ident: "", p1diameter_dn: "", p1diameter_nps: "", p2diameter_dn: "", p2diameter_nps: "", p3diameter_dn: "", p3diameter_nps: "", rating: "", spec: "", face_to_face: "",end_preparation: "", description_drawing: "", bolts: "", bolt_type: "", ready_load: "", ready_e3d: "", comments: ""})
+        //rows.push({tag:null, description: null, description_plan_code: null, drawing_filename: null, description_iso: null, ident: null, p1diameter_dn: null, p1diameter_nps: null, p2diameter_dn: null, p2diameter_nps: null, p3diameter_dn: null, p3diameter_nps: null, rating: null, spec: null, face_to_face: null, end_preparation: null, description_drawing: null, bolts: null, bolt_type: null, ready_load: null, ready_e3d: null, comments: null})
+        rows.push({tag:"", description: "", description_plan_code: "", drawing_filename: "", description_iso: "", ident: "", p1diameter_dn: "", p1diameter_nps: "", p2diameter_dn: "", p2diameter_nps: "", p3diameter_dn: "", p3diameter_nps: "", rating: "", spec: "", face_to_face: "", end_preparation: "", description_drawing: "", bolts: "", bolt_type: "", ready_load: "", ready_e3d: "", comments: ""})
         await setEditData(rows)
         await setUpdateData(!updateData)
       }
 
     async function saveChanges(){
+
+        let blank = false
+
+        for(let i = 0; i < editData.length; i++){
+            if(editData[i].tag === null || editData[i].tag === ""){
+                blank = true
+                let index = i+1 
+                await setErrorIndex("Invalid or blank tag at entry " + index +"!")
+            }
+        }
+
+        if(blank){
+            await setNoTagError(true)
+        }
+
         const body = {
             rows: editData,
-          }
-          const options = {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json"
-              },
-              body: JSON.stringify(body)
-          }
-          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitCSP", options)
-          .then(response => response.json())
-          .then(json =>{
-      
-          })
+        }
+        let options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/tags", options)
+        .then(response => response.json())
+        .then(async json =>{
+            let unique = true
+            if(json.none){
+
+            }else{
+                let tags = []
+                for(let i = 0; i < editData.length; i++){
+                    if(tags.indexOf(editData[i].tag) > -1){
+                        unique = false
+                        let index =  i+1 
+                        await setErrorIndex("Invalid or blank tag at entry " + index +"!")
+                    
+                    }else{
+                        tags.push(editData[i].tag)
+                    }
+                }
+            }
+            
+            if(!unique){
+                await setNoTagError(true)
+            }
+            options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitCSP", options)
+            .then(response => response.json())
+            .then(async json =>{
+                if(json.success){
+                    await setSuccessAlert(true)
+                }
+            })
+                                
+        })                
+             
     }
 
     async function updateDataMethod(){
@@ -271,12 +332,12 @@ const CSPTracker = () => {
 
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
 
-    var dataTableHeight = "500px"
+    var dataTableHeight = "510px"
 
     if (pagination === 10){
-        dataTableHeight = "500px"
+        dataTableHeight = "510px"
     }if(pagination === 25){
-        dataTableHeight = "1100px"
+        dataTableHeight = "1070px"
     }if(pagination === 50){
         dataTableHeight = "2080px"
     }if(pagination === 100){
@@ -286,7 +347,7 @@ const CSPTracker = () => {
     }
 
     let editBtn, addRowBtn, saveBtn, upload = null
-    let table = <CSPTrackerdDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData}/>
+    let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
 
     if(currentRole === "Materials"){
         editBtn =  <label class="switchBtn">
@@ -297,8 +358,8 @@ const CSPTracker = () => {
 
 
     if(currentTab === "View"){
-        table = <CSPTrackerdDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData}/>
-        if(currentRole === "Materials" || currentRole === "Speciality Lead"){
+        table = <CSPTrackerdDataTable pagination={pagination} currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
+        if(currentRole === "Materials"){
             pageSelector = <div style={{marginLeft:"87%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
         }else{
             pageSelector = <div style={{marginLeft:"94%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
@@ -310,14 +371,14 @@ const CSPTracker = () => {
         if(!busy){
             table = <HotTable
             data={editData}
-            colHeaders = {["TAG", "DESCRIPTION", "DRAWING DESCRIPION", "DESCRIPTION ISO", "IDENT", "P1BORE", "P2BORE", "P3BORE", "RATING", "SPEC", "FACE TO FACE", "END PREPARATION", "BOLTS", "TYPE OF BOLT"]}
+            colHeaders = {["TAG", "DESCRIPTION", "DRAWING DESCRIPION", "DESCRIPTION ISO", "IDENT", "P1BORE", "P2BORE", "P3BORE", "RATING", "SPEC", "FACE TO FACE", "END PREPARATION", "BOLTS", "TYPE OF BOLT", "COMMENTS"]}
             rowHeaders={true}
             width="2200"
             height="635"
             settings={settings} 
             manualColumnResize={true}
             manualRowResize={true}
-            columns= {[{ data: "tag", type:'text'}, { data: "description", type:'text'}, {data: "description_drawing", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: "face_to_face", type:"numeric"},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData},{data: "bolts", type:"dropdown", strict:"true", source:["yes", "no"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"comments", type:"text"}]}
+            columns= {[{ data: "tag", type:'text'}, { data: "description", type:'text'}, {data: "description_plan_code", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: "face_to_face", type:"numeric"},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData},{data: "bolts", type:"dropdown", strict:"true", source:["YES", "NO"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"comments", type:"text"}]}
             />
 
             
@@ -343,6 +404,36 @@ const CSPTracker = () => {
                 debounce={250}
             />
             <NavBar onChange={value => setCurrentTab(currentTab)}/>
+            <div
+            className={`alert alert-success ${successAlert ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setSuccessAlert(false)}
+            >
+                <AlertF type="success" text="Changes saved!" margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${uploadDrawingSuccess ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setUploadDrawingSuccess(false)}
+            >
+                <AlertF type="success" text="Drawing uploaded successfully!" margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${updateDrawingSuccess ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setUpdateDrawingSuccess(false)}
+            >
+                <AlertF type="success" text="Drawing updated successfully!" margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${noTagError ? 'alert-shown' : 'alert-error-hidden'}`}
+            onTransitionEnd={() => setNoTagError(false)}
+            >
+                <AlertF type="waring" text={errorIndex} margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${invalidFieldError ? 'alert-shown' : 'alert-error-hidden'}`}
+            onTransitionEnd={() => setInvalidFieldError(false)}
+            >
+                <AlertF type="error" subtext="At least one of the entries had an invalid field!" margin="0px"/>
+            </div>
             <div className="isotracker__row">
                   <div className="isotracker__column">
                       <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>

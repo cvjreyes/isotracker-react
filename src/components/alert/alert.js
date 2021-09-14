@@ -95,6 +95,86 @@ export default class Alert extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState){
+
+        if(prevProps !== this.props){
+            let alertComponent = null
+            if(this.state.type === "success"){
+                if(this.state.change){
+                    alertComponent = <div className="alert__success">
+                                        
+                    <img src={SuccessIcon} className="alert__icon"></img>
+                    <div className="text__alert__container">
+                        <text className="alert__title">Excellent!</text>
+                        <text className="alert__text" style={{marginLeft:"0px"}}>{this.props.text}</text>
+                    </div>
+                
+                </div>
+                }else{
+                    alertComponent = <div className="alert__success">
+                                        
+                                        <img src={SuccessIcon} className="alert__icon"></img>
+                                        <div className="text__alert__container">
+                                            <text className="alert__title">Excellent!</text>
+                                            <text className="alert__text" style={{marginLeft:this.props.margin}}>{this.props.text}</text>
+                                        </div>
+                                    
+                                    </div>
+                }
+                this.setState({alert: alertComponent})
+            }else if(this.state.type === "error"){
+                if(this.state.change){
+                    alertComponent = <div className="alert__error">
+                                        
+                    <img src={ErrorIcon} className="alert__icon"></img>
+                    <div className="text__alert__container">
+                        <text className="alert__title">Oops!</text>
+                        <text className="alert__error__text" style={{marginLeft:"0px"}}>Something has failed:</text>
+                        <text className="alert__subtext" style={{marginLeft:this.props.margin}}>{this.props.subtext}</text>
+                    </div>
+                
+                </div>
+                }else{
+                    alertComponent = <div className="alert__error">
+                                        
+                                        <img src={ErrorIcon} className="alert__icon"></img>
+                                        <div className="text__alert__container">
+                                            <text className="alert__title">Oops!</text>
+                                            <text className="alert__error__text">Something has failed:</text>
+                                            <text className="alert__subtext" style={{marginLeft:this.props.margin}}>{this.props.subtext}</text>
+                                        </div>
+                                    
+                                    </div>
+                }
+                this.setState({alert: alertComponent})
+            }else{
+                if(this.state.popUp){
+                    alertComponent = <div className="alert__warning" style={{marginTop:"-200px"}}>
+                                        
+                                        <img src={WarningIcon} className="alert__icon"></img>
+                                        <div className="text__alert__container">
+                                            <text className="alert__title">Warning</text>
+                                            <text className="alert__text" >{this.props.text}</text>
+                                        </div>
+                                    
+                                    </div>
+                }else{
+                    alertComponent = <div className="alert__warning">
+                                        
+                                        <img src={WarningIcon} className="alert__icon"></img>
+                                        <div className="text__alert__container">
+                                            <text className="alert__title">Warning</text>
+                                            <text className="alert__text" style={{marginLeft:this.props.margin}}>{this.props.text}</text>
+                                        </div>
+                                    
+                                    </div>
+                }
+                this.setState({alert: alertComponent})  
+
+            }
+        }   
+    }
+
     
 
     render() {

@@ -53,11 +53,12 @@ input:checked + .slide:before {
 }
 
 .yyy{
-    background: #ffff9d;
+    background: #FFCA42;
+    ;
   }
 
 .ggg{
-    background: #00c800;
+    background: #7BD36D;
 }
 
 .connected__panel{

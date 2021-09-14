@@ -69,6 +69,9 @@ export default class UploadDrawingPopUp extends Component {
                     .then(json=>{
                         if(json.success){
                             this.props.updateDataMethod()
+                            this.props.uploadDrawingSuccess()
+                        }else{
+                            this.props.drawingUploadError()
                         }
                     }) 
                     this.setState({
