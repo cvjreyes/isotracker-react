@@ -158,19 +158,20 @@ const ActionBtns = props =>{
             actionBtn11 = null
         }
 
-        if(props.currentTab === "IsoControl"){
-            actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportModelled()}>Export</button>
-            actionBtn6 = null
-            actionBtn7 = null
-            actionBtn10 = null
-            actionBtn11 = null
-        }else if(props.currentTab === "IsoControlNotMod"){
-            actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportNotModelled()}>Export</button>
-            actionBtn6 = null
-            actionBtn7 = null
-            actionBtn10 = null
-            actionBtn11 = null
-        }
+        
+    }
+    if(props.currentTab === "IsoControl"){
+        actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportModelled()}>Export</button>
+        actionBtn6 = null
+        actionBtn7 = null
+        actionBtn10 = null
+        actionBtn11 = null
+    }else if(props.currentTab === "IsoControlNotMod"){
+        actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportNotModelled()}>Export</button>
+        actionBtn6 = null
+        actionBtn7 = null
+        actionBtn10 = null
+        actionBtn11 = null
     }
 
     return(
