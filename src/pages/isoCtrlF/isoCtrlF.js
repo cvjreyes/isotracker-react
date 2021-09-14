@@ -46,6 +46,7 @@ import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 import AlertF from "../../components/alert/alert"
 import IsoControlModelledDataTable from "../../components/isoControlModelledDataTable/isoControlModelledDataTable"
 import IsoControlNotModelledDataTable from "../../components/isoControlNotModelledDataTable/isoControlNotModelledDataTable"
+import IsoControlFullDataTable from "../../components/isoControlFullDataTable/isoControlFullDataTable"
 
 const IsoCtrlF = () => {
    
@@ -1733,11 +1734,11 @@ const IsoCtrlF = () => {
 
     let isoControlBtn = null
     let isoControlNotModBtn = null
+    let isoControlFullBtn = null
     let isocontrolWeightsComponent = null
-    let isoControlTitle = null
 
     if(process.env.REACT_APP_PROGRESS === "1"){
-        isoControlTitle = <p className="isotracker__table__trays__group">IsoControl</p>
+        
         if(currentTab === "IsoControl"){
             secureStorage.setItem("tab", "IsoControl")
             isoControlBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
@@ -1752,6 +1753,14 @@ const IsoCtrlF = () => {
             tableContent = <IsoControlNotModelledDataTable pagination={pagination}/>
         }else{
             isoControlNotModBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlNotMod")}}>Not modelled</button>
+            
+        }
+        if(currentTab === "IsoControlFull"){
+            secureStorage.setItem("tab", "IsoControlFull")
+            isoControlFullBtn = <button type="button" className="nav__button__title text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
+            tableContent = <IsoControlFullDataTable pagination={pagination}/>
+        }else{
+            isoControlFullBtn = <button type="button" className="nav__button__title text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>IsoControl</button>
             
         }
         
@@ -1887,7 +1896,7 @@ const IsoCtrlF = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
-                                  {isoControlTitle}
+                                  {isoControlFullBtn}
                                   {isoControlBtn}
                                   {isoControlNotModBtn}
                                   <p className="isotracker__table__trays__group">Home</p>
