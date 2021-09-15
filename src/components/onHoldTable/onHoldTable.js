@@ -20,40 +20,24 @@ class OnHoldTable extends React.Component{
     acronyms : null
   };
 
-  
 
   componentDidMount(){
 
-    
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/acronyms")
-      .then(response => response.json())
-      .then(json => {
-        let dict = {}
-
-        for(let i = 0; i < json.length; i++){
-          dict[json[i].name] = json[i].code
-        }
-        this.setState({
-          acronyms: dict
-        })
-      })
-    
-    const body ={
-      currentTab : this.props.currentTab
-    }
     const options = {
-      method: "POST",
+      method: "GET",
       headers: {
           "Content-Type": "application/json"
       },
-      body: JSON.stringify(body)
   }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/holds", options)
         .then(response => response.json())
         .then(json => {
                 var rows = []
                 for(let i = 0; i < json.rows.length; i++){
-                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"inline-block"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments}/></div>}
+                    var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
+                    var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
+
+                    var row = {key:i, id: json.rows[i].isoid , holds: <CommentPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/>}
                  
                     rows.push(row)                
                 }
@@ -64,44 +48,7 @@ class OnHoldTable extends React.Component{
         )
         .catch(error => {
             console.log(error);
-        })
-
-        
-  }
-
-  componentDidUpdate(prevProps, prevState){
-
-    if(prevProps !== this.props){
-      const body ={
-        currentTab : this.props.currentTab
-      }
-      const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    }
-      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
-          .then(response => response.json())
-          .then(json => {
-                  var rows = []
-                  
-                  for(let i = 0; i < json.rows.length; i++){
-                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"inline-block"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename}/></div>}
-                   
-                      rows.push(row)                
-                  }
-                  this.setState({
-                    data : rows,
-                  });
-              }
-          )
-          .catch(error => {
-              console.log(error);
-          })
-      }
-
+        })  
   }
 
   getMaster(fileName){
@@ -268,118 +215,26 @@ class OnHoldTable extends React.Component{
     }  
     
     
-    let columns = [
-      {
-        title: <center className="dataTable__header__text">ISO ID</center>,
-        dataIndex: 'id',
-        key: 'id',
-        width: '23%',
-        ...this.getColumnSearchProps('id'),
-        sorter:{
-          compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Type</div>,
-        dataIndex: 'type',
-        key: 'type',
-        ...this.getColumnSearchProps('type'),
-        sorter: {
-          compare: (a, b) => { return a.type.localeCompare(b.type)},
-        },
-      },
-      {
-        title: <center className="dataTable__header__text">Revision</center>,
-        dataIndex: 'revision',
-        key: 'revision',
-        width: '8%',
-        ...this.getColumnSearchProps('revision'),
-        sorter:{
-          compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Date</div>,
-        dataIndex: 'date',
-        key: 'date',
-        width: '20%',
-        ...this.getColumnSearchProps('date'),
-        sorter: {
-          compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">From</div>,
-        dataIndex: 'from',
-        key: 'from',
-        ...this.getColumnSearchProps('from'),
-        sorter: {
-          compare: (a, b) => { return a.from.localeCompare(b.from)},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">User</div>,
-        dataIndex: 'user',
-        key: 'user',
-        ...this.getColumnSearchProps('user'),
-        sorter: {
-          compare: (a, b) => { return a.user.localeCompare(b.user)},
-        },
-      },
-    ];
-
-    if(process.env.REACT_APP_PROGRESS === "0"){
-      columns = [
+    const columns = [
         {
           title: <center className="dataTable__header__text">ISO ID</center>,
           dataIndex: 'id',
           key: 'id',
-          width: '23%',
           ...this.getColumnSearchProps('id'),
           sorter:{
             compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
           },
         },
         {
-          title: <center className="dataTable__header__text">Revision</center>,
-          dataIndex: 'revision',
-          key: 'revision',
-          width: '8%',
-          ...this.getColumnSearchProps('revision'),
-          sorter:{
-            compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
-          },
+          title: <center className="dataTable__header__text">HOLDS</center>,
+          dataIndex: 'holds',
+          key: 'holds',
+          ...this.getColumnSearchProps('holds'),
+
         },
-        {
-          title: <div className="dataTable__header__text">Date</div>,
-          dataIndex: 'date',
-          key: 'date',
-          width: '20%',
-          ...this.getColumnSearchProps('date'),
-          sorter: {
-            compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
-          },
-        },
-        {
-          title: <div className="dataTable__header__text">From</div>,
-          dataIndex: 'from',
-          key: 'from',
-          ...this.getColumnSearchProps('from'),
-          sorter: {
-            compare: (a, b) => { return a.from.localeCompare(b.from)},
-          },
-        },
-        {
-          title: <div className="dataTable__header__text">User</div>,
-          dataIndex: 'user',
-          key: 'user',
-          ...this.getColumnSearchProps('user'),
-          sorter: {
-            compare: (a, b) => { return a.user.localeCompare(b.user)},
-          },
-        },
+        
       ];
-    }
+    
 
     var totalElements = null
     if (this.state.data.length === 0){
