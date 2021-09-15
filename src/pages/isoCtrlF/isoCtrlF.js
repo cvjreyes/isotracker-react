@@ -47,6 +47,7 @@ import AlertF from "../../components/alert/alert"
 import IsoControlModelledDataTable from "../../components/isoControlModelledDataTable/isoControlModelledDataTable"
 import IsoControlNotModelledDataTable from "../../components/isoControlNotModelledDataTable/isoControlNotModelledDataTable"
 import IsoControlFullDataTable from "../../components/isoControlFullDataTable/isoControlFullDataTable"
+import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLineIdDataTable/isoControlGroupLineIdDataTable"
 
 const IsoCtrlF = () => {
    
@@ -1736,6 +1737,8 @@ const IsoCtrlF = () => {
     let isoControlNotModBtn = null
     let isoControlFullBtn = null
     let isocontrolWeightsComponent = null
+    let isoControllLineIdGroupBtn = null
+    let editCustomBtn = null
 
     if(process.env.REACT_APP_PROGRESS === "1"){
         
@@ -1759,17 +1762,36 @@ const IsoCtrlF = () => {
             secureStorage.setItem("tab", "IsoControlFull")
             isoControlFullBtn = <button type="button" className="nav__button__title text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
             tableContent = <IsoControlFullDataTable pagination={pagination}/>
+            isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
+            editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
             isoControlFullBtn = <button type="button" className="nav__button__title text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>IsoControl</button>
             
         }
+
+        if(currentTab === "IsoControlLineIdGroup"){
+            secureStorage.setItem("tab", "IsoControlLineIdGroup")
+            isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" style={{backgroundColor: "rgb(148, 220, 170)"}} onClick={() => {setCurrentTab("IsoControlFull")}}>Group by line ID</button>
+            tableContent = <IsoControlGroupLineIdDataTable pagination={pagination}/>
+            editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
+
+        }
         
+        if(currentTab === "IsoControlEditCustom"){
+            secureStorage.setItem("tab", "IsoControlEditCustom")
+            editCustomBtn = <button className="isocontrol__lineid__group__button" style={{backgroundColor: "rgb(148, 220, 170)", marginLeft:"20px"}} onClick={() => {setCurrentTab("IsoControlFull")}}>Edit custom fields</button>
+            tableContent = <IsoControlGroupLineIdDataTable pagination={pagination}/>
+            isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
+
+        }
         
         if(currentTab === "IsoControl" || currentTab === "IsoControlNotMod"){
             isocontrolWeightsComponent = 
                 <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button>
     
         }
+
+
     }
 
     if(currentRole === "Design"){
@@ -1908,7 +1930,9 @@ const IsoCtrlF = () => {
                               </div>
                           </td>
                           <td className="isotracker__table__table" style={{height: dataTableHeight}} >
-                              <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                              <div style={{height: dataTableHeight, width:"2000px"}} className="isotracker__table__table__container">
+                                  {isoControllLineIdGroupBtn}
+                                  {editCustomBtn}
                                   {tableContent}
                               </div>
                           </td>

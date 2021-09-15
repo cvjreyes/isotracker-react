@@ -194,6 +194,16 @@ class IsoControlFullDataTable extends React.Component{
     
     const columns = [
       {
+        title: <div className="dataTable__header__text">Line ID</div>,
+        dataIndex: 'line_id',
+        key: 'line_id',
+        ...this.getColumnSearchProps('line_id'),
+        sorter: {
+          compare: (a, b) => { return a.line_id.localeCompare(b.line_id)},
+        },
+        fixed: "left"
+      },
+      {
         title: <center className="dataTable__header__text">Unit</center>,
         dataIndex: 'unit',
         key: 'unit',
@@ -248,15 +258,6 @@ class IsoControlFullDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Line ID</div>,
-        dataIndex: 'line_id',
-        key: 'line_id',
-        ...this.getColumnSearchProps('line_id'),
-        sorter: {
-          compare: (a, b) => { return a.line_id.localeCompare(b.line_id)},
-        },
-      },
-      {
         title: <center className="dataTable__header__text">Iso ID</center>,
         dataIndex: 'iso_id',
         key: 'iso_id',
@@ -266,10 +267,9 @@ class IsoControlFullDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Spec</div>,
+        title: <div className="dataTable__header__text">Spec code</div>,
         dataIndex: 'spec_code',
         key: 'spec_code',
-        width: "150px",
         ...this.getColumnSearchProps('spec_code'),
         sorter: {
           compare: (a, b) => { return a.spec_code.localeCompare(b.spec_code)},
@@ -289,17 +289,15 @@ class IsoControlFullDataTable extends React.Component{
         dataIndex: 'pid',
         key: 'pid',
         ...this.getColumnSearchProps('pid'),
-        width: "700px",
         sorter: {
           compare: (a, b) => { return a.pid.localeCompare(b.pid)},
         },
       },
       {
-        title: <div className="dataTable__header__text">Stress</div>,
+        title: <div className="dataTable__header__text">Stress level</div>,
         dataIndex: 'stress_level',
         key: 'stress_level',
         ...this.getColumnSearchProps('stress_level'),
-        width: "00px",
         sorter: {
           compare: (a, b) => { return a.stress_level.localeCompare(b.stress_level)},
         },
@@ -376,6 +374,57 @@ class IsoControlFullDataTable extends React.Component{
           compare: (a, b) => { a.LDL.localeCompare(b.LDL)},
         },
       },
+      {
+        title: <div className="dataTable__header__text">CUSTOM 1</div>,
+        dataIndex: 'custom1',
+        key: 'custom1',
+        ...this.getColumnSearchProps('custom1'),
+        sorter: {
+          compare: (a, b) => { a.custom1.localeCompare(b.custom1)},
+        },
+        width:"400px"
+      },
+      {
+        title: <div className="dataTable__header__text">CUSTOM 2</div>,
+        dataIndex: 'custom2',
+        key: 'custom2',
+        ...this.getColumnSearchProps('custom2'),
+        sorter: {
+          compare: (a, b) => { a.custom2.localeCompare(b.custom2)},
+        },
+        width:"400px"
+      },
+      {
+        title: <div className="dataTable__header__text">CUSTOM 3</div>,
+        dataIndex: 'custom3',
+        key: 'custom3',
+        ...this.getColumnSearchProps('custom3'),
+        sorter: {
+          compare: (a, b) => { a.custom3.localeCompare(b.custom3)},
+        },
+        width:"400px"
+      },
+      {
+        title: <div className="dataTable__header__text">CUSTOM 4</div>,
+        dataIndex: 'custom4',
+        key: 'custom4',
+        ...this.getColumnSearchProps('custom4'),
+        sorter: {
+          compare: (a, b) => { a.custom4.localeCompare(b.custom4)},
+        },
+        width:"400px"
+      },
+      {
+        title: <div className="dataTable__header__text">CUSTOM 5</div>,
+        dataIndex: 'custom5',
+        key: 'custom5',
+        ...this.getColumnSearchProps('custom5'),
+        sorter: {
+          compare: (a, b) => { a.custom5.localeCompare(b.custom5)},
+        },
+        width:"400px"
+      },
+
     ];
 
     
@@ -393,7 +442,7 @@ class IsoControlFullDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable"  bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="customTable" scroll={{x:6000}} bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
         

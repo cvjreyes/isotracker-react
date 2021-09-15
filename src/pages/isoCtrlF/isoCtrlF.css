@@ -295,3 +295,11 @@ body{
     float:right;
     margin-left:50px;
 }
+
+.isocontrol__lineid__group__button{
+    margin-bottom: 15px;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-top: -25px;
+}
