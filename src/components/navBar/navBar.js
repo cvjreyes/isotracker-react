@@ -123,7 +123,7 @@ const NavBar = (props) =>{
         })
 
         if(process.env.REACT_APP_PROGRESS === "1"){
-            setProgressButtons(<div style={{ marginLeft: "22%"}}>
+            setProgressButtons(<div style={{ marginLeft: "20%"}}>
                 <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
             <i className="dropdown__text">Home </i>
         </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -150,7 +150,7 @@ const NavBar = (props) =>{
 
     let projectBtn, userButton = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-        projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"19%"}}>
+        projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"19%", width:"150px"}}>
                         <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
                     </Button>
         userButton = <Button  class="btn nohover" classes={{label: classes.label}} onClick={handleClickUser}>
@@ -160,7 +160,7 @@ const NavBar = (props) =>{
         projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"84%", marginRight:"50px"}}>
                         <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
                     </Button>
-        userButton= <Button  class="btn nohover" style={{marginLeft: "80px"}} classes={{label: classes.label}} onClick={handleClickUser}>
+        userButton= <Button  class="btn nohover" style={{marginLeft: "80px", width:"150px"}} classes={{label: classes.label}} onClick={handleClickUser}>
         <i className="dropdown__text">{username}&nbsp;🠗</i>
         </Button>
     }
