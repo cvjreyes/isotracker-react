@@ -251,7 +251,7 @@ const CSPTracker = () => {
     async function addRow(){
         let rows = editData
         //rows.push({tag:null, description: null, description_plan_code: null, drawing_filename: null, description_iso: null, ident: null, p1diameter_dn: null, p1diameter_nps: null, p2diameter_dn: null, p2diameter_nps: null, p3diameter_dn: null, p3diameter_nps: null, rating: null, spec: null, face_to_face: null, end_preparation: null, description_drawing: null, bolts: null, bolt_type: null, ready_load: null, ready_e3d: null, comments: null})
-        rows.push({tag:"", description: "", description_plan_code: "", drawing_filename: "", description_iso: "", ident: "", p1diameter_dn: "", p1diameter_nps: "", p2diameter_dn: "", p2diameter_nps: "", p3diameter_dn: "", p3diameter_nps: "", rating: "", spec: "", face_to_face: "", end_preparation: "", description_drawing: "", bolts: "", bolt_type: "", ready_load: "", ready_e3d: "", comments: ""})
+        rows.push({tag:"", quantity: "", description: "", description_plan_code: "", drawing_filename: "", description_iso: "", ident: "", p1diameter_dn: "", p1diameter_nps: "", p2diameter_dn: "", p2diameter_nps: "", p3diameter_dn: "", p3diameter_nps: "", rating: "", spec: "", type: "", end_preparation: "", description_drawing: "", face_to_face: "", bolts: "", bolt_type: "", ready_load: "", ready_e3d: "", comments: ""})
         await setEditData(rows)
         await setUpdateData(!updateData)
       }
@@ -371,18 +371,16 @@ const CSPTracker = () => {
         if(!busy){
             table = <HotTable
             data={editData}
-            colHeaders = {["TAG", "DESCRIPTION", "DRAWING DESCRIPION", "DESCRIPTION ISO", "IDENT", "P1BORE", "P2BORE", "P3BORE", "RATING", "SPEC", "FACE TO FACE", "END PREPARATION", "BOLTS", "TYPE OF BOLT", "COMMENTS"]}
+            colHeaders = {["TAG", "QUANTITY", "TYPE", "DESCRIPTION", "DRAWING DESCRIPION", "DESCRIPTION ISO", "IDENT", "P1BORE", "P2BORE", "P3BORE", "RATING", "SPEC", "END PREPARATION", "FACE TO FACE", "BOLTS", "TYPE OF BOLT", "COMMENTS"]}
             rowHeaders={true}
             width="2200"
             height="635"
             settings={settings} 
             manualColumnResize={true}
             manualRowResize={true}
-            columns= {[{ data: "tag", type:'text'}, { data: "description", type:'text'}, {data: "description_plan_code", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: "face_to_face", type:"numeric"},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData},{data: "bolts", type:"dropdown", strict:"true", source:["YES", "NO"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"comments", type:"text"}]}
+            columns= {[{ data: "tag", type:'text'}, {data:"quantity", type:"numeric"}, {data: "type", type:"text"}, { data: "description", type:'text'}, {data: "description_plan_code", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData}, {data: "face_to_face", type:"text"}, {data: "bolts", type:"dropdown", strict:"true", source:["YES", "NO"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"comments", type:"text"}]}
             />
-
-            
-            
+          
             pageSelector = null
             dataTableHeight= "700px"
             addRowBtn = <button class="btn btn-sm btn-success" onClick={() => addRow()} style={{marginRight:"5px", fontSize:"18px", width:"35px", height:"35px", borderRadius:"10px", float:"right", marginTop:"8px"}}>+</button>
