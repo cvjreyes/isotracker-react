@@ -171,20 +171,6 @@ class OnHoldTable extends React.Component{
     clearFilters();
     this.setState({ searchText: '' });
   };
-
-  onSelectChange = (selectedRowKeys, selectedRows) => {
-    let ids = []
-    for(let i = 0; i < selectedRows.length; i++){
-      ids.push(selectedRows[i].id.props.children)
-    }
-    this.setState({
-      selectedRowsKeys: selectedRowKeys,
-      selectedRows: selectedRows
-    })
-    //this.setState({ selectedRows: selectedRows });
-    this.props.onChange(ids);
-    
-  };
   
 
   render() {
@@ -249,7 +235,7 @@ class OnHoldTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
+        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
           {totalElements}
         </div>
         
