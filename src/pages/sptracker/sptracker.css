@@ -61,6 +61,10 @@ input:checked + .slide:before {
     background: #7BD36D;
 }
 
+.bbb{
+    background: #99C6F8;
+}
+
 .connected__panel{
     height: 200px;
     border: 1px solid red;

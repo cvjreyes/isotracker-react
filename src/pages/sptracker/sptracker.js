@@ -12,6 +12,8 @@ import HotTable from "@handsontable/react"
 
 import SaveIcon from "../../assets/images/FolderOpen.png"
 import AlertF from "../../components/alert/alert"
+import CSPTrackerRequestPopUp from "../../components/csptrackerRequestPopUp/csptrackerRequestPopUp"
+import CSPTrackerdRequestsDataTable from "../../components/csptrackerRequestsDataTable/csptrackerRequestsDataTable"
 
 const CSPTracker = () => {
 
@@ -58,6 +60,9 @@ const CSPTracker = () => {
     const [noTagError, setNoTagError] = useState(false);
     const [invalidFieldError, setInvalidFieldError] = useState(false);
     const [errorIndex, setErrorIndex] = useState(null);
+    const [warningBlankRequest, setWarningBlankRequest] = useState(false)
+    const [requestSuccess, setRequestSuccess] = useState(false)
+    const [existsRequest, setExistsRequest] = useState(false)
 
     const [viewData, setViewData] = useState()
     const [editData, setEditData] = useState()
@@ -178,6 +183,18 @@ const CSPTracker = () => {
 
     function drawingUploadError(){
         setDrawingError(true)
+    }
+
+    function errorBlankRequest(){
+        setWarningBlankRequest(true)
+    }
+
+    function successRequest(){
+        setRequestSuccess(true)
+    }
+
+    function existsErrorRequest(){
+        setExistsRequest(true)
     }
 
     function handleOnIdle(){
@@ -346,7 +363,7 @@ const CSPTracker = () => {
         dataTableHeight = "19000px"    
     }
 
-    let editBtn, addRowBtn, saveBtn, upload = null
+    let editBtn, addRowBtn, saveBtn, upload, requestBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
 
     if(currentRole === "Materials"){
@@ -356,6 +373,17 @@ const CSPTracker = () => {
                     </label>    
     }
 
+    if(currentRole === "Design"){
+        requestBtn = <CSPTrackerRequestPopUp errorBlankRequest={errorBlankRequest.bind(this)} successRequest={successRequest.bind(this)} existsErrorRequest={existsErrorRequest.bind(this)}/>
+    }
+
+    if(currentRole === "3D Admin"){
+        if(currentTab !== "Requests"){
+            editBtn = <button className="requests__button" onClick={()=> setCurrentTab("Requests")}>Requests</button>
+        }else{
+            editBtn = <button className="requests__button" onClick={()=> setCurrentTab("View")}>Back</button>
+        }
+    }
 
     if(currentTab === "View"){
         table = <CSPTrackerdDataTable pagination={pagination} currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
@@ -367,7 +395,7 @@ const CSPTracker = () => {
         addRowBtn = null
         saveBtn = null
         
-    }else{
+    }else if(currentTab === "Edit"){
         if(!busy){
             table = <HotTable
             data={editData}
@@ -390,7 +418,9 @@ const CSPTracker = () => {
             table = <div className="connected__panel"><p className="connected__text">The user {editingUser} is already editing!</p></div>
         }    
 
-    }    
+    }else{
+        table = <CSPTrackerdRequestsDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} />
+    }
 
     return(
         
@@ -432,6 +462,24 @@ const CSPTracker = () => {
             >
                 <AlertF type="error" subtext="At least one of the entries had an invalid field!" margin="0px"/>
             </div>
+            <div
+            className={`alert alert-success ${requestSuccess? 'alert-shown' : 'alert-error-hidden'}`}
+            onTransitionEnd={() => setRequestSuccess(false)}
+            >
+                <AlertF type="success" text="SP requested successfully!" margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${warningBlankRequest ? 'alert-shown' : 'alert-error-hidden'}`}
+            onTransitionEnd={() => setWarningBlankRequest(false)}
+            >
+                <AlertF type="warning" text="All fileds need to be filled!" margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${existsRequest ? 'alert-shown' : 'alert-error-hidden'}`}
+            onTransitionEnd={() => setExistsRequest(false)}
+            >
+                <AlertF type="error" subtext="An SP with that SPTag already exists!" margin="0px"/>
+            </div>
             <div className="isotracker__row">
                   <div className="isotracker__column">
                       <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
@@ -446,6 +494,7 @@ const CSPTracker = () => {
                       <tr className="isotracker__table__navBar__container" style={{height:"65px "}}>
                           <th  className="isotracker__table__navBar">
                               <div style={{display:"flex"}}>
+                                {requestBtn}
                                 {editBtn}
                                 {saveBtn} 
                                 {pageSelector}  

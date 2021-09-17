@@ -144,9 +144,9 @@ class CSPTrackerdDataTable extends React.Component{
               
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
-                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
                 }else{
-                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link></div>
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link></div>
                 }
               }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
@@ -158,7 +158,15 @@ class CSPTrackerdDataTable extends React.Component{
                 row.drawing = null
               }
 
-              if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
+              if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && json.rows[i].updated === 1){
+                row.ready_load = "UPDATED"
+                row.color = "#bbb"
+                  if(this.props.currentRole === "3D Admin"){
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                  }else{
+                    row.ready_e3d = null
+                  }
+              }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                 row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
@@ -194,9 +202,9 @@ class CSPTrackerdDataTable extends React.Component{
               
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
-                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
                 }else{
-                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link></div>
+                  row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link></div>
                 }
               }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
@@ -208,7 +216,15 @@ class CSPTrackerdDataTable extends React.Component{
                 row.drawing = null
               }
 
-              if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
+              if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && json.rows[i].updated === 1){
+                row.ready_load = "UPDATED"
+                row.color = "#bbb"
+                  if(this.props.currentRole === "3D Admin"){
+                    row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                  }else{
+                    row.ready_e3d = null
+                  }
+              }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                 row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
@@ -272,9 +288,9 @@ class CSPTrackerdDataTable extends React.Component{
 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                   if(this.props.currentRole === "Materials"){
-                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
+                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
                   }else{
-                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link></div>
+                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link></div>
                   }
                 }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
                   if(this.props.currentRole === "Materials"){
@@ -286,7 +302,15 @@ class CSPTrackerdDataTable extends React.Component{
                   row.drawing = null
                 }
 
-                if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
+                if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && json.rows[i].updated === 1){
+                  row.ready_load = "UPDATED"
+                  row.color = "#bbb"
+                    if(this.props.currentRole === "3D Admin"){
+                      row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                    }else{
+                      row.ready_e3d = null
+                    }
+                }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                   row.ready_load = "READY"
                   if(row.ready_e3d === 1){
                     row.color = "#ggg"
@@ -323,9 +347,9 @@ class CSPTrackerdDataTable extends React.Component{
                 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                   if(this.props.currentRole === "Materials"){
-                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
+                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
                   }else{
-                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename}</Link></div>
+                    row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link></div>
                   }
                 }else if(json.rows[i].drawing_filename === null && row.description_plane !== null){
                   if(this.props.currentRole === "Materials"){
@@ -337,8 +361,15 @@ class CSPTrackerdDataTable extends React.Component{
                   row.drawing = null
                 }
 
-
-                  if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
+                if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && json.rows[i].updated === 1){
+                  row.ready_load = "UPDATED"
+                  row.color = "#bbb"
+                    if(this.props.currentRole === "3D Admin"){
+                      row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
+                    }else{
+                      row.ready_e3d = null
+                    }
+                }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                     row.ready_load = "READY"
                     if(row.ready_e3d === 1){
                       row.color = "#ggg"

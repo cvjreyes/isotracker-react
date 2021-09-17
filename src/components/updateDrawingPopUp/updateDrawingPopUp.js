@@ -44,23 +44,46 @@ export default class UpdateDrawingPopUp extends Component {
         const fileName = this.props.description_plan_code + "." + extension
         const file  = new FormData(); 
         file.append('file', this.state.file, fileName);
-        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateDrawing", {
-            method: 'POST',
-            body: file,
-            })
-            .then(response =>{
-                if (response.status !== 200){
-                    this.props.drawingUploadError()
-                }else{
-                    this.props.updateDrawingSuccess()
+        
+        const body = {
+            description_plan_code: this.props.description_plan_code,
+            fileName: fileName
+        }
 
-                    this.setState({
-                        file: null,
-                        error: false
-                    })
-                }
- 
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateDrawingDB", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
             })
+            .then(response => response.json())
+            .then(async json =>{
+                if(json.success){
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateDrawing", {
+                        method: 'POST',
+                        body: file,
+                        })
+                        .then(response =>{
+                            if (response.status !== 200){
+                                this.props.drawingUploadError()
+                            }else{
+                                this.props.updateDrawingSuccess()
+            
+                                this.setState({
+                                    file: null,
+                                    error: false
+                                })
+                            }
+             
+                        })
+                }else{
+                    console.log("error")
+                }
+            })
+
+        
 
         this.closeModal()
     }
