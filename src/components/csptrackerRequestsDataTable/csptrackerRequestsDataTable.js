@@ -4,6 +4,32 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
+const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+
+    var secureStorage = new SecureStorage(localStorage, {
+        hash: function hash(key) {
+            key = CryptoJS.SHA256(key, SECRET_KEY);
+    
+            return key.toString();
+        },
+        encrypt: function encrypt(data) {
+            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+    
+            data = data.toString();
+    
+            return data;
+        },
+        decrypt: function decrypt(data) {
+            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+    
+            data = data.toString(CryptoJS.enc.Utf8);
+    
+            return data;
+        }
+    });
+
 class CSPTrackerdRequestsDataTable extends React.Component{
   state = {
     searchText: '',
@@ -19,15 +45,78 @@ class CSPTrackerdRequestsDataTable extends React.Component{
   };
 
   async markAsRead(sptag){
+    const body = {
+      sptag: sptag,
+      user: secureStorage.getItem("user")
+    }
+    const options = {
+      method: "POst",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/markAsRead", options)
+    .then(response => response.json())
+    .then(json =>{
+      this.props.updateDataMethod()
+    })
 
+  }
+
+  async markAsUnread(sptag){
+    const body = {
+      sptag: sptag,
+      user: secureStorage.getItem("user")
+    }
+    const options = {
+      method: "POst",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/markAsUnread", options)
+    .then(response => response.json())
+    .then(json =>{
+      this.props.updateDataMethod()
+    })
   }
 
   async accept(sptag){
-  
+    const body = {
+      sptag: sptag
+    }
+    const options = {
+      method: "POst",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/1", options)
+    .then(response => response.json())
+    .then(json =>{
+      this.props.updateDataMethod()
+    })
   }
 
   async reject(sptag){
-
+    const body = {
+      sptag: sptag
+    }
+    const options = {
+      method: "POst",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/rejectRequest", options)
+    .then(response => response.json())
+    .then(json =>{
+      this.props.updateDataMethod()
+    })
   }
 
   async componentDidMount(){
@@ -40,7 +129,7 @@ class CSPTrackerdRequestsDataTable extends React.Component{
     }
 
 
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptrackerRequests", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptrackerRequests/"+ secureStorage.getItem("user"), options)
             .then(response => response.json())
             .then(async json => {
                 var rows = []
@@ -49,14 +138,15 @@ class CSPTrackerdRequestsDataTable extends React.Component{
                     row = {key:i, tag: json.rows[i].tag, pid: json.rows[i].pid, sptag: json.rows[i].sptag}
                     if(json.rows[i].read === 0){
                         row.actions = <div className="request__buttons__container">
-                            <button className="read__button" onClick={()=>this.markAsRead(json.rows[i].sptag)}>Mark as read</button>
-                            <button className="accept__button" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
-                            <button className="reject__button" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
+                            <button className="read__button btn-info" onClick={()=>this.markAsRead(json.rows[i].sptag)}>Mark as read</button>
+                            <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
+                            <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
                         </div>
-                    }else{
+                    }else if(json.rows[i].read === 1){
                         row.actions = <div className="request__buttons__container">
-                            <button className="accept__button" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
-                            <button className="reject__button" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
+                          <button className="unread__button btn-info" onClick={()=>this.markAsUnread(json.rows[i].sptag)}>Mark as unread</button>
+                            <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
+                            <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
                         </div>
                     }
                     if(i % 2 === 0){
@@ -87,25 +177,26 @@ class CSPTrackerdRequestsDataTable extends React.Component{
             },
         }
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptrackerRequests", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptrackerRequests/"+ secureStorage.getItem("user"), options)
             .then(response => response.json())
             .then(async json => {
                 var rows = []
                 var row = null
                 for(let i = 0; i < json.rows.length; i++){
                     row = {key:i, tag: json.rows[i].tag, pid: json.rows[i].pid, sptag: json.rows[i].sptag}
-                    if(json.rows[i].read === 1){
-                        row.actions = <div className="request__buttons__container">
-                            <button className="read__button" onClick={()=>this.markAsRead(json.rows[i].sptag)}>Mark as read</button>
-                            <button className="accept__button" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
-                            <button className="reject__button" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
-                        </div>
-                    }else{
-                        row.actions = <div className="request__buttons__container">
-                            <button className="accept__button" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
-                            <button className="reject__button" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
-                        </div>
-                    }
+                    if(json.rows[i].read === 0){
+                      row.actions = <div className="request__buttons__container">
+                          <button className="read__button btn-info" onClick={()=>this.markAsRead(json.rows[i].sptag)}>Mark as read</button>
+                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
+                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
+                      </div>
+                  }else{
+                      row.actions = <div className="request__buttons__container">
+                        <button className="unread__button btn-info" onClick={()=>this.markAsUnread(json.rows[i].sptag)}>Mark as unread</button>
+                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
+                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
+                      </div>
+                  }
 
                   
                     if(i % 2 === 0){

@@ -2,6 +2,32 @@ import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import './csptrackerRequestPopUp.css'
 
+const CryptoJS = require("crypto-js");
+    const SecureStorage = require("secure-web-storage");
+    var SECRET_KEY = 'sanud2ha8shd72h';
+
+    var secureStorage = new SecureStorage(localStorage, {
+        hash: function hash(key) {
+            key = CryptoJS.SHA256(key, SECRET_KEY);
+    
+            return key.toString();
+        },
+        encrypt: function encrypt(data) {
+            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+    
+            data = data.toString();
+    
+            return data;
+        },
+        decrypt: function decrypt(data) {
+            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+    
+            data = data.toString(CryptoJS.enc.Utf8);
+    
+            return data;
+        }
+    });
+
 export default class CSPTrackerRequestPopUp extends Component {
     constructor(props) {
         super(props);
@@ -36,7 +62,8 @@ export default class CSPTrackerRequestPopUp extends Component {
             const body ={
                 tag : this.state.tag,
                 pid: this.state.pid,
-                sptag: this.state.sptag
+                sptag: this.state.sptag,
+                user: secureStorage.getItem("user")
               }
               const options = {
                 method: "POST",

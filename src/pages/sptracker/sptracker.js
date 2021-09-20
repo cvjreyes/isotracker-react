@@ -363,7 +363,7 @@ const CSPTracker = () => {
         dataTableHeight = "19000px"    
     }
 
-    let editBtn, addRowBtn, saveBtn, upload, requestBtn = null
+    let editBtn, addRowBtn, saveBtn, upload, requestBtn, notificationsBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
 
     if(currentRole === "Materials"){
@@ -371,19 +371,17 @@ const CSPTracker = () => {
                         <input type="checkbox" id="edit" onClick={()=>handleToggle()}/>
                         <div class="slide round">Edit mode</div>
                     </label>    
+        if(currentTab !== "Requests"){
+            notificationsBtn = <button className="requests__button" onClick={()=> setCurrentTab("Requests")}>Requests</button>
+        }else{
+            notificationsBtn = <button className="requests__button" onClick={()=> setCurrentTab("View")}>Back</button>
+        }
     }
 
     if(currentRole === "Design"){
         requestBtn = <CSPTrackerRequestPopUp errorBlankRequest={errorBlankRequest.bind(this)} successRequest={successRequest.bind(this)} existsErrorRequest={existsErrorRequest.bind(this)}/>
     }
 
-    if(currentRole === "3D Admin"){
-        if(currentTab !== "Requests"){
-            editBtn = <button className="requests__button" onClick={()=> setCurrentTab("Requests")}>Requests</button>
-        }else{
-            editBtn = <button className="requests__button" onClick={()=> setCurrentTab("View")}>Back</button>
-        }
-    }
 
     if(currentTab === "View"){
         table = <CSPTrackerdDataTable pagination={pagination} currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
@@ -496,6 +494,7 @@ const CSPTracker = () => {
                               <div style={{display:"flex"}}>
                                 {requestBtn}
                                 {editBtn}
+                                {notificationsBtn}
                                 {saveBtn} 
                                 {pageSelector}  
                               </div>                           

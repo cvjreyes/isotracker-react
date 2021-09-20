@@ -1,0 +1,28 @@
+.request__buttons__container{
+
+}
+
+.read__button{
+    margin-right: 10px;
+    border-radius: 5px 5px 5px 5px;
+    width: 120px;
+    background: #338DF1;
+}
+
+.unread__button{
+    margin-right: 10px;
+    border-radius: 5px 5px 5px 5px;
+    width: 120px;
+    background: #66A9F4;
+}
+
+.accept__button{
+    margin-right: 10px;
+    border-radius: 5px 5px 5px 5px;
+    width: 120px;
+}
+
+.reject__button{
+    border-radius: 5px 5px 5px 5px;
+    width: 120px;
+}
