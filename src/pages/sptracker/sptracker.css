@@ -63,6 +63,16 @@ input:checked + .slide:before {
 
 .bbb{
     background: #99C6F8;
+    
+}
+
+.ddd{
+    background-color: lightgray;
+    font-weight: bold;
+}
+
+.www{
+    background-color: white;
 }
 
 .connected__panel{

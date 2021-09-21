@@ -14,6 +14,9 @@ import SaveIcon from "../../assets/images/FolderOpen.png"
 import AlertF from "../../components/alert/alert"
 import CSPTrackerRequestPopUp from "../../components/csptrackerRequestPopUp/csptrackerRequestPopUp"
 import CSPTrackerdRequestsDataTable from "../../components/csptrackerRequestsDataTable/csptrackerRequestsDataTable"
+import CSPTrackerdDesignRequestsDataTable from "../../components/CSPTrackerDesignRequestsDataTable/CSPTrackerDesignRequestsDataTable"
+
+import Reports from "../../assets/images/Notepad.png"
 
 const CSPTracker = () => {
 
@@ -363,7 +366,7 @@ const CSPTracker = () => {
         dataTableHeight = "19000px"    
     }
 
-    let editBtn, addRowBtn, saveBtn, upload, requestBtn, notificationsBtn = null
+    let editBtn, addRowBtn, saveBtn, upload, requestBtn, notificationsBtn, designNotificationsBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
 
     if(currentRole === "Materials"){
@@ -371,25 +374,36 @@ const CSPTracker = () => {
                         <input type="checkbox" id="edit" onClick={()=>handleToggle()}/>
                         <div class="slide round">Edit mode</div>
                     </label>    
-        if(currentTab !== "Requests"){
-            notificationsBtn = <button className="requests__button" onClick={()=> setCurrentTab("Requests")}>Requests</button>
+        if(currentTab === "Edit"){
+            notificationsBtn = null
+        }
+        else if(currentTab !== "Requests"){
+            notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Requests</p></button>
+
         }else{
-            notificationsBtn = <button className="requests__button" onClick={()=> setCurrentTab("View")}>Back</button>
+            notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("View")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Back</p></button>
+
         }
     }
 
     if(currentRole === "Design"){
         requestBtn = <CSPTrackerRequestPopUp errorBlankRequest={errorBlankRequest.bind(this)} successRequest={successRequest.bind(this)} existsErrorRequest={existsErrorRequest.bind(this)}/>
+        if(currentTab !== "Requests design"){
+            designNotificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests design")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Requests</p></button>
+        }else{
+            designNotificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("View")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Back</p></button>
+        }
     }
 
+    if(currentRole === "Materials" || currentRole === "Design"){
+        pageSelector = <div style={{marginLeft:"81%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
+    }else{
+        pageSelector = <div style={{marginLeft:"93%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
+    }
 
     if(currentTab === "View"){
         table = <CSPTrackerdDataTable pagination={pagination} currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
-        if(currentRole === "Materials"){
-            pageSelector = <div style={{marginLeft:"87%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
-        }else{
-            pageSelector = <div style={{marginLeft:"94%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
-        }
+        
         addRowBtn = null
         saveBtn = null
         
@@ -416,8 +430,10 @@ const CSPTracker = () => {
             table = <div className="connected__panel"><p className="connected__text">The user {editingUser} is already editing!</p></div>
         }    
 
-    }else{
+    }else if(currentTab === "Requests"){
         table = <CSPTrackerdRequestsDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} />
+    }else{
+        table = <CSPTrackerdDesignRequestsDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} />
     }
 
     return(
@@ -495,8 +511,9 @@ const CSPTracker = () => {
                                 {requestBtn}
                                 {editBtn}
                                 {notificationsBtn}
-                                {saveBtn} 
-                                {pageSelector}  
+                                {designNotificationsBtn}
+                                {pageSelector}
+                                {saveBtn}   
                               </div>                           
                                
                           </th>

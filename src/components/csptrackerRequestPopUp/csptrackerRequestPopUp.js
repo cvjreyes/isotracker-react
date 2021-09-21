@@ -91,7 +91,7 @@ export default class CSPTrackerRequestPopUp extends Component {
     render() {
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
-                <button class="btn btn-info" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginLeft: "5px", width:"100px"}} onClick={() => this.openModal()}>REQUEST SP</button>
+                <button className="navBar__button" onClick={() => this.openModal()} style={{width:"120px"}}><p className="navBar__button__text">REQUEST SP</p></button>
                 <div>
                     <Modal visible={this.state.visible} width="450" height="320" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <center className="popUp__title" style={{marginBottom: "30px"}}><h3>REQUEST SP</h3></center>
