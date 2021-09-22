@@ -132,7 +132,7 @@ class CSPTrackerdRequestsDataTable extends React.Component{
       },
       body: JSON.stringify(body)
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/deleteNotification", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/deleteCSPNotification", options)
     .then(response => response.json())
     .then(json =>{
       this.props.updateDataMethod()
@@ -173,13 +173,13 @@ class CSPTrackerdRequestsDataTable extends React.Component{
                   }else if(json.rows[i].read === 2){
                     row.actions = <div className="request__buttons__container">
                         <button className="accept__button btn-success" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Accepted</button>
-                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }else if(json.rows[i].read === 3){
                     row.actions = <div className="request__buttons__container">
                         <button className="reject__button btn-danger" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Rejected</button>
-                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }
@@ -231,13 +231,13 @@ class CSPTrackerdRequestsDataTable extends React.Component{
                   }else if(json.rows[i].read === 2){
                     row.actions = <div className="request__buttons__container">
                         <button className="accept__button btn-success" disabled style={{opacity: "0.6"}} onClick={()=>this.accept(json.rows[i].sptag)}>Accepted</button>
-                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }else if(json.rows[i].read === 3){
                     row.actions = <div className="request__buttons__container">
                         <button className="reject__button btn-danger" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Rejected</button>
-                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }
