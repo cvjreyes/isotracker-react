@@ -70,6 +70,7 @@ const NavBar = (props) =>{
     const [notifications, setNotifications] = useState(false)
     const [updateData, setUpdateData] = useState(false)
     const [bellImage, setBellImage] = useState()
+    const [emptyNotifications, setEmptyNotifications] = useState()
 
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -213,23 +214,30 @@ const NavBar = (props) =>{
         .then(async json => {
             let notif = []
             let alert = false
-            for(let i = 0; i < json.rows.length; i++){           
-                if(json.rows[i].read === 0){
-                    alert = true
-                    notif.push(<div className="notification__container" >
-                                <p className="notification__text" style={{fontWeight:"bold"}}>{json.rows[i].text}</p>
-                                <button className="markAsReadNotification__button" style={{marginLeft:"170px"}} onClick={()=> markAsRead(json.rows[i].id)}>Mark as read</button>
-                                <button className="deleteNotification__button"><img src={Trash} alt="trash" className="notificationTrash__icon" onClick={()=> deleteNotification(json.rows[i].id)}></img></button>
-                            </div>)
-                }else{
-                    notif.push(<div className="notification__container" >
-                                <p className="notification__text">{json.rows[i].text}</p>
-                                <button className="markAsReadNotification__button" style={{marginLeft:"157px"}} onClick={()=> markAsUnread(json.rows[i].id)}>Mark as unread</button>
-                                <button className="deleteNotification__button"><img src={Trash} alt="trash" className="notificationTrash__icon" onClick={()=> deleteNotification(json.rows[i].id)}></img></button>
-                            </div>)
+            if(json.rows[0]){
+                for(let i = 0; i < json.rows.length; i++){           
+                    if(json.rows[i].read === 0){
+                        alert = true
+                        notif.push(<div className="notification__container" >
+                                    <p className="notification__text" style={{fontWeight:"bold"}}>{json.rows[i].text}</p>
+                                    <button className="markAsReadNotification__button" style={{marginLeft:"170px"}} onClick={()=> markAsRead(json.rows[i].id)}>Mark as read</button>
+                                    <button className="deleteNotification__button"><img src={Trash} alt="trash" className="notificationTrash__icon" onClick={()=> deleteNotification(json.rows[i].id)}></img></button>
+                                </div>)
+                    }else{
+                        notif.push(<div className="notification__container" >
+                                    <p className="notification__text">{json.rows[i].text}</p>
+                                    <button className="markAsReadNotification__button" style={{marginLeft:"157px"}} onClick={()=> markAsUnread(json.rows[i].id)}>Mark as unread</button>
+                                    <button className="deleteNotification__button"><img src={Trash} alt="trash" className="notificationTrash__icon" onClick={()=> deleteNotification(json.rows[i].id)}></img></button>
+                                </div>)
+                    }
+                    
                 }
-                
+            }else{
+                setEmptyNotifications(<div className="emptyNotifications__container">
+                    <p className="emptyNotifications__text">No new notifications</p>
+                </div>)
             }
+
             if(alert){
                 setBellImage(<img src={BellActive} alt="bellActive" className="notificationBell__icon"></img>)
             }else{
@@ -410,7 +418,7 @@ const NavBar = (props) =>{
                                 <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
                             </div>
                             {notifications}
-
+                            {emptyNotifications}
                         </div>
                     )}
                     

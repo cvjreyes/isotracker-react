@@ -151,3 +151,13 @@ img{
     width: 30px;
     height: 30px;
 }
+
+.emptyNotifications__container{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.emptyNotifications__text{
+    color: gray;
+    font-size: 16px;
+}
