@@ -28,7 +28,16 @@
 }
 
 .delete__button{
-    color: red;
     border: none;
-    background: none;
+    background:#FF3358;
+    width: 27px;
+    height: 27px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.trash__icon{
+    width: 23px;
+    height: 23px;
+    position: absolute;
+    margin-left: -14px;
 }

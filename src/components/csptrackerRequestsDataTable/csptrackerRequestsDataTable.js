@@ -3,6 +3,7 @@ import './csptrackerRequestsDataTable.css'
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import Trash from "../../assets/images/Trash.png"
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -172,13 +173,13 @@ class CSPTrackerdRequestsDataTable extends React.Component{
                   }else if(json.rows[i].read === 2){
                     row.actions = <div className="request__buttons__container">
                         <button className="accept__button btn-success" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Accepted</button>
-                        <button className="delete__button btn-danger" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>X</button>
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }else if(json.rows[i].read === 3){
                     row.actions = <div className="request__buttons__container">
                         <button className="reject__button btn-danger" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Rejected</button>
-                        <button className="delete__button btn-danger" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>X</button>                      
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }
@@ -230,13 +231,13 @@ class CSPTrackerdRequestsDataTable extends React.Component{
                   }else if(json.rows[i].read === 2){
                     row.actions = <div className="request__buttons__container">
                         <button className="accept__button btn-success" disabled style={{opacity: "0.6"}} onClick={()=>this.accept(json.rows[i].sptag)}>Accepted</button>
-                        <button className="delete__button btn-danger" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>X</button>
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }else if(json.rows[i].read === 3){
                     row.actions = <div className="request__buttons__container">
                         <button className="reject__button btn-danger" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Rejected</button>
-                        <button className="delete__button btn-danger" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>X</button>                      
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }

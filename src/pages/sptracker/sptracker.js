@@ -14,7 +14,6 @@ import SaveIcon from "../../assets/images/FolderOpen.png"
 import AlertF from "../../components/alert/alert"
 import CSPTrackerRequestPopUp from "../../components/csptrackerRequestPopUp/csptrackerRequestPopUp"
 import CSPTrackerdRequestsDataTable from "../../components/csptrackerRequestsDataTable/csptrackerRequestsDataTable"
-import CSPTrackerdDesignRequestsDataTable from "../../components/CSPTrackerDesignRequestsDataTable/CSPTrackerDesignRequestsDataTable"
 
 import Reports from "../../assets/images/Notepad.png"
 
@@ -388,15 +387,12 @@ const CSPTracker = () => {
 
     if(currentRole === "Design"){
         requestBtn = <CSPTrackerRequestPopUp errorBlankRequest={errorBlankRequest.bind(this)} successRequest={successRequest.bind(this)} existsErrorRequest={existsErrorRequest.bind(this)}/>
-        if(currentTab !== "Requests design"){
-            designNotificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests design")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Requests</p></button>
-        }else{
-            designNotificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("View")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Back</p></button>
-        }
     }
 
-    if(currentRole === "Materials" || currentRole === "Design"){
+    if(currentRole === "Materials"){
         pageSelector = <div style={{marginLeft:"81%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
+    }else if(currentRole === "Design"){
+        pageSelector = <div style={{marginLeft:"87%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>  
     }else{
         pageSelector = <div style={{marginLeft:"93%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
     }
@@ -432,8 +428,6 @@ const CSPTracker = () => {
 
     }else if(currentTab === "Requests"){
         table = <CSPTrackerdRequestsDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} />
-    }else{
-        table = <CSPTrackerdDesignRequestsDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} />
     }
 
     return(
