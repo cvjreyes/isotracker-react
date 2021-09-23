@@ -247,6 +247,57 @@ const NavBar = (props) =>{
         })
     },[updateData])
 
+    /*
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const options = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            }
+    
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/notifications/"+ secureStorage.getItem("user"), options)
+            .then(response => response.json())
+            .then(async json => {
+                let notif = []
+                let alert = false
+                if(json.rows[0]){
+                    for(let i = 0; i < json.rows.length; i++){           
+                        if(json.rows[i].read === 0){
+                            alert = true
+                            notif.push(<div className="notification__container" >
+                                        <p className="notification__text" style={{fontWeight:"bold"}}>{json.rows[i].text}</p>
+                                        <button className="markAsReadNotification__button" style={{marginLeft:"170px"}} onClick={()=> markAsRead(json.rows[i].id)}>Mark as read</button>
+                                        <button className="deleteNotification__button"><img src={Trash} alt="trash" className="notificationTrash__icon" onClick={()=> deleteNotification(json.rows[i].id)}></img></button>
+                                    </div>)
+                        }else{
+                            notif.push(<div className="notification__container" >
+                                        <p className="notification__text">{json.rows[i].text}</p>
+                                        <button className="markAsReadNotification__button" style={{marginLeft:"157px"}} onClick={()=> markAsUnread(json.rows[i].id)}>Mark as unread</button>
+                                        <button className="deleteNotification__button"><img src={Trash} alt="trash" className="notificationTrash__icon" onClick={()=> deleteNotification(json.rows[i].id)}></img></button>
+                                    </div>)
+                        }
+                        
+                    }
+                }else{
+                    setEmptyNotifications(<div className="emptyNotifications__container">
+                        <p className="emptyNotifications__text">No new notifications</p>
+                    </div>)
+                }
+    
+                if(alert){
+                    setBellImage(<img src={BellActive} alt="bellActive" className="notificationBell__icon"></img>)
+                }else{
+                    setBellImage(<img src={Bell} alt="bell" className="notificationBell__icon"></img>)
+                }
+                await setNotifications(notif)
+            })
+        }, 30000);
+        return () => clearInterval(interval);
+      }, []);
+      */
+
     let projectBtn, userButton, spButton, spButtonProgress = null
     if(process.env.REACT_APP_PROGRESS === "1"){
         if(process.env.REACT_APP_SP === "1"){

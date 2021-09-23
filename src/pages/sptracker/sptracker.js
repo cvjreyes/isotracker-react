@@ -293,6 +293,7 @@ const CSPTracker = () => {
 
         const body = {
             rows: editData,
+            email: currentUser
         }
         let options = {
             method: "GET",

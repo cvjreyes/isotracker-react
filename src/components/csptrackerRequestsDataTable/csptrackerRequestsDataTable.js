@@ -86,7 +86,8 @@ class CSPTrackerdRequestsDataTable extends React.Component{
 
   async accept(sptag){
     const body = {
-      sptag: sptag
+      sptag: sptag,
+      email: secureStorage.getItem("user")
     }
     const options = {
       method: "POst",
@@ -104,7 +105,8 @@ class CSPTrackerdRequestsDataTable extends React.Component{
 
   async reject(sptag){
     const body = {
-      sptag: sptag
+      sptag: sptag,
+      email: secureStorage.getItem("user")
     }
     const options = {
       method: "POst",
