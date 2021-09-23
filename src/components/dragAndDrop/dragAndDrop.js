@@ -34,7 +34,8 @@ class DragAndDrop extends React.Component{
     pipeErrorAlerts: [],
     max: 0,
     uploadingPreview: false,
-    uploading: false
+    uploading: false,
+    nSuccess: 0
   };
 
   async uploadFile(file) {
@@ -46,6 +47,8 @@ class DragAndDrop extends React.Component{
       .then(response => {
         // Do something with the successful response
         if (response.status === 200){
+          let n = this.state.nSuccess
+          this.setState({nSuccess: n+1})
           if(!this.state.success){
               this.setState({
                 success : true,
@@ -99,6 +102,21 @@ class DragAndDrop extends React.Component{
             uploaded: true,
             uploading: false
           })
+          if(this.state.nSuccess > 0){
+            let body =  {
+              n: this.state.nSuccess
+            }
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadNotifications", {
+              // content-type header should not be specified!
+              method: 'POST',
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+              },
+              body: JSON.stringify(body)
+            }).catch(error =>console.log(error))
+          }    
+
         }
         
       })
@@ -187,7 +205,8 @@ class DragAndDrop extends React.Component{
       pipeErrorAlerts: [],
       counter: 0,
       max: files.length,
-      uploading: true
+      uploading: true,
+      nSuccess: 0
     })
 
     await allFiles.forEach(file => {
@@ -309,7 +328,6 @@ class DragAndDrop extends React.Component{
     }
     
   }
-
     return (
       <div>
         <Dropzone
