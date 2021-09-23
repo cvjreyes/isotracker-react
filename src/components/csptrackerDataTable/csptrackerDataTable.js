@@ -539,6 +539,7 @@ class CSPTrackerdDataTable extends React.Component{
         dataIndex: 'description',
         key: 'description',
         ...this.getColumnSearchProps('description'),
+        width: "400px",
         sorter:{
           compare: (a, b) => a.description.localeCompare(b.description),
         },
@@ -557,6 +558,7 @@ class CSPTrackerdDataTable extends React.Component{
         dataIndex: 'drawing',
         key: 'drawing',
         ...this.getColumnSearchProps('drawing'),
+        width: "300px",
         sorter: {
             compare: (a, b) => a.drawing.localeCompare(b.drawing),
         },
@@ -566,6 +568,7 @@ class CSPTrackerdDataTable extends React.Component{
         dataIndex: 'description_iso',
         key: 'description_iso',
         ...this.getColumnSearchProps('description_iso'),
+        width: "400px",
         sorter: {
           compare: (a, b) => a.modelled-b.modelled,
         },

@@ -408,7 +408,7 @@ const CSPTracker = () => {
         if(!busy){
             table = <HotTable
             data={editData}
-            colHeaders = {["TAG", "QUANTITY", "TYPE", "DESCRIPTION", "DRAWING DESCRIPION", "DESCRIPTION ISO", "IDENT", "P1BORE", "P2BORE", "P3BORE", "RATING", "SPEC", "END PREPARATION", "FACE TO FACE", "BOLTS", "TYPE OF BOLT", "COMMENTS"]}
+            colHeaders = {["<b>TAG</b>", "<b>QUANTITY</b>", "<b>TYPE</b>", "<b>DESCRIPTION</b>", "<b>DRAWING DESCRIPION</b>", "<b>DESCRIPTION ISO</b>", "<b>IDENT</b>", "<b>P1BORE</b>", "<b>P2BORE</b>", "P3BORE", "<b>RATING</b>", "<b>SPEC</b>", "<b>END PREPARATION</b>", "FACE TO FACE", "<b>BOLTS</b>", "TYPE OF BOLT", "COMMENTS"]}
             rowHeaders={true}
             width="2200"
             height="635"
