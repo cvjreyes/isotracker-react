@@ -157,7 +157,7 @@ class CSPTrackerdDataTable extends React.Component{
               }else{
                 row.drawing = null
               }
-
+          
               if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && json.rows[i].updated === 1){
                 row.ready_load = "UPDATED"
                 row.color = "#bbb"
@@ -166,12 +166,12 @@ class CSPTrackerdDataTable extends React.Component{
                   }else{
                     row.ready_e3d = null
                   }
-              }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
+              }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
                 row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
                   if(this.props.currentRole === "3D Admin"){
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                    row.ready_e3d = <button class="csp__cancel__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                   }else{
                     row.ready_e3d = null
                   }
@@ -224,12 +224,12 @@ class CSPTrackerdDataTable extends React.Component{
                   }else{
                     row.ready_e3d = null
                   }
-              }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
-                row.ready_load = "READY"
+                }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
+                  row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
                   if(this.props.currentRole === "3D Admin"){
-                    row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                    row.ready_e3d = <button class="csp__cancel__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                   }else{
                     row.ready_e3d = null
                   }
@@ -310,12 +310,12 @@ class CSPTrackerdDataTable extends React.Component{
                     }else{
                       row.ready_e3d = null
                     }
-                }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
-                  row.ready_load = "READY"
+                  }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
+                    row.ready_load = "READY"
                   if(row.ready_e3d === 1){
                     row.color = "#ggg"
                     if(this.props.currentRole === "3D Admin"){
-                      row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                      row.ready_e3d = <button class="csp__cancel__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                     }else{
                       row.ready_e3d = null
                     }
@@ -369,12 +369,12 @@ class CSPTrackerdDataTable extends React.Component{
                     }else{
                       row.ready_e3d = null
                     }
-                }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
+                  }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
                     row.ready_load = "READY"
                     if(row.ready_e3d === 1){
                       row.color = "#ggg"
                       if(this.props.currentRole === "3D Admin"){
-                        row.ready_e3d = <button class="ready__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
+                        row.ready_e3d = <button class="csp__cancel__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                       }else{
                         row.ready_e3d = null
                       }
@@ -507,7 +507,7 @@ class CSPTrackerdDataTable extends React.Component{
 
     const columns = [
       {
-        title: <center className="dataTable__header__text">TAG</center>,
+        title: <center className="dataTable__header__text">Tag</center>,
         dataIndex: 'tag',
         key: 'tag',
         ...this.getColumnSearchProps('tag'),
@@ -517,7 +517,7 @@ class CSPTrackerdDataTable extends React.Component{
         fixed: "left"
       },
       {
-        title: <center className="dataTable__header__text">QUANTITY</center>,
+        title: <center className="dataTable__header__text">Quantity</center>,
         dataIndex: 'quantity',
         key: 'quantity',
         ...this.getColumnSearchProps('quantity'),
@@ -526,7 +526,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">TYPE</div>,
+        title: <div className="dataTable__header__text">Type</div>,
         dataIndex: 'type',
         key: 'type',
         ...this.getColumnSearchProps('type'),
@@ -535,7 +535,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <center className="dataTable__header__text">DESCRIPTION</center>,
+        title: <center className="dataTable__header__text">Description</center>,
         dataIndex: 'description',
         key: 'description',
         ...this.getColumnSearchProps('description'),
@@ -545,7 +545,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">DRAWING DESCRIPION</div>,
+        title: <div className="dataTable__header__text">Drawing Description</div>,
         dataIndex: 'description_plane',
         key: 'description_plane',
         ...this.getColumnSearchProps('description_plane'),
@@ -554,7 +554,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">DRAWING</div>,
+        title: <div className="dataTable__header__text">Drawing</div>,
         dataIndex: 'drawing',
         key: 'drawing',
         ...this.getColumnSearchProps('drawing'),
@@ -564,7 +564,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">ISO DESCRIPTION</div>,
+        title: <div className="dataTable__header__text">Iso Description</div>,
         dataIndex: 'description_iso',
         key: 'description_iso',
         ...this.getColumnSearchProps('description_iso'),
@@ -574,7 +574,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">IDENT</div>,
+        title: <div className="dataTable__header__text">Ident</div>,
         dataIndex: 'ident',
         key: 'ident',
         ...this.getColumnSearchProps('ident'),
@@ -583,7 +583,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">P1BORE</div>,
+        title: <div className="dataTable__header__text">P1Bore</div>,
         dataIndex: 'p1bore',
         key: 'p1bore',
         ...this.getColumnSearchProps('p1bore'),
@@ -592,7 +592,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">P2BORE</div>,
+        title: <div className="dataTable__header__text">P2Bore</div>,
         dataIndex: 'p2bore',
         key: 'p2bore',
         ...this.getColumnSearchProps('p2bore'),
@@ -601,7 +601,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">P3BORE</div>,
+        title: <div className="dataTable__header__text">P3Bore</div>,
         dataIndex: 'p3bore',
         key: 'p3bore',
         ...this.getColumnSearchProps('p3bore'),
@@ -610,7 +610,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">RATING</div>,
+        title: <div className="dataTable__header__text">Rating</div>,
         dataIndex: 'rating',
         key: 'rating',
         ...this.getColumnSearchProps('rating'),
@@ -619,7 +619,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">SPEC</div>,
+        title: <div className="dataTable__header__text">Spec</div>,
         dataIndex: 'spec',
         key: 'spec',
         ...this.getColumnSearchProps('spec'),
@@ -628,7 +628,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">END PREPARATION</div>,
+        title: <div className="dataTable__header__text">End Preparation</div>,
         dataIndex: 'end_preparation',
         key: 'end_preparation',
         ...this.getColumnSearchProps('end_preparation'),
@@ -637,7 +637,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">FACE TO FACE</div>,
+        title: <div className="dataTable__header__text">Face to Face</div>,
         dataIndex: 'face_to_face',
         key: 'face_to_face',
         ...this.getColumnSearchProps('face_to_face'),
@@ -646,7 +646,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">BOLTS</div>,
+        title: <div className="dataTable__header__text">Bolts</div>,
         dataIndex: 'bolts',
         key: 'bolts',
         ...this.getColumnSearchProps('bolts'),
@@ -655,7 +655,7 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">BOLT TYPE</div>,
+        title: <div className="dataTable__header__text">FLG Short Code</div>,
         dataIndex: 'bolts_type',
         key: 'bolts_type',
         ...this.getColumnSearchProps('bolts_type'),
@@ -664,13 +664,13 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">COMMENTS</div>,
+        title: <div className="dataTable__header__text">Comments</div>,
         dataIndex: 'comments',
         key: 'comments',
         ...this.getColumnSearchProps('comments'),
       },
       {
-        title: <div className="dataTable__header__text">READY TO LOAD</div>,
+        title: <div className="dataTable__header__text">Ready to Load</div>,
         dataIndex: 'ready_load',
         key: 'ready_load',
         ...this.getColumnSearchProps('ready_load'),
@@ -680,7 +680,7 @@ class CSPTrackerdDataTable extends React.Component{
         fixed: "right"
       },
       {
-        title: <div className="dataTable__header__text">READY IN E3D</div>,
+        title: <div className="dataTable__header__text">Ready in E3D</div>,
         dataIndex: 'ready_e3d',
         key: 'ready_e3d',
         ...this.getColumnSearchProps('ready_e3d'),
@@ -715,7 +715,7 @@ class CSPTrackerdDataTable extends React.Component{
         {this.state.updateData}
         <div className="estimatedDataTable__container">
         <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"
-         rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:3800}}/>
+         rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:5900}}/>
           {totalElements}
         </div>
         

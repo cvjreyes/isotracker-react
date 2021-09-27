@@ -15,6 +15,8 @@ import AlertF from "../../components/alert/alert"
 import CSPTrackerRequestPopUp from "../../components/csptrackerRequestPopUp/csptrackerRequestPopUp"
 import CSPTrackerdRequestsDataTable from "../../components/csptrackerRequestsDataTable/csptrackerRequestsDataTable"
 
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 import Reports from "../../assets/images/Notepad.png"
 
 const CSPTracker = () => {
@@ -348,6 +350,36 @@ const CSPTracker = () => {
         setUpdateData(!updateData)
     }
 
+    async function downloadReport(){
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadCSP/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["Tag", "Quantity", "Type", "Description", "Drawing description", "Iso description", "Ident", "P1Bore", "P2Bore", "P3Bore", "Rating", "Spec", "End preparation", "Face to face", "Bolts", "FLG Short Code", "Comments", "Ready to Load", "Ready in E3D", "Updated"]
+            const apiData = JSON.parse(json)
+            const fileName = "CSPTracker report"
+
+            const fileType =
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+            const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1', 'W1']
+            const fileExtension = ".xlsx";
+
+            let wscols = []
+            for(let i = 0; i < headers.length; i++){
+                wscols.push({width:35})
+            }
+
+            const ws = XLSX.utils.json_to_sheet(apiData);   
+            ws["!cols"] = wscols
+            for(let i = 0; i < headers.length; i++){
+                ws[header_cells[i]].v = headers[i]
+            }
+            const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+            const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+            const data = new Blob([excelBuffer], { type: fileType });
+            FileSaver.saveAs(data, fileName + fileExtension);
+        })
+    }
+
     document.body.style.zoom = 0.8
 
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
@@ -368,7 +400,6 @@ const CSPTracker = () => {
 
     let editBtn, addRowBtn, saveBtn, upload, requestBtn, notificationsBtn, designNotificationsBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
-
     if(currentRole === "Materials"){
         editBtn =  <label class="switchBtn">
                         <input type="checkbox" id="edit" onClick={()=>handleToggle()}/>
@@ -379,10 +410,12 @@ const CSPTracker = () => {
         }
         else if(currentTab !== "Requests"){
             notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Requests</p></button>
-
         }else{
             notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("View")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Back</p></button>
-
+            editBtn = <label class="switchBtn">
+            <input type="checkbox" id="edit" disabled onClick={()=>handleToggle()}/>
+            <div class="slide round">Edit mode</div>
+        </label> 
         }
     }
 
@@ -408,7 +441,7 @@ const CSPTracker = () => {
         if(!busy){
             table = <HotTable
             data={editData}
-            colHeaders = {["<b>TAG</b>", "<b>QUANTITY</b>", "<b>TYPE</b>", "<b>DESCRIPTION</b>", "<b>DRAWING DESCRIPION</b>", "<b>DESCRIPTION ISO</b>", "<b>IDENT</b>", "<b>P1BORE</b>", "<b>P2BORE</b>", "P3BORE", "<b>RATING</b>", "<b>SPEC</b>", "<b>END PREPARATION</b>", "FACE TO FACE", "<b>BOLTS</b>", "TYPE OF BOLT", "COMMENTS"]}
+            colHeaders = {["<b>TAG</b>", "<b>QUANTITY</b>", "<b>TYPE</b>", "<b>DESCRIPTION</b>", "<b>DRAWING DESCRIPTION</b>", "<b>DESCRIPTION ISO</b>", "<b>IDENT</b>", "<b>P1BORE</b>", "<b>P2BORE</b>", "P3BORE", "<b>RATING</b>", "<b>SPEC</b>", "<b>END PREPARATION</b>", "FACE TO FACE", "<b>BOLTS</b>", "FLG SHORT CODE", "COMMENTS"]}
             rowHeaders={true}
             width="2200"
             height="635"
@@ -523,6 +556,11 @@ const CSPTracker = () => {
                           
                       </tr>
                   </table>
+                  <center className="actionBtns__container">   
+                    <div style={{display:"flex", marginTop:"10px"}}>
+                        <button className="action__btn" name="export" value="export" onClick={() => downloadReport()}>Export</button>
+                    </div>
+                  </center>
          </body>
     )
 }

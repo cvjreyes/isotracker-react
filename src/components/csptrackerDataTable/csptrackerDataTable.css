@@ -10,6 +10,12 @@
     background: #7BD36D;
 }
 
+.csp__cancel__btn{
+    background: #FF3358;
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+}
+
 .update__btn{
     font-size: 12px;
     padding: 1px 3px 1px 3px;
