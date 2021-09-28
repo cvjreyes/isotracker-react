@@ -67,8 +67,7 @@ img{
     border: 1px solid rgb(99, 107, 111, 0.3);
     position: absolute;
     z-index: 9999;
-    margin-top: 435px;
-    margin-left: 81%;
+    margin-top: 42px;
     width: 300px;
     height: 400px;
     overflow-y:auto

@@ -51,10 +51,8 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     label: {
-        width: '100%',
       },
       label2: {
-        width: '145%',
       },
   }));
 
@@ -122,9 +120,11 @@ const NavBar = (props) =>{
           // If the menu is open and the clicked target is not within the menu,
           // then close the menu
           if (isMenuOpen && ref.current && !ref.current.contains(e.target)) {
+              
             setIsMenuOpen(false)
           }
         }
+
     
         document.addEventListener("mousedown", checkIfClickedOutside)
     
@@ -153,7 +153,7 @@ const NavBar = (props) =>{
 
         if(process.env.REACT_APP_PROGRESS === "1"){
             if(process.env.REACT_APP_SP === "1"){
-                setProgressButtons(<div style={{ marginLeft: "19%"}}>
+                setProgressButtons(<div style={{ marginLeft: "3%", float:"left"}}>
                     <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
                         <i className="dropdown__text">Home </i>
                     </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -174,7 +174,7 @@ const NavBar = (props) =>{
                                     <i className="dropdown__text" >IsoTracker </i>
                     </Button></div>)
             }else{
-                setProgressButtons(<div style={{ marginLeft: "22%"}}>
+                setProgressButtons(<div style={{ marginLeft: "3%", float:"left" }}>
                     <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
                         <i className="dropdown__text">Home </i>
                     </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -298,35 +298,121 @@ const NavBar = (props) =>{
       }, []);
       */
 
-    let projectBtn, userButton, spButton, spButtonProgress = null
+    let projectBtn, userButton, spButton, spButtonProgress, rightButtons = null
     if(process.env.REACT_APP_PROGRESS === "1"){
         if(process.env.REACT_APP_SP === "1"){
-            projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"14%"}}>
+            projectBtn = <Button class="btn nohover" disabled style={{marginRight:"20px", float:"right"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
+            rightButtons = <div style={{width:"40%"}}>
+                    
+                            
+                <button style={{float:"right", marginLeft:"20px", marginTop:"4px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
+                <Button class="btn nohover" style={{float: "right", marginTop:"4px"}} classes={{label: classes.label}} onClick={handleClickUser}>
+                <i className="dropdown__text">{username}&nbsp;🠗</i>
+                </Button>
+                
+
+                {isMenuOpen && (
+                    <div className="notifications__container" style={{marginLeft: "27%"}}>
+                        <div className="notificationPanel__header">
+                            <p className="notificationHeader__text">Notifications</p>
+                            <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
+                        </div>
+                        {notifications}
+                        {emptyNotifications}
+                    </div>
+                )}
+                
+                {projectBtn}
+            </div>
         }else{
-            projectBtn = <Button class="btn nohover" disabled style={{marginLeft:"19%"}}>
+            projectBtn = <Button class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
+            rightButtons= <div style={{width:"48%"}}>
+                    
+                        
+            <button style={{float:"right", marginLeft:"20px", marginTop:"4px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
+            <Button class="btn nohover" style={{float: "right", marginTop:"4px"}} classes={{label: classes.label}} onClick={handleClickUser}>
+            <i className="dropdown__text">{username}&nbsp;🠗</i>
+            </Button>
+            
+
+            {isMenuOpen && (
+                <div className="notifications__container" style={{marginLeft: "34%"}}>
+                    <div className="notificationPanel__header">
+                        <p className="notificationHeader__text">Notifications</p>
+                        <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
+                    </div>
+                    {notifications}
+                    {emptyNotifications}
+                </div>
+            )}
+            
+            {projectBtn}
+        </div>
         }
         
-        userButton = <Button  class="btn nohover" classes={{label: classes.label}} onClick={handleClickUser}>
-        <i className="dropdown__text">{username}&nbsp;🠗</i>
-        </Button>
+        
     }else{
         if(process.env.REACT_APP_SP === "1"){
-            projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"73%", marginRight:"50px"}}>
+            projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
+        rightButtons= <div style={{width:"90%"}}>
+                    
+                        
+            <button style={{float:"right", marginLeft:"20px", marginTop:"4px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
+            <Button class="btn nohover" style={{float: "right", marginTop:"4px"}} classes={{label: classes.label}} onClick={handleClickUser}>
+            <i className="dropdown__text">{username}&nbsp;🠗</i>
+            </Button>
+            
+
+            {isMenuOpen && (
+                <div className="notifications__container" style={{marginLeft: "76%"}}>
+                    <div className="notificationPanel__header">
+                        <p className="notificationHeader__text">Notifications</p>
+                        <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
+                    </div>
+                    {notifications}
+                    {emptyNotifications}
+                </div>
+            )}
+            
+            {projectBtn}
+        </div>
         }else{
-            projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{marginLeft:"80%", marginRight:"50px"}}>
+            projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
         }
         
-        userButton= <Button  class="btn nohover" style={{marginLeft: "80px"}} classes={{label: classes.label}} onClick={handleClickUser}>
+        userButton= <Button  class="btn nohover" style={{float: "right"}} classes={{label: classes.label}} onClick={handleClickUser}>
         <i className="dropdown__text">{username}&nbsp;🠗</i>
         </Button>
+        rightButtons= <div style={{width:"96%"}}>
+                    
+                        
+         <button style={{float:"right", marginLeft:"20px", marginTop:"4px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
+         <Button class="btn nohover" style={{float: "right", marginTop:"4px"}} classes={{label: classes.label}} onClick={handleClickUser}>
+         <i className="dropdown__text">{username}&nbsp;🠗</i>
+         </Button>
+         
+
+         {isMenuOpen && (
+             <div className="notifications__container" style={{marginLeft: "82%"}}>
+                 <div className="notificationPanel__header">
+                     <p className="notificationHeader__text">Notifications</p>
+                     <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
+                 </div>
+                 {notifications}
+                 {emptyNotifications}
+             </div>
+         )}
+         
+         {projectBtn}
+     </div>
     }
 
     if(process.env.REACT_APP_SP === "1"){
@@ -429,14 +515,14 @@ const NavBar = (props) =>{
     return(
         <div ref={ref}>
         <div className={classes.root}>
-            <div style={{display:"flex"}}>
+            <div>
             <AppBar position="fixed" className="navBar__container" style={{height:"62px", borderBottomColor: "rgb(211, 224, 233)", borderLeftColor: "rgb(211, 224, 233)", bordeRightColor: "rgb(211, 224, 233)", borderTopColor: "rgb(211, 224, 233)", backgroundColor: "#383838"}}>
             
                 <Toolbar>
                     
                     {progressButtons}           
                     {spButtonProgress}
-                    {userButton}
+                    
                     {spButton}
 
                     <Menu
@@ -450,29 +536,14 @@ const NavBar = (props) =>{
                         PaperProps={{
                             style: {
                             left: '50%',
-                            transform: 'translateX(+70%)',
+                            transform: 'translateX(+200%)',
                             }
                         }}
                     >
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleChangePassword}>Change password</MenuItem>
                     <MenuItem style={{fontFamily:"Quicksand", fontSize:"13.33px"}} onClick={handleLogOut}><b>Logout</b></MenuItem>
                     </Menu>
-
-                    {projectBtn}
-                    <button onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
-
-                    
-                    {isMenuOpen && (
-                        <div className="notifications__container">
-                            <div className="notificationPanel__header">
-                                <p className="notificationHeader__text">Notifications</p>
-                                <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
-                            </div>
-                            {notifications}
-                            {emptyNotifications}
-                        </div>
-                    )}
-                    
+                    {rightButtons}
                 </Toolbar>
 
             </AppBar>
