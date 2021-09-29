@@ -1,0 +1,37 @@
+.ready__disabled{
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+    opacity: 0.4;
+}
+
+.ready__btn{
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+    background: #7BD36D;
+}
+
+.csp__cancel__btn{
+    background: #FF3358;
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+}
+
+.update__btn{
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+    float:right;
+    margin-left: 10px;
+    background-color: #338DF1;
+    height: 98%;
+}
+
+.upload__btn{
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+    background-color: #338DF1;
+}
+
+.drawing__column{
+    display: inline-block;
+    width: 100%;
+}

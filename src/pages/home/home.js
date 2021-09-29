@@ -61,6 +61,22 @@ const Home = () =>{
             <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/></div>)        
         }, 2300);
 
+        const body = {
+            user: secureStorage.getItem("user"),
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+
+            })
+
           
     }, [])
 
@@ -68,6 +84,21 @@ const Home = () =>{
     document.body.style.zoom = 0.8
 
     function handleOnIdle(){
+        const body = {
+            user: secureStorage.getItem("user"),
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+
+            })
         secureStorage.clear()
         history.push("/" + process.env.REACT_APP_PROJECT)
     }

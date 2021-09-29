@@ -90,6 +90,7 @@
 
 .isotracker__table__table__container{
     margin: 10px 10px 10px 10px;
+    
 }
 
 .navBar__icon{
@@ -150,3 +151,9 @@
 }
 
 .ant-table table { font-size: 18px; }
+
+.alert-error-hidden{
+    opacity: 0;
+    transition: all 250ms linear 5s;
+    position: fixed
+}

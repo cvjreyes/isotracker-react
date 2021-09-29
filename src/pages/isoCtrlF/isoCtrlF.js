@@ -155,7 +155,21 @@ const IsoCtrlF = () => {
             setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
             setContent(null)   
         }
-          
+        const body = {
+            user: currentUser,
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+
+            })
     }, [])
     
     useEffect(()=>{
@@ -1608,6 +1622,21 @@ const IsoCtrlF = () => {
     }
 
     function handleOnIdle(){
+        const body = {
+            user: currentUser,
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
+            .then(response => response.json())
+            .then(async json => {
+
+            })
         secureStorage.clear()
         history.push("/" + process.env.REACT_APP_PROJECT)
     }

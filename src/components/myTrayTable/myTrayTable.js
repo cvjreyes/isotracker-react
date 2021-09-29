@@ -502,7 +502,7 @@ class MyTrayTable extends React.Component{
       },
       getCheckboxProps: (record) => 
       this.state.role !== "Instrument" && this.state.role !== "Process" ? (
-      ( console.log(record),
+      ( 
         {
         
         disabled: record.actions.props.children[0].props.children === 'CANCEL VERIFY' || record.actions.props.children[10],
