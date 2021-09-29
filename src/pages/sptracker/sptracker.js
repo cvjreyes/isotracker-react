@@ -384,16 +384,16 @@ const CSPTracker = () => {
 
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
 
-    var dataTableHeight = "510px"
+    var dataTableHeight = "570px"
 
     if (pagination === 10){
-        dataTableHeight = "510px"
+        dataTableHeight = "570px"
     }if(pagination === 25){
-        dataTableHeight = "1070px"
+        dataTableHeight = "1240px"
     }if(pagination === 50){
-        dataTableHeight = "2080px"
+        dataTableHeight = "2330px"
     }if(pagination === 100){
-        dataTableHeight = "4040px"
+        dataTableHeight = "4520px"
     }if(pagination === 500){
         dataTableHeight = "19000px"    
     }
@@ -560,7 +560,9 @@ const CSPTracker = () => {
                     <div style={{display:"flex", marginTop:"10px"}}>
                         <button className="action__btn" name="export" value="export" onClick={() => downloadReport()}>Export</button>
                     </div>
+                    
                   </center>
+                  <br></br>
          </body>
     )
 }

@@ -164,7 +164,7 @@ class CSPTrackerdDataTable extends React.Component{
                   if(this.props.currentRole === "3D Admin"){
                     row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                   }else{
-                    row.ready_e3d = null
+                    row.ready_e3d = "UPDATED"
                   }
               }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
                 row.ready_load = "READY"
@@ -173,14 +173,14 @@ class CSPTrackerdDataTable extends React.Component{
                   if(this.props.currentRole === "3D Admin"){
                     row.ready_e3d = <button class="csp__cancel__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                   }else{
-                    row.ready_e3d = null
+                    row.ready_e3d = "READY"
                   }
                 }else{
                   row.color = "#yyy"
                   if(this.props.currentRole === "3D Admin"){
                     row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                   }else{
-                    row.ready_e3d = null
+                    row.ready_e3d = "NOT READY"
                   }
                 }
                 
@@ -190,7 +190,14 @@ class CSPTrackerdDataTable extends React.Component{
                 if(this.props.currentRole === "3D Admin"){
                   row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
                 }else{
-                  row.ready_e3d = null
+                  row.ready_e3d = "NOT READY"
+                }
+              }
+
+              for (const [key, value] of Object.entries(row)) {
+                console.log(key, value)
+                if(!value){
+                  row[key] = ""
                 }
               }
 
@@ -222,7 +229,7 @@ class CSPTrackerdDataTable extends React.Component{
                   if(this.props.currentRole === "3D Admin"){
                     row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                   }else{
-                    row.ready_e3d = null
+                    row.ready_e3d = "UPDATED"
                   }
                 }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
                   row.ready_load = "READY"
@@ -231,14 +238,14 @@ class CSPTrackerdDataTable extends React.Component{
                   if(this.props.currentRole === "3D Admin"){
                     row.ready_e3d = <button class="csp__cancel__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                   }else{
-                    row.ready_e3d = null
+                    row.ready_e3d = "READY"
                   }
                 }else{
                   row.color = "#yyy"
                   if(this.props.currentRole === "3D Admin"){
                     row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                   }else{
-                    row.ready_e3d = null
+                    row.ready_e3d = "NOT READY"
                   }
                 }
                 
@@ -248,7 +255,14 @@ class CSPTrackerdDataTable extends React.Component{
                 if(this.props.currentRole === "3D Admin"){
                   row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
                 }else{
-                  row.ready_e3d = null
+                  row.ready_e3d = "NOT READY"
+                }
+              }
+
+              for (const [key, value] of Object.entries(row)) {
+                console.log(key, value)
+                if(!value){
+                  row[key] = ""
                 }
               }
 
@@ -308,7 +322,7 @@ class CSPTrackerdDataTable extends React.Component{
                     if(this.props.currentRole === "3D Admin"){
                       row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                     }else{
-                      row.ready_e3d = null
+                      row.ready_e3d = "UPDATED"
                     }
                   }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
                     row.ready_load = "READY"
@@ -317,14 +331,14 @@ class CSPTrackerdDataTable extends React.Component{
                     if(this.props.currentRole === "3D Admin"){
                       row.ready_e3d = <button class="csp__cancel__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                     }else{
-                      row.ready_e3d = null
+                      row.ready_e3d = "READY"
                     }
                   }else{
                     row.color = "#yyy"
                     if(this.props.currentRole === "3D Admin"){
                       row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                     }else{
-                      row.ready_e3d = null
+                      row.ready_e3d = "NOT READY"
                     }
                   }
                   
@@ -334,7 +348,14 @@ class CSPTrackerdDataTable extends React.Component{
                   if(this.props.currentRole === "3D Admin"){
                     row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
                   }else{
-                    row.ready_e3d = null
+                    row.ready_e3d = "NOT READY"
+                  }
+                }
+
+                for (const [key, value] of Object.entries(row)) {
+                  console.log(key, value)
+                  if(!value){
+                    row[key] = ""
                   }
                 }
 
@@ -367,7 +388,7 @@ class CSPTrackerdDataTable extends React.Component{
                     if(this.props.currentRole === "3D Admin"){
                       row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                     }else{
-                      row.ready_e3d = null
+                      row.ready_e3d = "UPDATED"
                     }
                   }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
                     row.ready_load = "READY"
@@ -376,14 +397,14 @@ class CSPTrackerdDataTable extends React.Component{
                       if(this.props.currentRole === "3D Admin"){
                         row.ready_e3d = <button class="csp__cancel__btn btn-sm btn-danger" onClick={() => this.cancelReadyE3D(json.rows[i].tag)}>CANCEL</button>
                       }else{
-                        row.ready_e3d = null
+                        row.ready_e3d = "READY"
                       }
                     }else{
                       row.color = "#yyy"
                       if(this.props.currentRole === "3D Admin"){
                         row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                       }else{
-                        row.ready_e3d = null
+                        row.ready_e3d = "NOT READY"
                       }
                     }
                     
@@ -393,7 +414,14 @@ class CSPTrackerdDataTable extends React.Component{
                     if(this.props.currentRole === "3D Admin"){
                       row.ready_e3d = <button disabled class="ready__disabled btn-sm btn-success">READY</button>
                     }else{
-                      row.ready_e3d = null
+                      row.ready_e3d = "NOT READY"
+                    }
+                  }
+
+                  for (const [key, value] of Object.entries(row)) {
+                    console.log(key, value)
+                    if(!value){
+                      row[key] = ""
                     }
                   }
 
@@ -522,7 +550,7 @@ class CSPTrackerdDataTable extends React.Component{
         key: 'quantity',
         ...this.getColumnSearchProps('quantity'),
         sorter:{
-          compare: (a, b) => a.quantity.localeCompare(b.quantity),
+          compare: (a, b) => a.quantity - b.quantity,
         },
       },
       {
@@ -531,7 +559,7 @@ class CSPTrackerdDataTable extends React.Component{
         key: 'type',
         ...this.getColumnSearchProps('type'),
         sorter: {
-            compare: (a, b) => a.type - b.type,
+            compare: (a, b) => a.type.localeCompare(b.type),
         },
       },
       {
@@ -550,7 +578,7 @@ class CSPTrackerdDataTable extends React.Component{
         key: 'description_plane',
         ...this.getColumnSearchProps('description_plane'),
         sorter: {
-          compare: (a, b) => a.description_plane-b.description_plane,
+          compare: (a, b) => a.description_plane.localeCompare(b.description_plane),
         },
       },
       {
@@ -559,9 +587,6 @@ class CSPTrackerdDataTable extends React.Component{
         key: 'drawing',
         ...this.getColumnSearchProps('drawing'),
         width: "300px",
-        sorter: {
-            compare: (a, b) => a.drawing.localeCompare(b.drawing),
-        },
       },
       {
         title: <div className="dataTable__header__text">Iso Description</div>,
@@ -570,7 +595,7 @@ class CSPTrackerdDataTable extends React.Component{
         ...this.getColumnSearchProps('description_iso'),
         width: "400px",
         sorter: {
-          compare: (a, b) => a.modelled-b.modelled,
+          compare: (a, b) => a.description_iso.localeCompare(b.description_iso),
         },
       },
       {
@@ -579,7 +604,7 @@ class CSPTrackerdDataTable extends React.Component{
         key: 'ident',
         ...this.getColumnSearchProps('ident'),
         sorter: {
-          compare: (a, b) => a.ident-b.ident,
+          compare: (a, b) => a.ident.localeCompare(b.ident),
         },
       },
       {
