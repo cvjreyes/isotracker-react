@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
+import CommentIcon from "../../assets/images/comment.png"
+import './commentPopUp.css'
 
 export default class CommentPopUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible : false
+            visible : false,
+            user: null,
+            updated: null
         }
     }
 
@@ -21,13 +25,32 @@ export default class CommentPopUp extends Component {
         });
     }
 
+    componentDidMount(){
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/lastUser/"+this.props.filename, options)
+        .then(response => response.json())
+        .then(json =>{
+            this.setState({user: json.user})
+        })
+
+        let updated = this.props.updated
+        updated = updated.substring(0,10) + " " + updated.substring(11, 19) 
+        this.setState({updated: updated})
+    }
+
     render() {
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
-                <button class="btn btn-info" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginLeft: "5px"}} onClick={() => this.openModal()}>COMMENTS</button>
+                <img onClick={() => this.openModal()} src={CommentIcon} alt="comment" className="comment__image" />
                 <div>
-                    <Modal visible={this.state.visible} width="450" height="120" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="550" height="120" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div style={{marginTop:"10px"}}>
+                            <center>{this.state.user} at {this.state.updated}</center>
                             <p style={{fontSize:"20px", padding:"5px 5px 5px 15px"}}>{this.props.comments}</p>   
                         </div>
                                 
