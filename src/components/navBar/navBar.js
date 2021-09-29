@@ -200,7 +200,7 @@ const NavBar = (props) =>{
       
     },[])
 
-    useEffect (()=>{
+    useEffect (async ()=>{
 
         const options = {
             method: "GET",
@@ -209,7 +209,7 @@ const NavBar = (props) =>{
             },
         }
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/notifications/"+ secureStorage.getItem("user"), options)
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/notifications/"+ secureStorage.getItem("user"), options)
         .then(response => response.json())
         .then(async json => {
             let notif = []
