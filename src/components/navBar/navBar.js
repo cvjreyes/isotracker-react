@@ -233,15 +233,15 @@ const NavBar = (props) =>{
                     
                 }
             }else{
-                setEmptyNotifications(<div className="emptyNotifications__container">
+                await setEmptyNotifications(<div className="emptyNotifications__container">
                     <p className="emptyNotifications__text">No new notifications</p>
                 </div>)
             }
 
             if(alert){
-                setBellImage(<img src={BellActive} alt="bellActive" className="notificationBell__icon"></img>)
+                await setBellImage(<img src={BellActive} alt="bellActive" className="notificationBell__icon"></img>)
             }else{
-                setBellImage(<img src={Bell} alt="bell" className="notificationBell__icon"></img>)
+                await setBellImage(<img src={Bell} alt="bell" className="notificationBell__icon"></img>)
             }
             await setNotifications(notif)
         })
