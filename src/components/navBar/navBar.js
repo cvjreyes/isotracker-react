@@ -232,6 +232,7 @@ const NavBar = (props) =>{
                     }
                     
                 }
+                await setEmptyNotifications(null)
             }else{
                 await setEmptyNotifications(<div className="emptyNotifications__container">
                     <p className="emptyNotifications__text">No new notifications</p>
@@ -280,6 +281,7 @@ const NavBar = (props) =>{
                         }
                         
                     }
+                    await setEmptyNotifications(null)
                 }else{
                     setEmptyNotifications(<div className="emptyNotifications__container">
                         <p className="emptyNotifications__text">No new notifications</p>
