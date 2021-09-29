@@ -89,7 +89,6 @@ class CSPTrackerdDataTable extends React.Component{
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getDrawing/"+fileName, options)
     .then(res => res.blob())
     .then(response => {
-      console.log(response)
       const file = new Blob([response], {
         type: "application/pdf"
       });
@@ -195,7 +194,6 @@ class CSPTrackerdDataTable extends React.Component{
               }
 
               for (const [key, value] of Object.entries(row)) {
-                console.log(key, value)
                 if(!value){
                   row[key] = ""
                 }
@@ -260,7 +258,6 @@ class CSPTrackerdDataTable extends React.Component{
               }
 
               for (const [key, value] of Object.entries(row)) {
-                console.log(key, value)
                 if(!value){
                   row[key] = ""
                 }
@@ -353,7 +350,6 @@ class CSPTrackerdDataTable extends React.Component{
                 }
 
                 for (const [key, value] of Object.entries(row)) {
-                  console.log(key, value)
                   if(!value){
                     row[key] = ""
                   }
@@ -419,7 +415,6 @@ class CSPTrackerdDataTable extends React.Component{
                   }
 
                   for (const [key, value] of Object.entries(row)) {
-                    console.log(key, value)
                     if(!value){
                       row[key] = ""
                     }
