@@ -39,8 +39,8 @@ export default class CSPTrackerRequestPopUp extends Component {
         }
     }
 
-    openModal() {
-        this.setState({
+    async openModal() {
+        await this.setState({
             visible : true,
             tag: null,
             pid: null,
@@ -48,13 +48,18 @@ export default class CSPTrackerRequestPopUp extends Component {
         });
     }
 
-    closeModal() {
-        this.setState({
+    async closeModal() {
+        await this.setState({
             visible : false,
             tag: null,
             pid: null,
             sptag: null
         });
+
+        this.refs.tag.value = null;
+        this.refs.pid.value = null;
+        this.refs.sptag.value = null;
+
     }
 
     async request(){
@@ -96,9 +101,9 @@ export default class CSPTrackerRequestPopUp extends Component {
                     <Modal visible={this.state.visible} width="450" height="320" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <center className="popUp__title" style={{marginBottom: "30px"}}><h3>REQUEST SP</h3></center>
                         <div className="request__container">
-                            <input type="text" placeholder="TAG" id="tag" className="popUp__input__text" style={{marginBottom: "20px", color:'black'}} value={this.state.tag} onChange={(e) => this.setState({tag: e.target.value})} ></input>
-                            <input type="text" placeholder="P&ID" id="pid" className="popUp__input__text" style={{marginBottom: "20px", color:"black"}} value={this.state.pid} onChange={(e) => this.setState({pid: e.target.value})} ></input>
-                            <input type="text" placeholder="TAG SP" id="sptag"className="popUp__input__text" style={{marginBottom: "30px", color:"black"}} value={this.state.sptag} onChange={(e) => this.setState({sptag: e.target.value})} ></input>
+                            <input type="text" placeholder="LINE ID" id="tag" className="popUp__input__text" ref="tag" style={{marginBottom: "20px", color:'black'}} value={this.state.tag} onChange={(e) => this.setState({tag: e.target.value})} ></input>
+                            <input type="text" placeholder="P&ID" id="pid" className="popUp__input__text" ref="pid" style={{marginBottom: "20px", color:"black"}} value={this.state.pid} onChange={(e) => this.setState({pid: e.target.value})} ></input>
+                            <input type="text" placeholder="TAG SP" id="sptag"className="popUp__input__text" ref="sptag" style={{marginBottom: "30px", color:"black"}} value={this.state.sptag} onChange={(e) => this.setState({sptag: e.target.value})} ></input>
                             <button class="btn btn-sm btn-success" onClick={() => this.request()} style={{marginRight:"5px", fontSize:"16px"}}>Submit</button>
                             <button class="btn btn-sm btn-danger" onClick={() => this.closeModal()} style={{marginLeft:"5px", fontSize:"16px"}}>Cancel</button>
                         </div>

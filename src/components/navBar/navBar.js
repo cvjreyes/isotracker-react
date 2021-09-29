@@ -247,7 +247,7 @@ const NavBar = (props) =>{
         })
     },[updateData])
 
-    /*
+    
     useEffect(() => {
         const interval = setInterval(() => {
             const options = {
@@ -293,10 +293,10 @@ const NavBar = (props) =>{
                 }
                 await setNotifications(notif)
             })
-        }, 30000);
+        }, 10000);
         return () => clearInterval(interval);
       }, []);
-      */
+      
 
     let projectBtn, userButton, spButton, spButtonProgress, rightButtons = null
     if(process.env.REACT_APP_PROGRESS === "1"){

@@ -45,9 +45,9 @@ class CSPTrackerdRequestsDataTable extends React.Component{
     steps: []
   };
 
-  async markAsRead(sptag){
+  async markAsRead(id){
     const body = {
-      sptag: sptag,
+      id: id,
       user: secureStorage.getItem("user")
     }
     const options = {
@@ -65,9 +65,9 @@ class CSPTrackerdRequestsDataTable extends React.Component{
 
   }
 
-  async markAsUnread(sptag){
+  async markAsUnread(id){
     const body = {
-      sptag: sptag,
+      id: id,
       user: secureStorage.getItem("user")
     }
     const options = {
@@ -84,9 +84,9 @@ class CSPTrackerdRequestsDataTable extends React.Component{
     })
   }
 
-  async accept(sptag){
+  async accept(id){
     const body = {
-      sptag: sptag,
+      id: id,
       email: secureStorage.getItem("user")
     }
     const options = {
@@ -103,9 +103,9 @@ class CSPTrackerdRequestsDataTable extends React.Component{
     })
   }
 
-  async reject(sptag){
+  async reject(id){
     const body = {
-      sptag: sptag,
+      id: id,
       email: secureStorage.getItem("user")
     }
     const options = {
@@ -122,9 +122,9 @@ class CSPTrackerdRequestsDataTable extends React.Component{
     })
   }
 
-  async deleteNotification(sptag){
+  async deleteNotification(id){
     const body = {
-      sptag: sptag,
+      id: id,
       user: secureStorage.getItem("user")
     }
     const options = {
@@ -160,28 +160,28 @@ class CSPTrackerdRequestsDataTable extends React.Component{
                     row = {key:i, tag: json.rows[i].tag, pid: json.rows[i].pid, sptag: json.rows[i].sptag}
                     if(json.rows[i].read === 0){
                       row.actions = <div className="request__buttons__container">
-                          <button className="read__button btn-info" onClick={()=>this.markAsRead(json.rows[i].sptag)}>Mark as read</button>
-                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
-                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
+                          <button className="read__button btn-info" onClick={()=>this.markAsRead(json.rows[i].id)}>Mark as read</button>
+                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].id)}>Accept</button>
+                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].id)}>Reject</button>
                       </div>
                       row["color"] = "#ddd"
                   }else if(json.rows[i].read === 1){
                       row.actions = <div className="request__buttons__container">
-                        <button className="unread__button btn-info" onClick={()=>this.markAsUnread(json.rows[i].sptag)}>Mark as unread</button>
-                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
-                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
+                        <button className="unread__button btn-info" onClick={()=>this.markAsUnread(json.rows[i].id)}>Mark as unread</button>
+                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].id)}>Accept</button>
+                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].id)}>Reject</button>
                       </div>
                       row["color"] = "#www"
                   }else if(json.rows[i].read === 2){
                     row.actions = <div className="request__buttons__container">
-                        <button className="accept__button btn-success" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Accepted</button>
-                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
+                        <button className="accept__button btn-success" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].id)}>Accepted</button>
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].id)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }else if(json.rows[i].read === 3){
                     row.actions = <div className="request__buttons__container">
-                        <button className="reject__button btn-danger" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Rejected</button>
-                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
+                        <button className="reject__button btn-danger" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].id)}>Rejected</button>
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].id)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }
@@ -218,28 +218,28 @@ class CSPTrackerdRequestsDataTable extends React.Component{
                     row = {key:i, tag: json.rows[i].tag, pid: json.rows[i].pid, sptag: json.rows[i].sptag}
                     if(json.rows[i].read === 0){
                       row.actions = <div className="request__buttons__container">
-                          <button className="read__button btn-info" onClick={()=>this.markAsRead(json.rows[i].sptag)}>Mark as read</button>
-                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
-                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
+                          <button className="read__button btn-info" onClick={()=>this.markAsRead(json.rows[i].id)}>Mark as read</button>
+                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].id)}>Accept</button>
+                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].id)}>Reject</button>
                       </div>
                       row["color"] = "#ddd"
                   }else if(json.rows[i].read === 1){
                       row.actions = <div className="request__buttons__container">
-                        <button className="unread__button btn-info" onClick={()=>this.markAsUnread(json.rows[i].sptag)}>Mark as unread</button>
-                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].sptag)}>Accept</button>
-                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].sptag)}>Reject</button>
+                        <button className="unread__button btn-info" onClick={()=>this.markAsUnread(json.rows[i].id)}>Mark as unread</button>
+                          <button className="accept__button btn-success" onClick={()=>this.accept(json.rows[i].id)}>Accept</button>
+                          <button className="reject__button btn-danger" onClick={()=>this.reject(json.rows[i].id)}>Reject</button>
                       </div>
                       row["color"] = "#www"
                   }else if(json.rows[i].read === 2){
                     row.actions = <div className="request__buttons__container">
-                        <button className="accept__button btn-success" disabled style={{opacity: "0.6"}} onClick={()=>this.accept(json.rows[i].sptag)}>Accepted</button>
-                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
+                        <button className="accept__button btn-success" disabled style={{opacity: "0.6"}} onClick={()=>this.accept(json.rows[i].id)}>Accepted</button>
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].id)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }else if(json.rows[i].read === 3){
                     row.actions = <div className="request__buttons__container">
-                        <button className="reject__button btn-danger" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].sptag)}>Rejected</button>
-                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].sptag)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
+                        <button className="reject__button btn-danger" disabled style={{opacity: "0.6"}}  onClick={()=>this.accept(json.rows[i].id)}>Rejected</button>
+                        <button className="delete__button" onClick={()=>this.deleteNotification(json.rows[i].id)}>&nbsp;<img src={Trash} alt="trash" className="trash__icon" style={{marginRight:"0px"}}></img></button>                 
                     </div>
                     row["color"] = "#www"
                   }
