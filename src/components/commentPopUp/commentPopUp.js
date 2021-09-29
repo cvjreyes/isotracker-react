@@ -45,7 +45,7 @@ export default class CommentPopUp extends Component {
 
     render() {
         return (
-            <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
+            <div style={{marginRight:"5px", marginLeft:"15px"}}>
                 <img onClick={() => this.openModal()} src={CommentIcon} alt="comment" className="comment__image" />
                 <div>
                     <Modal visible={this.state.visible} width="550" height="120" effect="fadeInUp" onClickAway={() => this.closeModal()}>

@@ -53,7 +53,7 @@ class OnHoldTable extends React.Component{
         .then(json => {
                 var rows = []
                 for(let i = 0; i < json.rows.length; i++){
-                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"inline-block"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
+                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
                  
                     rows.push(row)                
                 }
@@ -88,7 +88,7 @@ class OnHoldTable extends React.Component{
                   var rows = []
                   
                   for(let i = 0; i < json.rows.length; i++){
-                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"inline-block"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
+                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
                    
                       rows.push(row)                
                   }
