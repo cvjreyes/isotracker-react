@@ -30,7 +30,9 @@ const ActionBtns = props =>{
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
             actionBtn6 = <button className="action__btn" name="destination" value="stress" onClick={() => props.transaction("Recycle bin")}>Delete</button>
-            actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
+            if(process.env.REACT_APP_PROGRESS === "0"){
+                actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
+            }
         }
         actionBtn11 = <button className="action__btn"  name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
     }else{
@@ -131,11 +133,15 @@ const ActionBtns = props =>{
         
         if ((props.currentTab === "Recycle bin" && (props.role === "DesignLead" || props.role === "SpecialityLead")) || 
             (props.currentTab === "On hold" && (props.role === "DesignLead" || props.role === "SpecialityLead" || props.role === "Issuer"))){
-            actionBtn8 = <button className="action__btn" onClick={() => props.restoreClick()}>Restore</button>
+                if(process.env.REACT_APP_PROGRESS === "0"){
+                    actionBtn8 = <button className="action__btn" onClick={() => props.restoreClick()}>Restore</button>
+                }
         }
         if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab !== "Process" && props.currentTab !== "Instrument" && props.currentTab !== "Issued"){
             actionBtn6 = <button className="action__btn" name="destination" value="stress" onClick={() => props.transaction("Recycle bin")}>Delete</button>
-            actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
+            if(process.env.REACT_APP_PROGRESS === "0"){
+                actionBtn7 = <HoldComment sendHolds={sendHolds.bind(this)}/>
+            }
         }
         if(props.currentTab === "Status"){
             actionBtn1 = null

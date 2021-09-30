@@ -1640,7 +1640,6 @@ const IsoCtrlF = () => {
         secureStorage.clear()
         history.push("/" + process.env.REACT_APP_PROJECT)
     }
-
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
