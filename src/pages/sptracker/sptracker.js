@@ -393,7 +393,7 @@ const CSPTracker = () => {
             notificationsBtn = null
         }
         else if(currentTab !== "Requests"){
-            notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Requests</p></button>
+            notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests")} style={{width:"120px", marginTop:"5px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Requests</p></button>
         }else{
             notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("View")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Back</p></button>
             editBtn = <label class="switchBtn">
