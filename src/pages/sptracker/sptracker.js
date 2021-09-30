@@ -279,20 +279,6 @@ const CSPTracker = () => {
 
     async function saveChanges(){
 
-        let blank = false
-
-        for(let i = 0; i < editData.length; i++){
-            if(editData[i].tag === null || editData[i].tag === ""){
-                blank = true
-                let index = i+1 
-                await setErrorIndex("Invalid or blank tag at entry " + index +"!")
-            }
-        }
-
-        if(blank){
-            await setNoTagError(true)
-        }
-
         const body = {
             rows: editData,
             email: currentUser
@@ -313,11 +299,9 @@ const CSPTracker = () => {
             }else{
                 let tags = []
                 for(let i = 0; i < editData.length; i++){
-                    if(tags.indexOf(editData[i].tag) > -1){
+                    if(tags.indexOf(editData[i].tag) > -1 && editData[i].tag !== null){
                         unique = false
-                        let index =  i+1 
-                        await setErrorIndex("Invalid or blank tag at entry " + index +"!")
-                    
+                        await setErrorIndex("Repeated tag at entry " + i +"!")             
                     }else{
                         tags.push(editData[i].tag)
                     }
