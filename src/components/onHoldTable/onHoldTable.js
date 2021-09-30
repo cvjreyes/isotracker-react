@@ -6,6 +6,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import './onHoldTable.css'
 import { Link } from 'react-router-dom';
 import CommentPopUp from '../commentPopUp/commentPopUp';
+import HoldsPopUp from '../holdsPopUp/holdsPopUp';
 
 class OnHoldTable extends React.Component{
   state = {
@@ -20,58 +21,87 @@ class OnHoldTable extends React.Component{
     acronyms : null
   };
 
-  
 
   componentDidMount(){
-
     
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/acronyms")
-      .then(response => response.json())
-      .then(json => {
-        let dict = {}
+    .then(response => response.json())
+    .then(json => {
+      let dict = {}
 
-        for(let i = 0; i < json.length; i++){
-          dict[json[i].name] = json[i].code
-        }
-        this.setState({
-          acronyms: dict
-        })
+      for(let i = 0; i < json.length; i++){
+        dict[json[i].name] = json[i].code
+      }
+      this.setState({
+        acronyms: dict
       })
+    })
+
+    if(process.env.REACT_APP_PROGRESS === "1"){
+      const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+      }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/holds", options)
+            .then(response => response.json())
+            .then(json => {
+                    var rows = []
+                    for(let i = 0; i < json.rows.length; i++){
+                        var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
+                        var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
     
-    const body ={
-      currentTab : this.props.currentTab
-    }
-    const options = {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-  }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
-        .then(response => response.json())
-        .then(json => {
-                var rows = []
-                for(let i = 0; i < json.rows.length; i++){
-                    var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
-                 
-                    rows.push(row)                
+                        var row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}</div>, holds: <HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/>}
+                    
+                        rows.push(row)                
+                    }
+                    
+                    this.setState({data : rows, selectedRows: []});
+    
                 }
-                
-                this.setState({data : rows, selectedRows: []});
-
-            }
-        )
-        .catch(error => {
-            console.log(error);
-        })
-
+            )
+            .catch(error => {
+                console.log(error);
+            })  
+      }else{
         
+        
+        const body ={
+          currentTab : this.props.currentTab
+        }
+        const options = {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        }
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
+              .then(response => response.json())
+              .then(json => {
+                      var rows = []
+                      for(let i = 0; i < json.rows.length; i++){
+                          var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
+                      
+                          rows.push(row)                
+                      }
+                      
+                      this.setState({data : rows, selectedRows: []});
+
+                  }
+          )
+          .catch(error => {
+              console.log(error);
+          })
+        }
+
+    
   }
 
   componentDidUpdate(prevProps, prevState){
 
-    if(prevProps !== this.props){
+    if(prevProps !== this.props && process.env.REACT_APP_PROGRESS === "0"){
       const body ={
         currentTab : this.props.currentTab
       }
@@ -103,6 +133,7 @@ class OnHoldTable extends React.Component{
       }
 
   }
+
 
   getMaster(fileName){
     const options = {
@@ -326,7 +357,14 @@ class OnHoldTable extends React.Component{
           compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
       },
+      {
+        title: <div className="dataTable__header__text">Holds</div>,
+        dataIndex: 'holds',
+        key: 'holds',
+      },
     ];
+
+    
 
     if(process.env.REACT_APP_PROGRESS === "0"){
       columns = [
@@ -380,6 +418,7 @@ class OnHoldTable extends React.Component{
         },
       ];
     }
+    
 
     var totalElements = null
     if (this.state.data.length === 0){
@@ -390,11 +429,18 @@ class OnHoldTable extends React.Component{
      </div>);
     }
 
+    let table = null
+    if(process.env.REACT_APP_PROGRESS === "1"){
+      table = <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
+    }else{
+      table = <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
+    }
+
     return (
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
+          {table}
           {totalElements}
         </div>
         
