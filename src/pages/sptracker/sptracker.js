@@ -1,7 +1,7 @@
 import "./sptracker.css"
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
-import IsoTrackerLogo from "../../assets/images/3DTracker.svg"
+import CSPTrackerLogo from "../../assets/images/csptracker.svg"
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 
 import IdleTimer from 'react-idle-timer'
@@ -10,14 +10,15 @@ import SelectPag from "../../components/selectPag/selectPag"
 import CSPTrackerdDataTable from "../../components/csptrackerDataTable/csptrackerDataTable"
 import HotTable from "@handsontable/react"
 
-import SaveIcon from "../../assets/images/FolderOpen.png"
+import SaveIcon from "../../assets/images/save.svg"
 import AlertF from "../../components/alert/alert"
 import CSPTrackerRequestPopUp from "../../components/csptrackerRequestPopUp/csptrackerRequestPopUp"
 import CSPTrackerdRequestsDataTable from "../../components/csptrackerRequestsDataTable/csptrackerRequestsDataTable"
 
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import Reports from "../../assets/images/Notepad.png"
+import Reports from "../../assets/images/view_requests.svg"
+import Back from "../../assets/images/back.svg"
 
 const CSPTracker = () => {
 
@@ -393,9 +394,9 @@ const CSPTracker = () => {
             notificationsBtn = null
         }
         else if(currentTab !== "Requests"){
-            notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests")} style={{width:"120px", marginTop:"5px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Requests</p></button>
+            notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests")} style={{width:"120px", marginTop:"5px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"4px"}}></img><p className="navBar__button__text">Requests</p></button>
         }else{
-            notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("View")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Back</p></button>
+            notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("View")} style={{backgroundColor:"#99C6F8", width:"120px", marginTop:"5px"}}><img src={Back} alt="hold" className="navBar__icon" style={{marginRight:"4px"}}></img><p className="navBar__button__text">Back</p></button>
             editBtn = <label class="switchBtn">
             <input type="checkbox" id="edit" disabled onClick={()=>handleToggle()}/>
             <div class="slide round">Edit mode</div>
@@ -410,7 +411,7 @@ const CSPTracker = () => {
     if(currentRole === "Materials"){
         pageSelector = <div style={{marginLeft:"81%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
     }else if(currentRole === "Design"){
-        pageSelector = <div style={{marginLeft:"87%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>  
+        pageSelector = <div style={{marginLeft:"86%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>  
     }else{
         pageSelector = <div style={{marginLeft:"93%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
     }
@@ -508,7 +509,7 @@ const CSPTracker = () => {
             </div>
             <div className="isotracker__row">
                   <div className="isotracker__column">
-                      <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
+                      <img src={CSPTrackerLogo} alt="CSPTrackerLogo" className="isoTrackerLogo__image2" style={{height:"85px"}}/>
                       
                       <div className="roleSelector__containerF">
                               <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>

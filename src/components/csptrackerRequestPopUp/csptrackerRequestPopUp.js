@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
-import './csptrackerRequestPopUp.css'
+import './csptrackerRequestPopUp.css';
+import Request from "../../assets/images/hand_requests.svg";
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -96,7 +97,7 @@ export default class CSPTrackerRequestPopUp extends Component {
     render() {
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
-                <button className="navBar__button" onClick={() => this.openModal()} style={{width:"120px"}}><p className="navBar__button__text">REQUEST SP</p></button>
+                <button className="navBar__button" onClick={() => this.openModal()} style={{width:"150px"}}><img src={Request} alt="request" className="navBar__icon" style={{marginRight:"4px"}}></img><p className="navBar__button__text">REQUEST SP</p></button>
                 <div>
                     <Modal visible={this.state.visible} width="450" height="320" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <center className="popUp__title" style={{marginBottom: "30px"}}><h3>REQUEST SP</h3></center>

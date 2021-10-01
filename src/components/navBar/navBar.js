@@ -10,8 +10,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import './navBar.css';
 import {useHistory} from "react-router";
 import Trash from "../../assets/images/Trash.png"
-import Bell from "../../assets/images/bell.png"
-import BellActive from "../../assets/images/bell_active.png"
+import Bell from "../../assets/images/bell.svg"
+import BellActive from "../../assets/images/bell_active.svg"
 
 const CryptoJS = require("crypto-js");
 const SecureStorage = require("secure-web-storage");
@@ -309,7 +309,7 @@ const NavBar = (props) =>{
             rightButtons = <div style={{width:"40%"}}>
                     
                             
-                <button style={{float:"right", marginLeft:"20px", marginTop:"4px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
+                <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
                 <Button class="btn nohover" style={{float: "right", marginTop:"4px"}} classes={{label: classes.label}} onClick={handleClickUser}>
                 <i className="dropdown__text">{username}&nbsp;🠗</i>
                 </Button>
@@ -335,7 +335,7 @@ const NavBar = (props) =>{
             rightButtons= <div style={{width:"48%"}}>
                     
                         
-            <button style={{float:"right", marginLeft:"20px", marginTop:"4px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
+            <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
             <Button class="btn nohover" style={{float: "right", marginTop:"4px"}} classes={{label: classes.label}} onClick={handleClickUser}>
             <i className="dropdown__text">{username}&nbsp;🠗</i>
             </Button>
@@ -365,7 +365,7 @@ const NavBar = (props) =>{
         rightButtons= <div style={{width:"90%"}}>
                     
                         
-            <button style={{float:"right", marginLeft:"20px", marginTop:"4px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
+            <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
             <Button class="btn nohover" style={{float: "right", marginTop:"4px"}} classes={{label: classes.label}} onClick={handleClickUser}>
             <i className="dropdown__text">{username}&nbsp;🠗</i>
             </Button>
@@ -396,7 +396,7 @@ const NavBar = (props) =>{
         rightButtons= <div style={{width:"96%"}}>
                     
                         
-         <button style={{float:"right", marginLeft:"20px", marginTop:"4px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
+         <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
          <Button class="btn nohover" style={{float: "right", marginTop:"4px"}} classes={{label: classes.label}} onClick={handleClickUser}>
          <i className="dropdown__text">{username}&nbsp;🠗</i>
          </Button>
