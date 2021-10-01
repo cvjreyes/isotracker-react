@@ -97,10 +97,10 @@ export default class CSPTrackerRequestPopUp extends Component {
     render() {
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
-                <button className="navBar__button" onClick={() => this.openModal()} style={{width:"150px"}}><img src={Request} alt="request" className="navBar__icon" style={{marginRight:"4px"}}></img><p className="navBar__button__text">REQUEST SP</p></button>
+                <button className="navBar__button" onClick={() => this.openModal()} style={{width:"150px"}}><img src={Request} alt="request" className="navBar__icon" style={{marginRight:"4px"}}></img><p className="navBar__button__text">Request SP</p></button>
                 <div>
                     <Modal visible={this.state.visible} width="450" height="320" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                        <center className="popUp__title" style={{marginBottom: "30px"}}><h3>REQUEST SP</h3></center>
+                        <center className="popUp__title" style={{marginBottom: "30px"}}><h3>Request SP</h3></center>
                         <div className="request__container">
                             <input type="text" placeholder="LINE ID" id="tag" className="popUp__input__text" ref="tag" style={{marginBottom: "20px", color:'black'}} value={this.state.tag} onChange={(e) => this.setState({tag: e.target.value})} ></input>
                             <input type="text" placeholder="P&ID" id="pid" className="popUp__input__text" ref="pid" style={{marginBottom: "20px", color:"black"}} value={this.state.pid} onChange={(e) => this.setState({pid: e.target.value})} ></input>

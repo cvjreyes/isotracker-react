@@ -25,6 +25,7 @@ export default class ManageRolesPopUp extends Component {
             pro : false,
             ins : false,
             rev: false,
+            adm: false,
             blankFields: false,
             selected: "@technipenergies.com",
             selectedRolesLeft: null,
@@ -35,6 +36,8 @@ export default class ManageRolesPopUp extends Component {
 
    
     async openModal() {      
+
+        console.log(this.props.roles)
         let selectedLeft = []
 
         if(this.props.roles.indexOf("Design") > -1){
@@ -197,6 +200,19 @@ export default class ManageRolesPopUp extends Component {
             </div>)
         }
 
+        if(this.props.roles.indexOf("3D Admin") > -1){
+            await this.setState({adm: true})
+            selectedRight.push(<div className="checkbox">
+                <input type="checkbox" name="adm" value="adm" className="popUp__input__checkbox" onChange={(e) => this.setState({adm: e.target.checked})} defaultChecked={this.state.adm}/>  
+                <label for="adm" className="popUp__input__checkbox__label">3D Admin</label>
+            </div>)
+        }else{
+            selectedRight.push(<div className="checkbox">
+                <input type="checkbox" name="adm" value="adm" className="popUp__input__checkbox" onChange={(e) => this.setState({adm: e.target.checked})}/>  
+                <label for="adm" className="popUp__input__checkbox__label">3D Admin</label>
+            </div>)
+        }
+
         this.setState({selectedRolesRight: selectedRight})
         this.setState({
             visible : true,
@@ -221,6 +237,7 @@ export default class ManageRolesPopUp extends Component {
             pro : false,
             ins : false,
             rev: false,
+            adm: false,
             blankFields: false,
             selected: "@technipenergies.com"
         });
@@ -254,6 +271,8 @@ export default class ManageRolesPopUp extends Component {
             roles.push("ins")
         }if(this.state.rev){
             roles.push("rev")
+        }if(this.state.adm){
+            roles.push("E3D")
         }
         
         this.props.submitRoles(this.props.id, roles)
@@ -274,7 +293,7 @@ export default class ManageRolesPopUp extends Component {
             <section >
                 <input type="button"  value="MANAGE" className="btn"  style={{padding:"2px 5px 2px 5px", marginRight:"5px", marginLeft:"5px", width:"70px", fontSize:"12px", float:"right", backgroundColor:"#17A2B8", color:"white"}} onClick={() => this.openModal()} />
                 <div>
-                    <Modal visible={this.state.visible} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="450" height="380" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div
                         className={`alert alert-success ${this.state.blankFields ? 'alert-shown' : 'alert-hidden'}`}
                         onTransitionEnd={() => this.setState({blankFields: false})}
@@ -287,7 +306,7 @@ export default class ManageRolesPopUp extends Component {
                         </div>
                         
                         <div className="checkbox__container_manage">
-                            <div className="popUp__input__checkbox__group">
+                            <div className="popUp__input__checkbox__group__left">
                                 {this.state.selectedRolesLeft}
                             </div>
                             <div className="popUp__input__checkbox__group">

@@ -386,10 +386,12 @@ const CSPTracker = () => {
     let editBtn, addRowBtn, saveBtn, upload, requestBtn, notificationsBtn, designNotificationsBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
     if(currentRole === "Materials"){
-        editBtn =  <label class="switchBtn">
-                        <input type="checkbox" id="edit" onClick={()=>handleToggle()}/>
-                        <div class="slide round">Edit mode</div>
-                    </label>    
+        editBtn = <label class="switchBtn" style={{width:"145px"}}>
+                    <p className="navBar__button__text" style={{width:"100px", marginTop:"4px"}}>Edit mode</p>
+                    <input type="checkbox" id="edit" onClick={()=>handleToggle()}/>
+                    <div class="slide round"></div>
+                </label>   
+                   
         if(currentTab === "Edit"){
             notificationsBtn = null
         }
@@ -397,10 +399,11 @@ const CSPTracker = () => {
             notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Requests")} style={{width:"120px", marginTop:"5px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"4px"}}></img><p className="navBar__button__text">Requests</p></button>
         }else{
             notificationsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("View")} style={{backgroundColor:"#99C6F8", width:"120px", marginTop:"5px"}}><img src={Back} alt="hold" className="navBar__icon" style={{marginRight:"4px"}}></img><p className="navBar__button__text">Back</p></button>
-            editBtn = <label class="switchBtn">
-            <input type="checkbox" id="edit" disabled onClick={()=>handleToggle()}/>
-            <div class="slide round">Edit mode</div>
-        </label> 
+            editBtn = <label class="switchBtn" style={{width:"145px"}}>
+            <p className="navBar__button__text" style={{width:"100px", marginTop:"4px"}}>Edit mode</p>
+            <input type="checkbox" id="edit" disabled/>
+            <div class="slide round"></div>
+        </label>
         }
     }
 
@@ -409,11 +412,11 @@ const CSPTracker = () => {
     }
 
     if(currentRole === "Materials"){
-        pageSelector = <div style={{marginLeft:"81%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
+        pageSelector = <div style={{marginLeft:"87%", position:"absolute"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
     }else if(currentRole === "Design"){
         pageSelector = <div style={{marginLeft:"86%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>  
     }else{
-        pageSelector = <div style={{marginLeft:"93%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
+        pageSelector = <div style={{marginLeft:"94%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
     }
 
     if(currentTab === "View"){
@@ -525,8 +528,8 @@ const CSPTracker = () => {
                                 {editBtn}
                                 {notificationsBtn}
                                 {designNotificationsBtn}
-                                {pageSelector}
                                 {saveBtn}   
+                                {pageSelector}
                               </div>                           
                                
                           </th>

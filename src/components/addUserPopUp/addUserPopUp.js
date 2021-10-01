@@ -24,6 +24,7 @@ export default class AddUserPopUp extends Component {
             pro : false,
             ins : false,
             rev: false,
+            adm: false,
             blankFields: false,
             selected: "@technipenergies.com"
         }
@@ -54,6 +55,7 @@ export default class AddUserPopUp extends Component {
             pro : false,
             ins : false,
             rev: false,
+            adm: false,
             blankFields: false,
             selected: "@technipenergies.com"
         });
@@ -100,6 +102,8 @@ export default class AddUserPopUp extends Component {
                 roles.push("ins")
             }if(this.state.rev){
                 roles.push("rev")
+            }if(this.state.adm){
+                roles.push("E3D")
             }
             
             this.props.addUser(username, email, roles)
@@ -176,6 +180,10 @@ export default class AddUserPopUp extends Component {
                                 <div className="checkbox">
                                     <input type="checkbox" name="REV" value="REV" className="popUp__input__checkbox" onChange={(e) => this.setState({rev: e.target.checked})} checked={this.state.rev}/>  
                                     <label for="REV" className="popUp__input__checkbox__label">Review</label>
+                                </div>
+                                <div className="checkbox">
+                                    <input type="checkbox" name="3D" value="3D" className="popUp__input__checkbox" onChange={(e) => this.setState({adm: e.target.checked})} checked={this.state.adm}/>  
+                                    <label for="3D" className="popUp__input__checkbox__label">3DAdmin</label>
                                 </div>
                             </div>
                             <div className="popUp__input__checkbox__group">
