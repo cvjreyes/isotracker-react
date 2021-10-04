@@ -45,6 +45,12 @@ const Home = () =>{
         }
     });
 
+    useEffect(()=>{
+        if(!secureStorage.getItem("user")){
+            history.push("/"+process.env.REACT_APP_PROJECT+"/");
+        }
+    }, [])
+
     useEffect(() =>{
 
         setContent(<LoadingScreen3D progress={"25"}/>)

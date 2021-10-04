@@ -105,6 +105,12 @@ const Civil = () => {
         }
     });
 
+    useEffect(()=>{
+        if(!secureStorage.getItem("user")){
+            history.push("/"+process.env.REACT_APP_PROJECT+"/");
+        }
+    }, [])
+
     var dataTableHeight = "550px"
 
 

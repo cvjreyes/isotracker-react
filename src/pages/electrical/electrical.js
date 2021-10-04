@@ -105,6 +105,12 @@ const Electrical = () => {
             
     },[]);
 
+    useEffect(()=>{
+        if(!secureStorage.getItem("user")){
+            history.push("/"+process.env.REACT_APP_PROJECT+"/");
+        }
+    }, [])
+
     function success(){
         setSuccessAlert(true)
         setTimeout(function () {

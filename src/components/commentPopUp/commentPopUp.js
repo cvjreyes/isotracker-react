@@ -48,9 +48,9 @@ export default class CommentPopUp extends Component {
             <div style={{marginRight:"5px", marginLeft:"15px"}}>
                 <img onClick={() => this.openModal()} src={CommentIcon} alt="comment" className="comment__image" />
                 <div>
-                    <Modal visible={this.state.visible} width="550" height="120" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="550" height="200" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div style={{marginTop:"10px"}}>
-                            <center>{this.state.user} at {this.state.updated}</center>
+                            <center><p style={{fontWeight:"bold"}}>{this.state.user} at {this.state.updated}</p></center>
                             <p style={{fontSize:"20px", padding:"5px 5px 5px 15px"}}>{this.props.comments}</p>   
                         </div>
                                 

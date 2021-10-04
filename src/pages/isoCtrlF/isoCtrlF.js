@@ -104,6 +104,12 @@ const IsoCtrlF = () => {
         }
     });
 
+    useEffect(()=>{
+        if(!secureStorage.getItem("user")){
+            history.push("/"+process.env.REACT_APP_PROJECT+"/");
+        }
+    }, [])
+
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) 
 
     var dataTableHeight = "530px"

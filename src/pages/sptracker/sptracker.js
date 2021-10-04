@@ -85,6 +85,12 @@ const CSPTracker = () => {
 
     const history = useHistory()
 
+    useEffect(()=>{
+        if(!secureStorage.getItem("user")){
+            history.push("/"+process.env.REACT_APP_PROJECT+"/");
+        }
+    }, [])
+
     var currentUser = secureStorage.getItem('user')
 
     let p1bore, p2bore, p3bore = ""
