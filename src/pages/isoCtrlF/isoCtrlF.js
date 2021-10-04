@@ -1576,8 +1576,75 @@ const IsoCtrlF = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportNotModelled/")
         .then(response => response.json())
         .then(json => {
+            
             const headers = ["UNIT", "AREA", "LINE", "TRAIN Nº", "LINE ID", "ISO ID", "SPEC CODE", "TOTAL WEIGHT", "LDL", "BOM"]
             exportToExcel(JSON.parse(json), "Isocontrol not modelled", headers)
+        })
+    }
+
+    async function exportFull(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportFull/")
+        .then(response => response.json())
+        .then(json => {
+            for(let i = 0; i < json.rows.length; i++){
+
+                if(json.rows[i].line_id === null){
+                    json.rows[i].modelled = "Not modelled"
+                }else{
+                    json.rows[i].modelled = "Modelled"
+                }
+
+                json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
+                json.rows[i].iso_id = json.rows[i].unit + json.rows[i].area + json.rows[i].line + json.rows[i].train
+    
+                if(json.rows[i].LDL === "In LDL" && json.rows[i].BOM === "Not in BOM"){
+                    json.rows[i].line_id = json.rows[i].LDL_unit + json.rows[i].fluid + json.rows[i].seq
+                    json.rows[i].iso_id = " "
+    
+                    json.rows[i].unit = json.rows[i].LDL_unit
+                    json.rows[i].line = json.rows[i].fluid + json.rows[i].seq
+                    json.rows[i].spec_code = json.rows[i].spec_code_ldl
+                }else{
+                    json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
+                    json.rows[i].iso_id = json.rows[i].unit + json.rows[i].area + json.rows[i].line + json.rows[i].train
+      
+                    json.rows[i].unit = json.rows[i].unit
+                }
+    
+                if(json.rows[i].diameter === null){
+                    json.rows[i].modelled = "Not modelled"
+                }else{
+                    json.rows[i].modelled = "Modelled"
+                }
+    
+                if(!json.rows[i].spec_code){
+                  json.rows[i].spec_code = ""
+                }
+    
+                if(!json.rows[i].BOM){
+                    json.rows[i].BOM = ""
+                }
+    
+                if(!json.rows[i].LDL){
+                    json.rows[i].LDL = ""
+                }
+    
+                if(!json.rows[i].calc_notes){
+                    json.rows[i].calc_notes = ""
+                }
+    
+    
+                if(i % 2 === 0){
+                    json.rows[i].color = "#fff"
+                }else{
+                    json.rows[i].color = "#eee"
+                }
+            }
+            console.log(json.rows[0])
+            const headers = ["LINE ID", "UNIT", "AREA", "LINE", "TRAIN Nº", "FLUID", "SEQUENTIAL", "ISO ID", "SPEC CODE", "DIAMETER", "P&ID", "STRESS LEVEL", "CALCULATION NOTES", "INSULATION", "TOTAL WEIGHT", "MODELLED", "LDL", "BOM"]
+            exportToExcel(JSON.parse(json), "Isocontrol", headers)
         })
     }
 
@@ -1646,9 +1713,9 @@ const IsoCtrlF = () => {
     currentRole === "SpecialityLead" && currentTab !== "Progress") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab !== "Progress" && currentTab !== "Modelled"){
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)}/>
     }
     if(currentTab === "Modelled"){
         actionButtons = <button className="action__btn" onClick={()=>downloadModelled()}>Export</button>

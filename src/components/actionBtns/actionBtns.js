@@ -34,6 +34,11 @@ const ActionBtns = props =>{
     function exportNotModelled(){
         props.exportNotModelled()
     }
+
+    function exportFull(){
+        props.exportFull()
+    }
+
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
@@ -168,6 +173,12 @@ const ActionBtns = props =>{
         actionBtn11 = null
     }else if(props.currentTab === "IsoControlNotMod"){
         actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportNotModelled()}>Export</button>
+        actionBtn6 = null
+        actionBtn7 = null
+        actionBtn10 = null
+        actionBtn11 = null
+    }else if(props.currentTab === "IsoControlFull"){
+        actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportFull()}>Export</button>
         actionBtn6 = null
         actionBtn7 = null
         actionBtn10 = null
