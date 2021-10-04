@@ -270,7 +270,7 @@ const Electrical = () => {
         
         <body>
             <IdleTimer
-                timeout={1000 * 60 * 15}
+                timeout={1000 * 60 * 5}
                 onIdle={handleOnIdle}
                 debounce={250}
             />

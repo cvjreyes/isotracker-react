@@ -226,7 +226,7 @@ const CSPTracker = () => {
 
             })
         secureStorage.clear()
-        history.push("/" + process.env.REACT_APP_APP_NAMEPROJ)
+        history.push("/" + process.env.REACT_APP_PROJECT)
     }
 
     async function handleToggle(){
@@ -463,7 +463,7 @@ const CSPTracker = () => {
         <body>
             {updateData}
             <IdleTimer
-                timeout={1000 * 60 * 15}
+                timeout={1000 * 60 * 5}
                 onIdle={handleOnIdle}
                 debounce={250}
             />
