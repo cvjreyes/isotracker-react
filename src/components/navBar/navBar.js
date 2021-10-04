@@ -393,7 +393,7 @@ const NavBar = (props) =>{
         userButton= <Button  class="btn nohover" style={{float: "right"}} classes={{label: classes.label}} onClick={handleClickUser}>
         <i className="dropdown__text">{username}&nbsp;🠗</i>
         </Button>
-        rightButtons= <div style={{width:"96%"}}>
+        rightButtons= <div style={{width:"82%"}}>
                     
                         
          <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
@@ -403,7 +403,7 @@ const NavBar = (props) =>{
          
 
          {isMenuOpen && (
-             <div className="notifications__container" style={{marginLeft: "82%"}}>
+             <div className="notifications__container" style={{marginLeft: "68%"}}>
                  <div className="notificationPanel__header">
                      <p className="notificationHeader__text">Notifications</p>
                      <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
@@ -416,7 +416,7 @@ const NavBar = (props) =>{
          {projectBtn}
      </div>
     }
-
+    let isotrackerBtnNoProgress = null
     if(process.env.REACT_APP_SP === "1"){
         if(process.env.REACT_APP_PROGRESS === "1"){
             spButtonProgress = <Button class="btn nohover" onClick={handleClickSP} style={{marginRight:"50px"}}>
@@ -425,6 +425,9 @@ const NavBar = (props) =>{
         }else{
             spButton = <Button class="btn nohover" onClick={handleClickSP} style={{marginLeft:"50px"}}>
             <i className="dropdown__text" >CSPTracker</i>
+            </Button>
+            isotrackerBtnNoProgress = <Button class="btn nohover" onClick={handleClickIsotracker} style={{marginLeft:"50px"}}>
+                        <i className="dropdown__text" >IsoTracker </i>
             </Button>
         }    
     }
@@ -522,7 +525,8 @@ const NavBar = (props) =>{
             
                 <Toolbar>
                     
-                    {progressButtons}           
+                    {progressButtons}   
+                    {isotrackerBtnNoProgress}        
                     {spButtonProgress}
                     
                     {spButton}
