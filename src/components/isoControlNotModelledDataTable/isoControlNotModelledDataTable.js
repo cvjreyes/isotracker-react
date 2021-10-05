@@ -63,6 +63,10 @@ class IsoControlNotModelledDataTable extends React.Component{
               json.rows[i].train = ""
             }
 
+            if(!json.rows[i].total_weight){
+              json.rows[i].total_weight = ""
+            }
+
             if(i % 2 === 0){
                 json.rows[i].color = "#fff"
             }else{

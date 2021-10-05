@@ -45,6 +45,11 @@ class IsoControlModelledDataTable extends React.Component{
               json.rows[i].spec_code = ""
             }
 
+
+            if(!json.rows[i].total_weight){
+              json.rows[i].total_weight = ""
+            }
+
             if(i % 2 === 0){
                 json.rows[i].color = "#fff"
             }else{
