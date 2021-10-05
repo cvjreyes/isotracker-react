@@ -29,61 +29,67 @@ class CSPTrackerKeyParams extends React.Component{
         },
     }
 
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/types", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker/ratings", options)
     .then(response => response.json())
     .then(json => {
       var rows = []
       var row = null
-      rows.push({"Code": "Code", "Name": "Name", "Weight": "Weight"})
       for(let i = 0; i < json.rows.length; i++){
 
-          row = {"Code": json.rows[i].code, "Name": json.rows[i].name, "Weight": json.rows[i].weight}
-
-          for(let j = 0; j < this.state.steps.length; j++){
-            let currentStep = this.state.steps[j].toString()
-            row[currentStep] = json.rows[i][currentStep]
-          }
+          row = {"Name": json.rows[i].rating}
           rows.push(row)
       }
-      this.setState({typesData : rows, selectedRows: []});
+      this.setState({ratingData : rows, selectedRows: []});
 
-  }) 
+    }) 
 
-  fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/steps", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker/specs", options)
     .then(response => response.json())
     .then(json => {
       var rows = []
       var row = null
-      rows.push({"Name":"Name", "Percentage":"Percentage"})
-      for(let i = 0; i < json.steps.length; i++){
-          row = {"Name": json.names[i].name, "Percentage": json.steps[i].percentage}
-
-          rows.push(row)
-      }
-      this.setState({stepsData : rows, selectedRows: []});
-
-  })
-
-  fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/gequips", options)
-    .then(response => response.json())
-    .then(json => {
-      var rows = []
-      var row = null
-      rows.push({"Week": "Week", "Estimated": "Estimated"})
       for(let i = 0; i < json.rows.length; i++){
-          row = {"Week": json.rows[i].week, "Estimated": json.rows[i].estimated}
 
+          row = {"Name": json.rows[i].spec}
           rows.push(row)
       }
-      this.setState({progressData : rows, selectedRows: []});
+      this.setState({specData : rows, selectedRows: []});
 
-  })
+    }) 
+
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker/endPreparations", options)
+    .then(response => response.json())
+    .then(json => {
+      var rows = []
+      var row = null
+      for(let i = 0; i < json.rows.length; i++){
+
+          row = {"Name": json.rows[i].state}
+          rows.push(row)
+      }
+      this.setState({endPreparationData : rows, selectedRows: []});
+
+    })
+    
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker/boltTypes", options)
+    .then(response => response.json())
+    .then(json => {
+      var rows = []
+      var row = null
+      for(let i = 0; i < json.rows.length; i++){
+
+          row = {"Name": json.rows[i].type}
+          rows.push(row)
+      }
+      this.setState({boltTypesData : rows, selectedRows: []});
+
+    }) 
   }
 
-  addRowTypes(){
-    let rows = this.state.typesData
-    rows.push({"Code": "", "Name":"", "Weight": ""})
-    this.setState({typesData: rows})
+  addRowRatings(){
+    let rows = this.state.ratingData
+    rows.push({"Name":""})
+    this.setState({ratingData: rows})
   }
   
   submitChangesTypes(){
@@ -181,14 +187,14 @@ class CSPTrackerKeyParams extends React.Component{
 
       return (
         <div className="row" style={{float:"left"}}>
-           <div className="column" style={{marginLeft:"20px"}}>
+           <div className="column" style={{marginLeft:"300px"}}>
             <div id="hot-app">
               <HotTable
                 data={this.state.ratingData}
-                colHeaders={true}
+                colHeaders = {["<b>RATINGS</b>"]}
                 rowHeaders={true}
-                width="473"
-                height="500"
+                width="250"
+                height="470"
                 settings={stepsSettings} 
                 manualColumnResize={true}
                 manualRowResize={true}
@@ -196,72 +202,72 @@ class CSPTrackerKeyParams extends React.Component{
               />
               <br></br>
               <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowSteps()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesSteps()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowRatings()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesRatings()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
               </center>
             </div>
           </div>
-          <div className="column" style={{marginLeft:"19px"}}>
+          <div className="column" style={{marginLeft:"170px"}}>
 
             <div id="hot-app">
               <HotTable
                 data={this.state.specData}
-                colHeaders={true}
+                colHeaders = {["<b>SPECS</b>"]}
                 rowHeaders={true}
-                width="675"
-                height="500"
+                width="250"
+                height="470"
                 settings={typesSettings} 
                 manualColumnResize={true}
                 manualRowResize={true}
-                columns= {[{ data: "Code"}, { data: "Name"}, {data: "Weight", type:"numeric"}]}
+                columns= {[{ data: "Name"}]}
               />
               <br></br>
               <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowTypes()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesTypes()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowSpecs()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesSpecs()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
               </center>
             </div>
           </div>
          
-          <div className="column" style={{marginLeft:"20px"}}>
+          <div className="column" style={{marginLeft:"170px"}}>
             <div id="hot-app">
               <HotTable
                 data={this.state.endPreparationData}
-                colHeaders={true}
+                colHeaders = {["<b>END PREPARATIONS</b>"]}
                 rowHeaders={true}
-                width="465"
-                height="500"
+                width="250"
+                height="470"
                 settings={progressSettings} 
                 manualColumnResize={true}
                 manualRowResize={true}
-                columns= {[{ data: "Week", type:"numeric"}, {data: "Estimated", type:"numeric"}]}
+                columns= {[{ data: "Name"}]}
               />
               <br></br>
               <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowProgress()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesProgress()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowEndPreparations()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesEndPreparations()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
               </center>
               <br></br>
             </div>
           </div>
-          <div className="column" style={{marginLeft:"19px"}}>
+          <div className="column" style={{marginLeft:"170px"}}>
 
             <div id="hot-app">
               <HotTable
                 data={this.state.boltTypesData}
-                colHeaders={true}
+                colHeaders = {["<b>BOLT TYPES</b>"]}
                 rowHeaders={true}
-                width="675"
-                height="500"
+                width="250"
+                height="470"
                 settings={typesSettings} 
                 manualColumnResize={true}
                 manualRowResize={true}
-                columns= {[{ data: "Code"}, { data: "Name"}, {data: "Weight", type:"numeric"}]}
+                columns= {[{ data: "Name"}]}
               />
               <br></br>
               <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowTypes()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesTypes()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowBoltTypes()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesBoltTypes()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
               </center>
             </div>
           </div>
