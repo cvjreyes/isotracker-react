@@ -85,6 +85,31 @@ class IsoControlFullDataTable extends React.Component{
                 json.rows[i].progress = ""
             }
 
+            if(!json.rows[i].area){
+              json.rows[i].area = ""
+            }
+
+            if(!json.rows[i].train){
+              json.rows[i].train = ""
+            }
+
+            if(!json.rows[i].fluid){
+              json.rows[i].fluid = ""
+            }
+
+            if(!json.rows[i].seq){
+              json.rows[i].seq = ""
+            }
+
+            if(!json.rows[i].stress_level){
+              json.rows[i].stress_level = ""
+            }
+
+            if(!json.rows[i].insulation){
+              json.rows[i].insulation = ""
+            }
+            
+
             if(i % 2 === 0){
                 json.rows[i].color = "#fff"
             }else{
@@ -339,24 +364,6 @@ class IsoControlFullDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">State</div>,
-        dataIndex: 'to',
-        key: 'to',
-        ...this.getColumnSearchProps('to'),
-        sorter: {
-          compare: (a, b) => { a.to.localeCompare(b.to)},
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Progress</div>,
-        dataIndex: 'progress',
-        key: 'progress',
-        ...this.getColumnSearchProps('progress'),
-        sorter: {
-          compare: (a, b) => { a.progress.localeCompare(b.progress)},
-        },
-      },
-      {
         title: <div className="dataTable__header__text">BOM</div>,
         dataIndex: 'BOM',
         key: 'BOM',
@@ -374,57 +381,6 @@ class IsoControlFullDataTable extends React.Component{
           compare: (a, b) => { a.LDL.localeCompare(b.LDL)},
         },
       },
-      {
-        title: <div className="dataTable__header__text">CUSTOM 1</div>,
-        dataIndex: 'custom1',
-        key: 'custom1',
-        ...this.getColumnSearchProps('custom1'),
-        sorter: {
-          compare: (a, b) => { a.custom1.localeCompare(b.custom1)},
-        },
-        width:"400px"
-      },
-      {
-        title: <div className="dataTable__header__text">CUSTOM 2</div>,
-        dataIndex: 'custom2',
-        key: 'custom2',
-        ...this.getColumnSearchProps('custom2'),
-        sorter: {
-          compare: (a, b) => { a.custom2.localeCompare(b.custom2)},
-        },
-        width:"400px"
-      },
-      {
-        title: <div className="dataTable__header__text">CUSTOM 3</div>,
-        dataIndex: 'custom3',
-        key: 'custom3',
-        ...this.getColumnSearchProps('custom3'),
-        sorter: {
-          compare: (a, b) => { a.custom3.localeCompare(b.custom3)},
-        },
-        width:"400px"
-      },
-      {
-        title: <div className="dataTable__header__text">CUSTOM 4</div>,
-        dataIndex: 'custom4',
-        key: 'custom4',
-        ...this.getColumnSearchProps('custom4'),
-        sorter: {
-          compare: (a, b) => { a.custom4.localeCompare(b.custom4)},
-        },
-        width:"400px"
-      },
-      {
-        title: <div className="dataTable__header__text">CUSTOM 5</div>,
-        dataIndex: 'custom5',
-        key: 'custom5',
-        ...this.getColumnSearchProps('custom5'),
-        sorter: {
-          compare: (a, b) => { a.custom5.localeCompare(b.custom5)},
-        },
-        width:"400px"
-      },
-
     ];
 
     

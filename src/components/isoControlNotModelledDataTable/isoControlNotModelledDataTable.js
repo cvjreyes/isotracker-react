@@ -55,6 +55,14 @@ class IsoControlNotModelledDataTable extends React.Component{
               json.rows[i].spec_code = ""
             }
 
+            if(!json.rows[i].area){
+              json.rows[i].area = ""
+            }
+
+            if(!json.rows[i].train){
+              json.rows[i].train = ""
+            }
+
             if(i % 2 === 0){
                 json.rows[i].color = "#fff"
             }else{
