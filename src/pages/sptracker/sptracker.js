@@ -500,7 +500,7 @@ const CSPTracker = () => {
     }else if(currentTab === "Requests"){
         table = <CSPTrackerdRequestsDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} />
     }else if(currentTab === "CSP KeyParams"){
-        table = <CSPTrackerKeyParams/>
+        table = <CSPTrackerKeyParams success={()=> setSuccessAlert(true)}/>
     }
 
     return(

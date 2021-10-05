@@ -36,7 +36,7 @@ class CSPTrackerKeyParams extends React.Component{
       var row = null
       for(let i = 0; i < json.rows.length; i++){
 
-          row = {"Name": json.rows[i].rating}
+          row = {"id": json.rows[i].id,"Name": json.rows[i].rating}
           rows.push(row)
       }
       this.setState({ratingData : rows, selectedRows: []});
@@ -50,7 +50,7 @@ class CSPTrackerKeyParams extends React.Component{
       var row = null
       for(let i = 0; i < json.rows.length; i++){
 
-          row = {"Name": json.rows[i].spec}
+          row = {"id": json.rows[i].id, "Name": json.rows[i].spec}
           rows.push(row)
       }
       this.setState({specData : rows, selectedRows: []});
@@ -64,7 +64,7 @@ class CSPTrackerKeyParams extends React.Component{
       var row = null
       for(let i = 0; i < json.rows.length; i++){
 
-          row = {"Name": json.rows[i].state}
+          row = {"id": json.rows[i].id, "Name": json.rows[i].state}
           rows.push(row)
       }
       this.setState({endPreparationData : rows, selectedRows: []});
@@ -78,7 +78,7 @@ class CSPTrackerKeyParams extends React.Component{
       var row = null
       for(let i = 0; i < json.rows.length; i++){
 
-          row = {"Name": json.rows[i].type}
+          row = {"id": json.rows[i].id, "Name": json.rows[i].type}
           rows.push(row)
       }
       this.setState({boltTypesData : rows, selectedRows: []});
@@ -92,9 +92,9 @@ class CSPTrackerKeyParams extends React.Component{
     this.setState({ratingData: rows})
   }
   
-  submitChangesTypes(){
+  submitChangesRatings(){
     const body = {
-      rows: this.state.typesData,
+      rows: this.state.ratingData,
     }
     const options = {
         method: "POST",
@@ -103,18 +103,18 @@ class CSPTrackerKeyParams extends React.Component{
         },
         body: JSON.stringify(body)
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/equipments/types", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/csptracker/ratings", options)
     .then(response => response.json())
     .then(json =>{
-
+        
     })
     this.props.success()
   }
 
-  addRowSteps(){
-    let rows = this.state.stepsData
-    rows.push({"Name": "", "Percentage":""})
-    this.setState({stepsData: rows})
+  addRowSpecs(){
+    let rows = this.state.specData
+    rows.push({"Name": ""})
+    this.setState({specData: rows})
   }
 
   submitChangesSteps(){
@@ -136,10 +136,10 @@ class CSPTrackerKeyParams extends React.Component{
     this.props.success()
   }
 
-  addRowProgress(){
-    let rows = this.state.progressData
-    rows.push({"Week": "", "Estimated": ""})
-    this.setState({progressData: rows})
+  addRowEndPreparations(){
+    let rows = this.state.endPreparationData
+    rows.push({"Name": ""})
+    this.setState({endPreparationData: rows})
   }
 
   submitChangesProgress(){
@@ -161,7 +161,30 @@ class CSPTrackerKeyParams extends React.Component{
     this.props.success()
   }
 
-  
+  addRowBoltTypes(){
+    let rows = this.state.boltTypesData
+    rows.push({"Name": ""})
+    this.setState({boltTypesData: rows})
+  }
+
+  submitChangesProgress(){
+    const body = {
+      rows: this.state.progressData,
+    }
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/equipments/progress", options)
+    .then(response => response.json())
+    .then(json =>{
+
+    })
+    this.props.success()
+  }
 
  
 
