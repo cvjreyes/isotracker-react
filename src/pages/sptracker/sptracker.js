@@ -19,6 +19,7 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import Reports from "../../assets/images/view_requests.svg"
 import Back from "../../assets/images/back.svg"
+import CSPTrackerKeyParams from "../../components/csptrackerKeyParams/csptrackerKeyParams"
 
 const CSPTracker = () => {
 
@@ -276,6 +277,17 @@ const CSPTracker = () => {
         }
     }
 
+    async function handleToggleKP(){
+        if(currentTab === "View"){
+            await setCurrentTab("CSP KeyParams")
+            
+        }else{
+            //await saveChangesKP()
+            await setCurrentTab("View")
+            
+        }
+    }
+
     async function addRow(){
         let rows = editData
         //rows.push({tag:null, description: null, description_plan_code: null, drawing_filename: null, description_iso: null, ident: null, p1diameter_dn: null, p1diameter_nps: null, p2diameter_dn: null, p2diameter_nps: null, p3diameter_dn: null, p3diameter_nps: null, rating: null, spec: null, face_to_face: null, end_preparation: null, description_drawing: null, bolts: null, bolt_type: null, ready_load: null, ready_e3d: null, comments: null})
@@ -337,6 +349,29 @@ const CSPTracker = () => {
              
     }
 
+    async function saveChangesKP(){
+
+        const body = {
+
+        }
+     
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitCSPKP", options)
+        .then(response => response.json())
+        .then(async json =>{
+            if(json.success){
+                await setSuccessAlert(true)
+            }
+        })                  
+             
+    }
+
     async function updateDataMethod(){
         setUpdateData(!updateData)
     }
@@ -389,7 +424,7 @@ const CSPTracker = () => {
         dataTableHeight = "19000px"    
     }
 
-    let editBtn, addRowBtn, saveBtn, upload, requestBtn, notificationsBtn, designNotificationsBtn = null
+    let editBtn, addRowBtn, saveBtn, upload, requestBtn, notificationsBtn, designNotificationsBtn, kpBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
     if(currentRole === "Materials"){
         editBtn = <label class="switchBtn" style={{width:"145px"}}>
@@ -411,6 +446,14 @@ const CSPTracker = () => {
             <div class="slide round"></div>
         </label>
         }
+    }
+
+    if(currentRole === "3D Admin"){
+        editBtn = <label class="switchBtn" style={{width:"155px"}}>
+                    <p className="navBar__button__text" style={{width:"180px", marginTop:"4px"}}>KeyParams</p>
+                    <input type="checkbox" id="edit" onClick={()=>handleToggleKP()}/>
+                    <div class="slide round" style={{marginLeft:"90px"}}></div>
+                </label>  
     }
 
     if(currentRole === "Design"){
@@ -456,6 +499,8 @@ const CSPTracker = () => {
 
     }else if(currentTab === "Requests"){
         table = <CSPTrackerdRequestsDataTable updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} />
+    }else if(currentTab === "CSP KeyParams"){
+        table = <CSPTrackerKeyParams/>
     }
 
     return(
