@@ -424,7 +424,7 @@ const CSPTracker = () => {
         dataTableHeight = "19000px"    
     }
 
-    let editBtn, addRowBtn, saveBtn, upload, requestBtn, notificationsBtn, designNotificationsBtn, kpBtn = null
+    let editBtn, addRowBtn, saveBtn, exportBtn, requestBtn, notificationsBtn, designNotificationsBtn, kpBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
     if(currentRole === "Materials"){
         editBtn = <label class="switchBtn" style={{width:"145px"}}>
@@ -470,7 +470,7 @@ const CSPTracker = () => {
 
     if(currentTab === "View"){
         table = <CSPTrackerdDataTable pagination={pagination} currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
-        
+        exportBtn = <button className="action__btn" name="export" value="export" onClick={() => downloadReport()}>Export</button>
         addRowBtn = null
         saveBtn = null
         
@@ -597,7 +597,7 @@ const CSPTracker = () => {
                   </table>
                   <center className="actionBtns__container">   
                     <div style={{display:"flex", marginTop:"10px"}}>
-                        <button className="action__btn" name="export" value="export" onClick={() => downloadReport()}>Export</button>
+                        {exportBtn}
                     </div>
                     
                   </center>

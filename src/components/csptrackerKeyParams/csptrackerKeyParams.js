@@ -117,9 +117,9 @@ class CSPTrackerKeyParams extends React.Component{
     this.setState({specData: rows})
   }
 
-  submitChangesSteps(){
+  submitChangesSpecs(){
     const body = {
-      rows: this.state.stepsData,
+      rows: this.state.specData,
     }
     const options = {
         method: "POST",
@@ -128,7 +128,7 @@ class CSPTrackerKeyParams extends React.Component{
         },
         body: JSON.stringify(body)
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/equipments/steps", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/csptracker/specs", options)
     .then(response => response.json())
     .then(json =>{
 
@@ -142,9 +142,9 @@ class CSPTrackerKeyParams extends React.Component{
     this.setState({endPreparationData: rows})
   }
 
-  submitChangesProgress(){
+  submitChangesEndPreparations(){
     const body = {
-      rows: this.state.progressData,
+      rows: this.state.endPreparationData,
     }
     const options = {
         method: "POST",
@@ -153,7 +153,7 @@ class CSPTrackerKeyParams extends React.Component{
         },
         body: JSON.stringify(body)
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/equipments/progress", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/csptracker/endPreparations", options)
     .then(response => response.json())
     .then(json =>{
 
@@ -167,9 +167,9 @@ class CSPTrackerKeyParams extends React.Component{
     this.setState({boltTypesData: rows})
   }
 
-  submitChangesProgress(){
+  submitChangesBoltTypes(){
     const body = {
-      rows: this.state.progressData,
+      rows: this.state.boltTypesData,
     }
     const options = {
         method: "POST",
@@ -178,7 +178,7 @@ class CSPTrackerKeyParams extends React.Component{
         },
         body: JSON.stringify(body)
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/equipments/progress", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/csptracker/boltTypes", options)
     .then(response => response.json())
     .then(json =>{
 
@@ -225,8 +225,8 @@ class CSPTrackerKeyParams extends React.Component{
               />
               <br></br>
               <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowRatings()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesRatings()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowRatings()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#338DF1"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesRatings()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
               </center>
             </div>
           </div>
@@ -246,8 +246,8 @@ class CSPTrackerKeyParams extends React.Component{
               />
               <br></br>
               <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowSpecs()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesSpecs()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowSpecs()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesSpecs()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
               </center>
             </div>
           </div>
@@ -267,8 +267,8 @@ class CSPTrackerKeyParams extends React.Component{
               />
               <br></br>
               <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowEndPreparations()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesEndPreparations()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowEndPreparations()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesEndPreparations()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
               </center>
               <br></br>
             </div>
@@ -289,8 +289,8 @@ class CSPTrackerKeyParams extends React.Component{
               />
               <br></br>
               <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowBoltTypes()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesBoltTypes()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowBoltTypes()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesBoltTypes()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
               </center>
             </div>
           </div>
