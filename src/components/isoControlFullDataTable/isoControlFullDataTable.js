@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import HoldsPopUp from '../holdsPopUp/holdsPopUp';
 
 class IsoControlFullDataTable extends React.Component{
   state = {
@@ -59,6 +60,8 @@ class IsoControlFullDataTable extends React.Component{
                 json.rows[i].modelled = "Not modelled"
             }else{
                 json.rows[i].modelled = "Modelled"
+                json.rows[i].BOM = "In BOM"
+                json.rows[i].LDL = "In LDL"
             }
 
             if(!json.rows[i].spec_code){
@@ -111,6 +114,19 @@ class IsoControlFullDataTable extends React.Component{
             
             if(!json.rows[i].total_weight){
               json.rows[i].total_weight = ""
+            }
+
+            if(!json.rows[i].to){
+              json.rows[i].to = "Not in ISOTRACKER"
+              json.rows[i].progress = "Not in ISOTRACKER"
+            }
+
+            if(json.rows[i].hold1){
+              let holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
+              let descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
+              json.rows[i].holds = <HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/>
+            }else{
+              json.rows[i].holds = null
             }
 
             if(i % 2 === 0){
@@ -367,7 +383,7 @@ class IsoControlFullDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Status</div>,
+        title: <div className="dataTable__header__text">Tray</div>,
         dataIndex: 'to',
         key: 'to',
         ...this.getColumnSearchProps('to'),
@@ -383,6 +399,13 @@ class IsoControlFullDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { a.progress.localeCompare(b.progress)},
         },
+      },
+      {
+        title: <div className="dataTable__header__text">Holds</div>,
+        dataIndex: 'holds',
+        key: 'holds',
+        ...this.getColumnSearchProps('holds'),
+        width:"90px"
       },
       {
         title: <div className="dataTable__header__text">BOM</div>,
