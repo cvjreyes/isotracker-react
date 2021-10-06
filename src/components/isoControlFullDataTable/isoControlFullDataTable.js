@@ -367,6 +367,24 @@ class IsoControlFullDataTable extends React.Component{
         },
       },
       {
+        title: <div className="dataTable__header__text">Status</div>,
+        dataIndex: 'to',
+        key: 'to',
+        ...this.getColumnSearchProps('to'),
+        sorter: {
+          compare: (a, b) => { a.to.localeCompare(b.to)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Progress</div>,
+        dataIndex: 'progress',
+        key: 'progress',
+        ...this.getColumnSearchProps('progress'),
+        sorter: {
+          compare: (a, b) => { a.progress.localeCompare(b.progress)},
+        },
+      },
+      {
         title: <div className="dataTable__header__text">BOM</div>,
         dataIndex: 'BOM',
         key: 'BOM',
