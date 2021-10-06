@@ -124,7 +124,7 @@ class IsoControlFullDataTable extends React.Component{
             if(json.rows[i].hold1){
               let holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
               let descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
-              json.rows[i].holds = <HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/>
+              json.rows[i].holds = <HoldsPopUp isoid={json.rows[i].iso_id} holds = {holds} descriptions = {descriptions}/>
             }else{
               json.rows[i].holds = null
             }

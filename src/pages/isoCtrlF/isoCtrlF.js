@@ -1768,7 +1768,7 @@ const IsoCtrlF = () => {
     let isoControllLineIdGroupBtn = null
     let editCustomBtn = null
 
-    if(process.env.REACT_APP_PROGRESS === "1"){
+    if(process.env.REACT_APP_ISOCONTROL === "1" && currentRole === "SpecialityLead"){
         
         if(currentTab === "IsoControl"){
             secureStorage.setItem("tab", "IsoControl")
