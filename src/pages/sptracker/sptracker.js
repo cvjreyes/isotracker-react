@@ -96,7 +96,7 @@ const CSPTracker = () => {
 
     let p1bore, p2bore, p3bore = ""
 
-    if(process.env.REACT_APP_MMDN === "0"){
+    if(process.env.REACT_APP_MMDN === "1"){
         p1bore = "p1diameter_nps"
         p2bore = "p2diameter_nps"
         p3bore = "p3diameter_nps"

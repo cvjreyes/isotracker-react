@@ -137,7 +137,7 @@ class CSPTrackerdDataTable extends React.Component{
         .then(async json => {
           var rows = []
           var row = null
-          if(process.env.REACT_APP_MMDN === "0"){
+          if(process.env.REACT_APP_MMDN === "1"){
             for(let i = 0; i < json.rows.length; i++){
               row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}
               
@@ -293,7 +293,7 @@ class CSPTrackerdDataTable extends React.Component{
           .then(async json => {
             var rows = []
             var row = null
-            if(process.env.REACT_APP_MMDN === "0"){
+            if(process.env.REACT_APP_MMDN === "1"){
               for(let i = 0; i < json.rows.length; i++){
                 row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}
 
