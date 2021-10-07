@@ -581,7 +581,7 @@ class CSPTrackerdDataTable extends React.Component{
         dataIndex: 'drawing',
         key: 'drawing',
         ...this.getColumnSearchProps('drawing'),
-        width: "300px",
+        width: "400px",
       },
       {
         title: <div className="dataTable__header__text">Iso Description</div>,

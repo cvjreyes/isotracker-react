@@ -222,25 +222,36 @@ class OnHoldTable extends React.Component{
     ),
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
-      record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-        : '',
+/*
+    this.state.searchedColumn === "id" ? (
+      record.id.props.children
+        ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
+        : ''
+      ) : this.state.searchedColumn === "actions" ? (
+        record.actions.props.children[1].props.children.toString().toLowerCase().includes(value.toLowerCase())
+      ) : (
+        record[dataIndex]
+          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+          : ''
+      ),*/
+
+      record[dataIndex].props 
+          ? (record[dataIndex].props.children[1].props
+            ? record.actions.props.children[1].props.children.toString().toLowerCase().includes(value.toLowerCase())
+            : record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase())
+            )
+          : (record[dataIndex]
+            ?  record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+            : ''),
+
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
         setTimeout(() => this.searchInput.select(), 100);
       }
     },
-    render: text =>
-      this.state.searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
-          searchWords={[this.state.searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ''}
-        />
-      ) : (
-        text
-      ),
+    render: text => 
+    text
+      
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -431,9 +442,9 @@ class OnHoldTable extends React.Component{
 
     let table = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-      table = <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
+      table = <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
     }else{
-      table = <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ defaultCurrent:1, total: this.state.data.length }} size="small"/>
+      table = <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"/>
     }
 
     return (
