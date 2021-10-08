@@ -139,7 +139,7 @@ class CSPTrackerdDataTable extends React.Component{
           var row = null
           if(process.env.REACT_APP_MMDN === "1"){
             for(let i = 0; i < json.rows.length; i++){
-              row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}
+              row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station}
               
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
@@ -165,7 +165,7 @@ class CSPTrackerdDataTable extends React.Component{
                   }else{
                     row.ready_e3d = "UPDATED"
                   }
-              }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
+              }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                 row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
@@ -203,7 +203,8 @@ class CSPTrackerdDataTable extends React.Component{
             }
           }else{
             for(let i = 0; i < json.rows.length; i++){
-              row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}
+              console.log(json.rows[i].pid)
+              row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station}
               
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
@@ -229,7 +230,7 @@ class CSPTrackerdDataTable extends React.Component{
                   }else{
                     row.ready_e3d = "UPDATED"
                   }
-                }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
+                }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                   row.ready_load = "READY"
                 if(row.ready_e3d === 1){
                   row.color = "#ggg"
@@ -295,7 +296,7 @@ class CSPTrackerdDataTable extends React.Component{
             var row = null
             if(process.env.REACT_APP_MMDN === "1"){
               for(let i = 0; i < json.rows.length; i++){
-                row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}
+                row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station}
 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                   if(this.props.currentRole === "Materials"){
@@ -321,7 +322,7 @@ class CSPTrackerdDataTable extends React.Component{
                     }else{
                       row.ready_e3d = "UPDATED"
                     }
-                  }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
+                  }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                     row.ready_load = "READY"
                   if(row.ready_e3d === 1){
                     row.color = "#ggg"
@@ -359,7 +360,7 @@ class CSPTrackerdDataTable extends React.Component{
               }
             }else{
               for(let i = 0; i < json.rows.length; i++){
-                row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts: json.rows[i].bolts, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments}
+                row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, spec: json.rows[i].spec, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station}
                 
                 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
@@ -386,7 +387,7 @@ class CSPTrackerdDataTable extends React.Component{
                     }else{
                       row.ready_e3d = "UPDATED"
                     }
-                  }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null && (json.rows[i].bolts === "NO" || (json.rows[i].bolts === "YES" && json.rows[i].bolt_type))){
+                  }else if(row.ready_load === 1 && json.rows[i].drawing_filename !== null){
                     row.ready_load = "READY"
                     if(row.ready_e3d === 1){
                       row.color = "#ggg"
@@ -540,66 +541,12 @@ class CSPTrackerdDataTable extends React.Component{
         fixed: "left"
       },
       {
-        title: <center className="dataTable__header__text">Quantity</center>,
-        dataIndex: 'quantity',
-        key: 'quantity',
-        ...this.getColumnSearchProps('quantity'),
-        sorter:{
-          compare: (a, b) => a.quantity - b.quantity,
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Type</div>,
-        dataIndex: 'type',
-        key: 'type',
-        ...this.getColumnSearchProps('type'),
+        title: <div className="dataTable__header__text">Spec</div>,
+        dataIndex: 'spec',
+        key: 'spec',
+        ...this.getColumnSearchProps('spec'),
         sorter: {
-            compare: (a, b) => a.type.localeCompare(b.type),
-        },
-      },
-      {
-        title: <center className="dataTable__header__text">Description</center>,
-        dataIndex: 'description',
-        key: 'description',
-        ...this.getColumnSearchProps('description'),
-        width: "400px",
-        sorter:{
-          compare: (a, b) => a.description.localeCompare(b.description),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Drawing Description</div>,
-        dataIndex: 'description_plane',
-        key: 'description_plane',
-        ...this.getColumnSearchProps('description_plane'),
-        sorter: {
-          compare: (a, b) => a.description_plane.localeCompare(b.description_plane),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Drawing</div>,
-        dataIndex: 'drawing',
-        key: 'drawing',
-        ...this.getColumnSearchProps('drawing'),
-        width: "400px",
-      },
-      {
-        title: <div className="dataTable__header__text">Iso Description</div>,
-        dataIndex: 'description_iso',
-        key: 'description_iso',
-        ...this.getColumnSearchProps('description_iso'),
-        width: "400px",
-        sorter: {
-          compare: (a, b) => a.description_iso.localeCompare(b.description_iso),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Ident</div>,
-        dataIndex: 'ident',
-        key: 'ident',
-        ...this.getColumnSearchProps('ident'),
-        sorter: {
-          compare: (a, b) => a.ident.localeCompare(b.ident),
+            compare: (a, b) => a.spec.localeCompare(b.spec),
         },
       },
       {
@@ -639,21 +586,103 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Spec</div>,
-        dataIndex: 'spec',
-        key: 'spec',
-        ...this.getColumnSearchProps('spec'),
-        sorter: {
-            compare: (a, b) => a.spec.localeCompare(b.spec),
-        },
-      },
-      {
         title: <div className="dataTable__header__text">End Preparation</div>,
         dataIndex: 'end_preparation',
         key: 'end_preparation',
         ...this.getColumnSearchProps('end_preparation'),
         sorter: {
             compare: (a, b) => a.end_preparation.localeCompare(b.end_preparation),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">LINE ID</div>,
+        dataIndex: 'line_id',
+        key: 'line_id',
+        ...this.getColumnSearchProps('line_id'),
+        sorter: {
+            compare: (a, b) => a.line_id.localeCompare(b.line_id),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">P&ID</div>,
+        dataIndex: 'pid',
+        key: 'pid',
+        ...this.getColumnSearchProps('pid'),
+        sorter: {
+            compare: (a, b) => a.pid.localeCompare(b.pid),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Type</div>,
+        dataIndex: 'type',
+        key: 'type',
+        ...this.getColumnSearchProps('type'),
+        sorter: {
+            compare: (a, b) => a.type.localeCompare(b.type),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Drawing Description</div>,
+        dataIndex: 'description_plane',
+        key: 'description_plane',
+        ...this.getColumnSearchProps('description_plane'),
+        sorter: {
+          compare: (a, b) => a.description_plane.localeCompare(b.description_plane),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Drawing</div>,
+        dataIndex: 'drawing',
+        key: 'drawing',
+        ...this.getColumnSearchProps('drawing'),
+        width: "400px",
+      },
+      {
+        title: <center className="dataTable__header__text">Quantity</center>,
+        dataIndex: 'quantity',
+        key: 'quantity',
+        ...this.getColumnSearchProps('quantity'),
+        sorter:{
+          compare: (a, b) => a.quantity - b.quantity,
+        },
+      },    
+      {
+        title: <center className="dataTable__header__text">Requisition</center>,
+        dataIndex: 'requisition',
+        key: 'requisition',
+        ...this.getColumnSearchProps('requisition'),
+        sorter:{
+          compare: (a, b) => a.requisition - b.requisition,
+        },
+      }, 
+      {
+        title: <center className="dataTable__header__text">Description</center>,
+        dataIndex: 'description',
+        key: 'description',
+        ...this.getColumnSearchProps('description'),
+        width: "400px",
+        sorter:{
+          compare: (a, b) => a.description.localeCompare(b.description),
+        },
+      },
+      
+      {
+        title: <div className="dataTable__header__text">Iso Description</div>,
+        dataIndex: 'description_iso',
+        key: 'description_iso',
+        ...this.getColumnSearchProps('description_iso'),
+        width: "400px",
+        sorter: {
+          compare: (a, b) => a.description_iso.localeCompare(b.description_iso),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Ident</div>,
+        dataIndex: 'ident',
+        key: 'ident',
+        ...this.getColumnSearchProps('ident'),
+        sorter: {
+          compare: (a, b) => a.ident.localeCompare(b.ident),
         },
       },
       {
@@ -666,21 +695,30 @@ class CSPTrackerdDataTable extends React.Component{
         },
       },
       {
-        title: <div className="dataTable__header__text">Bolts</div>,
-        dataIndex: 'bolts',
-        key: 'bolts',
-        ...this.getColumnSearchProps('bolts'),
-        sorter: {
-            compare: (a, b) => a.bolts.localeCompare(b.bolts),
-        },
-      },
-      {
         title: <div className="dataTable__header__text">FLG Short Code</div>,
         dataIndex: 'bolts_type',
         key: 'bolts_type',
         ...this.getColumnSearchProps('bolts_type'),
         sorter: {
             compare: (a, b) => a.bolts_type.localeCompare(b.bolts_type),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Equipment + Nozzle</div>,
+        dataIndex: 'equipnozz',
+        key: 'equipnozz',
+        ...this.getColumnSearchProps('equipnozz'),
+        sorter: {
+            compare: (a, b) => a.equipnozz.localeCompare(b.equipnozz),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Utility Station</div>,
+        dataIndex: 'utility_station',
+        key: 'utility_station',
+        ...this.getColumnSearchProps('utility_station'),
+        sorter: {
+            compare: (a, b) => a.utility_station.localeCompare(b.utility_station),
         },
       },
       {
@@ -747,7 +785,7 @@ class CSPTrackerdDataTable extends React.Component{
         {this.state.updateData}
         <div className="estimatedDataTable__container">
         <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"
-         rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:5900, y: yScroll}}/>
+         rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:6500, y: yScroll}}/>
           {totalElements}
         </div>
         

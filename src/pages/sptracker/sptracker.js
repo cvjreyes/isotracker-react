@@ -69,6 +69,7 @@ const CSPTracker = () => {
     const [warningBlankRequest, setWarningBlankRequest] = useState(false)
     const [requestSuccess, setRequestSuccess] = useState(false)
     const [existsRequest, setExistsRequest] = useState(false)
+    const [errorPid, seterrorPid] = useState(false)
 
     const [viewData, setViewData] = useState()
     const [editData, setEditData] = useState()
@@ -78,6 +79,7 @@ const CSPTracker = () => {
     const [specData, setSpecData] = useState()
     const [endPreparationData, setEndPrepartaionData] = useState()
     const [boltTypesData, setBoltTypesData] = useState()
+    const [pidData, setPidData] = useState()
 
     const [busy, setBusy] = useState(false)
     const [editingUser, setEditingUser] = useState()
@@ -181,6 +183,7 @@ const CSPTracker = () => {
                 await setSpecData(json.specData)
                 await setEndPrepartaionData(json.endPreparationData)
                 await setBoltTypesData(json.boltTypesData)
+                await setPidData(json.pidData)
             })
         }    
     }, [currentTab])
@@ -207,6 +210,10 @@ const CSPTracker = () => {
 
     function existsErrorRequest(){
         setExistsRequest(true)
+    }
+
+    function errorPidRequest(){
+        seterrorPid(true)
     }
 
     function handleOnIdle(){
@@ -290,8 +297,7 @@ const CSPTracker = () => {
 
     async function addRow(){
         let rows = editData
-        //rows.push({tag:null, description: null, description_plan_code: null, drawing_filename: null, description_iso: null, ident: null, p1diameter_dn: null, p1diameter_nps: null, p2diameter_dn: null, p2diameter_nps: null, p3diameter_dn: null, p3diameter_nps: null, rating: null, spec: null, face_to_face: null, end_preparation: null, description_drawing: null, bolts: null, bolt_type: null, ready_load: null, ready_e3d: null, comments: null})
-        rows.push({tag:"", quantity: "", description: "", description_plan_code: "", drawing_filename: "", description_iso: "", ident: "", p1diameter_dn: "", p1diameter_nps: "", p2diameter_dn: "", p2diameter_nps: "", p3diameter_dn: "", p3diameter_nps: "", rating: "", spec: "", type: "", end_preparation: "", description_drawing: "", face_to_face: "", bolts: "", bolt_type: "", ready_load: "", ready_e3d: "", comments: ""})
+        rows.push({tag:"", quantity: "", description: "", description_plan_code: "", drawing_filename: "", description_iso: "", ident: "", p1diameter_dn: "", p1diameter_nps: "", p2diameter_dn: "", p2diameter_nps: "", p3diameter_dn: "", p3diameter_nps: "", rating: "", spec: "", type: "", end_preparation: "", description_drawing: "", face_to_face: "", bolt_type: "", ready_load: "", ready_e3d: "", comments: "", pid: "", line_id: "", requisition: "", equipnozz: "", utility_station: ""})
         await setEditData(rows)
         await setUpdateData(!updateData)
       }
@@ -349,29 +355,6 @@ const CSPTracker = () => {
              
     }
 
-    async function saveChangesKP(){
-
-        const body = {
-
-        }
-     
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body)
-        }
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitCSPKP", options)
-        .then(response => response.json())
-        .then(async json =>{
-            if(json.success){
-                await setSuccessAlert(true)
-            }
-        })                  
-             
-    }
-
     async function updateDataMethod(){
         setUpdateData(!updateData)
     }
@@ -380,13 +363,13 @@ const CSPTracker = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadCSP/")
         .then(response => response.json())
         .then(json => {
-            const headers = ["Tag", "Quantity", "Type", "Description", "Drawing description", "Iso description", "Ident", "P1Bore", "P2Bore", "P3Bore", "Rating", "Spec", "End preparation", "Face to face", "Bolts", "FLG Short Code", "Comments", "Ready to Load", "Ready in E3D", "Updated"]
+            const headers = ["Tag", "Spec", "P1Bore", "P2Bore", "P3Bore", "Rating", "End preparation", "Line ID", "P&ID", "Type", "Drawing description", "Quantity", "Requisition", "Description", "Iso description", "Ident", "Face to face", "FLG Short Code", "Equipment + Nozzle", "Utility Station", "Comments", "Ready to Load", "Ready in E3D", "Updated"]
             const apiData = JSON.parse(json)
             const fileName = "CSPTracker report"
 
             const fileType =
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-            const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1', 'W1']
+            const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1', 'W1', 'X1', 'Y1', 'Z1', 'A2', 'B2', 'C2']
             const fileExtension = ".xlsx";
 
             let wscols = []
@@ -397,6 +380,7 @@ const CSPTracker = () => {
             const ws = XLSX.utils.json_to_sheet(apiData);   
             ws["!cols"] = wscols
             for(let i = 0; i < headers.length; i++){
+                console.log(i)
                 ws[header_cells[i]].v = headers[i]
             }
             const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
@@ -457,10 +441,10 @@ const CSPTracker = () => {
     }
 
     if(currentRole === "Design"){
-        requestBtn = <CSPTrackerRequestPopUp errorBlankRequest={errorBlankRequest.bind(this)} successRequest={successRequest.bind(this)} existsErrorRequest={existsErrorRequest.bind(this)}/>
+        requestBtn = <CSPTrackerRequestPopUp errorBlankRequest={errorBlankRequest.bind(this)} successRequest={successRequest.bind(this)} existsErrorRequest={existsErrorRequest.bind(this)} errorPidRequest={errorPidRequest.bind(this)}/>
     }
 
-    if(currentRole === "Materials"){
+    if(currentRole === "Materials" || currentRole === "3D Admin"){
         pageSelector = <div style={{marginLeft:"87%", position:"absolute"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
     }else if(currentRole === "Design"){
         pageSelector = <div style={{marginLeft:"86%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>  
@@ -478,14 +462,14 @@ const CSPTracker = () => {
         if(!busy){
             table = <HotTable
             data={editData}
-            colHeaders = {["<b>TAG</b>", "<b>QUANTITY</b>", "<b>TYPE</b>", "<b>DESCRIPTION</b>", "<b>DRAWING DESCRIPTION</b>", "<b>DESCRIPTION ISO</b>", "<b>IDENT</b>", "<b>P1BORE</b>", "<b>P2BORE</b>", "P3BORE", "<b>RATING</b>", "<b>SPEC</b>", "<b>END PREPARATION</b>", "FACE TO FACE", "<b>BOLTS</b>", "FLG SHORT CODE", "COMMENTS"]}
+            colHeaders = {["<b>TAG</b>", "<b>SPEC</b>", "<b>P1BORE</b>", "<b>P2BORE</b>", "P3BORE", "<b>RATING</b>", "<b>END PREPARATION</b>", "<b>LINE ID</b>", "<b>P&ID</b>", "<b>TYPE</b>", "<b>DRAWING DESCRIPTION</b>", "<b>QUANTITY</b>", "REQUISITION", "<b>DESCRIPTION</b>", "<b>ISO DESCRIPTION</b>", "<b>IDENT</b>", "FACE TO FACE", "<b>FLG SHORT CODE</b>", "EQUIPMENT + NOZZLE", "UTILITY STATION", "COMMENTS"]}
             rowHeaders={true}
             width="2200"
             height="635"
             settings={settings} 
             manualColumnResize={true}
             manualRowResize={true}
-            columns= {[{ data: "tag", type:'text'}, {data:"quantity", type:"numeric"}, {data: "type", type:"text"}, { data: "description", type:'text'}, {data: "description_plan_code", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "spec", type:"dropdown", strict:"true", source: specData},{data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData}, {data: "face_to_face", type:"text"}, {data: "bolts", type:"dropdown", strict:"true", source:["YES", "NO"]}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"comments", type:"text"}]}
+            columns= {[{ data: "tag", type:'text'}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData}, {data: "line_id", type:"text"}, {data: "pid", type:"dropdown", strict:"true", source: pidData}, {data: "type", type:"text"}, {data: "description_plan_code", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data:"quantity", type:"numeric"}, { data: "requisition", type:'text'}, { data: "description", type:'text'}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: "face_to_face", type:"text"}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"equipnozz", type:"text"}, {data:"utility_station", type:"text"}, {data:"comments", type:"text"}]}
             />
           
             pageSelector = null
@@ -560,6 +544,12 @@ const CSPTracker = () => {
             onTransitionEnd={() => setExistsRequest(false)}
             >
                 <AlertF type="error" subtext="An SP with that SPTag already exists!" margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${errorPid ? 'alert-shown' : 'alert-error-hidden'}`}
+            onTransitionEnd={() => seterrorPid(false)}
+            >
+                <AlertF type="error" subtext="The specified P&ID is invalid!" margin="0px"/>
             </div>
             <div className="isotracker__row">
                   <div className="isotracker__column">
