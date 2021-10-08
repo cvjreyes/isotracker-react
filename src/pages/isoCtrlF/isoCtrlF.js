@@ -48,6 +48,7 @@ import IsoControlModelledDataTable from "../../components/isoControlModelledData
 import IsoControlNotModelledDataTable from "../../components/isoControlNotModelledDataTable/isoControlNotModelledDataTable"
 import IsoControlFullDataTable from "../../components/isoControlFullDataTable/isoControlFullDataTable"
 import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLineIdDataTable/isoControlGroupLineIdDataTable"
+import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 
 const IsoCtrlF = () => {
    
@@ -1767,6 +1768,7 @@ const IsoCtrlF = () => {
     let isocontrolWeightsComponent = null
     let isoControllLineIdGroupBtn = null
     let editCustomBtn = null
+    let uploadBOMBtn = null
 
     if(process.env.REACT_APP_ISOCONTROL === "1" && currentRole === "SpecialityLead"){
         
@@ -1791,6 +1793,7 @@ const IsoCtrlF = () => {
             isoControlFullBtn = <button type="button" className="nav__button__title text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
             tableContent = <IsoControlFullDataTable pagination={pagination}/>
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
+            uploadBOMBtn = <UploadBOMIsocontrolPopUp />
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
             isoControlFullBtn = <button type="button" className="nav__button__title text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>IsoControl</button>
@@ -1831,6 +1834,8 @@ const IsoCtrlF = () => {
     }else{
         uploadButton = null
     }
+
+    
 
     return (       
         <body>
@@ -1960,6 +1965,7 @@ const IsoCtrlF = () => {
                           <td className="isotracker__table__table" style={{height: dataTableHeight}} >
                               <div style={{height: dataTableHeight, width:"2000px"}} className="isotracker__table__table__container">
                                   {isoControllLineIdGroupBtn}
+                                  {uploadBOMBtn}
                                   {editCustomBtn}
                                   {tableContent}
                               </div>
