@@ -1793,7 +1793,7 @@ const IsoCtrlF = () => {
             isoControlFullBtn = <button type="button" className="nav__button__title text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
             tableContent = <IsoControlFullDataTable pagination={pagination}/>
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
-            uploadBOMBtn = <UploadBOMIsocontrolPopUp />
+            uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)}/>
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
             isoControlFullBtn = <button type="button" className="nav__button__title text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>IsoControl</button>

@@ -54,6 +54,8 @@ export default class UploadBOMIsocontrolPopUp extends Component {
             .then(async json =>{
                 if(json.invalid){
                     this.props.setErrorReportData(json.invalid)
+                }else{
+                    this.props.success()
                 }
                 
             })
