@@ -61,8 +61,7 @@ const CSPTracker = () => {
 
     const [successAlert, setSuccessAlert] = useState(false);
     const [uploadDrawingSuccess, setUploadDrawingSuccess] = useState(false);
-    const [updateDrawingSuccess, setUpdateDrawingSuccess] = useState(false);
-    const [drawingError, setDrawingError] = useState(false);
+    const [updateDrawingSuccess, setUpdateDrawingSuccess] = useState(false)
     const [noTagError, setNoTagError] = useState(false);
     const [invalidFieldError, setInvalidFieldError] = useState(false);
     const [errorIndex, setErrorIndex] = useState(null);
@@ -71,7 +70,6 @@ const CSPTracker = () => {
     const [existsRequest, setExistsRequest] = useState(false)
     const [errorPid, seterrorPid] = useState(false)
 
-    const [viewData, setViewData] = useState()
     const [editData, setEditData] = useState()
     const [descriptionPlaneData, setDescriptionPlaneData] = useState()
     const [diametersData, setDiametersData] = useState()
@@ -197,7 +195,6 @@ const CSPTracker = () => {
     }
 
     function drawingUploadError(){
-        setDrawingError(true)
     }
 
     function errorBlankRequest(){
@@ -408,7 +405,7 @@ const CSPTracker = () => {
         dataTableHeight = "19000px"    
     }
 
-    let editBtn, addRowBtn, saveBtn, exportBtn, requestBtn, notificationsBtn, designNotificationsBtn, kpBtn = null
+    let editBtn, addRowBtn, saveBtn, exportBtn, requestBtn, notificationsBtn, designNotificationsBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
     if(currentRole === "Materials"){
         editBtn = <label class="switchBtn" style={{width:"145px"}}>
@@ -577,7 +574,7 @@ const CSPTracker = () => {
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
-                              <div  style={{height: dataTableHeight}} className="isotracker__table__table__container" style={{width:"2200px"}}>
+                              <div  style={{height: dataTableHeight, width:"2200px"}} className="isotracker__table__table__container">
                                 {table}
                                 {addRowBtn}
                               </div>

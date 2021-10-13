@@ -300,7 +300,7 @@ const NavBar = (props) =>{
       }, []);
       
 
-    let projectBtn, userButton, spButton, spButtonProgress, rightButtons = null
+    let projectBtn, spButton, spButtonProgress, rightButtons = null
     if(process.env.REACT_APP_PROGRESS === "1"){
         if(process.env.REACT_APP_SP === "1"){
             projectBtn = <Button class="btn nohover" disabled style={{marginRight:"20px", float:"right"}}>
@@ -390,9 +390,6 @@ const NavBar = (props) =>{
         </Button>
         }
         
-        userButton= <Button  class="btn nohover" style={{float: "right"}} classes={{label: classes.label}} onClick={handleClickUser}>
-        <i className="dropdown__text">{username}&nbsp;🠗</i>
-        </Button>
         rightButtons= <div style={{width:"82%"}}>
                     
                         

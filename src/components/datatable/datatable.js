@@ -163,7 +163,7 @@ class DataTable extends React.Component{
                     if(json.rows[i].blocked === 1){
                       if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
                         if(secureStorage.getItem('user') === "super@user.com"){
-                          bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)} filename={json.rows[i].filename}/>
+                          bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)} />
                           uButton = <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>UNLOCK</button>
                         }else{
                           uButton = null
@@ -365,7 +365,7 @@ class DataTable extends React.Component{
               if(json.rows[i].blocked === 1){
                 if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
                   if(secureStorage.getItem('user') === "super@user.com"){
-                    bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)} filename={json.rows[i].filename}/>
+                    bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)}/>
                     uButton = <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].filename)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginRight:"5px"}}>UNLOCK</button>
                   }else{
                     uButton = null

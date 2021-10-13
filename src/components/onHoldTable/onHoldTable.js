@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
-import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import './onHoldTable.css'
 import { Link } from 'react-router-dom';

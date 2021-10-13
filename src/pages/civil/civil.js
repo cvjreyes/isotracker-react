@@ -31,7 +31,6 @@ const Civil = () => {
     const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
-    const[admin, setAdmin] = useState(false);
     const[successAlert, setSuccessAlert] = useState(false);
 
     const history = useHistory()
@@ -191,7 +190,6 @@ const Civil = () => {
 
     let downloadBtn = null
     let adminBtn = null
-    let marginProgress = null
 
 
     if(currentTab === "Estimated"){
@@ -227,12 +225,6 @@ const Civil = () => {
             }        }else{
             adminBtn = null 
         }
-    }
-        
-    if(adminBtn || downloadBtn){
-        marginProgress = "55%"
-    }else{
-        marginProgress = "66%"
     }
 
     async function downloadCivilsModelled(){

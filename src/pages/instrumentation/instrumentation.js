@@ -30,7 +30,6 @@ const Instrumentation = () => {
     const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
-    const[admin, setAdmin] = useState(false);
     const[successAlert, setSuccessAlert] = useState(false);
 
     const history = useHistory()
@@ -189,7 +188,6 @@ const Instrumentation = () => {
 
     let downloadBtn = null
     let adminBtn = null
-    let marginProgress = null
 
 
     if(currentTab === "Estimated"){
@@ -226,12 +224,7 @@ const Instrumentation = () => {
             adminBtn = null
         }
     }
-        
-    if(adminBtn || downloadBtn){
-        marginProgress = "55%"
-    }else{
-        marginProgress = "66%"
-    }
+
 
     async function downloadInstrumentationModelled(){
 

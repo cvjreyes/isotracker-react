@@ -1,10 +1,8 @@
 import './App.css';
 import IsoCtrl from './pages/isoCtrl/isoCtrl';
-import Welcome from './pages/welcome/welcome';
 import { Switch, Route} from 'react-router-dom';
 import { BrowserRouter as Router} from 'react-router-dom';
 import Register from './pages/register/register';
-import LoginPage from './pages/loginPage/loginPage';
 import ChangePasswordPage from './pages/changePassword/changePassword';
 import Equipments from './pages/equipments/equipments';
 import Instrumentation from './pages/instrumentation/instrumentation';

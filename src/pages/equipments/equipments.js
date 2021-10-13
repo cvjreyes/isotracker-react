@@ -30,7 +30,6 @@ const Equipments = () => {
     const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
-    const[admin, setAdmin] = useState(false);
     const[successAlert, setSuccessAlert] = useState(false);
 
     const history = useHistory()
@@ -190,8 +189,6 @@ const Equipments = () => {
 
     let downloadBtn = null
     let adminBtn = null
-    let marginProgress = null
-
 
     if(currentTab === "Estimated"){
         table = <EquipEstimatedDataTable pagination = {pagination}/>
@@ -227,12 +224,7 @@ const Equipments = () => {
             adminBtn = null
         }
     }
-        
-    if(adminBtn || downloadBtn){
-        marginProgress = "55%"
-    }else{
-        marginProgress = "66%"
-    }
+
 
     async function downloadEquipmentModelled(){
 
