@@ -11,6 +11,7 @@ class CSPTrackerKeyParams extends React.Component{
     specData: [],
     endPreparationData: [],
     boltTypesData: [],
+    pidData: [],
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
@@ -82,6 +83,20 @@ class CSPTrackerKeyParams extends React.Component{
           rows.push(row)
       }
       this.setState({boltTypesData : rows, selectedRows: []});
+
+    }) 
+
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/csptracker/pids", options)
+    .then(response => response.json())
+    .then(json => {
+      var rows = []
+      var row = null
+      for(let i = 0; i < json.rows.length; i++){
+
+          row = {"id": json.rows[i].id, "Name": json.rows[i].pid}
+          rows.push(row)
+      }
+      this.setState({pidData : rows, selectedRows: []});  
 
     }) 
   }
@@ -186,6 +201,31 @@ class CSPTrackerKeyParams extends React.Component{
     this.props.success()
   }
 
+  addRowPids(){
+    let rows = this.state.pidData
+    rows.push({"Name": ""})
+    this.setState({pidData: rows})
+  }
+
+  submitChangesPids(){
+    const body = {
+      rows: this.state.pidData,
+    }
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/csptracker/pids", options)
+    .then(response => response.json())
+    .then(json =>{
+
+    })
+    this.props.success()
+  }
+
  
 
   render() {
@@ -208,9 +248,15 @@ class CSPTrackerKeyParams extends React.Component{
         //... other options
       }
 
+      const pidsSettings = {
+        licenseKey: 'non-commercial-and-evaluation',
+        colWidths: 300,
+        //... other options
+      }
+
       return (
         <div className="row" style={{float:"left"}}>
-           <div className="column" style={{marginLeft:"300px"}}>
+           <div className="column" style={{marginLeft:"150px"}}>
             <div id="hot-app">
               <HotTable
                 data={this.state.ratingData}
@@ -252,7 +298,7 @@ class CSPTrackerKeyParams extends React.Component{
             </div>
           </div>
          
-          <div className="column" style={{marginLeft:"170px"}}>
+          <div className="column" style={{marginLeft:"100px"}}>
             <div id="hot-app">
               <HotTable
                 data={this.state.endPreparationData}
@@ -291,6 +337,27 @@ class CSPTrackerKeyParams extends React.Component{
               <center>
                   <button class="btn btn-sm btn-info" onClick={() => this.addRowBoltTypes()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1"}}>Add</button>
                   <button class="btn btn-sm btn-success" onClick={() => this.submitChangesBoltTypes()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
+              </center>
+            </div>
+          </div>
+          <div className="column" style={{marginLeft:"170px"}}>
+
+            <div id="hot-app">
+              <HotTable
+                data={this.state.pidData}
+                colHeaders = {["<b>PIDS</b>"]}
+                rowHeaders={true}
+                width="350"
+                height="470"
+                settings={pidsSettings} 
+                manualColumnResize={true}
+                manualRowResize={true}
+                columns= {[{ data: "Name"}]}
+              />
+              <br></br>
+              <center>
+                  <button class="btn btn-sm btn-info" onClick={() => this.addRowPids()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1"}}>Add</button>
+                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesPids()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
               </center>
             </div>
           </div>
