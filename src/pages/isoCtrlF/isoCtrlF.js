@@ -1046,50 +1046,8 @@ const IsoCtrlF = () => {
         
         if(selected.length > 0){
             setLoading(true)
-            localStorage.setItem("update", true)
-            /*
-            if(selected.length === 1){
-                localStorage.setItem("update", true)
-                for (let i = 0; i < selected.length; i++){
-                    const options = {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/pdf"
-                        }
-                    }
-                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
-                    .then(res => res.blob())
-                        .then(response =>{
-                            console.log("Se descarga")
-                            download(new Blob([response]), selected[i], "application/pdf")
-                        })
-                }
-            }else if (selected.length > 1){
-                localStorage.setItem("update", true)
-                for (let i = 0; i < selected.length; i++){
-
-                    const options = {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/pdf"
-                        }
-                    }
-                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
-                    .then(res => res.blob())
-                        .then(response =>{
-                            setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
-                        })
-                }
-                const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
-                downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
-                    saveAs(blob,  zipname)
-                })
-                
-            }
-            await setUpdateData(!updateData)
-            await setDownloadzip(new JSZip())   
-            setLoading(false)
-            */
+            localStorage.setItem("update", true)    
+    
             for (let i = 0; i < selected.length; i++){
 
                 const options = {
