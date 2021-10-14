@@ -135,6 +135,7 @@ const ActionBtns = props =>{
             (props.currentTab === "On hold" && (props.role === "DesignLead" || props.role === "SpecialityLead" || props.role === "Issuer"))){
                 if(process.env.REACT_APP_PROGRESS === "0"){
                     actionBtn8 = <button className="action__btn" onClick={() => props.restoreClick()}>Restore</button>
+                    actionBtn7 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
                 }
         }
         if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab !== "Process" && props.currentTab !== "Instrument" && props.currentTab !== "Issued"){
