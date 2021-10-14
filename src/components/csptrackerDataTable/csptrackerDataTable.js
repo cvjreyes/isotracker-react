@@ -738,7 +738,7 @@ class CSPTrackerdDataTable extends React.Component{
         fixed: "right"
       },
       {
-        title: <div className="dataTable__header__text">Ready in E3D</div>,
+        title: <div className="dataTable__header__text">Ready in 3D</div>,
         dataIndex: 'ready_e3d',
         key: 'ready_e3d',
         ...this.getColumnSearchProps('ready_e3d'),

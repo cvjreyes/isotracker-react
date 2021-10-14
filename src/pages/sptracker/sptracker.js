@@ -360,7 +360,7 @@ const CSPTracker = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadCSP/")
         .then(response => response.json())
         .then(json => {
-            const headers = ["Tag", "Spec", "P1Bore", "P2Bore", "P3Bore", "Rating", "End preparation", "Line ID", "P&ID", "Type", "Drawing description", "Quantity", "Requisition", "Description", "Iso description", "Ident", "Face to face", "FLG Short Code", "Equipment + Nozzle", "Utility Station", "Comments", "Ready to Load", "Ready in E3D", "Updated"]
+            const headers = ["Tag", "Spec", "P1Bore", "P2Bore", "P3Bore", "Rating", "End preparation", "Line ID", "P&ID", "Type", "Drawing description", "Quantity", "Requisition", "Description", "Iso description", "Ident", "Face to face", "FLG Short Code", "Equipment + Nozzle", "Utility Station", "Comments", "Ready to Load", "Ready in 3D", "Updated"]
             const apiData = JSON.parse(json)
             const fileName = "CSPTracker report"
 
