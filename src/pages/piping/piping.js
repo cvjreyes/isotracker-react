@@ -162,7 +162,7 @@ const Piping = () => {
     var dataTableHeight = "540px"
 
     if (pagination === 10){
-        dataTableHeight = "54<0px"
+        dataTableHeight = "540px"
     }if(pagination === 25){
         dataTableHeight = "1200px"
     }if(pagination === 50){

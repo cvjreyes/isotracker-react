@@ -153,3 +153,29 @@
     transition: all 250ms linear 5s;
     position: fixed
 }
+.isocontrol__weigths{
+    height: 50px;
+    width: 500px;
+    border: 0;
+    background-color: transparent;
+    border-radius: 1em 1em 1em 1em;
+    float:right;
+    margin-left:50px;
+}
+
+.isocontrol__lineid__group__button{
+    margin-bottom: 15px;
+    background-color: white;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-top: -25px;
+}
+
+.actionBtns__container{
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}

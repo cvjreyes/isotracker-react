@@ -235,7 +235,6 @@ class IsoControlModelledDataTable extends React.Component{
         title: <div className="dataTable__header__text">Spec code</div>,
         dataIndex: 'spec_code',
         key: 'spec_code',
-        widht: '10%',
         ...this.getColumnSearchProps('spec_code'),
         sorter: {
           compare: (a, b) => { return a.spec_code.localeCompare(b.spec_code)},
@@ -312,7 +311,7 @@ class IsoControlModelledDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="customTable" bordered = {true} scroll={{x:2500}} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
         
