@@ -19,7 +19,6 @@ import RoleDropDown from "../../components/roleDropDown/roleDropDown"
 
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
-import ProcInsBtn from "../../components/procInsBtn/procInsBtn"
 import ProcInstTable from "../../components/procInstTable/procInstTable"
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
@@ -45,6 +44,11 @@ import UsersIcon from "../../assets/images/user.png"
 import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 import AlertF from "../../components/alert/alert"
+import IsoControlModelledDataTable from "../../components/isoControlModelledDataTable/isoControlModelledDataTable"
+import IsoControlNotModelledDataTable from "../../components/isoControlNotModelledDataTable/isoControlNotModelledDataTable"
+import IsoControlFullDataTable from "../../components/isoControlFullDataTable/isoControlFullDataTable"
+import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLineIdDataTable/isoControlGroupLineIdDataTable"
+import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
 
@@ -58,7 +62,6 @@ const IsoCtrlF = () => {
     const [selected, setSelected] = useState([]);
     const [updateData, setUpdateData] = useState();
     const [comment, setComment] = useState(" ");
-    const [commentAlert, setCommentAlert] = useState(false);
     const [downloadZip, setDownloadzip] = useState(new JSZip());
     const [loading, setLoading] = useState(false);
     const [errorUnclaim, setErrorUnclaim] = useState(false);
@@ -70,11 +73,14 @@ const IsoCtrlF = () => {
     const [warningSelected, setWarningSelected] = useState(false);
     const [blocked, setBlocked] = useState(false);
     const [errorReportD, setErrorReportD] = useState(false)
-    const [errorReportDIndex, setErrorReportDIndex] = useState(0);
     const [errorDeleteUser, setErrorDeleteUser] = useState(false);
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null)
     const [alreadyOnRev, setAlreadyOnRev] = useState(false)
+
+    const [modelledWeight, setModelledWeight] = useState("...")
+    const [notModelledWeight, setNotModelledWeight] = useState("...")
+    const [totalIsocontrolWeight, setTotalIsocontrolWeight] = useState("...")
 
     const history = useHistory()
 
@@ -112,22 +118,22 @@ const IsoCtrlF = () => {
 
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) 
 
-    var dataTableHeight = "530px"
+    var dataTableHeight = "590px"
 
     if (pagination === 10){
-        dataTableHeight = "530px"
+        dataTableHeight = "590px"
     }if(pagination === 25){
-        dataTableHeight = "1200px"
+        dataTableHeight = "1300px"
     }if(pagination === 50){
-        dataTableHeight = "2300px"
+        dataTableHeight = "2450px"
     }if(pagination === 100){
-        dataTableHeight = "4490px"
+        dataTableHeight = "4620px"
     }if(pagination === 500){
-        dataTableHeight = "21960px"
+        dataTableHeight = "22360px"
     }
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, actionText, commentBox, tableContent, procInsBtn, progressBtn, modelledBtn, myTrayBtn, usersButton
+    var uploadButton, actionButtons, tableContent, progressBtn, modelledBtn, myTrayBtn, usersButton
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -161,16 +167,21 @@ const IsoCtrlF = () => {
             setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
             setContent(null)   
         }
-        const body = {
-            user: currentUser,
-        }
+
         const options = {
-            method: "POST",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(body)
         }
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolWeights", options)
+            .then(response => response.json())
+            .then(async json => {
+                await setModelledWeight((json.modelledWeight/1000).toFixed(2))
+                await setNotModelledWeight((json.notModelledWeight/1000).toFixed(2))
+                await setTotalIsocontrolWeight(((json.modelledWeight/1000) + (json.notModelledWeight/1000)).toFixed(2))
+            })
+          
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
             .then(response => response.json())
             .then(async json => {
@@ -232,9 +243,9 @@ const IsoCtrlF = () => {
         setBlocked(false)
         setErrorReportD(false)
         setErrorDeleteUser(false)
+
         
     }, [currentTab])
-
 
     const successAlert = () =>{
         setTransactionSuccess(true)
@@ -568,7 +579,6 @@ const IsoCtrlF = () => {
             if(destiny === "Design"){
                 if(comment.length > 1){
                     setComment(" ")
-                    setCommentAlert(false)
                     localStorage.setItem("update", true)
                     for (let i = 0; i < selected.length; i++){
                         const body ={
@@ -599,7 +609,6 @@ const IsoCtrlF = () => {
                         
                     }
                 }else{
-                    setCommentAlert(true)
                 }
             }else if (destiny === "LDE/Isocontrol"){
                 for (let i = 0; i < selected.length; i++){
@@ -617,7 +626,6 @@ const IsoCtrlF = () => {
                             setErrorPI(true);
                             setTransactionSuccess(false);
                         }else{
-                            setCommentAlert(false)
                             localStorage.setItem("update", true)
                             let deleted, hold = 0
                     
@@ -656,7 +664,6 @@ const IsoCtrlF = () => {
                 await setUpdateData(!updateData)
                 setLoading(false)
             }else if(destiny === "On hold"){
-                setCommentAlert(false)
                 localStorage.setItem("update", true)
                 let deleted, hold = 0
 
@@ -696,7 +703,6 @@ const IsoCtrlF = () => {
                         })
                 }
             }else{
-                setCommentAlert(false)
                 localStorage.setItem("update", true)
                 let deleted, hold = 0
 
@@ -842,10 +848,6 @@ const IsoCtrlF = () => {
         }
     }
 
-    function handleComment(event){
-        setComment(event.target.value)
-    }
-
     async function restore(){
         setErrorReports(false)
         setErrorUnclaimR(false)
@@ -885,16 +887,6 @@ const IsoCtrlF = () => {
             setSelected([])
         }else{
             setWarningSelected(true)
-        }
-    }
-
-    function procOrInst(tab) {
-        if(tab === "Process" || tab === "Instrument"){
-            setCurrentTab(tab)
-        }else if (currentRole === "Process"){
-            setCurrentTab("Process")
-        }else{
-            setCurrentTab("Instrument")
         }
     }
 
@@ -1182,7 +1174,7 @@ const IsoCtrlF = () => {
         setErrorReports(false)
         const fileType =
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
+        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1', 'W1']
         const fileExtension = ".xlsx";
 
         let wscols = []
@@ -1471,7 +1463,6 @@ const IsoCtrlF = () => {
 
     async function setErrorReportData(index){
         setErrorReportD(true)
-        setErrorReportDIndex(index)
     }
 
     async function addUser(username, email, roles){
@@ -1604,6 +1595,103 @@ const IsoCtrlF = () => {
         secureStorage.clear()
         history.push("/" + process.env.REACT_APP_PROJECT)
     }
+    async function exportModelled(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportModelled/")
+        .then(response => response.json())
+        .then(json => {
+            const headers = ["UNIT", "AREA", "LINE", "TRAIN Nº", "FLUID", "SEQUENTIAL", "LINE ID", "ISO ID", "SPEC CODE", "DIAMETER", "P&ID", "STRESS LEVEL", "CALCULATION NOTES", "INSULATION", "TOTAL WEIGHT"]
+            exportToExcel(JSON.parse(json), "Isocontrol modelled", headers)
+        })
+    }
+
+    async function exportNotModelled(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportNotModelled/")
+        .then(response => response.json())
+        .then(json => {
+            
+            const headers = ["UNIT", "AREA", "LINE", "TRAIN Nº", "LINE ID", "ISO ID", "SPEC CODE", "TOTAL WEIGHT", "LDL", "BOM"]
+            exportToExcel(JSON.parse(json), "Isocontrol not modelled", headers)
+        })
+    }
+
+    async function exportFull(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportFull/")
+        .then(response => response.json())
+        .then(json => {           
+            const headers = ["LINE ID", "UNIT", "AREA", "LINE", "TRAIN Nº", "FLUID", "SEQUENTIAL", "ISO ID", "SPEC CODE", "DIAMETER", "P&ID", "STRESS LEVEL", "CALCULATION NOTES", "INSULATION", "TOTAL WEIGHT", "MODELLED", "TRAY", "PROGRESS", "HOLDS", "LDL", "BOM"]
+            exportToExcel(JSON.parse(json), "Isocontrol", headers)
+        })
+    }
+
+    async function exportLineIdGroup(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportLineIdGroup/")
+        .then(response => response.json())
+        .then(json => {
+            
+            const headers = ["LINE ID", "ITEMS", "TOTAL WEIGHT"]
+            exportToExcel(JSON.parse(json), "Isocontrol line id group", headers)
+        })
+    }
+
+    async function exportHolds(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportHolds/")
+        .then(response => response.json())
+        .then(json => {
+            
+            const headers = ["TAG", "HOLD1", "DESCRIPTION1", "HOLD2", "DESCRIPTION2", "HOLD3", "DESCRIPTION3", "HOLD4", "DESCRIPTION4", "HOLD5", "DESCRIPTION5", "HOLD6", "DESCRIPTION6", "HOLD7", "DESCRIPTION7", "HOLD8", "DESCRIPTION8", "HOLD9", "DESCRIPTION9", "HOLD10", "DESCRIPTION10"]
+            exportToExcel(JSON.parse(json), "Holds", headers)
+        })
+    }
+
+    async function exportHoldsNoProgress(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportHoldsNoProgress/")
+        .then(response => response.json())
+        .then(json => {
+            
+            const headers = ["ISO ID", "REVISION", "Date", "FROM", "USER", "COMMENTS"]
+            exportToExcel(JSON.parse(json), "Holds", headers)
+        })
+    }
+
+    async function downloadBOM(){
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadBOM/")
+        .then(res => res.blob())
+        .then(response => {
+        const file = new Blob([response], {
+            type: "application/pdf"
+        });
+        //Build a URL from the file
+        const fileURL = URL.createObjectURL(file);
+
+            var fileLink = document.createElement('a');
+            fileLink.href = fileURL;
+
+            // it forces the name of the downloaded file
+            fileLink.download = "BOM.xlsx";
+
+            // triggers the click event
+            fileLink.click();
+
+
+        })
+        .catch(error => {
+        console.log(error);
+        });
+  }
+    
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
@@ -1620,12 +1708,10 @@ const IsoCtrlF = () => {
         tableContent = <StatusDataTable onChange={value=> setSelected(value)} pagination = {pagination} role = {currentRole}/>
     }if(currentTab === "History"){
         tableContent = <HistoryDataTable pagination = {pagination}/>   
-    }if(currentRole === "Process" || currentRole === "Instrument" || currentRole === "SpecialityLead"){
-        procInsBtn = <ProcInsBtn onChange={value => procOrInst(value)} currentTab = {currentTab} />
     }if(currentTab === "Process" || currentTab === "Instrument"){
         tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
-        tableContent = <ReportBoxBtns user={currentUser} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)} downloadUsers={downloadUsers.bind(this)} setErrorReportData={setErrorReportData.bind(this)}/>
+        tableContent = <ReportBoxBtns user={currentUser} role={currentRole} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)} downloadUsers={downloadUsers.bind(this)} setErrorReportData={setErrorReportData.bind(this)}/>
     }if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <ProgressBtn onChange={value => setCurrentTab("Progress")} currentTab = {currentTab}></ProgressBtn>
         modelledBtn = <ModelledBtn onChange={value => setCurrentTab("Modelled")} currentTab = {currentTab}></ModelledBtn>
@@ -1657,14 +1743,6 @@ const IsoCtrlF = () => {
         }
     }
 
-    if(currentTab === "My Tray" || currentTab === "LDE/IsoControl"){
-        commentBox = <div>
-            <textarea placeholder="Comments" class="comments" cols="100" rows="2" required="" maxlength="400" name="comments" value={comment} onChange={handleComment}></textarea>
-        </div>
-    }
-
-    
-
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
     ((currentRole === "Stress" || currentRole === "StressLead") && currentTab === "Stress") ||
     ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Supports") ||
@@ -1675,23 +1753,15 @@ const IsoCtrlF = () => {
     currentRole === "SpecialityLead" && currentTab !== "Progress") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
-        actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab !== "Progress" && currentTab !== "Modelled"){
-        actionText = <b className="progress__text">Click an action for selected IsoFiles:</b>
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)}/>
     }
     if(currentTab === "Modelled"){
-        actionText = null
         actionButtons = <button className="action__btn" onClick={()=>downloadModelled()}>Export</button>
     }
 
-    if(currentTab === "Users"){
-        actionText = null
-    }
-
     if(currentRole === "Project"){
-        actionText = null
         actionButtons = null
     }
 
@@ -1774,7 +1844,68 @@ const IsoCtrlF = () => {
     }
     
 
+    let isoControlBtn = null
+    let isoControlNotModBtn = null
+    let isoControlFullBtn = null
+    let isocontrolWeightsComponent = null
+    let isoControllLineIdGroupBtn = null
+    let editCustomBtn = null
+    let uploadBOMBtn = null
+
+    if(process.env.REACT_APP_ISOCONTROL === "1" && currentRole === "SpecialityLead"){
+        
+        if(currentTab === "IsoControl"){
+            secureStorage.setItem("tab", "IsoControl")
+            isoControlBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
+            tableContent = <IsoControlModelledDataTable pagination={pagination}/>
+        }else{
+            isoControlBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControl")}}>Modelled</button>
+            
+        }
+        if(currentTab === "IsoControlNotMod"){
+            secureStorage.setItem("tab", "IsoControlNotMod")
+            isoControlNotModBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Not modelled</button>
+            tableContent = <IsoControlNotModelledDataTable pagination={pagination}/>
+        }else{
+            isoControlNotModBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlNotMod")}}>Not modelled</button>
+            
+        }
+        if(currentTab === "IsoControlFull"){
+            secureStorage.setItem("tab", "IsoControlFull")
+            isoControlFullBtn = <button type="button" className="nav__button__title text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
+            tableContent = <IsoControlFullDataTable pagination={pagination}/>
+            isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
+            uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)}/>
+            //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
+        }else{
+            isoControlFullBtn = <button type="button" className="nav__button__title text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>IsoControl</button>
+            
+        }
+
+        if(currentTab === "IsoControlLineIdGroup"){
+            secureStorage.setItem("tab", "IsoControlLineIdGroup")
+            isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" style={{backgroundColor: "rgb(148, 220, 170)"}} onClick={() => {setCurrentTab("IsoControlFull")}}>Group by line ID</button>
+            tableContent = <IsoControlGroupLineIdDataTable pagination={pagination}/>
+            //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
+
+        }
+        
+        if(currentTab === "IsoControlEditCustom"){
+            secureStorage.setItem("tab", "IsoControlEditCustom")
+            //editCustomBtn = <button className="isocontrol__lineid__group__button" style={{backgroundColor: "rgb(148, 220, 170)", marginLeft:"20px"}} onClick={() => {setCurrentTab("IsoControlFull")}}>Edit custom fields</button>
+            tableContent = <IsoControlGroupLineIdDataTable pagination={pagination}/>
+            isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
+
+        }
+        
+        if(currentTab === "IsoControlFull"){
+            isocontrolWeightsComponent = 
+                <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button>
     
+        }
+
+
+    }
 
     if(currentRole === "Design"){
         if(currentTab === "Upload IsoFiles"){
@@ -1786,8 +1917,8 @@ const IsoCtrlF = () => {
         uploadButton = null
     }
 
-
     
+
     return (       
         <body>
             <IdleTimer
@@ -1907,11 +2038,15 @@ const IsoCtrlF = () => {
                               {usersButton}
                               {uploadButton}
                               {pageSelector}
+                              {isocontrolWeightsComponent}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
+                                  {isoControlFullBtn}
+                                  {isoControlBtn}
+                                  {isoControlNotModBtn}
                                   <p className="isotracker__table__trays__group">Home</p>
                                   
                                   {myTrayBtn}
@@ -1921,7 +2056,10 @@ const IsoCtrlF = () => {
                               </div>
                           </td>
                           <td className="isotracker__table__table" style={{height: dataTableHeight}} >
-                              <div style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                              <div style={{height: dataTableHeight, width:"2000px"}} className="isotracker__table__table__container">
+                                  {isoControllLineIdGroupBtn}
+                                  {uploadBOMBtn}
+                                  {editCustomBtn}
                                   {tableContent}
                               </div>
                           </td>

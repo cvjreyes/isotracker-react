@@ -189,7 +189,6 @@ const Instrumentation = () => {
     let downloadBtn = null
     let adminBtn = null
 
-
     if(currentTab === "Estimated"){
         table = <InstrumentationEstimatedDataTable pagination = {pagination}/>
     }else if(currentTab === "Modelled"){
