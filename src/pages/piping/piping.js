@@ -30,7 +30,6 @@ const Piping = () => {
     const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
-    const[admin, setAdmin] = useState(false);
     const[successAlert, setSuccessAlert] = useState(false);
 
     const history = useHistory()
@@ -187,7 +186,6 @@ const Piping = () => {
     var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
     let adminBtn = null
-    let marginProgress = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable pagination = {pagination}/>
@@ -224,11 +222,6 @@ const Piping = () => {
         }
     }
         
-    if(adminBtn || downloadBtn){
-        marginProgress = "55%"
-    }else{
-        marginProgress = "66%"
-    }
 
     async function downloadModelled(){
 
