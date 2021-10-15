@@ -345,7 +345,7 @@ class OnHoldTable extends React.Component{
         width: '8%',
         ...this.getColumnSearchProps('revision'),
         sorter:{
-          compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+          compare: (a, b) => a.revision.localeCompare(b.revision),
         },
       },
       {
@@ -372,9 +372,6 @@ class OnHoldTable extends React.Component{
         dataIndex: 'user',
         key: 'user',
         ...this.getColumnSearchProps('user'),
-        sorter: {
-          compare: (a, b) => { return a.user.localeCompare(b.user)},
-        },
       },
       {
         title: <div className="dataTable__header__text">Holds</div>,
@@ -404,7 +401,7 @@ class OnHoldTable extends React.Component{
           width: '8%',
           ...this.getColumnSearchProps('revision'),
           sorter:{
-            compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+            compare: (a, b) => a.revision.localeCompare(b.revision),
           },
         },
         {
@@ -431,9 +428,6 @@ class OnHoldTable extends React.Component{
           dataIndex: 'user',
           key: 'user',
           ...this.getColumnSearchProps('user'),
-          sorter: {
-            compare: (a, b) => { return a.user.localeCompare(b.user)},
-          },
         },
       ];
     }
