@@ -1103,7 +1103,12 @@ const IsoCtrlF = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadStatus/")
         .then(response => response.json())
         .then(json => {
-            const headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION", "TRAY"]
+            let headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "CONDITION", "TRAY"]
+
+            if(process.env.REACT_APP_PROGRESS === "1"){
+                headers = ["ISO_ID", "START_DATE", "CURRENT_DATE", "LINE TYPE", "CONDITION", "TRAY"]
+            }
+
             exportToExcel(JSON.parse(json), "Status", headers)
         })
     }
