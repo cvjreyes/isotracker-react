@@ -166,6 +166,10 @@ const ActionBtns = props =>{
                     actionBtn8 = <button className="action__btn" onClick={() => props.restoreClick()}>Restore</button>
                     actionBtn7 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
                 }
+                if(props.currentTab === "Recycle bin" && (props.role === "DesignLead" || props.role === "SpecialityLead")){
+                    actionBtn8 = <button className="action__btn" onClick={() => props.restoreClick()}>Restore</button>
+                    actionBtn7 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
+                }
         }
         if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab !== "Process" && props.currentTab !== "Instrument" && props.currentTab !== "Issued"){
             actionBtn6 = <button className="action__btn" name="destination" value="stress" onClick={() => props.transaction("Recycle bin")}>Delete</button>
