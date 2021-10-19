@@ -57,7 +57,6 @@ const CSPTracker = () => {
     const [currentRole, setCurrentRole] = useState();
     const [currentTab, setCurrentTab] = useState("View")
     const [roles, setRoles] = useState();
-    const [pagination, setPagination] = useState(10)
 
     const [successAlert, setSuccessAlert] = useState(false);
     const [uploadDrawingSuccess, setUploadDrawingSuccess] = useState(false);
@@ -389,21 +388,7 @@ const CSPTracker = () => {
 
     document.body.style.zoom = 0.8
 
-    var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
-
     var dataTableHeight = "570px"
-
-    if (pagination === 10){
-        dataTableHeight = "570px"
-    }if(pagination === 25){
-        dataTableHeight = "1240px"
-    }if(pagination === 50){
-        dataTableHeight = "2330px"
-    }if(pagination === 100){
-        dataTableHeight = "4520px"
-    }if(pagination === 500){
-        dataTableHeight = "19000px"    
-    }
 
     let editBtn, addRowBtn, saveBtn, exportBtn, requestBtn, notificationsBtn, designNotificationsBtn = null
     let table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
@@ -441,16 +426,10 @@ const CSPTracker = () => {
         requestBtn = <CSPTrackerRequestPopUp errorBlankRequest={errorBlankRequest.bind(this)} successRequest={successRequest.bind(this)} existsErrorRequest={existsErrorRequest.bind(this)} errorPidRequest={errorPidRequest.bind(this)}/>
     }
 
-    if(currentRole === "Materials" || currentRole === "3D Admin"){
-        pageSelector = <div style={{marginLeft:"87%", position:"absolute"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
-    }else if(currentRole === "Design"){
-        pageSelector = <div style={{marginLeft:"86%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>  
-    }else{
-        pageSelector = <div style={{marginLeft:"94%"}}><SelectPag onChange={value => setPagination(value)} pagination = {pagination}/></div>
-    }
+
 
     if(currentTab === "View"){
-        table = <CSPTrackerdDataTable pagination={pagination} currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
+        table = <CSPTrackerdDataTable currentRole = {currentRole} updateDataMethod = {updateDataMethod.bind(this)} updateData = {updateData} uploadDrawingSuccess = {uploadSuccess.bind(this)} updateDrawingSuccess = {updateSuccess.bind(this)} drawingUploadError={drawingUploadError.bind(this)}/>
         exportBtn = <button className="action__btn" name="export" value="export" onClick={() => downloadReport()}>Export</button>
         addRowBtn = null
         saveBtn = null
@@ -469,7 +448,6 @@ const CSPTracker = () => {
             columns= {[{ data: "tag", type:'text'}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData}, {data: "line_id", type:"text"}, {data: "pid", type:"dropdown", strict:"true", source: pidData}, {data: "type", type:"text"}, {data: "description_plan_code", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data:"quantity", type:"numeric"}, { data: "requisition", type:'text'}, { data: "description", type:'text'}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: "face_to_face", type:"text"}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"equipnozz", type:"text"}, {data:"utility_station", type:"text"}, {data:"comments", type:"text"}]}
             />
           
-            pageSelector = null
             dataTableHeight= "700px"
             addRowBtn = <button class="btn btn-sm btn-success" onClick={() => addRow()} style={{marginRight:"5px", fontSize:"18px", width:"35px", height:"35px", borderRadius:"10px", float:"right", marginTop:"8px"}}>+</button>
     
@@ -567,7 +545,6 @@ const CSPTracker = () => {
                                 {notificationsBtn}
                                 {designNotificationsBtn}
                                 {saveBtn}   
-                                {pageSelector}
                               </div>                           
                                
                           </th>

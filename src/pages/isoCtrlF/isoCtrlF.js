@@ -56,7 +56,6 @@ const IsoCtrlF = () => {
    
     document.body.style.zoom = 0.8
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    const[pagination, setPagination] = useState(10) //Controla el numero de entradas por pagina de la tabla
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
     const [selected, setSelected] = useState([]);
@@ -120,26 +119,13 @@ const IsoCtrlF = () => {
 
     var dataTableHeight = "590px"
 
-    if (pagination === 10){
-        dataTableHeight = "590px"
-    }if(pagination === 25){
-        dataTableHeight = "1300px"
-    }if(pagination === 50){
-        dataTableHeight = "2450px"
-    }if(pagination === 100){
-        dataTableHeight = "4620px"
-    }if(pagination === 500){
-        dataTableHeight = "22360px"
-    }
-
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, actionButtons, tableContent, progressBtn, modelledBtn, myTrayBtn, usersButton
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
     }
-    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} unlock = {unlock.bind(this)} rename = {rename.bind(this)}/>
-    var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
+    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} unlock = {unlock.bind(this)} rename = {rename.bind(this)}/>
     var currentUser = secureStorage.getItem('user')
 
     useEffect(() =>{
@@ -1700,21 +1686,20 @@ const IsoCtrlF = () => {
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
-        pageSelector = null
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} success={success.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} pagination = {pagination} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
+        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} success={success.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
     }if(currentTab === "Recycle bin"){
-        tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
+        tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){
-        tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData}/>
+        tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "Status"){
-        tableContent = <StatusDataTable onChange={value=> setSelected(value)} pagination = {pagination} role = {currentRole}/>
+        tableContent = <StatusDataTable onChange={value=> setSelected(value)} role = {currentRole}/>
     }if(currentTab === "History"){
-        tableContent = <HistoryDataTable pagination = {pagination}/>   
+        tableContent = <HistoryDataTable/>   
     }if(currentTab === "Process" || currentTab === "Instrument"){
-        tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} pagination = {pagination} currentTab = {currentTab} updateData = {updateData} />
+        tableContent = <ProcInstTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData} />
     }if(currentTab === "Reports"){
         tableContent = <ReportBoxBtns user={currentUser} role={currentRole} downloadHistory={downloadHistory.bind(this)} downloadStatus={downloadStatus.bind(this)} downloadPI={downloadPI.bind(this)} downloadIssued={downloadIssued.bind(this)} setErrorReport={setErrorReport.bind(this)} setUploading={setUploading.bind(this)} downloadStatus3D={downloadStatus3D.bind(this)} downloadModelled={downloadModelled.bind(this)} downloadUsers={downloadUsers.bind(this)} setErrorReportData={setErrorReportData.bind(this)}/>
     }if(process.env.REACT_APP_PROGRESS === "1"){
@@ -1724,7 +1709,7 @@ const IsoCtrlF = () => {
         tableContent = <ProgressPlot></ProgressPlot>
         dataTableHeight = "500px"
     }if(currentTab === "Modelled"){
-        tableContent = <ModelledDataTable  pagination = {pagination}></ModelledDataTable>
+        tableContent = <ModelledDataTable></ModelledDataTable>
     }if(currentRole !== "Review"){
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
     }if(currentRole === "SpecialityLead"){
@@ -1736,16 +1721,8 @@ const IsoCtrlF = () => {
         }
     }if(currentTab === "Users"){
  
-        tableContent = <UsersDataTable pagination = {pagination} updateData={updateData} deleteUser={deleteUser.bind(this)} submitRoles={submitRoles.bind(this)}/>
-        if (pagination === 10){
-            dataTableHeight = "500px"
-        }if(pagination === 25){
-            dataTableHeight = "1120px"
-        }if(pagination === 50){
-            dataTableHeight = "2150px"
-        }if(pagination === 100){
-            dataTableHeight = "4200px"
-        }
+        tableContent = <UsersDataTable updateData={updateData} deleteUser={deleteUser.bind(this)} submitRoles={submitRoles.bind(this)}/>
+
     }
 
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
@@ -1794,14 +1771,12 @@ const IsoCtrlF = () => {
 
     if(currentTab === "Reports"){
         reportsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Reports")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Reports</p></button>
-        pageSelector = null
     }else{
         reportsBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Reports")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Reports</p></button>
     }
 
     if(currentTab === "Progress"){
         progressBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Progress")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Progress} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Progress</p></button>
-        pageSelector = null
     }else if(process.env.REACT_APP_PROGRESS === "1"){
         progressBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Progress")} style={{width:"120px"}}><img src={Progress} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Progress</p></button>
     }
@@ -1862,7 +1837,7 @@ const IsoCtrlF = () => {
         if(currentTab === "IsoControl"){
             secureStorage.setItem("tab", "IsoControl")
             isoControlBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
-            tableContent = <IsoControlModelledDataTable pagination={pagination}/>
+            tableContent = <IsoControlModelledDataTable/>
         }else{
             isoControlBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControl")}}>Modelled</button>
             
@@ -1870,7 +1845,7 @@ const IsoCtrlF = () => {
         if(currentTab === "IsoControlNotMod"){
             secureStorage.setItem("tab", "IsoControlNotMod")
             isoControlNotModBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Not modelled</button>
-            tableContent = <IsoControlNotModelledDataTable pagination={pagination}/>
+            tableContent = <IsoControlNotModelledDataTable/>
         }else{
             isoControlNotModBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlNotMod")}}>Not modelled</button>
             
@@ -1878,7 +1853,7 @@ const IsoCtrlF = () => {
         if(currentTab === "IsoControlFull"){
             secureStorage.setItem("tab", "IsoControlFull")
             isoControlFullBtn = <button type="button" className="nav__button__title text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
-            tableContent = <IsoControlFullDataTable pagination={pagination}/>
+            tableContent = <IsoControlFullDataTable/>
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
             uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)}/>
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
@@ -1890,7 +1865,7 @@ const IsoCtrlF = () => {
         if(currentTab === "IsoControlLineIdGroup"){
             secureStorage.setItem("tab", "IsoControlLineIdGroup")
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" style={{backgroundColor: "rgb(148, 220, 170)"}} onClick={() => {setCurrentTab("IsoControlFull")}}>Group by line ID</button>
-            tableContent = <IsoControlGroupLineIdDataTable pagination={pagination}/>
+            tableContent = <IsoControlGroupLineIdDataTable/>
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
 
         }
@@ -1898,7 +1873,7 @@ const IsoCtrlF = () => {
         if(currentTab === "IsoControlEditCustom"){
             secureStorage.setItem("tab", "IsoControlEditCustom")
             //editCustomBtn = <button className="isocontrol__lineid__group__button" style={{backgroundColor: "rgb(148, 220, 170)", marginLeft:"20px"}} onClick={() => {setCurrentTab("IsoControlFull")}}>Edit custom fields</button>
-            tableContent = <IsoControlGroupLineIdDataTable pagination={pagination}/>
+            tableContent = <IsoControlGroupLineIdDataTable />
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
 
         }
@@ -2042,7 +2017,6 @@ const IsoCtrlF = () => {
                               {instrumentationBtn}
                               {usersButton}
                               {uploadButton}
-                              {pageSelector}
                               {isocontrolWeightsComponent}
                           </th>
                       </tr>

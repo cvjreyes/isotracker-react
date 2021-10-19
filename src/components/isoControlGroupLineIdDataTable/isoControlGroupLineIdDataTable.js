@@ -188,7 +188,7 @@ class IsoControlGroupLineIdDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} scroll={{y:437}}  pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
         

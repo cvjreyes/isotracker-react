@@ -169,6 +169,7 @@ class CivilEstimatedDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.area.localeCompare(b.area),
         },
+        width: "300px"
       },
       {
         title: <center className="dataTable__header__text">Type</center>,
@@ -178,6 +179,7 @@ class CivilEstimatedDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.type.localeCompare(b.type),
         },
+        with: "300px"
       },
       {
         title: <div className="dataTable__header__text">Qty</div>,
@@ -187,6 +189,7 @@ class CivilEstimatedDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.quantity-b.quantity,
         },
+        width: "300px"
       },
       {
         title: <div className="dataTable__header__text">Modelled</div>,
@@ -196,6 +199,7 @@ class CivilEstimatedDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.modelled-b.modelled,
         },
+        width: "300px"
       },
     ];
     
@@ -209,6 +213,7 @@ class CivilEstimatedDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a[index] - b[index],
         },
+        width:"100px"
       })
     }
 
@@ -225,7 +230,7 @@ class CivilEstimatedDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{ pageSize: this.props.pagination  }} size="small"
+        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"
          rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>

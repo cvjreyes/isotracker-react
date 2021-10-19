@@ -27,7 +27,6 @@ const Instrumentation = () => {
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-    const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[successAlert, setSuccessAlert] = useState(false);
@@ -161,19 +160,6 @@ const Instrumentation = () => {
 
     var dataTableHeight = "540px"
 
-    if (pagination === 10){
-        dataTableHeight = "540px"
-    }if(pagination === 25){
-        dataTableHeight = "1200px"
-    }if(pagination === 50){
-        dataTableHeight = "2300px"
-    }if(pagination === 100){
-        dataTableHeight = "4490px"
-    }if(pagination === 500){
-        dataTableHeight = "21960px"
-    }
-
-
     document.body.style.zoom = 0.8
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("inst_tab"))
@@ -184,28 +170,23 @@ const Instrumentation = () => {
     var currentUser = secureStorage.getItem('user')
     var table = null
 
-    var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
-
     let downloadBtn = null
     let adminBtn = null
 
     if(currentTab === "Estimated"){
-        table = <InstrumentationEstimatedDataTable pagination = {pagination}/>
+        table = <InstrumentationEstimatedDataTable/>
     }else if(currentTab === "Modelled"){
         downloadBtn = <button className="navBar__button" onClick={()=>downloadInstrumentationModelled()} style={{marginLeft:"230px", width:"115px", position:"relative"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text" style={{paddingLeft:"25px"}}>Export</p></button>
     
-        table = <InstrumentationModelledDataTable pagination = {pagination}/>
+        table = <InstrumentationModelledDataTable/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotInstrumentation/>
-        pageSelector = null
     }else if(currentTab === "Types"){
-        table = <InstrumentationTypesDataTable pagination = {pagination}/>
+        table = <InstrumentationTypesDataTable/>
     }else if(currentTab === "Key parameters"){
         table = <InstExcel success={success.bind(this)}/>
-        pageSelector = null
     }else if(currentTab === "Edit"){
         table = <InstExcelEdit success={success.bind(this)}/>
-        pageSelector = null
     }
 
     
@@ -257,9 +238,6 @@ const Instrumentation = () => {
         FileSaver.saveAs(data, fileName + fileExtension);
 
     }
-    /* 
-                            {adminBtn}     
-                            {pageSelector}   */
 
     return(
         
@@ -314,7 +292,6 @@ const Instrumentation = () => {
                           <th  colspan="2" className="isotracker__table__navBar">
                             {adminBtn}
                             {downloadBtn}
-                          {pageSelector}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>

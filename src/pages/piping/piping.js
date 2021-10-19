@@ -27,7 +27,6 @@ const Piping = () => {
     var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
-    const[pagination, setPagination] = useState(10)
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[successAlert, setSuccessAlert] = useState(false);
@@ -161,18 +160,6 @@ const Piping = () => {
 
     var dataTableHeight = "540px"
 
-    if (pagination === 10){
-        dataTableHeight = "540px"
-    }if(pagination === 25){
-        dataTableHeight = "1200px"
-    }if(pagination === 50){
-        dataTableHeight = "2300px"
-    }if(pagination === 100){
-        dataTableHeight = "4490px"
-    }if(pagination === 500){
-        dataTableHeight = "21960px"
-    }
-
     document.body.style.zoom = 0.8
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("piping_tab"))
@@ -182,28 +169,23 @@ const Piping = () => {
 
     var currentUser = secureStorage.getItem('user')
     var table = null
-
-    var pageSelector = <SelectPag onChange={value => setPagination(value)} pagination = {pagination}/>
     let downloadBtn = null
     let adminBtn = null
 
     if(currentTab === "Estimated"){
-        table = <PipingEstimatedDataTable pagination = {pagination}/>
+        table = <PipingEstimatedDataTable/>
     }else if(currentTab === "Modelled"){
         downloadBtn = <button className="navBar__button" onClick={()=>downloadModelled()} style={{marginLeft:"230px", width:"115px"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
     
-        table = <ModelledDataTable pagination = {pagination}/>
+        table = <ModelledDataTable/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotPiping/>
-        pageSelector = null
     }else if(currentTab === "Types"){
-        table = <PipingTypesDataTable pagination = {pagination}/>
+        table = <PipingTypesDataTable/>
     }else if(currentTab === "Key parameters"){
         table = <PipingExcel success={success.bind(this)}/>
-        pageSelector = null
     }else if(currentTab === "Edit"){
         table = <PipingExcelEdit success={success.bind(this)}/>
-        pageSelector = null
     }
 
     
@@ -310,7 +292,6 @@ const Piping = () => {
                           <th  colspan="2" className="isotracker__table__navBar">
                             {adminBtn}
                             {downloadBtn}
-                          {pageSelector}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
