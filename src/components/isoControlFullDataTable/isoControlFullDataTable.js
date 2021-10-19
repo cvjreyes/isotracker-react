@@ -134,6 +134,7 @@ class IsoControlFullDataTable extends React.Component{
             }else{
                 json.rows[i].color = "#eee"
             }
+            json.rows[i].line_id = <b>{json.rows[i].line_id}</b>
             rows.push(json.rows[i])
         }
         this.setState({data: rows})
@@ -187,9 +188,9 @@ class IsoControlFullDataTable extends React.Component{
       </div>
     ),
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-
-      
+    onFilter: (value, record) => 
+            
+        record[dataIndex].props ? record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase()) :
         record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
           
 
@@ -243,7 +244,7 @@ class IsoControlFullDataTable extends React.Component{
         key: 'line_id',
         ...this.getColumnSearchProps('line_id'),
         sorter: {
-          compare: (a, b) => { return a.line_id.localeCompare(b.line_id)},
+          compare: (a, b) => { return a.line_id.props.children.localeCompare(b.line_id.props.children)},
         },
         fixed: "left"
       },

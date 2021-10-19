@@ -329,15 +329,6 @@ class HistoryDataTable extends React.Component{
           compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
       },
-      {
-        title: <div className="dataTable__header__text">Actions</div>,
-        dataIndex: 'actions',
-        key: 'actions',
-        ...this.getColumnSearchProps('actions'),
-        sorter: {
-          compare: (a, b) => a.actions.localeCompare(b.actions),
-        },
-      },
     ];
 
     var totalElements = null;
