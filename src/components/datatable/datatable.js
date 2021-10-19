@@ -741,7 +741,6 @@ class DataTable extends React.Component{
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
-        width: '23%',
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
@@ -755,12 +754,12 @@ class DataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
+        width:"130px"
       },
       {
         title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'date',
         key: 'date',
-        width: '10%',
         ...this.getColumnSearchProps('date'),
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
@@ -770,7 +769,6 @@ class DataTable extends React.Component{
         title: <div className="dataTable__header__text">From</div>,
         dataIndex: 'from',
         key: 'from',
-        width: '10%',
         ...this.getColumnSearchProps('from'),
         sorter: {
           compare: (a, b) => { return a.from.localeCompare(b.from)},
@@ -780,7 +778,6 @@ class DataTable extends React.Component{
         title: <div className="dataTable__header__text">To</div>,
         dataIndex: 'to',
         key: 'to',
-        widht: '15%',
         ...this.getColumnSearchProps('to'),
         sorter: {
           compare: (a, b) => { return a.to.localeCompare(b.to)},
@@ -790,7 +787,6 @@ class DataTable extends React.Component{
         title: <div className="dataTable__header__text">User</div>,
         dataIndex: 'user',
         key: 'user',
-        width:'20%',
         ...this.getColumnSearchProps('user'),
         sorter: {
           compare: (a, b) => { return a.user.localeCompare(b.user)},
@@ -801,7 +797,7 @@ class DataTable extends React.Component{
         dataIndex: 'actions',
         key: 'actions',
         ...this.getColumnSearchProps('actions'),
-
+        width:"350px"
       },
     ];
     }

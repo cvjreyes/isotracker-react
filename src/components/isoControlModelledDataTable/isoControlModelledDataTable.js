@@ -311,7 +311,7 @@ class IsoControlModelledDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} scroll={{x:2500, y:438}} columns={columns} dataSource={this.state.data}  pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="customTable" bordered = {true} scroll={{x:4000, y:438}} columns={columns} dataSource={this.state.data}  pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
         
