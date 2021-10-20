@@ -88,7 +88,6 @@ class UsersDataTable extends React.Component{
                       let roles = [rolesBtnsDict[json.roles[0]]]
                           for(let j = 1; j < json.roles.length; j++){
                               roles.push(rolesBtnsDict[json.roles[j]])
-                              console.log(json.roles[j])
 
                           }
 
@@ -193,6 +192,51 @@ class UsersDataTable extends React.Component{
                 }
             })
             await this.setState({data: this.state.dataAux})
+
+            let auxDisplayData = this.state.data
+            let resultData = []
+            let fil, exists = null
+            for(let i = 0; i < auxDisplayData.length; i++){
+              exists = true
+              for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+                fil = Object.keys(auxDisplayData[i])[column+1]
+                if(fil === "roles"){
+                  if(this.state.filterData[column] !== "" && this.state.filterData[column]){
+                    let filter_roles = this.state.filterData[column].split(" ")
+                    let row_roles = []
+                    for(let r1 = 0; r1 < filter_roles.length; r1++){
+                      let exist_role = false
+                      for(let r2 = 0; r2 <  auxDisplayData[i][fil].props.children[1].length; r2++){
+                        if(r2 !== 12){
+                          if(auxDisplayData[i][fil].props.children[1][r2].props.children.includes(filter_roles[r1])){
+                            exist_role = true
+                          }
+                        }
+                        
+                      }
+                      if(!exist_role){
+                        exists = false
+                      }
+                      
+                    }
+                    
+                  }
+                }else{
+                  if(auxDisplayData[i][fil]){
+                    if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+                      exists = false
+                    }
+                  }else{
+                    exists = false
+                  }
+                }
+                
+              }
+              if(exists){
+                resultData.push(auxDisplayData[i])
+              }
+            }
+            await this.setState({displayData: resultData})
     }
   }
 
@@ -209,7 +253,26 @@ class UsersDataTable extends React.Component{
       for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
         fil = Object.keys(auxDisplayData[i])[column+1]
         if(fil === "roles"){
-
+          if(this.state.filterData[column] !== "" && this.state.filterData[column]){
+            let filter_roles = this.state.filterData[column].split(" ")
+            let row_roles = []
+            for(let r1 = 0; r1 < filter_roles.length; r1++){
+              let exist_role = false
+              for(let r2 = 0; r2 <  auxDisplayData[i][fil].props.children[1].length; r2++){
+                if(r2 !== 12){
+                  if(auxDisplayData[i][fil].props.children[1][r2].props.children.includes(filter_roles[r1])){
+                    exist_role = true
+                  }
+                }
+                
+              }
+              if(!exist_role){
+                exists = false
+              }
+              
+            }
+            
+          }
         }else{
           if(auxDisplayData[i][fil]){
             if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
