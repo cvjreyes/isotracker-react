@@ -328,6 +328,7 @@ class HistoryDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
+        width: "600px"
       },
     ];
 
