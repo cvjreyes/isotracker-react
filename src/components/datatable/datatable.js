@@ -39,13 +39,16 @@ class DataTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
+    displayData: [],
+    filterData: ["", "", "", "", "", "", "", ""],
     tab: this.props.currentTab,
     role: this.props.currentRole,
     selectedRows: [],
     selectedRowsKeys: [],
     updateData: this.props.updateData,
     username: "",
-    acronyms : null
+    acronyms : null,
+    filters: []
   };
 
   unlock(filename){
@@ -93,8 +96,7 @@ class DataTable extends React.Component{
     }
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
           .then(response => response.json())
-          .then(json => {
-                  console.log(json)
+          .then(async json => {
                   var rows = []
                   let row = null
                   let pButton, iButton, rButton, bButton, uButton, cButton = null
@@ -260,9 +262,10 @@ class DataTable extends React.Component{
 
                     
                     }
-                  this.setState({
-                    data : rows,
-                  });
+                    const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, to: <div><input type="text" className="filter__input" placeholder="To" onChange={(e) => this.filter(5,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(6,e.target.value)}/></div>, actions: <div><input type="text" className="filter__input" placeholder="Actions" onChange={(e) => this.filter(7,e.target.value)}/></div>}]
+                
+                    this.setState({data : rows, displayData: rows});
+                    await this.setState({filters : filterRow})
               }
           )
           .catch(error => {
@@ -295,7 +298,7 @@ class DataTable extends React.Component{
     }
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
     .then(response => response.json())
-    .then(json => {
+    .then(async json => {
             console.log(json)
             var rows = []
             let row = null
@@ -465,7 +468,54 @@ class DataTable extends React.Component{
             this.setState({
               data : rows,
             });
-        }
+
+            let auxDisplayData = this.state.data
+            let resultData = []
+            let fil, exists = null
+            for(let i = 0; i < auxDisplayData.length; i++){
+              exists = true
+              for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+                fil = Object.keys(auxDisplayData[i])[column+1]
+                if(fil === "id"){
+                  if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+                    exists = false
+                  }
+                }else if(fil === "actions"){
+                  
+                  if(auxDisplayData[i][fil].props.children[5]){
+                    if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "CLAIMED"){
+                      let claimed = "claimed"
+                      if(!claimed.includes(this.state.filterData[column].toLocaleLowerCase())){
+                        exists = false
+                      }
+                    }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "PENDING"){
+                      let pending = "pending"
+                      if(!pending.includes(this.state.filterData[column].toLocaleLowerCase())){
+                        exists = false
+                      }
+                    }
+                  }else{
+                    if(this.state.filterData[column] !== "" && this.state.filterData[column]){
+                      exists = false
+                    }
+                  }
+                  
+                }else{
+                  if(auxDisplayData[i][fil]){
+                    if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+                      exists = false
+                    }
+                  }
+                  
+                }
+                
+              }
+              if(exists){
+                resultData.push(auxDisplayData[i])
+              }
+            }
+            await this.setState({displayData: resultData})
+            }
     )
     .catch(error => {
         console.log(error);
@@ -474,6 +524,58 @@ class DataTable extends React.Component{
 
   }
 
+  async filter(column, value){
+    let fd = this.state.filterData
+    fd[column] = value
+    await this.setState({filterData: fd})
+
+    let auxDisplayData = this.state.data
+    let resultData = []
+    let fil, exists = null
+    for(let i = 0; i < auxDisplayData.length; i++){
+      exists = true
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+        fil = Object.keys(auxDisplayData[i])[column+1]
+        if(fil === "id"){
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+            exists = false
+          }
+        }else if(fil === "actions"){
+          
+          if(auxDisplayData[i][fil].props.children[5]){
+            if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "CLAIMED"){
+              let claimed = "claimed"
+              if(!claimed.includes(this.state.filterData[column].toLocaleLowerCase())){
+                exists = false
+              }
+            }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "PENDING"){
+              let pending = "pending"
+              if(!pending.includes(this.state.filterData[column].toLocaleLowerCase())){
+                exists = false
+              }
+            }
+          }else{
+            if(this.state.filterData[column] !== "" && this.state.filterData[column]){
+              exists = false
+            }
+          }
+          
+        }else{
+          if(auxDisplayData[i][fil]){
+            if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+              exists = false
+            }
+          }
+          
+        }
+        
+      }
+      if(exists){
+        resultData.push(auxDisplayData[i])
+      }
+    }
+    await this.setState({displayData: resultData})
+  }
   
 
   getMaster(fileName){
@@ -521,88 +623,10 @@ class DataTable extends React.Component{
 
   
   getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-/*
-    this.state.searchedColumn === "id" ? (
-      record.id.props.children
-        ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
-        : ''
-      ) : this.state.searchedColumn === "actions" ? (
-        record.actions.props.children[1].props.children.toString().toLowerCase().includes(value.toLowerCase())
-      ) : (
-        record[dataIndex]
-          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-          : ''
-      ),*/
-
-      record[dataIndex].props 
-          ? (record[dataIndex].props.children[1].props
-            ? record.actions.props.children[1].props.children.toString().toLowerCase().includes(value.toLowerCase())
-            : record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase())
-            )
-          : (record[dataIndex]
-            ?  record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-            : ''),
-
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
     render: text => 
     text
       
   });
-
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
 
   handleReset = clearFilters => {
     clearFilters();
@@ -643,6 +667,18 @@ class DataTable extends React.Component{
         name: record.name,
       }),
     };
+
+    const rowSelectionFilter = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.onSelectChange(selectedRowKeys, selectedRows);
+      },
+      getCheckboxProps: (record) => ({
+        disabled: true,
+        // Column configuration not to be checked
+        name: record.name,
+      }),
+    };
+
     if(localStorage.getItem("update") === "true"){
       this.setState({
         selectedRows: [],
@@ -685,7 +721,7 @@ class DataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
-        width:"130px"
+        width:"240px"
       },
       {
         title: <div className="dataTable__header__text">Date</div>,
@@ -705,7 +741,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.from.localeCompare(b.from)},
         },
-        width:"200px"
+        width:"150px"
       },
       {
         title: <div className="dataTable__header__text">To</div>,
@@ -715,7 +751,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.to.localeCompare(b.to)},
         },
-        width:"200px"
+        width:"150px"
       },
       {
         title: <div className="dataTable__header__text">User</div>,
@@ -725,6 +761,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
+        width:"450px"
       },
       {
         title: <div className="dataTable__header__text">Actions</div>,
@@ -753,7 +790,7 @@ class DataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
-        width:"130px"
+        width:"240px"
       },
       {
         title: <div className="dataTable__header__text">Date</div>,
@@ -772,6 +809,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.from.localeCompare(b.from)},
         },
+        width: "150px"
       },
       {
         title: <div className="dataTable__header__text">To</div>,
@@ -781,6 +819,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.to.localeCompare(b.to)},
         },
+        width: "150px"
       },
       {
         title: <div className="dataTable__header__text">User</div>,
@@ -790,6 +829,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
+        width:"450px"
       },
       {
         title: <div className="dataTable__header__text">Actions</div>,
@@ -814,7 +854,8 @@ class DataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} style={{ height: '540px' }} columns={columns} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} rowSelection={{type: 'checkbox', ...rowSelectionFilter}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/> 
           {totalElements}
         </div>
         

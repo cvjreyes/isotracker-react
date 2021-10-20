@@ -14,6 +14,8 @@ class UsersDataTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
+    displayData: [],
+    filterData: ["", "", "", "", "", "", ""],
     weights: [],
     role: this.props.role,
     selectedRows: [],
@@ -21,7 +23,8 @@ class UsersDataTable extends React.Component{
     dataAux : [],
     update: this.props.updateData,
     users: [],
-    mounted: false
+    mounted: false,
+    filters: []
   };
 
   deleteUser(id){
@@ -104,7 +107,10 @@ class UsersDataTable extends React.Component{
               
           }
       })
-      await this.setState({data: this.state.dataAux})
+      const filterRow = [{key:0, username: <div><input type="text" className="filter__input" placeholder="Username" onChange={(e) => this.filter(0, e.target.value)}/></div>, email: <div><input type="text" className="filter__input" placeholder="Email" onChange={(e) => this.filter(1,e.target.value)}/></div>, roles: <div><input type="text" className="filter__input" placeholder="Roles" onChange={(e) => this.filter(2,e.target.value)}/></div>}]
+                
+      this.setState({data : this.state.dataAux, selectedRows: [], displayData: this.state.dataAux});
+      await this.setState({filters : filterRow})
       await this.setState({mounted: true})
 }
   
@@ -190,69 +196,44 @@ class UsersDataTable extends React.Component{
     }
   }
 
+  async filter(column, value){
+    let fd = this.state.filterData
+    fd[column] = value
+    await this.setState({filterData: fd})
+
+    let auxDisplayData = this.state.data
+    let resultData = []
+    let fil, exists = null
+    for(let i = 0; i < auxDisplayData.length; i++){
+      exists = true
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+        fil = Object.keys(auxDisplayData[i])[column+1]
+        if(fil === "roles"){
+
+        }else{
+          if(auxDisplayData[i][fil]){
+            if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+              exists = false
+            }
+          }else{
+            exists = false
+          }
+        }
+        
+      }
+      if(exists){
+        resultData.push(auxDisplayData[i])
+      }
+    }
+    await this.setState({displayData: resultData})
+  }
+
   submitRoles(id, roles){
     this.props.submitRoles(id, roles)
   }
 
   
   getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-      this.state.searchedColumn === "id" ? (
-        record.id.props.children
-          ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
-          : ''
-        ) : (
-          record[dataIndex]
-            ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-            : ''
-        ),
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
     render: text =>
     text != null ? (
     text.props && text.type !== "div" ? (
@@ -271,14 +252,6 @@ class UsersDataTable extends React.Component{
       text
     )
   });
-
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
 
   handleReset = clearFilters => {
     clearFilters();
@@ -299,17 +272,6 @@ class UsersDataTable extends React.Component{
 
 
   render() {
-
-    const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        this.onSelectChange(selectedRowKeys, selectedRows);
-      },
-      getCheckboxProps: (record) => ({
-        disabled: record.name === 'Disabled User',
-        // Column configuration not to be checked
-        name: record.name,
-      }),
-    };
 
     const columns = [
         {
@@ -354,7 +316,8 @@ class UsersDataTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="customTable" bordered = {true} columns={columns} style={{ height: '540px' }} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
             <b>Total elements: {this.state.data.length}</b>
           </div>
