@@ -159,7 +159,7 @@ const Equipments = () => {
         }
     });
 
-    var dataTableHeight = "540px"
+    var dataTableHeight = "600px"
 
     document.body.style.zoom = 0.8
     document.title= process.env.REACT_APP_APP_NAMEPROJ

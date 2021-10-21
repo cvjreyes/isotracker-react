@@ -116,4 +116,7 @@ body{
     height: auto;
 }
 
-
+.css-4ea4zf-MuiTypography-root{
+    font-family: 'Quicksand' !important;
+    font-size: 28px !important;
+}

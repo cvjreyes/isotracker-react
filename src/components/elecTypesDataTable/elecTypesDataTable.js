@@ -8,13 +8,16 @@ class ElecTypesDataTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
+    displayData: [],
+    filterData: ["", "", ""],
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
     updateData: this.props.updateData,
     username: "",
     acronyms : null,
-    steps: []
+    steps: [],
+    filters: []
   };
 
   async componentDidMount(){
@@ -35,15 +38,11 @@ class ElecTypesDataTable extends React.Component{
         for(let i = 0; i < json.rows.length; i++){
 
             if(i % 2 === 0){
-              row = {key:i, code: json.rows[i].code, name: json.rows[i].name, weight: json.rows[i].weight, color: "#fff"}
+              row = {code: json.rows[i].code, name: json.rows[i].name, weight: json.rows[i].weight, color: "#fff"}
             }else{
-                row = {key:i, code: json.rows[i].code, name: json.rows[i].name, weight: json.rows[i].weight, color: "#eee"}
+              row = {code: json.rows[i].code, name: json.rows[i].name, weight: json.rows[i].weight, color: "#eee"}
             }
-            
-            for(let j = 0; j < this.state.steps.length; j++){
-              let currentStep = this.state.steps[j].toString()
-              row[currentStep] = json.rows[i][currentStep]
-            }
+
             rows.push(row)
         }
         this.setState({data : rows, selectedRows: []});
