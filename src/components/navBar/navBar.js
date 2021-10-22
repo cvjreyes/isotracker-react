@@ -111,9 +111,10 @@ const NavBar = (props) =>{
     const handleClickHome = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/home");
     }
-    const handleClickSP = () =>{
-        history.push("/"+process.env.REACT_APP_PROJECT+"/csptracker");
+    const handleClickPIT = () =>{
+        history.push("/"+process.env.REACT_APP_PROJECT+"/pitrequests");
     }
+     
 
     useEffect(() => {
         const checkIfClickedOutside = e => {
@@ -300,7 +301,7 @@ const NavBar = (props) =>{
       }, []);
       
 
-    let projectBtn, spButton, spButtonProgress, rightButtons = null
+    let projectBtn, pitButton, pitButtonProgress, rightButtons = null
     if(process.env.REACT_APP_PROGRESS === "1"){
         if(process.env.REACT_APP_SP === "1"){
             projectBtn = <Button class="btn nohover" disabled style={{marginRight:"20px", float:"right"}}>
@@ -416,12 +417,12 @@ const NavBar = (props) =>{
     let isotrackerBtnNoProgress = null
     if(process.env.REACT_APP_SP === "1"){
         if(process.env.REACT_APP_PROGRESS === "1"){
-            spButtonProgress = <Button class="btn nohover" onClick={handleClickSP} style={{marginRight:"50px"}}>
-            <i className="dropdown__text" >CSPTracker</i>
+            pitButtonProgress = <Button class="btn nohover" onClick={handleClickPIT} style={{marginRight:"50px"}}>
+            <i className="dropdown__text" >PITRequests</i>
             </Button>
         }else{
-            spButton = <Button class="btn nohover" onClick={handleClickSP} style={{marginLeft:"50px"}}>
-            <i className="dropdown__text" >CSPTracker</i>
+            pitButton = <Button class="btn nohover" onClick={handleClickPIT} style={{marginLeft:"50px"}}>
+            <i className="dropdown__text" >PITRequests</i>
             </Button>
             isotrackerBtnNoProgress = <Button class="btn nohover" onClick={handleClickIsotracker} style={{marginLeft:"50px"}}>
                         <i className="dropdown__text" >IsoTracker </i>
@@ -524,9 +525,9 @@ const NavBar = (props) =>{
                     
                     {progressButtons}   
                     {isotrackerBtnNoProgress}        
-                    {spButtonProgress}
+                    {pitButtonProgress}
                     
-                    {spButton}
+                    {pitButton}
 
                     <Menu
                         id="simple-menu"
