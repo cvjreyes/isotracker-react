@@ -38,6 +38,7 @@ function App() {
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/3dprogress"} component={ProgressCurve}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/navis"} component={Navis}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/csptracker"} component={CSPTracker}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/pitrequests"} component={PITRequests}></Route>
 
         </Switch>
       </Router>
