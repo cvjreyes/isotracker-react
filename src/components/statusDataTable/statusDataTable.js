@@ -269,18 +269,7 @@ class StatusDataTable extends React.Component{
       }),
     };
 
-    let columns = [
-        {
-            title: <div className="dataTable__header__text">Status</div>,
-            dataIndex: 'status',
-            key: 'status',
-            width: '20%',
-            ...this.getColumnSearchProps('status'),
-            sorter: {
-                compare: (a, b) => { return a.status.localeCompare(b.status)},
-            },
-        },
-          
+    let columns = [      
       {
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
@@ -289,6 +278,16 @@ class StatusDataTable extends React.Component{
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">Status</div>,
+        dataIndex: 'status',
+        key: 'status',
+        width: '20%',
+        ...this.getColumnSearchProps('status'),
+        sorter: {
+            compare: (a, b) => { return a.status.localeCompare(b.status)},
         },
       },
       {

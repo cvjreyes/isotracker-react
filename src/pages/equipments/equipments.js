@@ -244,7 +244,7 @@ const Equipments = () => {
         
         <body>
             <IdleTimer
-                timeout={1000 * 60 * 5}
+                timeout={1000 * 60 * 15}
                 onIdle={handleOnIdle}
                 debounce={250}
             />
