@@ -38,12 +38,15 @@ class HistoryDataTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
+    displayData: [],
+    filterData: ["", "", "", "", "", ""],
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
     updateData: this.props.updateData,
     username: "",
-    acronyms : null
+    acronyms : null,
+    filters: []
   };
 
   
@@ -72,23 +75,26 @@ class HistoryDataTable extends React.Component{
   }
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/historyFiles", options)
         .then(response => response.json())
-        .then(json => {
+        .then(async json => {
                 var rows = []
                 var row = null
                 for(let i = 0; i < json.rows.length; i++){
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions:""}
-                    if(row){
-                      if(i % 2 === 0){
-                        row["color"] = "#fff"
-                      }else{
-                        row["color"] = "#eee"
-                      }
-                       
-                      rows.push(row)
+                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}
+                  if(row){
+                    if(i % 2 === 0){
+                      row["color"] = "#fff"
+                    }else{
+                      row["color"] = "#eee"
                     }
+                      
+                    rows.push(row)
                   }
+                }
+
+                const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(1,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(2,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(3,e.target.value)}/></div>, to: <div><input type="text" className="filter__input" placeholder="To" onChange={(e) => this.filter(4,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(5,e.target.value)}/></div>}]
                 
-                this.setState({data : rows, selectedRows: []});
+                this.setState({data : rows, selectedRows: [], displayData: rows});
+                await this.setState({filters : filterRow})
 
             }
         )
@@ -99,6 +105,35 @@ class HistoryDataTable extends React.Component{
         
   }
 
+  async filter(column, value){
+    let fd = this.state.filterData
+    fd[column] = value
+    await this.setState({filterData: fd})
+
+    let auxDisplayData = this.state.data
+    let resultData = []
+    let fil, exists = null
+    for(let i = 0; i < auxDisplayData.length; i++){
+      exists = true
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+        fil = Object.keys(auxDisplayData[i])[column+1]
+        if(fil === "id"){
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+            exists = false
+          }
+        }else{
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+            exists = false
+          }
+        }
+        
+      }
+      if(exists){
+        resultData.push(auxDisplayData[i])
+      }
+    }
+    await this.setState({displayData: resultData})
+  }
 
   getMaster(fileName){
     const options = {
@@ -144,60 +179,6 @@ class HistoryDataTable extends React.Component{
 
   
   getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-
-    record[dataIndex].props 
-    ? record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase())
-    : (record[dataIndex]
-      ?  record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-      : ''),
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
     render: text => 
       text.props ? (
       <Link onClick={() => this.getMaster(text.props.children)}>{text.props.children}</Link>
@@ -213,19 +194,6 @@ class HistoryDataTable extends React.Component{
     ),
       
   });
-
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
-
-  handleReset = clearFilters => {
-    clearFilters();
-    this.setState({ searchText: '' });
-  };
 
   onSelectChange = (selectedRowKeys, selectedRows) => {
     let ids = []
@@ -281,6 +249,7 @@ class HistoryDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
+        filterSearch: false
       },
       {
         title: <center className="dataTable__header__text">Revision</center>,
@@ -328,10 +297,11 @@ class HistoryDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
-        width: "600px"
+        width:"600px"
       },
     ];
 
+    
     var totalElements = null;
     if (this.state.data.length === 0){
       totalElements = null;
@@ -345,8 +315,10 @@ class HistoryDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} dataSource={this.state.data} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table style={{ height: '540px' }} bordered = {true} columns={columns} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} dataSource={this.state.displayData} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           {totalElements}
+
         </div>
         
         

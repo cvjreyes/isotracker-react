@@ -12,12 +12,15 @@ class OnHoldTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
+    displayData: [],
+    filterData: ["", "", "", "", "", "", ""],
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
     updateData: this.props.updateData,
     username: "",
-    acronyms : null
+    acronyms : null,
+    filters: []
   };
 
 
@@ -45,7 +48,7 @@ class OnHoldTable extends React.Component{
       }
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/holds", options)
             .then(response => response.json())
-            .then(json => {
+            .then(async json => {
                     var rows = []
                    
                     for(let i = 0; i < json.rows.length; i++){
@@ -67,7 +70,10 @@ class OnHoldTable extends React.Component{
                                      
                     }
                     
-                    this.setState({data : rows, selectedRows: []});
+                    const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(5,e.target.value)}/></div>}]
+                
+                    this.setState({data : rows, selectedRows: [], displayData: rows});
+                    await this.setState({filters : filterRow})
     
                 }
             )
@@ -89,7 +95,7 @@ class OnHoldTable extends React.Component{
         }
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
               .then(response => response.json())
-              .then(json => {
+              .then(async json => {
                       var rows = []
                       for(let i = 0; i < json.rows.length; i++){
                           var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
@@ -97,7 +103,10 @@ class OnHoldTable extends React.Component{
                           rows.push(row)                
                       }
                       
-                      this.setState({data : rows, selectedRows: []});
+                      const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(5,e.target.value)}/></div>}]
+                
+                    this.setState({data : rows, selectedRows: [], displayData: rows});
+                    await this.setState({filters : filterRow})
 
                   }
           )
@@ -124,7 +133,7 @@ class OnHoldTable extends React.Component{
     }
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
           .then(response => response.json())
-          .then(json => {
+          .then(async json => {
                   var rows = []
                   let pButton, iButton
                   for(let i = 0; i < json.rows.length; i++){
@@ -135,6 +144,34 @@ class OnHoldTable extends React.Component{
                   this.setState({
                     data : rows,
                   });
+
+                  let auxDisplayData = this.state.data
+                  let resultData = []
+                  let fil, exists = null
+                  for(let i = 0; i < auxDisplayData.length; i++){
+                    exists = true
+                    for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
+                      fil = Object.keys(auxDisplayData[i])[column+1]
+                      if(fil === "id" && auxDisplayData[i][fil].props){
+                        if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+                          exists = false
+                        }  
+                        
+                      }else{
+                        if(auxDisplayData[i][fil]){
+                          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+                            exists = false
+                          }
+                        }
+                        
+                      }     
+                      
+                    }
+                    if(exists){
+                      resultData.push(auxDisplayData[i])
+                    }
+                  }
+                  await this.setState({displayData: resultData})
               }
           )
           .catch(error => {
@@ -187,90 +224,51 @@ class OnHoldTable extends React.Component{
     });
   }
 
+  async filter(column, value){
+    let fd = this.state.filterData
+    fd[column] = value
+    await this.setState({filterData: fd})
+
+    let auxDisplayData = this.state.data
+    let resultData = []
+    let fil, exists = null
+    for(let i = 0; i < auxDisplayData.length; i++){
+      exists = true
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
+        fil = Object.keys(auxDisplayData[i])[column+1]
+        if(fil === "id" && auxDisplayData[i][fil].props){
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+            exists = false
+          }  
+        }else if(fil === "user" && process.env.REACT_APP_PROGRESS === "0"){
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children[0].includes(this.state.filterData[column])){
+            exists = false
+          } 
+        }else{
+          if(auxDisplayData[i][fil]){
+            if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+              exists = false
+            }
+          }
+          
+        }     
+        
+      }
+      if(exists){
+        resultData.push(auxDisplayData[i])
+      }
+    }
+    await this.setState({displayData: resultData})
+  }
+
   
   getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
-/*
-    this.state.searchedColumn === "id" ? (
-      record.id.props.children
-        ? record.id.props.children.toString().toLowerCase().includes(value.toLowerCase())
-        : ''
-      ) : this.state.searchedColumn === "actions" ? (
-        record.actions.props.children[1].props.children.toString().toLowerCase().includes(value.toLowerCase())
-      ) : (
-        record[dataIndex]
-          ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-          : ''
-      ),*/
-
-      record[dataIndex].props 
-          ? (record[dataIndex].props.children[1].props
-            ? record.actions.props.children[1].props.children.toString().toLowerCase().includes(value.toLowerCase())
-            : record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase())
-            )
-          : (record[dataIndex]
-            ?  record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-            : ''),
-
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
+    
     render: text => 
     text
       
   });
 
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
 
   handleReset = clearFilters => {
     clearFilters();
@@ -302,6 +300,17 @@ class OnHoldTable extends React.Component{
       getCheckboxProps: (record) => (      
         {
         
+        // Column configuration not to be checked
+        name: record.name,
+      }),
+    };
+
+    const rowSelectionFilter = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        this.onSelectChange(selectedRowKeys, selectedRows);
+      },
+      getCheckboxProps: (record) => ({
+        disabled: true,
         // Column configuration not to be checked
         name: record.name,
       }),
@@ -444,9 +453,9 @@ class OnHoldTable extends React.Component{
 
     let table = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-      table = <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"/>
+      table = <Table className="customTable" bordered = {true} columns={columns} style={{ height: '540px' }}  dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"/>
     }else{
-      table = <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.data} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"/>
+      table = <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} style={{ height: '540px' }}  dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"/>
     }
 
     return (
@@ -454,6 +463,7 @@ class OnHoldTable extends React.Component{
         {this.state.updateData}
         <div className="dataTable__container">
           {table}
+          <Table className="filter__table" pagination={{disabled:true}} rowSelection={{type: 'checkbox', ...rowSelectionFilter}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/> 
           {totalElements}
         </div>
         

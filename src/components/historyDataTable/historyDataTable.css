@@ -1,0 +1,10 @@
+.filter__input{
+    width: 100%;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+}
+
+.filter__table{
+    position: flex;
+    margin-top: -57px;
+}

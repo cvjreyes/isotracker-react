@@ -158,7 +158,7 @@ const Instrumentation = () => {
         }
     });
 
-    var dataTableHeight = "540px"
+    var dataTableHeight = "600px"
 
     document.body.style.zoom = 0.8
     document.title= process.env.REACT_APP_APP_NAMEPROJ
@@ -243,7 +243,7 @@ const Instrumentation = () => {
         
         <body>
             <IdleTimer
-                timeout={1000 * 60 * 5}
+                timeout={1000 * 60 * 15}
                 onIdle={handleOnIdle}
                 debounce={250}
             />

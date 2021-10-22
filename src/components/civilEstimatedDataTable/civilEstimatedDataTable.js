@@ -7,14 +7,17 @@ class CivilEstimatedDataTable extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
-    data: [],
+    data: [],    
+    displayData: [],
+    filterData: ["", "", "", "", "", "", "", "", "", "", "", ""],
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
     updateData: this.props.updateData,
     username: "",
     acronyms : null,
-    steps: []
+    steps: [],
+    filters: []
   };
 
   async componentDidMount(){
@@ -40,7 +43,7 @@ class CivilEstimatedDataTable extends React.Component{
 
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/estimated", options)
       .then(response => response.json())
-      .then(json => {
+      .then(async json => {
         var rows = []
         var row = null
         
@@ -50,9 +53,9 @@ class CivilEstimatedDataTable extends React.Component{
               mod = json.rows[i].modelled
             }
             if(i % 2 === 0){
-              row = {key:i, area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod, color: "#fff"}
+              row = {area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod, color: "#fff"}
             }else{
-              row = {key:i, area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod, color: "#eee"}
+              row = {area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod, color: "#eee"}
             }
             
             for(let j = 0; j < this.state.steps.length; j++){
@@ -61,82 +64,53 @@ class CivilEstimatedDataTable extends React.Component{
             }
             rows.push(row)
         }
-        this.setState({data : rows, selectedRows: []});
+        let filterRow = [{area: <div><input type="text" className="filter__input" placeholder="Area" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, quantity: <div><input type="text" className="filter__input" placeholder="Qty" onChange={(e) => this.filter(2,e.target.value)}/></div>, modelled: <div><input type="text" className="filter__input" placeholder="Modelled" onChange={(e) => this.filter(3,e.target.value)}/></div>}]
+        for(let j = 0; j < this.state.steps.length; j++){
+          let currentStep = this.state.steps[j].toString()
+          filterRow[0][currentStep] =  <div><input type="text" className="filter__input" placeholder={currentStep+"%"} onChange={(e) => this.filter(j+4,e.target.value)}/></div>
+        }
+        this.setState({data : rows, displayData: rows});
+        await this.setState({filters : filterRow})
 
     }) 
   }
 
+  async filter(column, value){
+    let fd = this.state.filterData
+    fd[column] = value
+    await this.setState({filterData: fd})
+
+    let auxDisplayData = this.state.data
+    let resultData = []
+    let fil, exists = null
+    for(let i = 0; i < auxDisplayData.length; i++){
+      exists = true
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
+        let keys = Object.keys(auxDisplayData[i])
+        keys.pop()
+        fil = keys[(column+this.state.steps.length) % keys.length]
+       
+        if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
+          exists = false    
+          
+        }
+        
+      }
+      if(exists){
+        resultData.push(auxDisplayData[i])
+      }
+    }
+    await this.setState({displayData: resultData})
+  }
   
   getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          <Button
-            type="primary"
-            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
-            size="small"
-            style={{ width: 90 }}
-          >
-            Search
-          </Button>
-          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({ closeDropdown: false });
-              this.setState({
-                searchText: selectedKeys[0],
-                searchedColumn: dataIndex,
-              });
-            }}
-          >
-            Filter
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
-    onFilter: (value, record) =>
 
-
-      
-        record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-          
-
-
-    onFilterDropdownVisibleChange: visible => {
-      if (visible) {
-        setTimeout(() => this.searchInput.select(), 100);
-      }
-    },
     render: text => 
       
       text
     
       
   });
-
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex,
-    });
-  };
 
   handleReset = clearFilters => {
     clearFilters();
@@ -230,8 +204,9 @@ class CivilEstimatedDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"
+        <Table className="customTable" bordered = {true} columns={columns} style={{ height: '540px' }} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"
          rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           {totalElements}
         </div>
         

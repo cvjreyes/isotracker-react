@@ -111,9 +111,10 @@ const NavBar = (props) =>{
     const handleClickHome = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/home");
     }
-    const handleClickSP = () =>{
+    const handleClickCSP = () =>{
         history.push("/"+process.env.REACT_APP_PROJECT+"/csptracker");
     }
+     
 
     useEffect(() => {
         const checkIfClickedOutside = e => {
@@ -300,7 +301,7 @@ const NavBar = (props) =>{
       }, []);
       
 
-    let projectBtn, spButton, spButtonProgress, rightButtons = null
+    let projectBtn, cspButton, cspButtonProgress, rightButtons = null
     if(process.env.REACT_APP_PROGRESS === "1"){
         if(process.env.REACT_APP_SP === "1"){
             projectBtn = <Button class="btn nohover" disabled style={{marginRight:"20px", float:"right"}}>
@@ -416,11 +417,11 @@ const NavBar = (props) =>{
     let isotrackerBtnNoProgress = null
     if(process.env.REACT_APP_SP === "1"){
         if(process.env.REACT_APP_PROGRESS === "1"){
-            spButtonProgress = <Button class="btn nohover" onClick={handleClickSP} style={{marginRight:"50px"}}>
+            cspButtonProgress = <Button class="btn nohover" onClick={handleClickCSP} style={{marginRight:"50px"}}>
             <i className="dropdown__text" >CSPTracker</i>
             </Button>
         }else{
-            spButton = <Button class="btn nohover" onClick={handleClickSP} style={{marginLeft:"50px"}}>
+            cspButton = <Button class="btn nohover" onClick={handleClickCSP} style={{marginLeft:"50px"}}>
             <i className="dropdown__text" >CSPTracker</i>
             </Button>
             isotrackerBtnNoProgress = <Button class="btn nohover" onClick={handleClickIsotracker} style={{marginLeft:"50px"}}>
@@ -524,9 +525,9 @@ const NavBar = (props) =>{
                     
                     {progressButtons}   
                     {isotrackerBtnNoProgress}        
-                    {spButtonProgress}
+                    {cspButtonProgress}
                     
-                    {spButton}
+                    {cspButton}
 
                     <Menu
                         id="simple-menu"

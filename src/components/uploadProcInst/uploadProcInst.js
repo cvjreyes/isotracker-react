@@ -219,8 +219,8 @@ export default class UploadProcInst extends Component {
                         <center className="popUpP__warning__title">***WARNING!*** This action may replace the current appended file. Take appropiate cautions.</center>
                         <center className="popUpP__warning__subtitle">If you are not sure of this action, click cancel and contact your supervisor.</center>
                         <div className="popUpP__buttons__container">
-                            <button class="btn btn-sm btn-success" onClick={() => this.accept()} style={{marginRight:"5px", fontSize:"16px"}}>Accept</button>
-                            <button class="btn btn-sm btn-danger" onClick={() => this.deny()} style={{marginRight:"5px", fontSize:"16px"}}>Deny</button>
+                            <button class="btn btn-sm btn-success" onClick={() => this.accept()} style={{marginRight:"40px", fontSize:"16px", width:"200px"}}>Accept</button>
+                            <button class="btn btn-sm btn-danger" onClick={() => this.deny()} style={{marginRight:"5px", fontSize:"16px", width:"200px"}}>Deny</button>
                         </div>
                     </Modal>
                 </div>
