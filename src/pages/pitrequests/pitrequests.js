@@ -7,6 +7,8 @@ import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
 import MenuListPIT from '../../components/menuListPit/menuListPit';
 
+import AlertF from "../../components/alert/alert"
+
 //Página de home con el menú para ir a las aplicaciones de isotracker
 
 const PITRequests = () =>{
@@ -14,6 +16,7 @@ const PITRequests = () =>{
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null);
     const [circles, setCircles] = useState(null);
+    const [success, setSuccess] = useState(false)
 
     const history = useHistory()
 
@@ -51,7 +54,7 @@ const PITRequests = () =>{
 
     useEffect(() =>{        
         setNavBar(<NavBar/>)
-        setContent(<MenuListPIT/>)    
+        setContent(<MenuListPIT success={() => setSuccess(true)}/>)    
         setCircles(<div><img src={GreenCircle} alt="greenCircle" className="greenCircle__image"/>
         <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/></div>)               
 
@@ -104,6 +107,12 @@ const PITRequests = () =>{
                 onIdle={handleOnIdle}
                 debounce={250}
             />
+            <div
+            className={`alert alert-success ${success ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setSuccess(false)}
+            >
+                <AlertF type="success" margin="-30px" text="Request sent successfully!"/>
+            </div>
             {circles}
             <div>
                 {navBar}
