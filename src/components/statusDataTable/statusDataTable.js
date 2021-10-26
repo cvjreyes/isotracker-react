@@ -313,6 +313,16 @@ class StatusDataTable extends React.Component{
     if(process.env.REACT_APP_PROGRESS === "0"){
       columns = [
         {
+          title: <center className="dataTable__header__text">ISO ID</center>,
+          dataIndex: 'id',
+          key: 'id',
+          width: '23%',
+          ...this.getColumnSearchProps('id'),
+          sorter:{
+            compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+          },
+        },
+        {
             title: <div className="dataTable__header__text">Status</div>,
             dataIndex: 'status',
             key: 'status',
@@ -322,17 +332,7 @@ class StatusDataTable extends React.Component{
                 compare: (a, b) => { return a.status.localeCompare(b.status)},
             },
         },
-          
-      {
-        title: <center className="dataTable__header__text">ISO ID</center>,
-        dataIndex: 'id',
-        key: 'id',
-        width: '23%',
-        ...this.getColumnSearchProps('id'),
-        sorter:{
-          compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
-        },
-      },
+              
       {
         title: <div className="dataTable__header__text">Condition</div>,
         dataIndex: 'condition',
