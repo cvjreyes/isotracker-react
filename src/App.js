@@ -16,6 +16,7 @@ import WelcomeLoginF from './pages/welcomeLoginF/welcomeLoginF';
 import IsoCtrlF from './pages/isoCtrlF/isoCtrlF';
 import CSPTracker from './pages/sptracker/sptracker';
 import PITRequests from './pages/pitrequests/pitrequests';
+import PitRequestView from './pages/pitRequestView/pitRequestView';
 require('dotenv').config();
 
 
@@ -39,6 +40,7 @@ function App() {
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/navis"} component={Navis}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/csptracker"} component={CSPTracker}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/pitrequests"} component={PITRequests}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/pitrequestsview"} component={PitRequestView}></Route>
 
         </Switch>
       </Router>

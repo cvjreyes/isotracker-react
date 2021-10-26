@@ -105,9 +105,14 @@ export default function MenuListPITList(props) {
         history.push("/"+process.env.REACT_APP_PROJECT+"/csptracker");
     }
 
+    function handlePitViewClick(){
+      history.push("/"+process.env.REACT_APP_PROJECT+"/pitrequestsview");
+    }
+
     function success(){
       props.success()
     }
+
 
   return (
     <TreeView
@@ -116,7 +121,7 @@ export default function MenuListPITList(props) {
       defaultCollapseIcon={<ArrowDropDownIcon/>}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
-      sx={{ height: 700, flexGrow: 1, maxWidth: 720, overflowY: 'auto' }}
+      sx={{ height: 800, flexGrow: 1, maxWidth: 720, overflowY: 'auto' }}
     >
       <StyledTreeItem nodeId="14" style={{marginBottom:"5px"}} labelText="New user" labelIcon={SupervisorAccountIcon}/>
       <StyledTreeItem nodeId="1" style={{marginBottom:"5px"}} labelText="CADpmc" labelIcon={MailIcon} onClick={()=> handleCADpmcClick()}/>
@@ -143,7 +148,11 @@ export default function MenuListPITList(props) {
       </StyledTreeItem>
 
       <StyledTreeItem nodeId="4" labelText="QueryTracker" color="#e3742f" bgColor="#fcefe3" labelIcon={Label}>
+
+        <StyledTreeItem nodeId="18" labelText="Requests tray" labelIcon={InfoIcon} onClick={()=> handlePitViewClick()} />
         
+        <StyledTreeItem nodeId="19" labelText="Create request" color="#e3742f" bgColor="#fcefe3" labelIcon={Label}>
+
         <QtrackerNWCPopUp success={success.bind(this)}/>
         <QtrackerNVNPopUp success={success.bind(this)}/>
         
@@ -159,33 +168,7 @@ export default function MenuListPITList(props) {
 
         <QtrackerRRPopUp success={success.bind(this)}/>
 
-        {/*
-        <StyledTreeItem
-          nodeId="10"
-          labelText="NotReporting"
-          labelIcon={ForumIcon}
-          color="#a250f5"
-          bgColor="#f3e8fd"
-        >
-            <StyledTreeItem
-          nodeId="11"
-          labelText="InIsometric"
-          labelIcon={SupervisorAccountIcon}
-        />
-        <StyledTreeItem
-          nodeId="12"
-          labelText="InBfile"
-          labelIcon={InfoIcon}
-        />
         </StyledTreeItem>
-        <StyledTreeItem
-          nodeId="13"
-          labelText="AnyOther"
-          labelIcon={InfoIcon}
-          color="#e3742f"
-          bgColor="#fcefe3"
-        />
-        */}
       </StyledTreeItem>
         
     </TreeView>
