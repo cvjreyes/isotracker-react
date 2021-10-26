@@ -19,7 +19,7 @@ import QtrackerNWCPopUp from '../qtrackerNWCPopUp/qtrackerNWCPopUp'
 import QtrackerNVNPopUp from '../qtrackerNVNPopUp/qtrackerNVNPopUp';
 import QtrackerNRIPopUp from '../qtrackerNRIPopUp/qtrackerNRIPopUp';
 import QtrackerNRBPopUp from '../qtrackerNRBPopUp/qtrackerNRBPopUp';
-import QtrackerRPPopUp from '../qtrackerRPPopUp/qtrackerRPPopUp';
+import QtrackerRRPopUp from '../qtrackerRRPopUp/qtrackerRRPopUp';
 import QtrackerNRIDSPopUp from '../qtrackerNRIDSPopUp/qtrackerNRIDSPopUp';
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
@@ -157,7 +157,7 @@ export default function MenuListPITList(props) {
           <QtrackerNRIDSPopUp success={success.bind(this)}/>
         </StyledTreeItem>
 
-        <QtrackerRPPopUp success={success.bind(this)}/>
+        <QtrackerRRPopUp success={success.bind(this)}/>
 
         {/*
         <StyledTreeItem

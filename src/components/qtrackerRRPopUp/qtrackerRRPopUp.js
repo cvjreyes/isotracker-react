@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import AlertF from "../../components/alert/alert"
+import AlertF from "../alert/alert"
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -106,7 +106,7 @@ const CryptoJS = require("crypto-js");
         labelText: PropTypes.string.isRequired,
       };
 
-export default class QtrackerRPPopUp extends Component {
+export default class QtrackerRRPopUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -146,7 +146,7 @@ export default class QtrackerRPPopUp extends Component {
         if(this.state.scope && this.state.description && this.state.items){
             const body ={
                 scope : this.state.scope,
-                pid: this.state.pid,
+                description: this.state.description,
                 items: this.state.items,
                 user: secureStorage.getItem("user")
               }
@@ -157,13 +157,11 @@ export default class QtrackerRPPopUp extends Component {
                 },
                 body: JSON.stringify(body)
             }
-              await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/requestSP", options)
+              await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/requestRR", options)
                   .then(response => response.json())
                   .then(json => {
-                      if(json.success){
-                          this.props.successRequest()
-                      }else{
-                          this.props.existsErrorRequest()
+                      if(json.filename){
+                          this.props.success()
                       }
                   })
                   this.closeModal()

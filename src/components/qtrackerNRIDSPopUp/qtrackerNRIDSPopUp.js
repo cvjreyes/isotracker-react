@@ -147,13 +147,11 @@ export default class QtrackerNRIDSPopUp extends Component {
                 },
                 body: JSON.stringify(body)
             }
-              await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/requestSP", options)
+              await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/requestNRIDS", options)
                   .then(response => response.json())
                   .then(json => {
-                      if(json.success){
-                          this.props.successRequest()
-                      }else{
-                          this.props.existsErrorRequest()
+                      if(json.filename){
+                          this.props.success()
                       }
                   })
                   this.closeModal()

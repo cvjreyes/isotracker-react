@@ -143,11 +143,10 @@ export default class QtrackerNRIPopUp extends Component {
 
     async request(){
         
-        if(this.state.pipe && this.state.description && this.state.attach){
+        if(this.state.pipe && this.state.description){
             const body ={
                 pipe : this.state.pipe,
-                pid: this.state.pid,
-                attach: this.state.attach,
+                description: this.state.description,
                 user: secureStorage.getItem("user")
               }
               const options = {
@@ -157,16 +156,27 @@ export default class QtrackerNRIPopUp extends Component {
                 },
                 body: JSON.stringify(body)
             }
-              await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/requestSP", options)
-                  .then(response => response.json())
-                  .then(json => {
-                      if(json.success){
-                          this.props.successRequest()
-                      }else{
-                          this.props.existsErrorRequest()
-                      }
-                  })
-                  this.closeModal()
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/requestNRI", options)
+            .then(response => response.json())
+            .then(async json => {
+                if(json.filename && this.state.attach){
+                  const extension = this.state.attach.name.split('.').pop();
+                  const file  = new FormData(); 
+                  file.append('file', this.state.attach, json.filename + "." + extension);
+                  await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/uploadAttach", {
+                      method: 'POST',
+                      body: file,
+                      }).then(response =>{
+                          if (response.status === 200){
+                              this.props.success()
+                          }
+                      })                       
+                  
+                }else{
+                    this.props.success()
+                }
+            })
+            this.closeModal()
         }else{
             this.setState({errorBlankRequest: true})
         }
@@ -201,7 +211,7 @@ export default class QtrackerNRIPopUp extends Component {
                             <textarea name="description" className="qtrackerPopUp__input__text" rows="5" placeholder="Description" ref="description" style={{marginBottom:"20px", color:"black"}} onChange={(e) => this.setState({description: e.target.value})}/>
                             
 
-                            <input type="file" id="attach"className="qtrackerPopUp__input__file"  ref="attach" style={{marginBottom: "30px"}} value={this.state.attach} onChange={(e) => this.setState({attach: e.target.files[0]})} ></input>
+                            <input type="file" id="attach"className="qtrackerPopUp__input__file"  ref="attach" style={{marginBottom: "30px"}}  onChange={(e) => this.setState({attach: e.target.files[0]})} ></input>
                             <label for="attach" className="attach__label">Attach: </label>
                             <button class="btn btn-sm btn-success" onClick={() => this.request()} style={{marginRight:"5px", fontSize:"20px"}}>Submit</button>
                             <button class="btn btn-sm btn-danger" onClick={() => this.closeModal()} style={{marginLeft:"5px", fontSize:"20px"}}>Cancel</button>
