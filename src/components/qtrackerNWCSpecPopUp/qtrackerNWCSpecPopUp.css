@@ -1,6 +1,7 @@
 .specs__container{
     padding: 40px;
     display: inline-block;
+    border-radius: 10px;
 }
 
 .specs__row{

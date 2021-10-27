@@ -144,9 +144,18 @@ export default class QtrackerNRIPopUp extends Component {
     async request(){
         
         if(this.state.pipe && this.state.description){
+
+            let has_attach
+
+            if(this.state.attach){
+              has_attach = true
+            }else{
+              has_attach = false
+            }
             const body ={
                 pipe : this.state.pipe,
                 description: this.state.description,
+                has_attach: has_attach,
                 user: secureStorage.getItem("user")
               }
               const options = {

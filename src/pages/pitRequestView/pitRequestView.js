@@ -7,6 +7,10 @@ import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
 import QTrackerViewDataTable from '../../components/qtrackerViewDataTable/qtrackerViewDataTable'
 
+import SaveIcon from "../../assets/images/save.svg"
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
+
 const PitRequestView = () => {
 
     const CryptoJS = require("crypto-js");
@@ -43,6 +47,8 @@ const PitRequestView = () => {
     const [currentRole, setCurrentRole] = useState();
     const [currentTab, setCurrentTab] = useState("View")
     const [roles, setRoles] = useState();
+    const [saveBtn, setSaveBtn] = useState()
+    const [updatedRows, setUpdatedRows] = useState([])
 
     const [updateData, setUpdateData] = useState(false)    
 
@@ -52,6 +58,7 @@ const PitRequestView = () => {
         if(!secureStorage.getItem("user")){
             history.push("/"+process.env.REACT_APP_PROJECT+"/");
         }
+        
     }, [])
 
     var currentUser = secureStorage.getItem('user')
@@ -83,7 +90,15 @@ const PitRequestView = () => {
             )
             .catch(error => {
                 console.log(error);
-            })       
+            })     
+            
+            
+        if(secureStorage.getItem("role") === "3D Admin"){
+            setSaveBtn(<button className="navBar__button" onClick={()=> saveChanges()}><img src={SaveIcon} alt="save" className="navBar__icon"></img><p className="navBar__button__text">Save</p></button>)
+
+        }else{
+            setSaveBtn(null)
+        }
             
     },[currentRole]);
 
@@ -131,12 +146,216 @@ const PitRequestView = () => {
     }
 
     async function downloadReport(){
+
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getNWC", options)
+        .then(response => response.json())
+        .then(async json => {
+          var rows = []
+          var row = null
+            for(let i = 0; i < json.rows.length; i++){
+                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: json.rows[i].spref, name: null, pipe: null, items: null, scope: null, description: json.rows[i].description}
+                  
+                  if(json.rows[i].status === 0){
+                    row.status = "Pending"
+                  }else if(json.rows[i].status === 1){
+                      row.status = "In progress"
+                  }else if(json.rows[i].status === 2){
+                      row.status = "Ready"
+                  }else{
+                      row.status = "Rejected"
+                  }
+                
+                
+                rows.push(row)
+            }
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getNVN", options)
+            .then(response => response.json())
+            .then(async json => {
+            var row = null
+                for(let i = 0; i < json.rows.length; i++){
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: json.rows[i].name, pipe: null, items: null, scope: null, description: json.rows[i].description}
+                    
+                      if(json.rows[i].status === 0){
+                        row.status = "Pending"
+                      }else if(json.rows[i].status === 1){
+                          row.status = "In progress"
+                      }else if(json.rows[i].status === 2){
+                          row.status = "Ready"
+                      }else{
+                          row.status = "Rejected"
+                      }
+                    
+                    rows.push(row)
+                }
+                
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getNRI", options)
+                .then(response => response.json())
+                .then(async json => {
+                var row = null
+                    for(let i = 0; i < json.rows.length; i++){
+                        row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: null, pipe: json.rows[i].pipe, items: null, scope: null, description: json.rows[i].description}
+                                             
+                        if(json.rows[i].status === 0){
+                        row.status = "Pending"
+                        }else if(json.rows[i].status === 1){
+                            row.status = "In progress"
+                        }else if(json.rows[i].status === 2){
+                            row.status = "Ready"
+                        }else{
+                            row.status = "Rejected"
+                        }
+                        
+                        rows.push(row)
+                    }
+                    
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getNRB", options)
+                    .then(response => response.json())
+                    .then(async json => {
+                    var row = null
+                        for(let i = 0; i < json.rows.length; i++){
+                            row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: null, pipe: json.rows[i].pipe, items: null, scope: null, description: json.rows[i].description}
+                            
+                              if(json.rows[i].status === 0){
+                                row.status = "Pending"
+                              }else if(json.rows[i].status === 1){
+                                  row.status = "In progress"
+                              }else if(json.rows[i].status === 2){
+                                  row.status = "Ready"
+                              }else{
+                                  row.status = "Rejected"
+                              }
+                            
+                            rows.push(row)
+                        }
+                        
+                        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getNRIDS", options)
+                        .then(response => response.json())
+                        .then(async json => {
+                        var row = null
+                            for(let i = 0; i < json.rows.length; i++){
+                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: json.rows[i].name, pipe: null, items: null, scope: null, description: null}
+                               
+                                  if(json.rows[i].status === 0){
+                                    row.status = "Pending"
+                                  }else if(json.rows[i].status === 1){
+                                      row.status = "In progress"
+                                  }else if(json.rows[i].status === 2){
+                                      row.status = "Ready"
+                                  }else{
+                                      row.status = "Rejected"
+                                  }
+                                
+                                rows.push(row)
+                            }
+                            
+                            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getRP", options)
+                            .then(response => response.json())
+                            .then(async json => {
+                            var row = null
+                                for(let i = 0; i < json.rows.length; i++){
+                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: null, pipe: null, items: json.rows[i].items_to_report, scope: json.rows[i].scope, description: json.rows[i].description}
+                                    
+                                      if(json.rows[i].status === 0){
+                                        row.status = "Pending"
+                                      }else if(json.rows[i].status === 1){
+                                          row.status = "In progress"
+                                      }else if(json.rows[i].status === 2){
+                                          row.status = "Ready"
+                                      }else{
+                                          row.status = "Rejected"
+                                      }
+                                    
+                                    rows.push(row)
+                                }
+
+                                // Sort the array based on the second element
+                                rows.sort(function(first, second) {
+                                  return second.created_at.localeCompare(first.created_at);
+                                });
+                                
+                                const headers = ["Reference", "User", "Date", "SPREF", "Name", "Pipe", "Items", "Scope", "Description", "Status"]
+                                const apiData = rows
+                                const fileName = "QueryTracker report"
+
+                                const fileType =
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+                                const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1']
+                                const fileExtension = ".xlsx";
+
+                                let wscols = []
+                                for(let i = 0; i < headers.length; i++){
+                                    wscols.push({width:35})
+                                }
+
+                                const ws = XLSX.utils.json_to_sheet(apiData);   
+                                ws["!cols"] = wscols
+                                for(let i = 0; i < headers.length; i++){
+                                    console.log(i)
+                                    ws[header_cells[i]].v = headers[i]
+                                }
+                                const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+                                const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+                                const data = new Blob([excelBuffer], { type: fileType });
+                                FileSaver.saveAs(data, fileName + fileExtension);
+
+                            })
+
+                        })
+
+                    })
+
+                })
+
+            })
+            
+        })
+    }
+
+    async function updateStatus(updatedRow){
+        let currentRows = updatedRows
+        currentRows.push(updatedRow)
+        await setUpdatedRows(currentRows)
+    }
+
+    async function saveChanges(){
+        for(let i = 0; i < updatedRows.length; i++){
+
+            let body = {
+                incidence_number: updatedRows[i][0],
+                status_id: updatedRows[i][1],
+                type: updatedRows[i][2],
+                email: secureStorage.getItem("user")
+              }
+              let options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+              }
+              
+              fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/updateStatus", options)
+              .then(response => response.json())
+              .then(async json => {
+                
+              })
+        }
+
+        await setUpdatedRows([])
+        await setUpdateData(!updateData)
         
     }
 
     document.body.style.zoom = 0.8
 
-    var dataTableHeight = "570px"
+    var dataTableHeight = "600px"
 
 
     return(
@@ -164,7 +383,9 @@ const PitRequestView = () => {
                       <tr className="isotracker__table__navBar__container" style={{height:"65px "}}>
                           <th  className="isotracker__table__navBar">
                               <div style={{display:"flex"}}>
- 
+                                  {secureStorage.getItem("role") === "3D Admin" &&
+                                  <button className="navBar__button" onClick={()=> saveChanges()}><img src={SaveIcon} alt="save" className="navBar__icon"></img><p className="navBar__button__text">Save</p></button>
+                                  }
                               </div>                           
                                
                           </th>
@@ -172,7 +393,7 @@ const PitRequestView = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
                               <div  style={{height: dataTableHeight, width:"2200px"}} className="isotracker__table__table__container">
-                                <QTrackerViewDataTable updateData={updateDataMethod.bind(this)}/>
+                                <QTrackerViewDataTable updateData={updateDataMethod.bind(this)} updateStatus={updateStatus.bind(this)}/>
                               </div>
                           </td>
                           
@@ -180,7 +401,7 @@ const PitRequestView = () => {
                   </table>
                   <center className="actionBtns__container">   
                     <div style={{display:"flex", marginTop:"10px"}}>
-                        
+                        <button className="action__btn" name="export" value="export" onClick={() => downloadReport()}>Export</button>
                     </div>
                     
                   </center>

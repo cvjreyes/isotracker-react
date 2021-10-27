@@ -71,10 +71,10 @@ export default class Alert extends Component {
         }else if(this.state.type==="qtracker"){
             alertComponent = <div className="alert__qtracker">
                                     
-                                    <img src={WarningIcon} className="alert__icon" alt="warning"></img>
+                                    <img src={SuccessIcon} className="alert__icon" alt="success"></img>
                                     <div className="text__alert__container">
-                                        <text className="alert__title">Warning</text>
-                                        <text className="alert__text" style={{marginLeft:this.props.margin}}>{this.props.text}</text>
+                                        <text className="alert__title">Success</text>
+                                        <text className="alert__text" style={{marginLeft:"-1px"}}>Request sent successfully!</text>
                                     </div>
                                 
                                 </div>

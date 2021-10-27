@@ -16,9 +16,9 @@ const PITRequests = () =>{
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null);
     const [circles, setCircles] = useState(null);
-    const [success, setSuccess] = useState(false)
+    const [success, setSuccess] = useState(false);
 
-    const history = useHistory()
+    const history = useHistory();
 
     const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -107,11 +107,11 @@ const PITRequests = () =>{
                 onIdle={handleOnIdle}
                 debounce={250}
             />
-            <div
+            <div style={{zIndex: 99999}}
             className={`alert alert-success ${success ? 'alert-shown' : 'alert-hidden'}`}
             onTransitionEnd={() => setSuccess(false)}
             >
-                <AlertF type="success" margin="-30px" text="Request sent successfully!"/>
+                <AlertF type="qtracker"/>
             </div>
             {circles}
             <div>

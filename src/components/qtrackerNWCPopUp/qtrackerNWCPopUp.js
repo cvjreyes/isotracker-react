@@ -145,9 +145,19 @@ export default class QtrackerNWCPopUp extends Component {
     async request(){
         
         if(this.state.spref && this.state.description){
+
+            let has_attach
+
+            if(this.state.attach){
+              has_attach = true
+            }else{
+              has_attach = false
+            }
+
             let body ={
                 spref : this.state.spref,
                 description: this.state.description,
+                has_attach: has_attach,
                 user: secureStorage.getItem("user")
               }
               let options = {

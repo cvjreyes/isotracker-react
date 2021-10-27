@@ -541,6 +541,16 @@ class CSPTrackerdDataTable extends React.Component{
         fixed: "left"
       },
       {
+        title: <div className="dataTable__header__text">Type</div>,
+        dataIndex: 'type',
+        key: 'type',
+        ...this.getColumnSearchProps('type'),
+        sorter: {
+            compare: (a, b) => a.type.localeCompare(b.type),
+        },
+        fixed: "left"
+      },
+      {
         title: <div className="dataTable__header__text">Spec</div>,
         dataIndex: 'spec',
         key: 'spec',
@@ -610,15 +620,6 @@ class CSPTrackerdDataTable extends React.Component{
         ...this.getColumnSearchProps('pid'),
         sorter: {
             compare: (a, b) => a.pid.localeCompare(b.pid),
-        },
-      },
-      {
-        title: <div className="dataTable__header__text">Type</div>,
-        dataIndex: 'type',
-        key: 'type',
-        ...this.getColumnSearchProps('type'),
-        sorter: {
-            compare: (a, b) => a.type.localeCompare(b.type),
         },
       },
       {
