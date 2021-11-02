@@ -25,6 +25,7 @@ export default class ManageRolesPopUp extends Component {
             pro : false,
             ins : false,
             rev: false,
+            prj: false,
             adm: false,
             blankFields: false,
             selected: "@technipenergies.com",
@@ -115,6 +116,19 @@ export default class ManageRolesPopUp extends Component {
             selectedLeft.push(<div className="checkbox">
                 <input type="checkbox" name="REV" value="REV" className="popUp__input__checkbox" onChange={(e) => this.setState({rev: e.target.checked})}/>  
                 <label for="REV" className="popUp__input__checkbox__label">Review</label>
+            </div>)
+        }
+
+        if(this.props.roles.indexOf("Project") > -1){
+            await this.setState({prj: true})
+            selectedLeft.push(<div className="checkbox">
+                <input  type="checkbox" name="PRJ" value="PRJ" className="popUp__input__checkbox" onChange={(e) => this.setState({prj: e.target.checked})} defaultChecked={this.state.prj}/>  
+                <label for="PRJ" className="popUp__input__checkbox__label">Project</label>
+            </div>)
+        }else{
+            selectedLeft.push(<div className="checkbox">
+                <input type="checkbox" name="PRJ" value="PRJ" className="popUp__input__checkbox" onChange={(e) => this.setState({prj: e.target.checked})}/>  
+                <label for="PRJ" className="popUp__input__checkbox__label">Project</label>
             </div>)
         }
 
@@ -237,6 +251,7 @@ export default class ManageRolesPopUp extends Component {
             pro : false,
             ins : false,
             rev: false,
+            prj: false,
             adm: false,
             blankFields: false,
             selected: "@technipenergies.com"
@@ -273,6 +288,8 @@ export default class ManageRolesPopUp extends Component {
             roles.push("rev")
         }if(this.state.adm){
             roles.push("E3D")
+        }if(this.state.prj){
+            roles.push("PRJ")
         }
         
         this.props.submitRoles(this.props.id, roles)

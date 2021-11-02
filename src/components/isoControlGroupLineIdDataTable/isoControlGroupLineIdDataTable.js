@@ -152,6 +152,7 @@ class IsoControlGroupLineIdDataTable extends React.Component{
         sorter:{
           compare: (a, b) => { return a.line_id.localeCompare(b.line_id)},
         },
+        align: "center"
       },
       {
         title: <center className="dataTable__header__text">ITEMS</center>,
@@ -161,6 +162,7 @@ class IsoControlGroupLineIdDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.num.localeCompare(b.num),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Total weight</div>,
@@ -170,6 +172,7 @@ class IsoControlGroupLineIdDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.total_weight.localeCompare(b.total_weight),
         },
+        align: "center"
       },
     ];
 

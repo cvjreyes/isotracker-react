@@ -139,7 +139,21 @@ class CSPTrackerdDataTable extends React.Component{
           var row = null
           if(process.env.REACT_APP_MMDN === "1"){
             for(let i = 0; i < json.rows.length; i++){
-              row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station}
+              row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station, request_date: json.rows[i].request_date.toString().substring(0,10) + " "+ json.rows[i].request_date.toString().substring(11,19)}
+
+              if(json.rows[i].ready_load_date){
+                row.ready_load_date = json.rows[i].ready_load_date.toString().substring(0,10) + " "+ json.rows[i].ready_load_date.toString().substring(11,19)
+              }else{
+                row.ready_load_date = ""
+              }
+
+              if(json.rows[i].ready_e3d_date){
+                row.ready_e3d_date = json.rows[i].ready_e3d_date.toString().substring(0,10) + " "+ json.rows[i].ready_e3d_date.toString().substring(11,19)
+              }else{
+                row.ready_e3d_date = ""
+              }
+
+              
               
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
@@ -203,8 +217,19 @@ class CSPTrackerdDataTable extends React.Component{
             }
           }else{
             for(let i = 0; i < json.rows.length; i++){
-              console.log(json.rows[i].pid)
-              row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station}
+              row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station, request_date: json.rows[i].request_date.toString().substring(0,10) + " "+ json.rows[i].request_date.toString().substring(11,19)}
+
+              if(json.rows[i].ready_load_date){
+                row.ready_load_date = json.rows[i].ready_load_date.toString().substring(0,10) + " "+ json.rows[i].ready_load_date.toString().substring(11,19)
+              }else{
+                row.ready_load_date = ""
+              }
+
+              if(json.rows[i].ready_e3d_date){
+                row.ready_e3d_date = json.rows[i].ready_e3d_date.toString().substring(0,10) + " "+ json.rows[i].ready_e3d_date.toString().substring(11,19)
+              }else{
+                row.ready_e3d_date = ""
+              }
               
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
@@ -296,7 +321,19 @@ class CSPTrackerdDataTable extends React.Component{
             var row = null
             if(process.env.REACT_APP_MMDN === "1"){
               for(let i = 0; i < json.rows.length; i++){
-                row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station}
+                row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station, request_date: json.rows[i].request_date.toString().substring(0,10) + " "+ json.rows[i].request_date.toString().substring(11,19)}
+
+                if(json.rows[i].ready_load_date){
+                  row.ready_load_date = json.rows[i].ready_load_date.toString().substring(0,10) + " "+ json.rows[i].ready_load_date.toString().substring(11,19)
+                }else{
+                  row.ready_load_date = ""
+                }
+
+                if(json.rows[i].ready_e3d_date){
+                  row.ready_e3d_date = json.rows[i].ready_e3d_date.toString().substring(0,10) + " "+ json.rows[i].ready_e3d_date.toString().substring(11,19)
+                }else{
+                  row.ready_e3d_date = ""
+                }
 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                   if(this.props.currentRole === "Materials"){
@@ -360,8 +397,19 @@ class CSPTrackerdDataTable extends React.Component{
               }
             }else{
               for(let i = 0; i < json.rows.length; i++){
-                row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station}
+                row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_dn, p2bore: json.rows[i].p2diameter_dn, p3bore: json.rows[i].p3diameter_dn, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station, request_date: json.rows[i].request_date.toString().substring(0,10) + " "+ json.rows[i].request_date.toString().substring(11,19)}
                 
+                if(json.rows[i].ready_load_date){
+                  row.ready_load_date = json.rows[i].ready_load_date.toString().substring(0,10) + " "+ json.rows[i].ready_load_date.toString().substring(11,19)
+                }else{
+                  row.ready_load_date = ""
+                }
+
+                if(json.rows[i].ready_e3d_date){
+                  row.ready_e3d_date = json.rows[i].ready_e3d_date.toString().substring(0,10) + " "+ json.rows[i].ready_e3d_date.toString().substring(11,19)
+                }else{
+                  row.ready_e3d_date = ""
+                }
                 
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                   if(this.props.currentRole === "Materials"){
@@ -538,7 +586,8 @@ class CSPTrackerdDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.tag.localeCompare(b.tag),
         },
-        fixed: "left"
+        fixed: "left",
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Type</div>,
@@ -548,7 +597,8 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.type.localeCompare(b.type),
         },
-        fixed: "left"
+        fixed: "left",
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Spec</div>,
@@ -558,6 +608,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.spec.localeCompare(b.spec),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">P1Bore</div>,
@@ -567,6 +618,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.p1bore-b.p1bore,
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">P2Bore</div>,
@@ -576,6 +628,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.p2bore-b.p2bore,
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">P3Bore</div>,
@@ -585,6 +638,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.p3bore-b.p3bore,
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Rating</div>,
@@ -594,6 +648,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.rating.localeCompare(b.rating),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">End Preparation</div>,
@@ -603,6 +658,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.end_preparation.localeCompare(b.end_preparation),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">LINE ID</div>,
@@ -612,6 +668,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.line_id.localeCompare(b.line_id),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">P&ID</div>,
@@ -621,6 +678,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.pid.localeCompare(b.pid),
         },
+        align: "center"
       },
       
       {
@@ -631,6 +689,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.description_plane.localeCompare(b.description_plane),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Drawing</div>,
@@ -638,7 +697,9 @@ class CSPTrackerdDataTable extends React.Component{
         key: 'drawing',
         ...this.getColumnSearchProps('drawing'),
         width: "400px",
+        align: "center"
       },
+      
       {
         title: <center className="dataTable__header__text">Quantity</center>,
         dataIndex: 'quantity',
@@ -647,6 +708,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.quantity - b.quantity,
         },
+        align: "center"
       },    
       {
         title: <center className="dataTable__header__text">Requisition</center>,
@@ -656,6 +718,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.requisition - b.requisition,
         },
+        align: "center"
       }, 
       {
         title: <center className="dataTable__header__text">Description</center>,
@@ -686,6 +749,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.ident.localeCompare(b.ident),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Face to Face</div>,
@@ -695,6 +759,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.face_to_face.localeCompare(b.face_to_face),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">FLG Short Code</div>,
@@ -704,6 +769,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.bolts_type.localeCompare(b.bolts_type),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Equipment + Nozzle</div>,
@@ -713,6 +779,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.equipnozz.localeCompare(b.equipnozz),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Utility Station</div>,
@@ -722,6 +789,37 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.utility_station.localeCompare(b.utility_station),
         },
+        align: "center"
+      },
+      {
+        title: <div className="dataTable__header__text">Request date</div>,
+        dataIndex: 'request_date',
+        key: 'request_date',
+        ...this.getColumnSearchProps('request_date'),
+        sorter: {
+            compare: (a, b) => a.request_date.localeCompare(b.request_date),
+        },
+        align: "center"
+      },
+      {
+        title: <div className="dataTable__header__text">Ready to load date</div>,
+        dataIndex: 'ready_load_date',
+        key: 'ready_load_date',
+        ...this.getColumnSearchProps('ready_load_date'),
+        sorter: {
+            compare: (a, b) => a.ready_load_date.localeCompare(b.ready_load_date),
+        },
+        align: "center"
+      },
+      {
+        title: <div className="dataTable__header__text">Ready in E3D date</div>,
+        dataIndex: 'ready_e3d_date',
+        key: 'ready_e3d_date',
+        ...this.getColumnSearchProps('ready_e3d_date'),
+        sorter: {
+            compare: (a, b) => a.ready_e3d_date.localeCompare(b.ready_e3d_date),
+        },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Comments</div>,
@@ -737,29 +835,19 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
             compare: (a, b) => a.ready_load.localeCompare(b.ready_load),
         },
-        fixed: "right"
+        fixed: "right",
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Ready in 3D</div>,
         dataIndex: 'ready_e3d',
         key: 'ready_e3d',
         ...this.getColumnSearchProps('ready_e3d'),
-        fixed: "right"
+        fixed: "right",
+        align: "center"
       },
     ];
     
-    for(let i = 0; i < this.state.steps.length; i++){
-      let index = this.state.steps[i]
-      columns.push({
-        title: <div className="dataTable__header__text">{this.state.steps[i]}%</div>,
-        dataIndex: index,
-        key: index,
-        ...this.getColumnSearchProps(index),
-        sorter: {
-          compare: (a, b) => a[index] - b[index],
-        },
-      })
-    }
 
     var totalElements = null;
     if (this.state.data.length === 0){
@@ -775,7 +863,7 @@ class CSPTrackerdDataTable extends React.Component{
         {this.state.updateData}
         <div className="estimatedDataTable__container" style={{width:"auto"}}>
         <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{disabled:true, defaultPageSize:5000}} size="small"
-         rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:6500, y: 437}}/>
+         rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:8000, y: 437}}/>
           {totalElements}
         </div>
         

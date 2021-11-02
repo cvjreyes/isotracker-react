@@ -85,7 +85,7 @@ export default class UploadDrawingPopUp extends Component {
 
     render() {
         return (
-            <section style={{float:"left"}}>
+            <section>
                 <input type="button"  value="UPLOAD" class="update__btn btn-sm btn-info"  onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="650" height="180" effect="fadeInUp" onClickAway={() => this.closeModal()}>

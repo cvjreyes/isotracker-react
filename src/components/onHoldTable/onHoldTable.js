@@ -366,6 +366,7 @@ class OnHoldTable extends React.Component{
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
         },
+        sortOrder: 'descend'
       },
       {
         title: <div className="dataTable__header__text">From</div>,

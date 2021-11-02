@@ -99,7 +99,7 @@
 }
 
 .popUp__buttons__container__manage{
-    margin-top: 8px;
+    margin-top: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -161,7 +161,7 @@
 }
 
 .popUp__input__checkbox__group__left{
-    margin-top: -17px;
+    margin-top: 20px;
     font-size: 14px;
     padding-left: 5%;
     font-weight: bold;

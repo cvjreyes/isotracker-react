@@ -339,13 +339,20 @@ const CSPTracker = () => {
                 },
                 body: JSON.stringify(body)
             }
-            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitCSP", options)
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitCSP", options)
             .then(response => response.json())
             .then(async json =>{
                 if(json.success){
                     await setSuccessAlert(true)
+
                 }
             })
+
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/update_ready_load", options)
+            .then(response => response.json())
+            .then(async json =>{
+
+            }) 
                                 
         })                
              
@@ -359,13 +366,13 @@ const CSPTracker = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadCSP/")
         .then(response => response.json())
         .then(json => {
-            const headers = ["Tag", "Spec", "P1Bore", "P2Bore", "P3Bore", "Rating", "End preparation", "Line ID", "P&ID", "Type", "Drawing description", "Quantity", "Requisition", "Description", "Iso description", "Ident", "Face to face", "FLG Short Code", "Equipment + Nozzle", "Utility Station", "Comments", "Ready to Load", "Ready in 3D", "Updated"]
+            const headers = ["Tag", "Spec", "P1Bore", "P2Bore", "P3Bore", "Rating", "End preparation", "Line ID", "P&ID", "Type", "Drawing description", "Quantity", "Requisition", "Description", "Iso description", "Ident", "Face to face", "FLG Short Code", "Equipment + Nozzle", "Utility Station", "Request date", "Ready to load date", "Ready in E3D date", "Comments", "Ready to Load", "Ready in 3D", "Updated"]
             const apiData = JSON.parse(json)
             const fileName = "CSPTracker report"
 
             const fileType =
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-            const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1', 'W1', 'X1', 'Y1', 'Z1', 'A2', 'B2', 'C2']
+            const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1', 'W1', 'X1', 'Y1', 'Z1', 'A2', 'B2', 'C2', 'D2', 'E2', 'F2']
             const fileExtension = ".xlsx";
 
             let wscols = []

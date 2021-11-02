@@ -55,6 +55,7 @@ class UsersDataTable extends React.Component{
     "Process": <button className="btn"  disabled style={{color: "white",fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FF4500"}}>PRO</button>, 
     "Instrument": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FFD700"}}>INS</button>, 
     "Review": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"white"}}>REV</button>,
+    "Project": <button className="btn"  disabled style={{fontSize:"12px", color:"white", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#F033FF"}}>PRJ</button>,
     "3D Admin": <button className="btn"  disabled style={{width:"32px", color:"white", fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#CD853F"}}>3D</button>}
     
 
@@ -138,6 +139,7 @@ class UsersDataTable extends React.Component{
           "Process": <button className="btn"  disabled style={{color: "white",fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FF4500"}}>PRO</button>, 
           "Instrument": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#FFD700"}}>INS</button>, 
           "Review": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"white"}}>REV</button>,
+          "Project": <button className="btn"  disabled style={{fontSize:"12px", color:"white", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#F033FF"}}>PRJ</button>,
           "3D Admin": <button className="btn"  disabled style={{width: "32px",color:"white", fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#CD853F"}}>3D</button>}
           
           await this.setState({dataAux: []})
@@ -207,11 +209,10 @@ class UsersDataTable extends React.Component{
                     for(let r1 = 0; r1 < filter_roles.length; r1++){
                       let exist_role = false
                       for(let r2 = 0; r2 <  auxDisplayData[i][fil].props.children[1].length; r2++){
-                        if(r2 !== 12){
+
                           if(auxDisplayData[i][fil].props.children[1][r2].props.children.includes(filter_roles[r1])){
                             exist_role = true
                           }
-                        }
                         
                       }
                       if(!exist_role){
@@ -255,16 +256,12 @@ class UsersDataTable extends React.Component{
         if(fil === "roles"){
           if(this.state.filterData[column] !== "" && this.state.filterData[column]){
             let filter_roles = this.state.filterData[column].split(" ")
-            let row_roles = []
             for(let r1 = 0; r1 < filter_roles.length; r1++){
               let exist_role = false
               for(let r2 = 0; r2 <  auxDisplayData[i][fil].props.children[1].length; r2++){
-                if(r2 !== 12){
-                  if(auxDisplayData[i][fil].props.children[1][r2].props.children.includes(filter_roles[r1])){
-                    exist_role = true
-                  }
-                }
-                
+                if(auxDisplayData[i][fil].props.children[1][r2].props.children.includes(filter_roles[r1])){
+                  exist_role = true
+                }    
               }
               if(!exist_role){
                 exists = false

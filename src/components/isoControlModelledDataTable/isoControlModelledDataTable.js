@@ -167,6 +167,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter:{
           compare: (a, b) => { return a.unit.localeCompare(b.unit)},
         },
+        align: "center"
       },
       {
         title: <center className="dataTable__header__text">Area</center>,
@@ -176,6 +177,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.area.localeCompare(b.area),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Line</div>,
@@ -185,6 +187,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.line.localeCompare(b.line),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Train Nº</div>,
@@ -194,6 +197,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.train.localeCompare(b.train)},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Fluid</div>,
@@ -203,6 +207,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.fluid.localeCompare(b.fluid)},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Sequential</div>,
@@ -212,6 +217,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.seq.localeCompare(b.seq)},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Line ID</div>,
@@ -221,6 +227,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.line_id.localeCompare(b.line_id)},
         },
+        align: "center"
       },
       {
         title: <center className="dataTable__header__text">Iso ID</center>,
@@ -230,6 +237,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.iso_id.localeCompare(b.iso_id),
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Spec code</div>,
@@ -239,6 +247,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.spec_code.localeCompare(b.spec_code)},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Diameter</div>,
@@ -248,6 +257,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.diameter - b.diameter},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">P&ID</div>,
@@ -257,6 +267,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.pid.localeCompare(b.pid)},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Stress level</div>,
@@ -266,6 +277,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.stress_level.localeCompare(b.stress_level)},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Calculation notes</div>,
@@ -275,6 +287,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.calc_notes.localeCompare(b.calc_notes)},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Insulation</div>,
@@ -284,6 +297,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.insulation.localeCompare(b.insulation)},
         },
+        align: "center"
       },
       {
         title: <div className="dataTable__header__text">Total weight</div>,
@@ -293,6 +307,7 @@ class IsoControlModelledDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.total_weight - b.total_weight},
         },
+        align: "center"
       },
     ];
 

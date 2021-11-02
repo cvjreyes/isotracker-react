@@ -10,7 +10,7 @@ class ModelledDataTable extends React.Component{
     searchedColumn: '',
     data: [],
     displayData: [],
-    filterData: ["", "", ""],
+    filterData: ["", "", "", "", ""],
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
@@ -37,7 +37,7 @@ class ModelledDataTable extends React.Component{
         var rows = []
         var row = null
         for(let i = 0; i < json.rows.length; i++){
-            row = {key:i, id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
+            row = {id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
             if(row){
               if(i % 2 === 0){
                 row["color"] = "#fff"
@@ -45,10 +45,13 @@ class ModelledDataTable extends React.Component{
                 row["color"] = "#eee"
               }
             }
-            rows.push(row)
+            if(row.id && row.tag){
+              rows.push(row)
+            }
+            
             }
         
-            let filterRow = [{key:0, tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(0, e.target.value)}/></div>, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2,e.target.value)}/></div>}]
+            let filterRow = [{tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(0, e.target.value)}/></div>, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2,e.target.value)}/></div>}]
              
             this.setState({data : rows, role: this.props.role, displayData: rows});
             await this.setState({filters : filterRow})
@@ -66,8 +69,13 @@ class ModelledDataTable extends React.Component{
     let fil, exists = null
     for(let i = 0; i < auxDisplayData.length; i++){
       exists = true
-      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
-        fil = Object.keys(auxDisplayData[i])[column+1]
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
+        fil = Object.keys(auxDisplayData[i])[column]
+        if(fil === "tag"){
+          fil = "id"
+        }else if(fil === "id"){
+          fil = "tag"
+        }
         if(auxDisplayData[i][fil]){
           if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
             exists = false
