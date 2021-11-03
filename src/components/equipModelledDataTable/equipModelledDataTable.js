@@ -167,7 +167,7 @@ class EquipModelledDataTable extends React.Component{
         key: 'progress',
         ...this.getColumnSearchProps('progress'),
         sorter:{
-          compare: (a, b) => a.progress.localeCompare(b.progress),
+          compare: (a, b) => a.progress - b.progress,
         },
       },
     ];
