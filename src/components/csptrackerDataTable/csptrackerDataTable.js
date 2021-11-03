@@ -212,7 +212,8 @@ class CSPTrackerdDataTable extends React.Component{
                   row[key] = ""
                 }
               }
-
+              row.tag = <b>{json.rows[i].tag}</b>
+              row.type = <b>{json.rows[i].type}</b>
               rows.push(row)
             }
           }else{
@@ -289,9 +290,14 @@ class CSPTrackerdDataTable extends React.Component{
                 }
               }
 
+              row.tag = <b>{json.rows[i].tag}</b>
+              row.type = <b>{json.rows[i].type}</b>
+
+
               rows.push(row)
             }
           }
+          
           this.setState({data: rows})
           
         })
@@ -392,6 +398,8 @@ class CSPTrackerdDataTable extends React.Component{
                     row[key] = ""
                   }
                 }
+                row.tag = <b>{json.rows[i].tag}</b>
+                row.type = <b>{json.rows[i].type}</b>
 
                 rows.push(row)
               }
@@ -468,6 +476,9 @@ class CSPTrackerdDataTable extends React.Component{
                       row[key] = ""
                     }
                   }
+                  
+                  row.tag = <b>{json.rows[i].tag}</b>
+                  row.type = <b>{json.rows[i].type}</b>
 
                 rows.push(row)
               }
@@ -531,7 +542,8 @@ class CSPTrackerdDataTable extends React.Component{
 
 
       
-        record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    record[dataIndex].props ? record[dataIndex].props.children.toString().toLowerCase().includes(value.toLowerCase()) :
+    record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
           
 
 
@@ -584,7 +596,7 @@ class CSPTrackerdDataTable extends React.Component{
         key: 'tag',
         ...this.getColumnSearchProps('tag'),
         sorter:{
-          compare: (a, b) => a.tag.localeCompare(b.tag),
+          compare: (a, b) => { return a.tag.props.children.localeCompare(b.tag.props.children)},
         },
         fixed: "left",
         align: "center"
@@ -595,7 +607,7 @@ class CSPTrackerdDataTable extends React.Component{
         key: 'type',
         ...this.getColumnSearchProps('type'),
         sorter: {
-            compare: (a, b) => a.type.localeCompare(b.type),
+          compare: (a, b) => { return a.type.props.children.localeCompare(b.type.props.children)},
         },
         fixed: "left",
         align: "center"
@@ -812,7 +824,7 @@ class CSPTrackerdDataTable extends React.Component{
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Ready in E3D date</div>,
+        title: <div className="dataTable__header__text">Ready in 3D date</div>,
         dataIndex: 'ready_e3d_date',
         key: 'ready_e3d_date',
         ...this.getColumnSearchProps('ready_e3d_date'),
