@@ -52,8 +52,7 @@ class IsoControlFullDataTable extends React.Component{
             }else{
                 json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
                 json.rows[i].iso_id = json.rows[i].unit + json.rows[i].area + json.rows[i].line + json.rows[i].train
-  
-                json.rows[i].unit = json.rows[i].unit
+
             }
 
             if(json.rows[i].diameter === null){

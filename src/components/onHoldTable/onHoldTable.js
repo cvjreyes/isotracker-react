@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, Button, Space } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
 import './onHoldTable.css'
 import { Link } from 'react-router-dom';
 import CommentPopUp from '../commentPopUp/commentPopUp';
@@ -135,7 +134,6 @@ class OnHoldTable extends React.Component{
           .then(response => response.json())
           .then(async json => {
                   var rows = []
-                  let pButton, iButton
                   for(let i = 0; i < json.rows.length; i++){
                       var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
                    

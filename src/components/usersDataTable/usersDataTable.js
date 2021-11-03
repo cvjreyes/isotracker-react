@@ -1,8 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, Button, Space } from 'antd';
+import { Table } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { SearchOutlined } from '@ant-design/icons';
 import './usersDataTable.css'
 import { Link } from 'react-router-dom';
 import ManageRolesPopUp from '../manageRolesPopUp/manageRolesPopUp';
@@ -205,7 +204,6 @@ class UsersDataTable extends React.Component{
                 if(fil === "roles"){
                   if(this.state.filterData[column] !== "" && this.state.filterData[column]){
                     let filter_roles = this.state.filterData[column].split(" ")
-                    let row_roles = []
                     for(let r1 = 0; r1 < filter_roles.length; r1++){
                       let exist_role = false
                       for(let r2 = 0; r2 <  auxDisplayData[i][fil].props.children[1].length; r2++){

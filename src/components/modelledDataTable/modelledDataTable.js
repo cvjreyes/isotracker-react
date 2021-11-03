@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, Button, Space } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
 
 
 class ModelledDataTable extends React.Component{
@@ -123,16 +122,6 @@ class ModelledDataTable extends React.Component{
   
 
   render() {
-    const rowSelectionFilter = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        this.onSelectChange(selectedRowKeys, selectedRows);
-      },
-      getCheckboxProps: (record) => ({
-        disabled: true,
-        // Column configuration not to be checked
-        name: record.name,
-      }),
-    };
 
     const columns = [
       {

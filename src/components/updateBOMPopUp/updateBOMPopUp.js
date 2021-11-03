@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import '../uploadReportPopUp/uploadReportPopUp.css'
-import readXlsxFile from 'read-excel-file'
-import { readString } from 'react-papaparse'
 
 export default class UploadBOMPopUp extends Component {
     constructor(props) {

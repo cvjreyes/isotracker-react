@@ -6,7 +6,6 @@ import DragAndDrop from "../../components/dragAndDrop/dragAndDrop"
 import "./isoCtrlF.css"
 import React, { useState , useEffect} from 'react'
 import ActionButtons from "../../components/actionBtns/actionBtns"
-import SelectPag from "../../components/selectPag/selectPag"
 import CheckInTable from "../../components/checkInTable/checkInTable"
 import NavBar from '../../components/navBar/navBar'
 import MyTrayBtn from "../../components/myTrayBtn/myTrayBtn"

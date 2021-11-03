@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import '../uploadReportPopUp/uploadReportPopUp.css'
-import readXlsxFile from 'read-excel-file'
-import { readString } from 'react-papaparse'
-import UploadIcon from "../../assets/images/upload.png"
 
 export default class UploadBOMIsocontrolPopUp extends Component {
     constructor(props) {

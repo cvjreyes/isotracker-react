@@ -5,7 +5,6 @@ import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 import InstrumentationEstimatedDataTable from "../../components/instrumentationEstimatedDataTable/instrumentationEstimatedDataTable"
 import InstrumentationModelledDataTable from "../../components/instrumentationModelledDataTable/instrumentationModelledDataTable"
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
-import SelectPag from "../../components/selectPag/selectPag"
 import ProgressPlotInstrumentation from "../../components/progressPlotInstrumentation/progressPlotInstrumentation"
 import InstrumentationTypesDataTable from "../../components/instrumentationTypesDataTable/instrumentationTypesDataTable"
 import * as FileSaver from "file-saver";
@@ -74,7 +73,7 @@ const Instrumentation = () => {
         }
        
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/weight", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrumentation/weight", options)
             .then(response => response.json())
             .then(json => {
                 setWeight(json.weight)

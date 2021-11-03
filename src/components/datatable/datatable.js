@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, Button, Space } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Table } from 'antd';
 import './datatable.css'
 import { Link } from 'react-router-dom';
 import RenamePopUp from '../renamePopUp/renamePopUp';

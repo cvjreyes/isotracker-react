@@ -5,7 +5,6 @@ import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 import EquipEstimatedDataTable from "../../components/equipEstimatedDataTable/equipEstimatedDataTable"
 import EquipModelledDataTable from "../../components/equipModelledDataTable/equipModelledDataTable"
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
-import SelectPag from "../../components/selectPag/selectPag"
 import ProgressPlotEquipments from "../../components/progressPlotEquipments/progressPlotEquipments"
 import EquipTypesDataTable from "../../components/equipTypesDataTable/equipTypesDataTable"
 import * as FileSaver from "file-saver";

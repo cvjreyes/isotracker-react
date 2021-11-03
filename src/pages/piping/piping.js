@@ -3,7 +3,6 @@ import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
-import SelectPag from "../../components/selectPag/selectPag"
 import PipingEstimatedDataTable from "../../components/pipingEstimatedDataTable/pipingEstimatedDataTable"
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
 import ProgressPlotPiping from "../../components/progressPlotPiping/progressPlotPiping"

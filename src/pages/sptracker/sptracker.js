@@ -6,7 +6,6 @@ import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
-import SelectPag from "../../components/selectPag/selectPag"
 import CSPTrackerdDataTable from "../../components/csptrackerDataTable/csptrackerDataTable"
 import HotTable from "@handsontable/react"
 
