@@ -49,6 +49,7 @@ const PitRequestView = () => {
     const [roles, setRoles] = useState();
     const [saveBtn, setSaveBtn] = useState()
     const [updatedRows, setUpdatedRows] = useState([])
+    const [observations, setObservations] = useState()
 
     const [updateData, setUpdateData] = useState(false)    
 
@@ -324,6 +325,10 @@ const PitRequestView = () => {
         await setUpdatedRows(currentRows)
     }
 
+    async function updateObservations(observations){
+        await setObservations(observations)
+    }
+
     async function saveChanges(){
         for(let i = 0; i < updatedRows.length; i++){
 
@@ -347,7 +352,35 @@ const PitRequestView = () => {
                 
               })
         }
+        
+        let observationsArray = []
 
+        Object.entries(observations)
+        .map(async ([incidence_number, observation]) => 
+            
+            await observationsArray.push([incidence_number, observation])
+        )
+
+        for(let i = 0; i < observationsArray.length; i++){
+            let body = {
+                incidence_number: observationsArray[i][0],
+                observation: observationsArray[i][1],
+              }
+              let options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+              }
+              
+              fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/updateObservations", options)
+              .then(response => response.json())
+              .then(async json => {
+                
+              })
+        }
+        
         await setUpdatedRows([])
         await setUpdateData(!updateData)
         
@@ -393,7 +426,7 @@ const PitRequestView = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
                               <div  style={{height: dataTableHeight, width:"2200px"}} className="isotracker__table__table__container">
-                                <QTrackerViewDataTable updateData={updateDataMethod.bind(this)} updateStatus={updateStatus.bind(this)}/>
+                                <QTrackerViewDataTable updateObservations={updateObservations.bind(this)} updateData={updateDataMethod.bind(this)} updateStatus={updateStatus.bind(this)}/>
                               </div>
                           </td>
                           

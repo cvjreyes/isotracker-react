@@ -43,6 +43,7 @@ class QTrackerViewDataTable extends React.Component{
     data: [],
     displayData: [],
     filterData: ["", "", "", "", "", "", "", ""],
+    observations: {},
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
@@ -81,13 +82,25 @@ class QTrackerViewDataTable extends React.Component{
         .then(response => response.json())
         .then(async json => {
           var rows = []
+          let observations = []
+          let observation = null
           var row = null
             for(let i = 0; i < json.rows.length; i++){
+
                 if(json.rows[i].attach === 1){
-                  row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>}
+                  if(json.rows[i].accept_reject_date != null){
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19).toString().substring(0,10)}
+                  }else{
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: ""}
+                  }
                 }else{
-                  row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>}
+                  if(json.rows[i].accept_reject_date != null){
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                  }else{
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: ""}
+                  }
                 }
+
                 if(secureStorage.getItem("role") === "3D Admin"){
                   if(json.rows[i].status === 0){
                       row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NWC")} >
@@ -122,6 +135,9 @@ class QTrackerViewDataTable extends React.Component{
                    </select>
                       row.color = "#rrr"
                   }
+
+                  row.observations = <input style={{width: "310px"}} type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                 }else{
                   if(json.rows[i].status === 0){
                     row.status = "Pending"
@@ -136,6 +152,8 @@ class QTrackerViewDataTable extends React.Component{
                       row.status = "Rejected"
                       row.color = "#rrr"
                   }
+
+                  row.observations = json.rows[i].observations
                 }
                 
                 rows.push(row)
@@ -145,11 +163,19 @@ class QTrackerViewDataTable extends React.Component{
             .then(async json => {
             var row = null
                 for(let i = 0; i < json.rows.length; i++){
-                    if(json.rows[i].attach === 1){
-                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>}
+                  if(json.rows[i].attach === 1){
+                    if(json.rows[i].accept_reject_date != null){
+                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19).toString().substring(0,10)}
                     }else{
-                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name} description={json.rows[i].description}/>}
+                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: ""}
                     }
+                  }else{
+                    if(json.rows[i].accept_reject_date != null){
+                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                    }else{
+                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: ""}
+                    }
+                  }
                     if(secureStorage.getItem("role") === "3D Admin"){
                       if(json.rows[i].status === 0){
                           row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NVN")} >
@@ -184,6 +210,8 @@ class QTrackerViewDataTable extends React.Component{
                        </select>
                           row.color = "#rrr"
                       }
+                      row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                     }else{
                       if(json.rows[i].status === 0){
                         row.status = "Pending"
@@ -198,6 +226,8 @@ class QTrackerViewDataTable extends React.Component{
                           row.status = "Rejected"
                           row.color = "#rrr"
                       }
+
+                      row.observations = json.rows[i].observations
                     }
                     rows.push(row)
                 }
@@ -207,11 +237,19 @@ class QTrackerViewDataTable extends React.Component{
                 .then(async json => {
                 var row = null
                     for(let i = 0; i < json.rows.length; i++){
-                        if(json.rows[i].attach === 1){
-                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} pipe={json.rows[i].pipe} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>}
+                      if(json.rows[i].attach === 1){
+                        if(json.rows[i].accept_reject_date != null){
+                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19).toString().substring(0,10)}
                         }else{
-                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} pipe={json.rows[i].pipe} description={json.rows[i].description}/>}
+                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: ""}
                         }
+                      }else{
+                        if(json.rows[i].accept_reject_date != null){
+                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                        }else{
+                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: ""}
+                        }
+                      }
                         if(secureStorage.getItem("role") === "3D Admin"){
                           if(json.rows[i].status === 0){
                               row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NRI")} >
@@ -246,6 +284,8 @@ class QTrackerViewDataTable extends React.Component{
                            </select>
                               row.color = "#rrr"
                           }
+                          row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                         }else{
                           if(json.rows[i].status === 0){
                             row.status = "Pending"
@@ -260,6 +300,8 @@ class QTrackerViewDataTable extends React.Component{
                               row.status = "Rejected"
                               row.color = "#rrr"
                           }
+
+                          row.observations = json.rows[i].observations
                         }
                         rows.push(row)
                     }
@@ -269,11 +311,19 @@ class QTrackerViewDataTable extends React.Component{
                     .then(async json => {
                     var row = null
                         for(let i = 0; i < json.rows.length; i++){
-                            if(json.rows[i].attach === 1){
-                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} pipe={json.rows[i].pipe} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>}
+                          if(json.rows[i].attach === 1){
+                            if(json.rows[i].accept_reject_date != null){
+                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19).toString().substring(0,10)}
                             }else{
-                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} pipe={json.rows[i].pipe} description={json.rows[i].description}/>}
+                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: ""}
                             }
+                          }else{
+                            if(json.rows[i].accept_reject_date != null){
+                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                            }else{
+                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: ""}
+                            }
+                          }
                             if(secureStorage.getItem("role") === "3D Admin"){
                               if(json.rows[i].status === 0){
                                   row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NRB")} >
@@ -308,6 +358,9 @@ class QTrackerViewDataTable extends React.Component{
                                </select>
                                   row.color = "#rrr"
                               }
+
+                              row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+                            
                             }else{
                               if(json.rows[i].status === 0){
                                 row.status = "Pending"
@@ -322,6 +375,8 @@ class QTrackerViewDataTable extends React.Component{
                                   row.status = "Rejected"
                                   row.color = "#rrr"
                               }
+
+                              row.observations = json.rows[i].observations
                             }
                             rows.push(row)
                         }
@@ -331,7 +386,11 @@ class QTrackerViewDataTable extends React.Component{
                         .then(async json => {
                         var row = null
                             for(let i = 0; i < json.rows.length; i++){
-                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRIDSSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name}/>}
+                              if(json.rows[i].accept_reject_date != null){
+                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRIDSSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                              }else{
+                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRIDSSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name}/>, ar_date: ""}
+                              }
                                 if(secureStorage.getItem("role") === "3D Admin"){
                                   if(json.rows[i].status === 0){
                                       row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NRIDS")} >
@@ -366,6 +425,8 @@ class QTrackerViewDataTable extends React.Component{
                                    </select>
                                       row.color = "#rrr"
                                   }
+                                  row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                                 }else{
                                   if(json.rows[i].status === 0){
                                     row.status = "Pending"
@@ -380,6 +441,7 @@ class QTrackerViewDataTable extends React.Component{
                                       row.status = "Rejected"
                                       row.color = "#rrr"
                                   }
+                                  row.observations = json.rows[i].observations
                                 }
                                 rows.push(row)
                             }
@@ -389,7 +451,11 @@ class QTrackerViewDataTable extends React.Component{
                             .then(async json => {
                             var row = null
                                 for(let i = 0; i < json.rows.length; i++){
-                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerRPSpecPopUp incidence_number={json.rows[i].incidence_number} items={json.rows[i].items_to_report} scope={json.rows[i].scope} description={json.rows[i].description}/>}
+                                  if(json.rows[i].accept_reject_date != null){
+                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerRPSpecPopUp incidence_number={json.rows[i].incidence_number} items={json.rows[i].items_to_report} scope={json.rows[i].scope} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                                  }else{
+                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerRPSpecPopUp incidence_number={json.rows[i].incidence_number} items={json.rows[i].items_to_report} scope={json.rows[i].scope} description={json.rows[i].description}/>, ar_date: ""}
+                                  }
                                     if(secureStorage.getItem("role") === "3D Admin"){
                                       if(json.rows[i].status === 0){
                                           row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "RP")} >
@@ -424,6 +490,8 @@ class QTrackerViewDataTable extends React.Component{
                                        </select>
                                           row.color = "#rrr"
                                       }
+                                      row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                                     }else{
                                       if(json.rows[i].status === 0){
                                         row.status = "Pending"
@@ -438,6 +506,7 @@ class QTrackerViewDataTable extends React.Component{
                                           row.status = "Rejected"
                                           row.color = "#rrr"
                                       }
+                                      row.observations = json.rows[i].observations
                                     }
                                     rows.push(row)
                                 }
@@ -484,10 +553,19 @@ class QTrackerViewDataTable extends React.Component{
           var row = null
             for(let i = 0; i < json.rows.length; i++){
                 if(json.rows[i].attach === 1){
-                  row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>}
+                  if(json.rows[i].accept_reject_date != null){
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19).toString().substring(0,10)}
+                  }else{
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: ""}
+                  }
                 }else{
-                  row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>}
+                  if(json.rows[i].accept_reject_date != null){
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                  }else{
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNWCSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: ""}
+                  }
                 }
+
                 if(secureStorage.getItem("role") === "3D Admin"){
                   if(json.rows[i].status === 0){
                       row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NWC")} >
@@ -522,6 +600,8 @@ class QTrackerViewDataTable extends React.Component{
                    </select>
                       row.color = "#rrr"
                   }
+                  row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                 }else{
                   if(json.rows[i].status === 0){
                     row.status = "Pending"
@@ -536,6 +616,7 @@ class QTrackerViewDataTable extends React.Component{
                       row.status = "Rejected"
                       row.color = "#rrr"
                   }
+                  row.observations = json.rows[i].observations
                 }
                 
                 rows.push(row)
@@ -545,11 +626,19 @@ class QTrackerViewDataTable extends React.Component{
             .then(async json => {
             var row = null
                 for(let i = 0; i < json.rows.length; i++){
-                    if(json.rows[i].attach === 1){
-                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>}
+                  if(json.rows[i].attach === 1){
+                    if(json.rows[i].accept_reject_date != null){
+                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19).toString().substring(0,10)}
                     }else{
-                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name} description={json.rows[i].description}/>}
+                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: ""}
                     }
+                  }else{
+                    if(json.rows[i].accept_reject_date != null){
+                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                    }else{
+                      row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNVNSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: ""}
+                    }
+                  }
                     if(secureStorage.getItem("role") === "3D Admin"){
                       if(json.rows[i].status === 0){
                           row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NVN")} >
@@ -584,6 +673,8 @@ class QTrackerViewDataTable extends React.Component{
                        </select>
                           row.color = "#rrr"
                       }
+                      row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                     }else{
                       if(json.rows[i].status === 0){
                         row.status = "Pending"
@@ -598,6 +689,7 @@ class QTrackerViewDataTable extends React.Component{
                           row.status = "Rejected"
                           row.color = "#rrr"
                       }
+                      row.observations = json.rows[i].observations
                     }
                     rows.push(row)
                 }
@@ -607,11 +699,19 @@ class QTrackerViewDataTable extends React.Component{
                 .then(async json => {
                 var row = null
                     for(let i = 0; i < json.rows.length; i++){
-                        if(json.rows[i].attach === 1){
-                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} pipe={json.rows[i].pipe} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>}
+                      if(json.rows[i].attach === 1){
+                        if(json.rows[i].accept_reject_date != null){
+                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19).toString().substring(0,10)}
                         }else{
-                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} pipe={json.rows[i].pipe} description={json.rows[i].description}/>}
+                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: ""}
                         }
+                      }else{
+                        if(json.rows[i].accept_reject_date != null){
+                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                        }else{
+                          row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRISpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: ""}
+                        }
+                      }
                         if(secureStorage.getItem("role") === "3D Admin"){
                           if(json.rows[i].status === 0){
                               row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NRI")} >
@@ -646,6 +746,8 @@ class QTrackerViewDataTable extends React.Component{
                            </select>
                               row.color = "#rrr"
                           }
+                          row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                         }else{
                           if(json.rows[i].status === 0){
                             row.status = "Pending"
@@ -660,6 +762,7 @@ class QTrackerViewDataTable extends React.Component{
                               row.status = "Rejected"
                               row.color = "#rrr"
                           }
+                          row.observations = json.rows[i].observations
                         }
                         rows.push(row)
                     }
@@ -669,11 +772,19 @@ class QTrackerViewDataTable extends React.Component{
                     .then(async json => {
                     var row = null
                         for(let i = 0; i < json.rows.length; i++){
-                            if(json.rows[i].attach === 1){
-                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} pipe={json.rows[i].pipe} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>}
+                          if(json.rows[i].attach === 1){
+                            if(json.rows[i].accept_reject_date != null){
+                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19).toString().substring(0,10)}
                             }else{
-                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} pipe={json.rows[i].pipe} description={json.rows[i].description}/>}
+                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <div><QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/><img src={AttachIcon} alt="att" className="attach__icon" style={{marginRight:"0px"}}></img></div>, ar_date: ""}
                             }
+                          }else{
+                            if(json.rows[i].accept_reject_date != null){
+                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                            }else{
+                              row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRBSpecPopUp incidence_number={json.rows[i].incidence_number} spref={json.rows[i].spref} description={json.rows[i].description}/>, ar_date: ""}
+                            }
+                          }
                             if(secureStorage.getItem("role") === "3D Admin"){
                               if(json.rows[i].status === 0){
                                   row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NRB")} >
@@ -708,6 +819,8 @@ class QTrackerViewDataTable extends React.Component{
                                </select>
                                   row.color = "#rrr"
                               }
+                              row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                             }else{
                               if(json.rows[i].status === 0){
                                 row.status = "Pending"
@@ -722,6 +835,7 @@ class QTrackerViewDataTable extends React.Component{
                                   row.status = "Rejected"
                                   row.color = "#rrr"
                               }
+                              row.observations = json.rows[i].observations
                             }
                             rows.push(row)
                         }
@@ -731,7 +845,11 @@ class QTrackerViewDataTable extends React.Component{
                         .then(async json => {
                         var row = null
                             for(let i = 0; i < json.rows.length; i++){
-                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRIDSSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name}/>}
+                              if(json.rows[i].accept_reject_date != null){
+                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRIDSSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                              }else{
+                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerNRIDSSpecPopUp incidence_number={json.rows[i].incidence_number} name={json.rows[i].name}/>, ar_date: ""}
+                              }
                                 if(secureStorage.getItem("role") === "3D Admin"){
                                   if(json.rows[i].status === 0){
                                       row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "NRIDS")} >
@@ -766,6 +884,8 @@ class QTrackerViewDataTable extends React.Component{
                                    </select>
                                       row.color = "#rrr"
                                   }
+                                  row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                                 }else{
                                   if(json.rows[i].status === 0){
                                     row.status = "Pending"
@@ -780,6 +900,7 @@ class QTrackerViewDataTable extends React.Component{
                                       row.status = "Rejected"
                                       row.color = "#rrr"
                                   }
+                                  row.observations = json.rows[i].observations
                                 }
                                 rows.push(row)
                             }
@@ -789,7 +910,11 @@ class QTrackerViewDataTable extends React.Component{
                             .then(async json => {
                             var row = null
                                 for(let i = 0; i < json.rows.length; i++){
-                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerRPSpecPopUp incidence_number={json.rows[i].incidence_number} items={json.rows[i].items_to_report} scope={json.rows[i].scope} description={json.rows[i].description}/>}
+                                  if(json.rows[i].accept_reject_date != null){
+                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerRPSpecPopUp incidence_number={json.rows[i].incidence_number} items={json.rows[i].items_to_report} scope={json.rows[i].scope} description={json.rows[i].description}/>, ar_date: json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)}
+                                  }else{
+                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, description: json.rows[i].description, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), specifications: <QtrackerRPSpecPopUp incidence_number={json.rows[i].incidence_number} items={json.rows[i].items_to_report} scope={json.rows[i].scope} description={json.rows[i].description}/>, ar_date: ""}
+                                  }
                                     if(secureStorage.getItem("role") === "3D Admin"){
                                       if(json.rows[i].status === 0){
                                           row.status = <select name="status" id="status" onChange={(event)=> this.statusChange(json.rows[i].incidence_number, event.target.value, "RP")} >
@@ -824,6 +949,8 @@ class QTrackerViewDataTable extends React.Component{
                                        </select>
                                           row.color = "#rrr"
                                       }
+                                      row.observations = <input type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+
                                     }else{
                                       if(json.rows[i].status === 0){
                                         row.status = "Pending"
@@ -838,6 +965,7 @@ class QTrackerViewDataTable extends React.Component{
                                           row.status = "Rejected"
                                           row.color = "#rrr"
                                       }
+                                      row.observations = json.rows[i].observations
                                     }
                                     rows.push(row)
                                 }
@@ -846,56 +974,10 @@ class QTrackerViewDataTable extends React.Component{
                                 rows.sort(function(first, second) {
                                   return second.created_at.localeCompare(first.created_at);
                                 });
-                                
-                                await this.setState({data: rows})
-
-                                let auxDisplayData = this.state.data
-                                let resultData = []
-                                let fil, exists = null
-                                for(let i = 0; i < auxDisplayData.length; i++){
-                                  exists = true
-                                  for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
-                                    
-                                    fil = Object.keys(auxDisplayData[i])[column]
-                                    if(fil === "specifications"){
-                                      fil = "status"
-                                    }
-                                    if(fil === "status"){
-                                      if(auxDisplayData[i][fil].props){
-                                        for(let p = 0; p < auxDisplayData[i][fil].props.children.length; p++){
-                                          if(auxDisplayData[i][fil].props.children[p].props.selected){
-                                            console.log(auxDisplayData[i][fil].props.children[p].props)
-                                            if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children[p].props.children.includes(this.state.filterData[column])){
-                                              exists = false
-                                            }
-                                          }
-                                        }
-                                      }else if(auxDisplayData[i][fil]){
-                                        if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
-                                          exists = false
-                                        }
-                                      }else{
-                                        if(this.state.filterData[column] !== "" && this.state.filterData[column]){
-                                          exists = false
-                                        }
-                                      }
-                                      
-                                    }else{
-                                      if(auxDisplayData[i][fil]){
-                                        if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
-                                          exists = false
-                                        }
-                                      }
-                                      
-                                    }
-                                    
-                                  }
-                                  if(exists){
-                                    resultData.push(auxDisplayData[i])
-                                  }
-                                }
-                                await this.setState({displayData: resultData})
-                                  
+                                const filterRow = [{incidence_number: <div><input type="text" className="filter__input" placeholder="Reference" onChange={(e) => this.filter(0, e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(1, e.target.value)}/></div>, created_at: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(2,e.target.value)}/></div>, status: <div><input type="text" className="filter__input" placeholder="Status" onChange={(e) => this.filter(3,e.target.value)}/></div>}]
+                
+                                this.setState({data : rows, displayData: rows});
+                                await this.setState({filters : filterRow})
 
                             })
 
@@ -968,6 +1050,13 @@ class QTrackerViewDataTable extends React.Component{
     await this.setState({displayData: resultData})
   }
 
+  async updateObservations(incidence_number, observations){
+    let observationsAux = this.state.observations
+    observationsAux[incidence_number] = observations
+    await this.setState({observations: observationsAux})
+    this.props.updateObservations(this.state.observations)
+  }
+
   
   getColumnSearchProps = dataIndex => ({
     
@@ -1020,6 +1109,15 @@ class QTrackerViewDataTable extends React.Component{
         },
       },
       {
+        title: <center className="dataTable__header__text">Description</center>,
+        dataIndex: 'description',
+        key: 'description',
+        ...this.getColumnSearchProps('description'),
+        sorter:{
+          compare: (a, b) => a.description.localeCompare(b.description),
+        },
+      },
+      {
         title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'created_at',
         key: 'created_at',
@@ -1035,6 +1133,19 @@ class QTrackerViewDataTable extends React.Component{
         key: 'specifications',
         ...this.getColumnSearchProps('specifications'),
         width: "120px"
+      },  
+      {
+        title: <center className="dataTable__header__text">Observations</center>,
+        dataIndex: 'observations',
+        key: 'observations',
+        ...this.getColumnSearchProps('observations'),
+      },  
+      {
+        title: <center className="dataTable__header__text">Accepted/Rejected Date</center>,
+        dataIndex: 'ar_date',
+        key: 'ar_date',
+        ...this.getColumnSearchProps('ar_date'),
+        width: "250px"
       },
       {
         title: <center className="dataTable__header__text">Status</center>,
