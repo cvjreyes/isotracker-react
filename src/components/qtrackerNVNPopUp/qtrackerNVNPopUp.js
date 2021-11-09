@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import AlertF from "../../components/alert/alert"
+import ReactTooltip from "react-tooltip"
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -214,7 +215,8 @@ export default class QtrackerNVNPopUp extends Component {
                         </div>
                         <center className="qtracker__popUp__title" style={{marginBottom: "30px"}}><h3>NOT VIEW IN NAVIS</h3></center>
                         <div className="qtrackerRequest__container">
-                            <input type="text" placeholder="Name" id="name" className="qtrackerPopUp__input__text" ref="name" style={{marginBottom: "20px", color:'black'}} value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} ></input>
+                            <input data-for="name-help" data-tip="Name help" data-iscapture="true" type="text" placeholder="Name" id="name" className="qtrackerPopUp__input__text" ref="name" style={{marginBottom: "20px", color:'black'}} value={this.state.name} onChange={(e) => this.setState({name: e.target.value})} ></input>
+                            <ReactTooltip id="name-help" place="right" type="dark" effect="solid"/>
 
                             <textarea name="description" className="qtrackerPopUp__input__text" rows="5" placeholder="Description" ref="description" style={{marginBottom:"20px", color:"black"}} onChange={(e) => this.setState({description: e.target.value})}/>
                             

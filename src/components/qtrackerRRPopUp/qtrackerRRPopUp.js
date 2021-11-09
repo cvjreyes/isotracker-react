@@ -8,6 +8,8 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import AlertF from "../alert/alert"
+import ReactTooltip from "react-tooltip"
+
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -194,9 +196,11 @@ export default class QtrackerRRPopUp extends Component {
                         </div>
                         <center className="qtracker__popUp__title" style={{marginBottom: "30px"}}><h3>REQUEST REPORT</h3></center>
                         <div className="qtrackerRequest__container">
-                            <textarea name="items" className="qtrackerPopUp__input__text" rows="3" placeholder="Items to report" ref="items" style={{marginBottom:"20px", color:"black"}} onChange={(e) => this.setState({items: e.target.value})}/>
+                            <textarea data-for="items-help" data-tip="Items help" data-iscapture="true" name="items" className="qtrackerPopUp__input__text" rows="3" placeholder="Items to report" ref="items" style={{marginBottom:"20px", color:"black"}} onChange={(e) => this.setState({items: e.target.value})}/>
+                            <ReactTooltip id="items-help" place="right" type="dark" effect="solid"/>
 
-                            <input type="text" placeholder="Scope" id="scope" className="qtrackerPopUp__input__text" ref="scope" style={{marginBottom: "20px", color:'black'}} value={this.state.scope} onChange={(e) => this.setState({scope: e.target.value})} ></input>
+                            <input data-for="scope-help" data-tip="Scope help" data-iscapture="true" type="text" placeholder="Scope" id="scope" className="qtrackerPopUp__input__text" ref="scope" style={{marginBottom: "20px", color:'black'}} value={this.state.scope} onChange={(e) => this.setState({scope: e.target.value})} ></input>
+                            <ReactTooltip id="scope-help" place="right" type="dark" effect="solid"/>
 
                             <textarea name="description" className="qtrackerPopUp__input__text" rows="5" placeholder="Description" ref="description" style={{marginBottom:"20px", color:"black"}} onChange={(e) => this.setState({description: e.target.value})}/>                            
 

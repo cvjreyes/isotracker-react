@@ -31,6 +31,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
+    "react-tooltip": "^4.2.21",
     "read-excel-file": "^5.1.0",
     "rechart": "^0.0.1",
     "recharts": "^2.0.9",

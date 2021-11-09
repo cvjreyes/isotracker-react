@@ -30,3 +30,10 @@
     font-size: 20px;
     margin-left: 30px;
 }
+
+.tooltip__button{
+    margin-left: 10px;
+    border-radius: 1px 1px 1px 1px;
+    height: 34px;
+    margin-top: -7px;
+}

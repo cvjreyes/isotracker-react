@@ -161,7 +161,7 @@ const PitRequestView = () => {
           var rows = []
           var row = null
             for(let i = 0; i < json.rows.length; i++){
-                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: json.rows[i].spref, name: null, pipe: null, items: null, scope: null, description: json.rows[i].description}
+                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), observations: json.rows[i].observations, spref: json.rows[i].spref, name: null, pipe: null, items: null, scope: null, description: json.rows[i].description}
                   
                   if(json.rows[i].status === 0){
                     row.status = "Pending"
@@ -172,6 +172,8 @@ const PitRequestView = () => {
                   }else{
                       row.status = "Rejected"
                   }
+
+                  row.ar_date = json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)
                 
                 
                 rows.push(row)
@@ -181,7 +183,7 @@ const PitRequestView = () => {
             .then(async json => {
             var row = null
                 for(let i = 0; i < json.rows.length; i++){
-                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: json.rows[i].name, pipe: null, items: null, scope: null, description: json.rows[i].description}
+                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), observations: json.rows[i].observations, spref: null, name: json.rows[i].name, pipe: null, items: null, scope: null, description: json.rows[i].description}
                     
                       if(json.rows[i].status === 0){
                         row.status = "Pending"
@@ -192,8 +194,8 @@ const PitRequestView = () => {
                       }else{
                           row.status = "Rejected"
                       }
-                    
-                    rows.push(row)
+                      row.ar_date = json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)
+                      rows.push(row)
                 }
                 
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getNRI", options)
@@ -201,7 +203,7 @@ const PitRequestView = () => {
                 .then(async json => {
                 var row = null
                     for(let i = 0; i < json.rows.length; i++){
-                        row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: null, pipe: json.rows[i].pipe, items: null, scope: null, description: json.rows[i].description}
+                        row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), observations: json.rows[i].observations, spref: null, name: null, pipe: json.rows[i].pipe, items: null, scope: null, description: json.rows[i].description}
                                              
                         if(json.rows[i].status === 0){
                         row.status = "Pending"
@@ -212,6 +214,7 @@ const PitRequestView = () => {
                         }else{
                             row.status = "Rejected"
                         }
+                        row.ar_date = json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)
                         
                         rows.push(row)
                     }
@@ -221,7 +224,7 @@ const PitRequestView = () => {
                     .then(async json => {
                     var row = null
                         for(let i = 0; i < json.rows.length; i++){
-                            row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: null, pipe: json.rows[i].pipe, items: null, scope: null, description: json.rows[i].description}
+                            row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), observations: json.rows[i].observations, spref: null, name: null, pipe: json.rows[i].pipe, items: null, scope: null, description: json.rows[i].description}
                             
                               if(json.rows[i].status === 0){
                                 row.status = "Pending"
@@ -233,7 +236,8 @@ const PitRequestView = () => {
                                   row.status = "Rejected"
                               }
                             
-                            rows.push(row)
+                              row.ar_date = json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)
+                              rows.push(row)
                         }
                         
                         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getNRIDS", options)
@@ -241,7 +245,7 @@ const PitRequestView = () => {
                         .then(async json => {
                         var row = null
                             for(let i = 0; i < json.rows.length; i++){
-                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: json.rows[i].name, pipe: null, items: null, scope: null, description: null}
+                                row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), observations: json.rows[i].observations, spref: null, name: json.rows[i].name, pipe: null, items: null, scope: null, description: null}
                                
                                   if(json.rows[i].status === 0){
                                     row.status = "Pending"
@@ -253,7 +257,8 @@ const PitRequestView = () => {
                                       row.status = "Rejected"
                                   }
                                 
-                                rows.push(row)
+                                  row.ar_date = json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)
+                                  rows.push(row)
                             }
                             
                             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/qtracker/getRP", options)
@@ -261,7 +266,7 @@ const PitRequestView = () => {
                             .then(async json => {
                             var row = null
                                 for(let i = 0; i < json.rows.length; i++){
-                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), spref: null, name: null, pipe: null, items: json.rows[i].items_to_report, scope: json.rows[i].scope, description: json.rows[i].description}
+                                    row = {incidence_number: json.rows[i].incidence_number, user: json.rows[i].user, created_at: json.rows[i].created_at.toString().substring(0,10) + " "+ json.rows[i].created_at.toString().substring(11,19), observations: json.rows[i].observations, spref: null, name: null, pipe: null, items: json.rows[i].items_to_report, scope: json.rows[i].scope, description: json.rows[i].description}
                                     
                                       if(json.rows[i].status === 0){
                                         row.status = "Pending"
@@ -273,6 +278,7 @@ const PitRequestView = () => {
                                           row.status = "Rejected"
                                       }
                                     
+                                      row.ar_date = json.rows[i].accept_reject_date.toString().substring(0,10) + " "+ json.rows[i].accept_reject_date.toString().substring(11,19)
                                     rows.push(row)
                                 }
 
@@ -281,13 +287,13 @@ const PitRequestView = () => {
                                   return second.created_at.localeCompare(first.created_at);
                                 });
                                 
-                                const headers = ["Reference", "User", "Date", "SPREF", "Name", "Pipe", "Items", "Scope", "Description", "Status"]
+                                const headers = ["Reference", "User", "Date", "Observations", "SPREF", "Name", "Pipe", "Items", "Scope", "Description", "Status", "Accepted/Rejected date"]
                                 const apiData = rows
                                 const fileName = "QueryTracker report"
 
                                 const fileType =
                                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-                                const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1']
+                                const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1']
                                 const fileExtension = ".xlsx";
 
                                 let wscols = []

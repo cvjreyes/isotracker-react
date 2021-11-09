@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import './qtrackerNWCPopUp.css'
 import AlertF from "../../components/alert/alert"
+import ReactTooltip from "react-tooltip"
+
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -218,8 +220,10 @@ export default class QtrackerNWCPopUp extends Component {
                         
                         <center className="qtracker__popUp__title" style={{marginBottom: "30px"}}><h3>NOT WORKING COMPONENT</h3></center>
                         <div className="qtrackerRequest__container">
-                            <input type="text" placeholder="SPREF" id="spref" className="qtrackerPopUp__input__text" ref="spref" style={{marginBottom: "20px", color:'black'}} value={this.state.spref} onChange={(e) => this.setState({spref: e.target.value})} ></input>
-
+                            <input data-for="spref-help" data-tip="SPREF help" data-iscapture="true" type="text" placeholder="SPREF" id="spref" className="qtrackerPopUp__input__text" ref="spref" style={{marginBottom: "20px", color:'black'}} value={this.state.spref} onChange={(e) => this.setState({spref: e.target.value})} ></input>
+                            
+                            <ReactTooltip id="spref-help" place="right" type="dark" effect="solid"/>
+                            
                             <textarea name="description" className="qtrackerPopUp__input__text" rows="5" placeholder="Description" ref="description" style={{marginBottom:"20px", color:"black"}} onChange={(e) => this.setState({description: e.target.value})}/>
                             
 
