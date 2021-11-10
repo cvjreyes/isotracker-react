@@ -29,6 +29,7 @@ import ProgressPlot from "../../components/progressPlot/progressPlot"
 import ModelledBtn from "../../components/modelledBtn/modelledBtn"
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
 import UsersDataTable from "../../components/usersDataTable/usersDataTable"
+import TimeTrackDataTable from "../../components/timeTrackDataTable/timeTrackDataTable"
 
 import IsoTrackerLogo from "../../assets/images/IsoTracker.svg"
 import Trash from "../../assets/images/Trash.png"
@@ -40,6 +41,7 @@ import ProcInst from "../../assets/images/MagnifyingGlass.png"
 import Progress from "../../assets/images/ChartBar.png"
 import UploadIcon from "../../assets/images/upload.png"
 import UsersIcon from "../../assets/images/user.png"
+import ClockIcon from "../../assets/images/clock.png"
 import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 import AlertF from "../../components/alert/alert"
@@ -119,7 +121,7 @@ const IsoCtrlF = () => {
     var dataTableHeight = "590px"
 
     //Componentes de la pagina que varian en funcion del estado
-    var uploadButton, actionButtons, tableContent, progressBtn, modelledBtn, myTrayBtn, usersButton
+    var uploadButton, actionButtons, tableContent, progressBtn, modelledBtn, myTrayBtn, usersButton, ttButton
     var currentTabText = currentTab
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
@@ -1718,9 +1720,19 @@ const IsoCtrlF = () => {
         }else{
             usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"100px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
         }
+        if (currentTab === "TimeTrack"){
+            ttButton = <button className="navBar__button" onClick={()=>setCurrentTab("TimeTrack")} style={{width:"135px"}}><img src={ClockIcon} alt="tt" className="navBar__icon" style={{marginRight:"0px", height:"28px", marginTop:"8px"}}></img><p className="navBar__button__text">TimeTrack</p></button>
+            secureStorage.setItem("tab", "TimeTrack")
+        }else{
+            ttButton = <button className="navBar__button" onClick={()=>setCurrentTab("TimeTrack")} style={{width:"135px"}}><img src={ClockIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px", height:"28px", marginTop:"8px"}}></img><p className="navBar__button__text">TimeTrack</p></button>
+        }
     }if(currentTab === "Users"){
  
         tableContent = <UsersDataTable updateData={updateData} deleteUser={deleteUser.bind(this)} submitRoles={submitRoles.bind(this)}/>
+
+    }if(currentTab === "TimeTrack"){
+ 
+        tableContent = <TimeTrackDataTable/>
 
     }
 
@@ -2015,6 +2027,7 @@ const IsoCtrlF = () => {
                               {processBtn}
                               {instrumentationBtn}
                               {usersButton}
+                              {ttButton}
                               {uploadButton}
                               {isocontrolWeightsComponent}
                           </th>
