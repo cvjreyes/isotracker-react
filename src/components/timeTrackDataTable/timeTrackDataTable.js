@@ -37,7 +37,7 @@ class TimeTrackDataTable extends React.Component{
         var rows = []
         var row = null
         for(let i = 0; i < json.rows.length; i++){
-            row = {id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, design: json.rows[i].design, stress: json.rows[i].stress, supports: json.rows[i].supports, materials: json.rows[i].materials, issuer: json.rows[i].issuer, isocontrol: json.rows[i].isocontrol}
+            row = {id: json.rows[i].filename.substring(0, json.rows[i].filename.length - 4), revision: "*R"+json.rows[i].revision, design: json.rows[i].design, stress: json.rows[i].stress, supports: json.rows[i].supports, materials: json.rows[i].materials, issuer: json.rows[i].issuer, isocontrol: json.rows[i].isocontrol}
             
             if(row){
               if(i % 2 === 0){
@@ -51,7 +51,7 @@ class TimeTrackDataTable extends React.Component{
             
         }
     
-        let filterRow = [{id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>}]
+        let filterRow = [{id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(1, e.target.value)}/></div>}]
             
         this.setState({data : rows, role: this.props.role, displayData: rows});
         await this.setState({filters : filterRow})
@@ -68,63 +68,27 @@ class TimeTrackDataTable extends React.Component{
     let resultData = []
     let fil, exists = null
     for(let i = 0; i < auxDisplayData.length; i++){
-        exists = true
-        fil = "id"
-        
-        if(this.state.filterData[0] !== "" && this.state.filterData[0] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[0])){
+      exists = true
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-7; column ++){
+        fil = Object.keys(auxDisplayData[i])[column]
+        console.log(fil)
+        if(auxDisplayData[i][fil]){
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
             exists = false
+            console.log(auxDisplayData[i][fil].toString(), this.state.filterData[column])
+          }
+        }else{
+          
+          exists = false
         }
+          
         
-        if(exists){
-            resultData.push(auxDisplayData[i])
-        }
-    }
-    await this.setState({displayData: resultData})
-  }
-  
-
-
-  getMaster(fileName){
-    const options = {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/pdf"
+      }
+      if(exists){
+        resultData.push(auxDisplayData[i])
       }
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaster/"+fileName, options)
-    .then(res => res.blob())
-    .then(response => {
-      const file = new Blob([response], {
-        type: "application/pdf"
-      });
-      //Build a URL from the file
-      const fileURL = URL.createObjectURL(file);
-      //Open the URL on new Window
-      let w = window.open(fileURL);
-
-        w.addEventListener("load", function() {
-          setTimeout(()=> w.document.title = fileName
-          , 300);
-
-
-        });
-
-        // create <a> tag dinamically
-        var fileLink = document.createElement('a');
-        fileLink.href = fileURL;
-
-        // it forces the name of the downloaded file
-        fileLink.download = fileName;
-
-        // triggers the click event
-        fileLink.click();
-
-
-      
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    await this.setState({displayData: resultData})
   }
   
   getColumnSearchProps = dataIndex => ({
@@ -166,6 +130,15 @@ class TimeTrackDataTable extends React.Component{
         ...this.getColumnSearchProps('id'),
         sorter:{
             compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
+        },
+      },
+      {
+        title: <center className="dataTable__header__text">Revision</center>,
+        dataIndex: 'revision',
+        key: 'revision',
+        ...this.getColumnSearchProps('revision'),
+        sorter:{
+            compare: (a, b) => a.revision.localeCompare(b.revision),
         },
       },
       {

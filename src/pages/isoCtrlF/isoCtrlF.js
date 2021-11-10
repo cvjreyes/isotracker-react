@@ -1682,7 +1682,19 @@ const IsoCtrlF = () => {
         console.log(error);
         });
   }
-    
+
+    async function exportTimeTrack(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportTimeTrack")
+        .then(response => response.json())
+        .then(json => {
+            
+            const headers = ["ISO ID", "Revision", "Design", "Stress", "Supports", "Materials", "Issuer", "LOS/IsoControl"]
+            exportToExcel(JSON.parse(json), "TimeTrack", headers)
+        })
+    }
+        
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
@@ -1746,9 +1758,9 @@ const IsoCtrlF = () => {
     currentRole === "SpecialityLead" && currentTab !== "Progress") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)} exportTimeTrack={exportTimeTrack.bind(this)}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab !== "Progress" && currentTab !== "Modelled"){
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)} exportTimeTrack={exportTimeTrack.bind(this)}/>
     }
     if(currentTab === "Modelled"){
         actionButtons = <button className="action__btn" onClick={()=>downloadModelled()}>Export</button>
