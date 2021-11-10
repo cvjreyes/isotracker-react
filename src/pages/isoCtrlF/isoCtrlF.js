@@ -41,6 +41,7 @@ import ProcInst from "../../assets/images/MagnifyingGlass.png"
 import Progress from "../../assets/images/ChartBar.png"
 import UploadIcon from "../../assets/images/upload.png"
 import UsersIcon from "../../assets/images/user.png"
+import ClockIcon from "../../assets/images/clock.png"
 import LoadingScreen from "../../components/loadingScreen/loadingScreen"
 
 import AlertF from "../../components/alert/alert"
@@ -1720,10 +1721,10 @@ const IsoCtrlF = () => {
             usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"100px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
         }
         if (currentTab === "TimeTrack"){
-            ttButton = <button className="navBar__button" onClick={()=>setCurrentTab("TimeTrack")} style={{width:"135px"}}><img src={UsersIcon} alt="tt" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">TimeTrack</p></button>
+            ttButton = <button className="navBar__button" onClick={()=>setCurrentTab("TimeTrack")} style={{width:"135px"}}><img src={ClockIcon} alt="tt" className="navBar__icon" style={{marginRight:"0px", height:"28px", marginTop:"8px"}}></img><p className="navBar__button__text">TimeTrack</p></button>
             secureStorage.setItem("tab", "TimeTrack")
         }else{
-            ttButton = <button className="navBar__button" onClick={()=>setCurrentTab("TimeTrack")} style={{width:"135px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">TimeTrack</p></button>
+            ttButton = <button className="navBar__button" onClick={()=>setCurrentTab("TimeTrack")} style={{width:"135px"}}><img src={ClockIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px", height:"28px", marginTop:"8px"}}></img><p className="navBar__button__text">TimeTrack</p></button>
         }
     }if(currentTab === "Users"){
  
