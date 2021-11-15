@@ -36,7 +36,7 @@ class ElecExcel extends React.Component{
       rows.push({"Code": "Code", "Name": "Name", "Weight": "Weight"})
       for(let i = 0; i < json.rows.length; i++){
 
-          row = {"Code": json.rows[i].code, "Name": json.rows[i].name, "Weight": json.rows[i].weight}
+          row = {"Code": json.rows[i].code, "Name": json.rows[i].name, "Weight": json.rows[i].weight, id: json.rows[i].id}
 
           for(let j = 0; j < this.state.steps.length; j++){
             let currentStep = this.state.steps[j].toString()
@@ -54,8 +54,8 @@ class ElecExcel extends React.Component{
       var rows = []
       var row = null
       rows.push({"Name":"Name", "Percentage":"Percentage"})
-      for(let i = 0; i < json.steps.length; i++){
-          row = {"Name": json.names[i].name, "Percentage": json.steps[i].percentage}
+      for(let i = 0; i < json.rows.length; i++){
+          row = {"Name": json.rows[i].name, "Percentage": json.rows[i].percentage, id: json.rows[i].id}
 
           rows.push(row)
       }
@@ -70,7 +70,7 @@ class ElecExcel extends React.Component{
       var row = null
       rows.push({"Week": "Week", "Estimated": "Estimated"})
       for(let i = 0; i < json.rows.length; i++){
-          row = {"Week": json.rows[i].week, "Estimated": json.rows[i].estimated}
+          row = {"Week": json.rows[i].week, "Estimated": json.rows[i].estimated, id: json.rows[i].id}
 
           rows.push(row)
       }

@@ -33,8 +33,8 @@ class CivilEstimatedDataTable extends React.Component{
     .then(response => response.json())
     .then(async json => {
       let percentages = []
-      for(let i = 0; i < json.steps.length; i++){
-        percentages.push(json.steps[i].percentage)
+      for(let i = 0; i < json.rows.length; i++){
+        percentages.push(json.rows[i].percentage)
       }
       await this.setState({steps : percentages});
     }) 

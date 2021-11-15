@@ -28,7 +28,7 @@ class InstExcelEdit extends React.Component{
         },
     }
 
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instrumentation/estimated", options)
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/instsEstimatedExcel", options)
     .then(response => response.json())
     .then(json => {
       var rows = []
@@ -36,7 +36,7 @@ class InstExcelEdit extends React.Component{
       rows.push({"Area": "Area", "Type": "Type", "Quantity": "Quantity"})
       for(let i = 0; i < json.rows.length; i++){
 
-          row = {"Area": json.rows[i].area, "Type": json.rows[i].type, "Quantity": json.rows[i].quantity}
+          row = {"Area": json.rows[i].area, "Type": json.rows[i].type, "Quantity": json.rows[i].quantity, id: json.rows[i].id}
 
           rows.push(row)
       }
