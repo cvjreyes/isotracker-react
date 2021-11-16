@@ -11,6 +11,34 @@ import SaveIcon from "../../assets/images/save.svg"
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 
+import { PieChart, Pie, Tooltip, Cell } from 'recharts';
+
+const COLORS = ['lightgray', '#FFCA42', '#7BD36D', '#FF3358'];
+
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    if(index === 0){
+        index = "Pen"
+    }else if(index === 1){
+        index = "Pro"
+    }else if(index === 2){
+        index = "A"
+    }else if(index === 3){
+        index = "R"
+    }
+  
+    return (
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+          {index}
+      </text>
+    );
+  };
+  
+
 const PitRequestView = () => {
 
     const CryptoJS = require("crypto-js");
@@ -50,6 +78,7 @@ const PitRequestView = () => {
     const [saveBtn, setSaveBtn] = useState()
     const [updatedRows, setUpdatedRows] = useState([])
     const [observations, setObservations] = useState()
+    const [counter, setCounter] = useState([])
 
     const [updateData, setUpdateData] = useState(false)    
 
@@ -103,7 +132,7 @@ const PitRequestView = () => {
             
     },[currentRole]);
 
-    useEffect(()=>{
+    useEffect(async ()=>{
         const body = {
             user: currentUser,
         }
@@ -119,6 +148,21 @@ const PitRequestView = () => {
             .then(async json => {
 
             })
+
+        options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        } 
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/statusData", options)
+            .then(response => response.json())
+            .then(async json => {
+                let counter = [{name: "Pending", value: json.pending}, {name: "In progress", value: json.progress}, {name: "Accepted", value: json.accepted}, {name: "Rejected", value: json.rejected}]
+                
+                await setCounter(counter)
+            })
+            
 
     },[updateData])
 
@@ -361,11 +405,15 @@ const PitRequestView = () => {
         
         let observationsArray = []
 
-        Object.entries(observations)
-        .map(async ([incidence_number, observation]) => 
-            
-            await observationsArray.push([incidence_number, observation])
-        )
+        if(observations){
+
+            Object.entries(observations)
+            .map(async ([incidence_number, observation]) => 
+                
+                await observationsArray.push([incidence_number, observation])
+            )
+
+        }
 
         for(let i = 0; i < observationsArray.length; i++){
             let body = {
@@ -396,6 +444,7 @@ const PitRequestView = () => {
 
     var dataTableHeight = "600px"
 
+    
 
     return(
         
@@ -417,6 +466,14 @@ const PitRequestView = () => {
                       </div>
                       
                   </div>
+                  <PieChart width={600} height={400}>
+                    <Pie data={counter} dataKey="value" cx="50%" cy="60%"  outerRadius={120} fill="#8884d8" label={renderCustomizedLabel}>
+                    {counter.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                        ))}
+                    </Pie>
+                    <Tooltip/>
+                </PieChart>
             </div>
             <table className="isotracker__table__container">
                       <tr className="isotracker__table__navBar__container" style={{height:"65px "}}>
