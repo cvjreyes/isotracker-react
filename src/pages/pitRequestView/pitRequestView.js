@@ -13,7 +13,7 @@ import * as XLSX from "xlsx";
 
 import { PieChart, Pie, Tooltip, Cell } from 'recharts';
 
-const COLORS = ['lightgray', '#FFCA42', '#7BD36D', '#FF3358'];
+const COLORS = ['#D2D2D2', '#FFCA42', '#7BD36D', '#FF3358'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
