@@ -513,7 +513,7 @@ class QTrackerViewDataTable extends React.Component{
                                 rows.sort(function(first, second) {
                                   return second.created_at.localeCompare(first.created_at);
                                 });
-                                const filterRow = [{incidence_number: <div><input type="text" className="filter__input" placeholder="Reference" onChange={(e) => this.filter(0, e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(1, e.target.value)}/></div>, created_at: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(2,e.target.value)}/></div>, status: <div><input type="text" className="filter__input" placeholder="Status" onChange={(e) => this.filter(3,e.target.value)}/></div>}]
+                                const filterRow = [{incidence_number: <div><input type="text" className="filter__input" placeholder="Reference" onChange={(e) => this.filter(0, e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(1, e.target.value)}/></div>, created_at: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(2,e.target.value)}/></div>, ar_date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, status: <div><input type="text" className="filter__input" placeholder="Status" onChange={(e) => this.filter(4,e.target.value)}/></div>}]
                 
                                 this.setState({data : rows, displayData: rows});
                                 await this.setState({filters : filterRow})
@@ -972,7 +972,7 @@ class QTrackerViewDataTable extends React.Component{
                                 rows.sort(function(first, second) {
                                   return second.created_at.localeCompare(first.created_at);
                                 });
-                                const filterRow = [{incidence_number: <div><input type="text" className="filter__input" placeholder="Reference" onChange={(e) => this.filter(0, e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(1, e.target.value)}/></div>, created_at: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(2,e.target.value)}/></div>, status: <div><input type="text" className="filter__input" placeholder="Status" onChange={(e) => this.filter(3,e.target.value)}/></div>}]
+                                const filterRow = [{incidence_number: <div><input type="text" className="filter__input" placeholder="Reference" onChange={(e) => this.filter(0, e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(1, e.target.value)}/></div>, created_at: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(2,e.target.value)}/></div>, ar_date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, status: <div><input type="text" className="filter__input" placeholder="Status" onChange={(e) => this.filter(4,e.target.value)}/></div>}]
                 
                                 this.setState({data : rows, displayData: rows});
                                 await this.setState({filters : filterRow})
@@ -1015,7 +1015,6 @@ class QTrackerViewDataTable extends React.Component{
           if(auxDisplayData[i][fil].props){
             for(let p = 0; p < auxDisplayData[i][fil].props.children.length; p++){
               if(auxDisplayData[i][fil].props.children[p].props.selected){
-                console.log(auxDisplayData[i][fil].props.children[p].props)
                 if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children[p].props.children.includes(this.state.filterData[column])){
                   exists = false
                 }
@@ -1033,8 +1032,10 @@ class QTrackerViewDataTable extends React.Component{
           
         }else{
           if(auxDisplayData[i][fil]){
+            console.log(this.state.filterData[column], auxDisplayData[i][fil] )
             if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
               exists = false
+              console.log("A")
             }
           }
           
@@ -1143,7 +1144,10 @@ class QTrackerViewDataTable extends React.Component{
         dataIndex: 'ar_date',
         key: 'ar_date',
         ...this.getColumnSearchProps('ar_date'),
-        width: "250px"
+        width: "250px",
+        sorter: {
+          compare: (a, b) => { return a.ar_date.localeCompare(b.ar_date)},
+        },
       },
       {
         title: <center className="dataTable__header__text">Status</center>,
