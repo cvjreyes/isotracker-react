@@ -321,7 +321,7 @@ const NavBar = (props) =>{
                 
 
                 {isMenuOpen && (
-                    <div className="notifications__container" style={{marginLeft: "27%"}}>
+                    <div className="notifications__container" style={{marginLeft: "17%"}}>
                         <div className="notificationPanel__header">
                             <p className="notificationHeader__text">Notifications</p>
                             <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
@@ -347,7 +347,7 @@ const NavBar = (props) =>{
                 
 
                 {isMenuOpen && (
-                    <div className="notifications__container" style={{marginLeft: "27%"}}>
+                    <div className="notifications__container" style={{marginLeft: "26%"}}>
                         <div className="notificationPanel__header">
                             <p className="notificationHeader__text">Notifications</p>
                             <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
@@ -375,7 +375,7 @@ const NavBar = (props) =>{
                 
 
                 {isMenuOpen && (
-                    <div className="notifications__container" style={{marginLeft: "34%"}}>
+                    <div className="notifications__container" style={{marginLeft: "27%"}}>
                         <div className="notificationPanel__header">
                             <p className="notificationHeader__text">Notifications</p>
                             <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
@@ -433,7 +433,7 @@ const NavBar = (props) =>{
             
 
             {isMenuOpen && (
-                <div className="notifications__container" style={{marginLeft: "76%"}}>
+                <div className="notifications__container" style={{marginLeft: "62%"}}>
                     <div className="notificationPanel__header">
                         <p className="notificationHeader__text">Notifications</p>
                         <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
@@ -459,7 +459,7 @@ const NavBar = (props) =>{
                 
     
                 {isMenuOpen && (
-                    <div className="notifications__container" style={{marginLeft: "90%"}}>
+                    <div className="notifications__container" style={{marginLeft: "68%"}}>
                         <div className="notificationPanel__header">
                             <p className="notificationHeader__text">Notifications</p>
                             <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            
@@ -518,7 +518,7 @@ const NavBar = (props) =>{
                 
 
                 {isMenuOpen && (
-                    <div className="notifications__container" style={{marginLeft: "68%"}}>
+                    <div className="notifications__container" style={{marginLeft: "75%"}}>
                         <div className="notificationPanel__header">
                             <p className="notificationHeader__text">Notifications</p>
                             <button className="markAllAsRead__button" onClick={()=> markAllAsRead()}>Mark all as read</button>            

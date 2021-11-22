@@ -133,10 +133,10 @@ export default function MenuListPITList(props) {
       defaultEndIcon={<div style={{ width: 24 }} />}
       sx={{ height: 800, flexGrow: 1, maxWidth: 720, overflowY: 'auto' }}
     >
-      <StyledTreeItem nodeId="14" style={{marginBottom:"5px"}} labelText="New user" labelIcon={PlusSquare}/>
+      {/*<StyledTreeItem nodeId="14" style={{marginBottom:"5px"}} labelText="New user" labelIcon={PlusSquare}/>*/}
       <StyledTreeItem nodeId="1" style={{marginBottom:"5px"}} labelText="CADpmc" labelIcon={MailIcon} onClick={()=> handleCADpmcClick()}/>
       <StyledTreeItem nodeId="2" style={{marginBottom:"5px"}} labelText="CSPTracker" labelIcon={InfoIcon} onClick={()=> handleSPClick()} />
-      <StyledTreeItem nodeId="3" labelText="Out of SpecTracker" color="#1a73e8" bgColor="#e8f0fe" labelIcon={Label}>
+      {/*<StyledTreeItem nodeId="3" labelText="Out of SpecTracker" color="#1a73e8" bgColor="#e8f0fe" labelIcon={Label}>
         <StyledTreeItem
           nodeId="5"
           labelText="InstrumentTracker"
@@ -156,7 +156,7 @@ export default function MenuListPITList(props) {
           style={{marginBottom:"5px"}}
         />
       </StyledTreeItem>
-
+      */}
       <StyledTreeItem nodeId="4" labelText="QueryTracker" color="#e3742f" bgColor="#fcefe3" labelIcon={Label}>
 
         <StyledTreeItem nodeId="18" labelText="Requests tray" labelIcon={InfoIcon} onClick={()=> handlePitViewClick()} />
