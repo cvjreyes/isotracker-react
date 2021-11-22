@@ -150,6 +150,8 @@ const ActionBtns = props =>{
             else if(props.role === "StressLead"){
                 actionBtn2 = <button className="action__btn" onClick={() => props.returnIso("Stress", "")}>Stress</button>
                 actionBtn4 = <button className="action__btn" onClick={() => props.transaction("Supports")}>Supports</button>
+                actionBtn5 = <button className="action__btn" name="destination" value="stress" onClick={() => props.transaction("Materials")}>Materials</button>
+
             }
             else if(props.role === "SupportsLead"){
                 actionBtn3 = <button className="action__btn" onClick={() => props.returnLeadStress()}>LDG Stress</button>
