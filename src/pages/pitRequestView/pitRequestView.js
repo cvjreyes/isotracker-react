@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
-import CSPTrackerLogo from "../../assets/images/csptracker.svg"
+import CSPTrackerLogo from "../../assets/images/3dquery.png"
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 
 import IdleTimer from 'react-idle-timer'
@@ -473,7 +473,7 @@ const PitRequestView = () => {
             
             <div className="isotracker__row">
                   <div className="isotracker__column">
-                      <img src={CSPTrackerLogo} alt="CSPTrackerLogo" className="isoTrackerLogo__image2" style={{height:"85px"}}/>
+                      <img src={CSPTrackerLogo} alt="CSPTrackerLogo" className="isoTrackerLogo__image2" style={{height:"110px"}}/>
                       
                       <div className="roleSelector__containerF">
                               <RoleDropDown style={{paddingLeft: "2px"}} onChange={value => setCurrentRole(value)} roles = {roles}/>
