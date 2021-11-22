@@ -13,6 +13,22 @@ import ForumIcon from '@mui/icons-material/Forum';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useHistory } from 'react-router';
+import QtrackerNWCPopUp from '../qtrackerNWCPopUp/qtrackerNWCPopUp'
+import QtrackerNVNPopUp from '../qtrackerNVNPopUp/qtrackerNVNPopUp';
+import QtrackerNRIPopUp from '../qtrackerNRIPopUp/qtrackerNRIPopUp';
+import QtrackerNRBPopUp from '../qtrackerNRBPopUp/qtrackerNRBPopUp';
+import QtrackerRRPopUp from '../qtrackerRRPopUp/qtrackerRRPopUp';
+import QtrackerNRIDSPopUp from '../qtrackerNRIDSPopUp/qtrackerNRIDSPopUp';
+import SvgIcon from '@mui/material/SvgIcon';
+
+function PlusSquare(props) {
+  return (
+    <SvgIcon width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M6.62812 11.2678L2.65125 7.29093L6.62812 3.31406" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6.62812 16.5703H13.9191C15.1496 16.5703 16.3297 16.0815 17.1998 15.2114C18.0699 14.3413 18.5587 13.1611 18.5587 11.9306V11.9306C18.5587 11.3213 18.4387 10.718 18.2056 10.1551C17.9724 9.59216 17.6307 9.08069 17.1998 8.64985C16.769 8.21902 16.2575 7.87726 15.6946 7.6441C15.1317 7.41093 14.5284 7.29092 13.9191 7.29092H2.65125" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </SvgIcon>
+  );
+}
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -38,7 +54,7 @@ const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
     },
   },
   [`& .${treeItemClasses.group}`]: {
-    marginLeft: 0,
+    marginLeft: 30,
     [`& .${treeItemClasses.content}`]: {
       paddingLeft: theme.spacing(2),
     },
@@ -85,7 +101,7 @@ StyledTreeItem.propTypes = {
   labelText: PropTypes.string.isRequired,
 };
 
-export default function MenuListPITList() {
+export default function MenuListPITList(props) {
 
     const history = useHistory()
 
@@ -97,18 +113,28 @@ export default function MenuListPITList() {
         history.push("/"+process.env.REACT_APP_PROJECT+"/csptracker");
     }
 
+    function handlePitViewClick(){
+      history.push("/"+process.env.REACT_APP_PROJECT+"/pitrequestsview");
+    }
+
+    function success(){
+      props.success()
+    }
+
+
   return (
     <TreeView
-      aria-label="gmail"
+      aria-label="customized"
       defaultExpanded={['3']}
       defaultCollapseIcon={<ArrowDropDownIcon/>}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
-      sx={{ height: 600, flexGrow: 1, maxWidth: 720, overflowY: 'auto' }}
+      sx={{ height: 800, flexGrow: 1, maxWidth: 720, overflowY: 'auto' }}
     >
+      {/*<StyledTreeItem nodeId="14" style={{marginBottom:"5px"}} labelText="New user" labelIcon={PlusSquare}/>*/}
       <StyledTreeItem nodeId="1" style={{marginBottom:"5px"}} labelText="CADpmc" labelIcon={MailIcon} onClick={()=> handleCADpmcClick()}/>
       <StyledTreeItem nodeId="2" style={{marginBottom:"5px"}} labelText="CSPTracker" labelIcon={InfoIcon} onClick={()=> handleSPClick()} />
-      <StyledTreeItem nodeId="3" labelText="Out of SpecTracker" color="#1a73e8" bgColor="#e8f0fe" labelIcon={Label}>
+      {/*<StyledTreeItem nodeId="3" labelText="Out of SpecTracker" color="#1a73e8" bgColor="#e8f0fe" labelIcon={Label}>
         <StyledTreeItem
           nodeId="5"
           labelText="InstrumentTracker"
@@ -128,43 +154,31 @@ export default function MenuListPITList() {
           style={{marginBottom:"5px"}}
         />
       </StyledTreeItem>
+      */}
       <StyledTreeItem nodeId="4" labelText="QueryTracker" color="#e3742f" bgColor="#fcefe3" labelIcon={Label}>
-          <StyledTreeItem
-          nodeId="8"
-          labelText="NotWorkingComponent"
-          labelIcon={SupervisorAccountIcon}
-        />
+
+        <StyledTreeItem nodeId="18" labelText="Requests tray" labelIcon={InfoIcon} onClick={()=> handlePitViewClick()} />
+        
+        <StyledTreeItem nodeId="19" labelText="Create request" color="#e3742f" bgColor="#fcefe3" labelIcon={Label}>
+
+        <QtrackerNWCPopUp success={success.bind(this)}/>
+        <QtrackerNVNPopUp success={success.bind(this)}/>
+        
         <StyledTreeItem
-          nodeId="9"
-          labelText="NotViewInNavis"
-          labelIcon={InfoIcon}
-        />
-        <StyledTreeItem
-          nodeId="10"
-          labelText="NotReporting"
-          labelIcon={ForumIcon}
-          color="#a250f5"
-          bgColor="#f3e8fd"
-        >
-            <StyledTreeItem
           nodeId="11"
-          labelText="InIsometric"
-          labelIcon={SupervisorAccountIcon}
-        />
-        <StyledTreeItem
-          nodeId="12"
-          labelText="InBfile"
+          labelText="NotReporting"
           labelIcon={InfoIcon}
-        />
+        >
+          <QtrackerNRIPopUp success={success.bind(this)}/>
+          <QtrackerNRBPopUp success={success.bind(this)}/>
+          <QtrackerNRIDSPopUp success={success.bind(this)}/>
         </StyledTreeItem>
-        <StyledTreeItem
-          nodeId="13"
-          labelText="AnyOther"
-          labelIcon={InfoIcon}
-          color="#e3742f"
-          bgColor="#fcefe3"
-        />
+
+        <QtrackerRRPopUp success={success.bind(this)}/>
+
+        </StyledTreeItem>
       </StyledTreeItem>
+        
     </TreeView>
   );
 }

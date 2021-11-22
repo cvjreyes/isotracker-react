@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MenuListPITList from "../menuListPitList/menuListPitList"
 
 
 
 
-const MenuListPIT = () =>{
+const MenuListPIT = (props) =>{
+
+    function success(){
+        props.success()
+    }
 
     return(
         <div class="panel__container">
@@ -16,7 +20,7 @@ const MenuListPIT = () =>{
 
             <div className="elements__container">
                 <div className="menu" style={{paddingTop:"10px"}}>
-                    <MenuListPITList/>
+                    <MenuListPITList success={success.bind(this)}/>
                 </div>
                 
             </div>
