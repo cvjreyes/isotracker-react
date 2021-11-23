@@ -118,7 +118,12 @@ const WelcomeLoginF = () =>{
                 <input type="text" className="email__input" onChange={(e) => setEmail(e.target.value)}></input>
                 <text className="password__label">Password</text>
                 <div>
-                    <input className="password__input" type={passwordShown ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}/>
+                    <input className="password__input" type={passwordShown ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}
+                    onKeyPress={event => {
+                        if (event.key === 'Enter') {
+                        handleLogin()
+                        }
+                    }}/>
                     <img onClick={togglePassword} src={Eye} alt="eye" className="eye__image"></img>
                 </div>
                 <div className="login__buttons">
