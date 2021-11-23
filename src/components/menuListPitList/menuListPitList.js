@@ -155,7 +155,7 @@ export default function MenuListPITList(props) {
         />
       </StyledTreeItem>
       */}
-      <StyledTreeItem nodeId="4" labelText="QueryTracker" color="#e3742f" bgColor="#fcefe3" labelIcon={Label}>
+      <StyledTreeItem nodeId="4" labelText="3DQuery" color="#e3742f" bgColor="#fcefe3" labelIcon={Label}>
 
         <StyledTreeItem nodeId="18" labelText="Requests tray" labelIcon={InfoIcon} onClick={()=> handlePitViewClick()} />
         

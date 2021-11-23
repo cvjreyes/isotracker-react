@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
-import CSPTrackerLogo from "../../assets/images/3dquery.png"
+import CSPTrackerLogo from "../../assets/images/3dquery.svg"
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
 
 import IdleTimer from 'react-idle-timer'
