@@ -451,6 +451,22 @@ const CSPTracker = () => {
             settings={settings} 
             manualColumnResize={true}
             manualRowResize={true}
+            filters={true}
+            dropdownMenu= {[
+                'make_read_only',
+                '---------',
+                'alignment',
+                '---------',
+                'filter_by_condition',
+                '---------',
+                'filter_operators',
+                '---------',
+                'filter_by_condition2',
+                '---------',
+                'filter_by_value',
+                '---------',
+                'filter_action_bar',
+              ]}
             columns= {[{ data: "tag", type:'text'}, {data: "spec", type:"dropdown", strict:"true", source: specData}, {data: p1bore, type:"dropdown", strict:"true", source: diametersData}, {data: p2bore, type:"dropdown", strict:"true", source: diametersData}, {data: p3bore, type:"dropdown", strict:"true", source: diametersData}, {data: "rating", type:"dropdown", strict:"true", source: ratingData}, {data: "end_preparation", type:"dropdown", strict:"true", source: endPreparationData}, {data: "line_id", type:"text"}, {data: "pid", type:"dropdown", strict:"true", source: pidData}, {data: "type", type:"text"}, {data: "description_plan_code", type:"dropdown", allowInvalid:true, source: descriptionPlaneData}, {data:"quantity", type:"numeric"}, { data: "requisition", type:'text'}, { data: "description", type:'text'}, {data: "description_iso", type:"text"},{data: "ident", type:"text"}, {data: "face_to_face", type:"text"}, {data: "bolt_type", type:"dropdown", strict:"true", source: boltTypesData}, {data:"equipnozz", type:"text"}, {data:"utility_station", type:"text"}, {data:"comments", type:"text"}]}
             />
           

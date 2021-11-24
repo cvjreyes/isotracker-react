@@ -167,7 +167,7 @@ export default function MenuListPITList(props) {
         <StyledTreeItem
           nodeId="11"
           labelText="NotReporting"
-          labelIcon={InfoIcon}
+          labelIcon={Label}
         >
           <QtrackerNRIPopUp success={success.bind(this)}/>
           <QtrackerNRBPopUp success={success.bind(this)}/>

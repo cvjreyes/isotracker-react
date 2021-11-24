@@ -154,7 +154,6 @@ class CSPTrackerdDataTable extends React.Component{
               }
 
               
-              
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
                   row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
@@ -212,8 +211,19 @@ class CSPTrackerdDataTable extends React.Component{
                   row[key] = ""
                 }
               }
-              row.tag = <b>{json.rows[i].tag}</b>
-              row.type = <b>{json.rows[i].type}</b>
+
+              if(json.rows[i].type){
+                row.type = <b>{json.rows[i].type}</b>
+              }else{
+                <b> </b>
+              }
+
+              if(json.rows[i].tag){
+                row.tag = <b>{json.rows[i].tag}</b>
+              }else{
+                <b> </b>
+              }
+
               rows.push(row)
             }
           }else{
@@ -232,6 +242,10 @@ class CSPTrackerdDataTable extends React.Component{
                 row.ready_e3d_date = ""
               }
               
+              if(!json.rows[i].type){
+                row.type = ""
+              }
+
               if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                 if(this.props.currentRole === "Materials"){
                   row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
@@ -290,8 +304,17 @@ class CSPTrackerdDataTable extends React.Component{
                 }
               }
 
-              row.tag = <b>{json.rows[i].tag}</b>
-              row.type = <b>{json.rows[i].type}</b>
+              if(json.rows[i].tag){
+                row.tag = <b>{json.rows[i].tag}</b>
+              }else{
+                <b> </b>
+              }
+              
+              if(json.rows[i].type){
+                row.type = <b>{json.rows[i].type}</b>
+              }else{
+                <b> </b>
+              }
 
 
               rows.push(row)
@@ -341,6 +364,10 @@ class CSPTrackerdDataTable extends React.Component{
                   row.ready_e3d_date = ""
                 }
 
+                if(!json.rows[i].type){
+                  row.type = ""
+                }
+                
                 if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
                   if(this.props.currentRole === "Materials"){
                     row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
@@ -398,8 +425,17 @@ class CSPTrackerdDataTable extends React.Component{
                     row[key] = ""
                   }
                 }
-                row.tag = <b>{json.rows[i].tag}</b>
-                row.type = <b>{json.rows[i].type}</b>
+                if(json.rows[i].tag){
+                  row.tag = <b>{json.rows[i].tag}</b>
+                }else{
+                  <b> </b>
+                }
+                
+                if(json.rows[i].type){
+                  row.type = <b>{json.rows[i].type}</b>
+                }else{
+                  <b> </b>
+                }
 
                 rows.push(row)
               }
@@ -477,8 +513,17 @@ class CSPTrackerdDataTable extends React.Component{
                     }
                   }
                   
-                  row.tag = <b>{json.rows[i].tag}</b>
-                  row.type = <b>{json.rows[i].type}</b>
+                  if(json.rows[i].tag){
+                    row.tag = <b>{json.rows[i].tag}</b>
+                  }else{
+                    <b> </b>
+                  }
+                  
+                  if(json.rows[i].type){
+                    row.type = <b>{json.rows[i].type}</b>
+                  }else{
+                    <b> </b>
+                  }
 
                 rows.push(row)
               }
@@ -707,7 +752,6 @@ class CSPTrackerdDataTable extends React.Component{
         title: <div className="dataTable__header__text">Drawing</div>,
         dataIndex: 'drawing',
         key: 'drawing',
-        ...this.getColumnSearchProps('drawing'),
         width: "400px",
         align: "center"
       },
@@ -741,6 +785,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.description.localeCompare(b.description),
         },
+        ellipsis:true
       },
       
       {
