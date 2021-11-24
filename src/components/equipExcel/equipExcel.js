@@ -193,6 +193,22 @@ class EquipExcel extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Name"}, {data: "Percentage", type:"numeric"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <center>
@@ -214,6 +230,22 @@ class EquipExcel extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Code"}, { data: "Name"}, {data: "Weight", type:"numeric"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <center>
@@ -235,6 +267,22 @@ class EquipExcel extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Week", type:"numeric"}, {data: "Estimated", type:"numeric"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <center>

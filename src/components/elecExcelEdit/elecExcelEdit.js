@@ -115,6 +115,22 @@ class ElecExcelEdit extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Area", type:'dropdown', source: this.state.areas }, { data: "Type", type:'dropdown', source: this.state.types }, {data: "Quantity", type:"numeric"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <div style={{marginLeft:"580px"}}>

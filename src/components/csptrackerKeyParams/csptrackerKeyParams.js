@@ -268,6 +268,22 @@ class CSPTrackerKeyParams extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Name"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <center>
@@ -289,6 +305,22 @@ class CSPTrackerKeyParams extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Name"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <center>
@@ -310,6 +342,22 @@ class CSPTrackerKeyParams extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Name"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <center>
@@ -332,6 +380,22 @@ class CSPTrackerKeyParams extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Name"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <center>
@@ -353,6 +417,22 @@ class CSPTrackerKeyParams extends React.Component{
                 manualColumnResize={true}
                 manualRowResize={true}
                 columns= {[{ data: "Name"}]}
+                filters={true}
+                dropdownMenu= {[
+                    'make_read_only',
+                    '---------',
+                    'alignment',
+                    '---------',
+                    'filter_by_condition',
+                    '---------',
+                    'filter_operators',
+                    '---------',
+                    'filter_by_condition2',
+                    '---------',
+                    'filter_by_value',
+                    '---------',
+                    'filter_action_bar',
+                  ]}
               />
               <br></br>
               <center>
