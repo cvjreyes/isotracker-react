@@ -797,6 +797,7 @@ class CSPTrackerdDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.description_iso.localeCompare(b.description_iso),
         },
+        ellipsis:true
       },
       {
         title: <div className="dataTable__header__text">Ident</div>,
