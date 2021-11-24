@@ -113,9 +113,13 @@ const WelcomeLoginF = () =>{
             <div className="login__form">
                 <img src={logo} alt="isoTrackerLogo" className="isoTrackerLogo__image"/>
                 <text className="welcome__text">Welcome</text>
-                <text className="enter__text">Please, enter you e-mail account and password.</text>
+                <text className="enter__text">Please, enter your e-mail account and password.</text>
                 <text className="email__label">E-mail</text>
-                <input type="text" className="email__input" onChange={(e) => setEmail(e.target.value)}></input>
+                <input type="text" className="email__input" onChange={(e) => setEmail(e.target.value)} onKeyPress={event => {
+                        if (event.key === 'Enter') {
+                        handleLogin()
+                        }
+                    }}></input>
                 <text className="password__label">Password</text>
                 <div>
                     <input className="password__input" type={passwordShown ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}
