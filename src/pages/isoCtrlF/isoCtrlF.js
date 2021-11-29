@@ -77,6 +77,7 @@ const IsoCtrlF = () => {
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null)
     const [alreadyOnRev, setAlreadyOnRev] = useState(false)
+    const [errorREV, setErrorREV] = useState(false)
 
     const [modelledWeight, setModelledWeight] = useState("...")
     const [notModelledWeight, setNotModelledWeight] = useState("...")
@@ -635,8 +636,10 @@ const IsoCtrlF = () => {
                             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                             .then(response => response.json())
                             .then(async json=>{
-                                if(json.error){
+                                if(json.error === "error"){
                                     await setErrorCL(true) 
+                                }else if(json.error === "rev"){
+                                    await setErrorREV(true) 
                                 }else if(json.blocked){
                                     setBlocked(true)
                                 }
@@ -2007,6 +2010,12 @@ const IsoCtrlF = () => {
                         onTransitionEnd={() => setErrorDeleteUser(false)}
                         >
                           <AlertF type="error" subtext="This user has claimed isometrics and can't be deleted!" margin="-40px"/>          
+                      </div>
+                      <div
+                        className={`alert alert-success ${errorREV ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setErrorREV(false)}
+                        >
+                        <AlertF type="warning" text="Complete the revision parameters!" margin="-20px"/>   
                       </div>
                   </center>
               {navBar}
