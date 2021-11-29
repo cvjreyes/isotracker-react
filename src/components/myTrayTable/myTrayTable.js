@@ -218,8 +218,8 @@ class MyTrayTable extends React.Component{
                 cButton = null
               }
 
-              if(this.state.role === "Issuer"){
-                revButton = <RevisionPopUp fileName={json.rows[i].filename} successRequest={this.success} />
+              if(this.state.role === "Issuer" && process.env.REACT_APP_PROGRESS === "1" && process.env.REACT_APP_ISSUER === "1"){
+                revButton = <RevisionPopUp fileName={json.rows[i].filename}  successRequest={this.success}/>
               }
 
               if(process.env.REACT_APP_IFC === "1"){
@@ -399,7 +399,7 @@ class MyTrayTable extends React.Component{
             cButton = null
           }
 
-          if(this.state.role === "Issuer" && process.env.REACT_APP_PROGRESS === "1"){
+          if(this.state.role === "Issuer" && process.env.REACT_APP_PROGRESS === "1" && process.env.REACT_APP_ISSUER === "1"){
             revButton = <RevisionPopUp fileName={json.rows[i].filename}  successRequest={this.success}/>
           }
 
