@@ -19,7 +19,9 @@ class ModelledDataTable extends React.Component{
     filters: []
   };
 
-  
+  unlock(isoid){
+    this.props.unlock(isoid)
+  }
 
   componentDidMount(){
 
@@ -37,6 +39,9 @@ class ModelledDataTable extends React.Component{
         var row = null
         for(let i = 0; i < json.rows.length; i++){
             row = {id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
+            if(json.rows[i].blocked === 1){
+              row.id = <div>{json.rows[i].isoid} <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].isoid)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginLeft:"10px"}}>UNLOCK</button></div>
+            }
             if(row){
               if(i % 2 === 0){
                 row["color"] = "#fff"
@@ -56,6 +61,49 @@ class ModelledDataTable extends React.Component{
             await this.setState({filters : filterRow})
 
     }) 
+  }
+
+  componentDidUpdate(prevProps, prevState){
+
+    if(prevProps !== this.props){
+      const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/modelled", options)
+      .then(response => response.json())
+      .then(async json => {
+        var rows = []
+        var row = null
+        for(let i = 0; i < json.rows.length; i++){
+            row = {id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
+            if(json.rows[i].blocked === 1){
+              row.id = <div>{json.rows[i].isoid} <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].isoid)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginLeft:"10px"}}>UNLOCK</button></div>
+            }
+            if(row){
+              if(i % 2 === 0){
+                row["color"] = "#fff"
+              }else{
+                row["color"] = "#eee"
+              }
+            }
+            if(row.id && row.tag){
+              rows.push(row)
+            }
+            
+            }
+        
+            let filterRow = [{tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(0, e.target.value)}/></div>, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2,e.target.value)}/></div>}]
+             
+            this.setState({data : rows, role: this.props.role, displayData: rows});
+            await this.setState({filters : filterRow})
+
+    }) 
+    }
+
   }
 
   async filter(column, value){
