@@ -127,7 +127,7 @@ const IsoCtrlF = () => {
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
     }
-    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} unlock = {unlock.bind(this)} rename = {rename.bind(this)}/>
+    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)}/>
     var currentUser = secureStorage.getItem('user')
 
     useEffect(() =>{
@@ -1389,7 +1389,7 @@ const IsoCtrlF = () => {
         successAlert()
     }
 
-    async function unlock(filename){
+    async function unlock(isoid){
 
         setErrorUnclaimR(false)
         setErrorReports(false)
@@ -1404,7 +1404,7 @@ const IsoCtrlF = () => {
         localStorage.setItem("update", true)
 
         const body = {
-            fileName: filename
+            isoid: isoid
           }
       
           const options = {
@@ -1416,7 +1416,10 @@ const IsoCtrlF = () => {
           }
       
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unlock", options)
-          .then(response => console.log("Unlocked"))
+          .then(response => {
+            console.log("Unlocked")
+            setTransactionSuccess(true)
+          })
 
           setUpdateData(!updateData)
     }
@@ -1725,7 +1728,7 @@ const IsoCtrlF = () => {
         tableContent = <ProgressPlot></ProgressPlot>
         dataTableHeight = "500px"
     }if(currentTab === "Modelled"){
-        tableContent = <ModelledDataTable></ModelledDataTable>
+        tableContent = <ModelledDataTable role={currentRole} unlock = {unlock.bind(this)}></ModelledDataTable>
     }if(currentRole !== "Review"){
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
     }if(currentRole === "SpecialityLead"){

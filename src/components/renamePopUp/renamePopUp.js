@@ -37,7 +37,7 @@ export default class RenamePopUp extends Component {
             <section style={{display:"inline-block"}}>
                 <button type="button" class="btn btn-sm btn-danger" style={{fontSize:"12px",  padding:"2px 5px 2px 5px", marginRight:"5px"}} onClick={() => this.openModal()}>LOCKED</button>
                 <div>
-                    <Modal visible={this.state.visible} width="550" height="100" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="550" height="150" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <center style={{marginTop:"10px"}}>
                             <h4>{this.props.filename}</h4>
                         </center>
