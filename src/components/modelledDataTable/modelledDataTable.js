@@ -39,7 +39,7 @@ class ModelledDataTable extends React.Component{
         var row = null
         for(let i = 0; i < json.rows.length; i++){
             row = {id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
-            if(json.rows[i].blocked === 1){
+            if(json.rows[i].blocked === 1 && this.props.role === "SpecialityLead"){
               row.id = <div>{json.rows[i].isoid} <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].isoid)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginLeft:"10px"}}>UNLOCK</button></div>
             }
             if(row){
@@ -80,7 +80,7 @@ class ModelledDataTable extends React.Component{
         var row = null
         for(let i = 0; i < json.rows.length; i++){
             row = {id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
-            if(json.rows[i].blocked === 1){
+            if(json.rows[i].blocked === 1 && this.props.role === "SpecialityLead"){
               row.id = <div>{json.rows[i].isoid} <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].isoid)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginLeft:"10px"}}>UNLOCK</button></div>
             }
             if(row){
@@ -123,7 +123,11 @@ class ModelledDataTable extends React.Component{
         }else if(fil === "id"){
           fil = "tag"
         }
-        if(auxDisplayData[i][fil]){
+        if(auxDisplayData[i][fil].props){
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children[0].includes(this.state.filterData[column])){
+            exists = false
+          }        
+        }else if(auxDisplayData[i][fil]){
           if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
             exists = false
           }

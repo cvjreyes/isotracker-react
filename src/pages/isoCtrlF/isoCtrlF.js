@@ -1728,7 +1728,7 @@ const IsoCtrlF = () => {
         tableContent = <ProgressPlot></ProgressPlot>
         dataTableHeight = "500px"
     }if(currentTab === "Modelled"){
-        tableContent = <ModelledDataTable unlock = {unlock.bind(this)}></ModelledDataTable>
+        tableContent = <ModelledDataTable role={currentRole} unlock = {unlock.bind(this)}></ModelledDataTable>
     }if(currentRole !== "Review"){
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
     }if(currentRole === "SpecialityLead"){
