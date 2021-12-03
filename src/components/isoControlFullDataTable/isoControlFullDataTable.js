@@ -37,6 +37,7 @@ class IsoControlFullDataTable extends React.Component{
     .then(response => response.json())
     .then(json =>{
         let rows = []
+        console.log(json)
         for(let i = 0; i < json.rows.length; i++){
 
             json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
