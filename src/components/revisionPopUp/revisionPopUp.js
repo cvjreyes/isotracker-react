@@ -192,7 +192,34 @@ export default class RevisionPopUp extends Component {
             button = <input type="button"  value="REV" className="btn btn-danger"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", borderColor:"#B0E0E6", width:"40px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} />
         }
 
-        
+        let def_designation, def_draw, def_check, def_aprr
+        if(this.state.issuer_designation){
+            def_designation = this.state.issuer_designation
+        }else{
+            def_designation = "IFC"
+            this.setState({issuer_designation: "IFC"})
+        }
+
+        if(this.state.issuer_draw){
+            def_draw = this.state.issuer_draw
+        }else{
+            def_draw = "ARC"
+            this.setState({issuer_draw: "ARC"})
+        }
+
+        if(this.state.issuer_check){
+            def_check = this.state.issuer_check
+        }else{
+            def_check = "GMP"
+            this.setState({issuer_check: "GMP"})
+        }
+
+        if(this.state.issuer_appr){
+            def_aprr = this.state.issuer_appr
+        }else{
+            def_aprr = "MGR"
+            this.setState({issuer_appr: "MGR"})
+        }
             
         
         return (
@@ -204,10 +231,10 @@ export default class RevisionPopUp extends Component {
                         <center className="popUp__title" style={{marginBottom: "30px"}}><h3>{this.props.fileName.split('.').slice(0, -1)} revision {this.state.revision}</h3></center>
                         <div className="request__container">   
                             {datafield}            
-                            <input type="text" placeholder="Designation" id="issuer_designation" className="popUp__input__text" ref="issuer_designation" style={{marginBottom: "20px", color:'black'}} defaultValue={this.state.issuer_designation} onChange={(e) => this.setState({issuer_designation: e.target.value})} ></input>
-                            <input type="text" placeholder="Draw" id="issuer_draw" className="popUp__input__text" ref="issuer_draw" style={{marginBottom: "20px", color:'black'}} defaultValue={this.state.issuer_draw} onChange={(e) => this.setState({issuer_draw: e.target.value})} ></input>
-                            <input type="text" placeholder="Check" id="issuer_check" className="popUp__input__text" ref="issuer_check" style={{marginBottom: "20px", color:'black'}} defaultValue={this.state.issuer_check} onChange={(e) => this.setState({issuer_check: e.target.value})} ></input>
-                            <input type="text" placeholder="Approval" id="issuer_appr" className="popUp__input__text" ref="issuer_appr" style={{marginBottom: "20px", color:'black'}} defaultValue={this.state.issuer_appr} onChange={(e) => this.setState({issuer_appr: e.target.value})} ></input>
+                            <input type="text" placeholder="Designation" id="issuer_designation" className="popUp__input__text" ref="issuer_designation" style={{marginBottom: "20px", color:'black'}} defaultValue={def_designation} onChange={(e) => this.setState({issuer_designation: e.target.value})} ></input>
+                            <input type="text" placeholder="Draw" id="issuer_draw" className="popUp__input__text" ref="issuer_draw" style={{marginBottom: "20px", color:'black'}} defaultValue={def_draw} onChange={(e) => this.setState({issuer_draw: e.target.value})} ></input>
+                            <input type="text" placeholder="Check" id="issuer_check" className="popUp__input__text" ref="issuer_check" style={{marginBottom: "20px", color:'black'}} defaultValue={def_check} onChange={(e) => this.setState({issuer_check: e.target.value})} ></input>
+                            <input type="text" placeholder="Approval" id="issuer_appr" className="popUp__input__text" ref="issuer_appr" style={{marginBottom: "20px", color:'black'}} defaultValue={def_aprr} onChange={(e) => this.setState({issuer_appr: e.target.value})} ></input>
                            
                            <button class="btn btn-sm btn-success" onClick={() => this.request()} style={{marginRight:"5px", fontSize:"16px"}}>Submit</button>
                             <button class="btn btn-sm btn-danger" onClick={() => this.closeModal()} style={{marginLeft:"5px", fontSize:"16px"}}>Cancel</button>

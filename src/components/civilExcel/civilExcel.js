@@ -181,43 +181,8 @@ class CivilExcel extends React.Component{
 
       return (
         <div className="row" style={{float:"left"}}>
-           <div className="column" style={{marginLeft:"20px"}}>
-            <div id="hot-app">
-              <HotTable
-                data={this.state.stepsData}
-                colHeaders={true}
-                rowHeaders={true}
-                width="473"
-                height="500"
-                settings={stepsSettings} 
-                manualColumnResize={true}
-                manualRowResize={true}
-                columns= {[{ data: "Name"}, {data: "Percentage", type:"numeric"}]}
-                filters={true}
-            dropdownMenu= {[
-                'make_read_only',
-                '---------',
-                'alignment',
-                '---------',
-                'filter_by_condition',
-                '---------',
-                'filter_operators',
-                '---------',
-                'filter_by_condition2',
-                '---------',
-                'filter_by_value',
-                '---------',
-                'filter_action_bar',
-              ]}
-              />
-              <br></br>
-              <center>
-                  <button class="btn btn-sm btn-info" onClick={() => this.addRowSteps()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Add</button>
-                  <button class="btn btn-sm btn-success" onClick={() => this.submitChangesSteps()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px"}}>Save</button>
-              </center>
-            </div>
-          </div>
-          <div className="column" style={{marginLeft:"19px"}}>
+           
+          <div className="column" style={{marginLeft:"300px"}}>
 
             <div id="hot-app">
               <HotTable
