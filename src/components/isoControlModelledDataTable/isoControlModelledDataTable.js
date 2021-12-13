@@ -8,13 +8,16 @@ class IsoControlModelledDataTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
+    displayData: [],
+    filterData: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
     tab: this.props.currentTab,
     role: this.props.currentRole,
     selectedRows: [],
     selectedRowsKeys: [],
     updateData: this.props.updateData,
     username: "",
-    acronyms : null
+    acronyms : null,
+    filters: []
   };
 
   unlock(filename){
@@ -57,13 +60,40 @@ class IsoControlModelledDataTable extends React.Component{
             }
             rows.push(json.rows[i])
         }
-        this.setState({data: rows})
+        this.setState({data: rows, displayData: rows})
     })
 
-    
-        
   }
 
+  async filter(column, value){
+    let fd = this.state.filterData
+    fd[column] = value
+    await this.setState({filterData: fd})
+
+    let auxDisplayData = this.state.data
+    let resultData = []
+    let fil, exists = null
+    for(let i = 0; i < auxDisplayData.length; i++){
+      exists = true
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+        fil = Object.keys(auxDisplayData[i])[column+1]
+        
+        if(auxDisplayData[i][fil]){
+          console.log(auxDisplayData[i][fil])
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
+            exists = false
+          }
+        }else if(this.state.filterData[column]){
+          exists = false
+        }
+        
+      }  
+      if(exists){
+        resultData.push(auxDisplayData[i])
+      }
+    }
+    await this.setState({displayData: resultData})
+  }
   
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -160,153 +190,108 @@ class IsoControlModelledDataTable extends React.Component{
     
     const columns = [
       {
-        title: <center className="dataTable__header__text">Unit</center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Unit" style={{textAlign:"center"}} onChange={(e) => this.filter(1, e.target.value)}/></center>,
         dataIndex: 'unit',
         key: 'unit',
         ...this.getColumnSearchProps('unit'),
-        sorter:{
-          compare: (a, b) => { return a.unit.localeCompare(b.unit)},
-        },
         align: "center"
       },
       {
-        title: <center className="dataTable__header__text">Area</center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Area" style={{textAlign:"center"}} onChange={(e) => this.filter(0, e.target.value)}/></center>,
         dataIndex: 'area',
         key: 'area',
         ...this.getColumnSearchProps('area'),
-        sorter:{
-          compare: (a, b) => a.area.localeCompare(b.area),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Line</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Line" style={{textAlign:"center"}} onChange={(e) => this.filter(15, e.target.value)}/></div>,
         dataIndex: 'line',
         key: 'line',
         ...this.getColumnSearchProps('line'),
-        sorter: {
-          compare: (a, b) => a.line.localeCompare(b.line),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Train Nº</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Train" style={{textAlign:"center"}} onChange={(e) => this.filter(2, e.target.value)}/></div>,
         dataIndex: 'train',
         key: 'train',
         ...this.getColumnSearchProps('train'),
-        sorter: {
-          compare: (a, b) => { return a.train.localeCompare(b.train)},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Fluid</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Fluid" style={{textAlign:"center"}} onChange={(e) => this.filter(9, e.target.value)}/></div>,
         dataIndex: 'fluid',
         key: 'fluid',
         ...this.getColumnSearchProps('fluid'),
-        sorter: {
-          compare: (a, b) => { return a.fluid.localeCompare(b.fluid)},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Sequential</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Sequential" style={{textAlign:"center"}} onChange={(e) => this.filter(10, e.target.value)}/></div>,
         dataIndex: 'seq',
         key: 'seq',
         ...this.getColumnSearchProps('seq'),
-        sorter: {
-          compare: (a, b) => { return a.seq.localeCompare(b.seq)},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Line ID</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Line ID" style={{textAlign:"center"}} onChange={(e) => this.filter(14, e.target.value)}/></div>,
         dataIndex: 'line_id',
         key: 'line_id',
         ...this.getColumnSearchProps('line_id'),
-        sorter: {
-          compare: (a, b) => { return a.line_id.localeCompare(b.line_id)},
-        },
         align: "center"
       },
       {
-        title: <center className="dataTable__header__text">Iso ID</center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="ISO ID" style={{textAlign:"center"}} onChange={(e) => this.filter(15, e.target.value)}/></center>,
         dataIndex: 'iso_id',
         key: 'iso_id',
         ...this.getColumnSearchProps('iso_id'),
-        sorter:{
-          compare: (a, b) => a.iso_id.localeCompare(b.iso_id),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Spec code</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Spec code" style={{textAlign:"center"}} onChange={(e) => this.filter(3, e.target.value)}/></div>,
         dataIndex: 'spec_code',
         key: 'spec_code',
         ...this.getColumnSearchProps('spec_code'),
-        sorter: {
-          compare: (a, b) => { return a.spec_code.localeCompare(b.spec_code)},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Diameter</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Diameter" style={{textAlign:"center"}} onChange={(e) => this.filter(4, e.target.value)}/></div>,
         dataIndex: 'diameter',
         key: 'diameter',
         ...this.getColumnSearchProps('diameter'),
-        sorter: {
-          compare: (a, b) => { return a.diameter - b.diameter},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">P&ID</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="P&ID" style={{textAlign:"center"}} onChange={(e) => this.filter(5, e.target.value)}/></div>,
         dataIndex: 'pid',
         key: 'pid',
         ...this.getColumnSearchProps('pid'),
-        sorter: {
-          compare: (a, b) => { return a.pid.localeCompare(b.pid)},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Stress level</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Stress level" style={{textAlign:"center"}} onChange={(e) => this.filter(6, e.target.value)}/></div>,
         dataIndex: 'stress_level',
         key: 'stress_level',
         ...this.getColumnSearchProps('stress_level'),
-        sorter: {
-          compare: (a, b) => { return a.stress_level.localeCompare(b.stress_level)},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Calculation notes</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Calculation notes" style={{textAlign:"center"}} onChange={(e) => this.filter(7, e.target.value)}/></div>,
         dataIndex: 'calc_notes',
         key: 'calc_notes',
         ...this.getColumnSearchProps('calc_notes'),
-        sorter: {
-          compare: (a, b) => { return a.calc_notes.localeCompare(b.calc_notes)},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Insulation</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Insulation" style={{textAlign:"center"}} onChange={(e) => this.filter(8, e.target.value)}/></div>,
         dataIndex: 'insulation',
         key: 'insulation',
         ...this.getColumnSearchProps('insulation'),
-        sorter: {
-          compare: (a, b) => { return a.insulation.localeCompare(b.insulation)},
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Total weight</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Total weight" style={{textAlign:"center"}} onChange={(e) => this.filter(11, e.target.value)}/></div>,
         dataIndex: 'total_weight',
         key: 'total_weight',
         ...this.getColumnSearchProps('total_weight'),
-        sorter: {
-          compare: (a, b) => { return a.total_weight - b.total_weight},
-        },
         align: "center"
       },
     ];
@@ -326,7 +311,7 @@ class IsoControlModelledDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} scroll={{x:4000, y:438}} columns={columns} dataSource={this.state.data}  pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="customTable" bordered = {true} scroll={{x:4000, y:438}} columns={columns} dataSource={this.state.displayData}  pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
           {totalElements}
         </div>
         

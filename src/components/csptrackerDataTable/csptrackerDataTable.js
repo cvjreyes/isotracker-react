@@ -12,13 +12,16 @@ class CSPTrackerdDataTable extends React.Component{
     searchText: '',
     searchedColumn: '',
     data: [],
+    displayData: [],
+    filterData: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
     updateData: this.props.updateData,
     username: "",
     acronyms : null,
-    steps: []
+    steps: [],
+    filters: []
   };
 
   async readyE3D(tag){
@@ -321,7 +324,7 @@ class CSPTrackerdDataTable extends React.Component{
             }
           }
           
-          this.setState({data: rows})
+          this.setState({data: rows, displayData: rows})
           
         })
         .catch(error => {
@@ -529,14 +532,125 @@ class CSPTrackerdDataTable extends React.Component{
               }
             }
             await this.setState({data: rows})
-            
-          })
-          .catch(error => {
-              console.log(error);
-          })       
-      }
+            let auxDisplayData = this.state.data
+            let resultData = []
+            let fil, exists = null
+            for(let i = 0; i < auxDisplayData.length; i++){
+              exists = true
+              for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+                fil = Object.keys(auxDisplayData[i])[column+1]
+                if(this.props.currentRole === "3D Admin"){
+                  if(fil === "tag" || fil === "type" || fil === "ready_e3d"){
+                    if(!auxDisplayData[i][fil].props && this.state.filterData[column]){
+                      exists = false
+                    }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+                      exists = false
+                    }   
+                  }else{
+                    if(auxDisplayData[i][fil]){
+                      console.log(auxDisplayData[i][fil])
+                      if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
+                        exists = false
+                      }
+                    }else if(this.state.filterData[column]){
+                      exists = false
+                    }
+                
+                  }
+                }else{
+                  if(fil === "tag" || fil === "type"){
+                    if(!auxDisplayData[i][fil].props && this.state.filterData[column]){
+                      exists = false
+                    }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+                      exists = false
+                    }          
+                  }else{
+                    if(auxDisplayData[i][fil]){
+                      console.log(auxDisplayData[i][fil])
+                      if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
+                        exists = false
+                      }
+                    }else if(this.state.filterData[column]){
+                      exists = false
+                    }
+                
+                  }
+                }
+              }
+                
+              if(exists){
+                resultData.push(auxDisplayData[i])
+              }
+            }
+            await this.setState({displayData: resultData})
+                    
+                  })
+                  .catch(error => {
+                      console.log(error);
+                  })       
+              }
 
   }
+
+
+  async filter(column, value){
+    let fd = this.state.filterData
+    fd[column] = value
+    await this.setState({filterData: fd})
+
+    let auxDisplayData = this.state.data
+    let resultData = []
+    let fil, exists = null
+    for(let i = 0; i < auxDisplayData.length; i++){
+      exists = true
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+        fil = Object.keys(auxDisplayData[i])[column+1]
+        if(this.props.currentRole === "3D Admin"){
+          if(fil === "tag" || fil === "type" || fil === "ready_e3d"){
+            if(!auxDisplayData[i][fil].props && this.state.filterData[column]){
+              exists = false
+            }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+              exists = false
+            }   
+          }else{
+            if(auxDisplayData[i][fil]){
+              console.log(auxDisplayData[i][fil])
+              if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
+                exists = false
+              }
+            }else if(this.state.filterData[column]){
+              exists = false
+            }
+        
+          }
+        }else{
+          if(fil === "tag" || fil === "type"){
+            if(!auxDisplayData[i][fil].props && this.state.filterData[column]){
+              exists = false
+            }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+              exists = false
+            }          
+          }else{
+            if(auxDisplayData[i][fil]){
+              console.log(auxDisplayData[i][fil])
+              if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
+                exists = false
+              }
+            }else if(this.state.filterData[column]){
+              exists = false
+            }
+        
+          }
+        }
+      }
+        
+      if(exists){
+        resultData.push(auxDisplayData[i])
+      }
+    }
+    await this.setState({displayData: resultData})
+  }
+  
   
 
   
@@ -636,120 +750,87 @@ class CSPTrackerdDataTable extends React.Component{
 
     const columns = [
       {
-        title: <center className="dataTable__header__text">Tag</center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="TAG" style={{textAlign:"center"}} onChange={(e) => this.filter(0, e.target.value)}/></center>,
         dataIndex: 'tag',
         key: 'tag',
         ...this.getColumnSearchProps('tag'),
-        sorter:{
-          compare: (a, b) => { return a.tag.props.children.localeCompare(b.tag.props.children)},
-        },
         fixed: "left",
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Type</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Type" style={{textAlign:"center"}} onChange={(e) => this.filter(2, e.target.value)}/></div>,
         dataIndex: 'type',
         key: 'type',
         ...this.getColumnSearchProps('type'),
-        sorter: {
-          compare: (a, b) => { return a.type.props.children.localeCompare(b.type.props.children)},
-        },
         fixed: "left",
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Spec</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Spec" style={{textAlign:"center"}} onChange={(e) => this.filter(12, e.target.value)}/></div>,
         dataIndex: 'spec',
         key: 'spec',
         ...this.getColumnSearchProps('spec'),
-        sorter: {
-            compare: (a, b) => a.spec.localeCompare(b.spec),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">P1Bore</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="P1Bore" style={{textAlign:"center"}} onChange={(e) => this.filter(7, e.target.value)}/></div>,
         dataIndex: 'p1bore',
         key: 'p1bore',
         ...this.getColumnSearchProps('p1bore'),
-        sorter: {
-          compare: (a, b) => a.p1bore-b.p1bore,
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">P2Bore</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="P2Bore" style={{textAlign:"center"}} onChange={(e) => this.filter(8, e.target.value)}/></div>,
         dataIndex: 'p2bore',
         key: 'p2bore',
         ...this.getColumnSearchProps('p2bore'),
-        sorter: {
-          compare: (a, b) => a.p2bore-b.p2bore,
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">P3Bore</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="P3Bore" style={{textAlign:"center"}} onChange={(e) => this.filter(9, e.target.value)}/></div>,
         dataIndex: 'p3bore',
         key: 'p3bore',
         ...this.getColumnSearchProps('p3bore'),
-        sorter: {
-          compare: (a, b) => a.p3bore-b.p3bore,
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Rating</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Rating" style={{textAlign:"center"}} onChange={(e) => this.filter(10, e.target.value)}/></div>,
         dataIndex: 'rating',
         key: 'rating',
         ...this.getColumnSearchProps('rating'),
-        sorter: {
-            compare: (a, b) => a.rating.localeCompare(b.rating),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">End Preparation</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="End Preparation" style={{textAlign:"center"}} onChange={(e) => this.filter(11, e.target.value)}/></div>,
         dataIndex: 'end_preparation',
         key: 'end_preparation',
         ...this.getColumnSearchProps('end_preparation'),
-        sorter: {
-            compare: (a, b) => a.end_preparation.localeCompare(b.end_preparation),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">LINE ID</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Line ID" style={{textAlign:"center"}} onChange={(e) => this.filter(20, e.target.value)}/></div>,
         dataIndex: 'line_id',
         key: 'line_id',
         ...this.getColumnSearchProps('line_id'),
-        sorter: {
-            compare: (a, b) => a.line_id.localeCompare(b.line_id),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">P&ID</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="P&ID" style={{textAlign:"center"}} onChange={(e) => this.filter(19, e.target.value)}/></div>,
         dataIndex: 'pid',
         key: 'pid',
         ...this.getColumnSearchProps('pid'),
-        sorter: {
-            compare: (a, b) => a.pid.localeCompare(b.pid),
-        },
         align: "center"
       },
       
       {
-        title: <div className="dataTable__header__text">Drawing Description</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Drawing Description" style={{textAlign:"center"}} onChange={(e) => this.filter(4, e.target.value)}/></div>,
         dataIndex: 'description_plane',
         key: 'description_plane',
         ...this.getColumnSearchProps('description_plane'),
-        sorter: {
-          compare: (a, b) => a.description_plane.localeCompare(b.description_plane),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Drawing</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Drawing" style={{textAlign:"center"}} onChange={(e) => this.filter(13, e.target.value)}/></div>,
         dataIndex: 'drawing',
         key: 'drawing',
         width: "400px",
@@ -757,147 +838,108 @@ class CSPTrackerdDataTable extends React.Component{
       },
       
       {
-        title: <center className="dataTable__header__text">Quantity</center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Quantity" style={{textAlign:"center"}} onChange={(e) => this.filter(1, e.target.value)}/></center>,
         dataIndex: 'quantity',
         key: 'quantity',
         ...this.getColumnSearchProps('quantity'),
-        sorter:{
-          compare: (a, b) => a.quantity - b.quantity,
-        },
         align: "center"
       },    
       {
-        title: <center className="dataTable__header__text">Requisition</center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Requisition" style={{textAlign:"center"}} onChange={(e) => this.filter(21, e.target.value)}/></center>,
         dataIndex: 'requisition',
         key: 'requisition',
         ...this.getColumnSearchProps('requisition'),
-        sorter:{
-          compare: (a, b) => a.requisition - b.requisition,
-        },
         align: "center"
       }, 
       {
-        title: <center className="dataTable__header__text">Description</center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Description" style={{textAlign:"center"}} onChange={(e) => this.filter(3, e.target.value)}/></center>,
         dataIndex: 'description',
         key: 'description',
         ...this.getColumnSearchProps('description'),
         width: "400px",
-        sorter:{
-          compare: (a, b) => a.description.localeCompare(b.description),
-        },
         ellipsis:true
       },
       
       {
-        title: <div className="dataTable__header__text">Iso Description</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="ISO Description" style={{textAlign:"center"}} onChange={(e) => this.filter(5, e.target.value)}/></div>,
         dataIndex: 'description_iso',
         key: 'description_iso',
         ...this.getColumnSearchProps('description_iso'),
         width: "400px",
-        sorter: {
-          compare: (a, b) => a.description_iso.localeCompare(b.description_iso),
-        },
         ellipsis:true
       },
       {
-        title: <div className="dataTable__header__text">Ident</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Ident" style={{textAlign:"center"}} onChange={(e) => this.filter(6, e.target.value)}/></div>,
         dataIndex: 'ident',
         key: 'ident',
         ...this.getColumnSearchProps('ident'),
-        sorter: {
-          compare: (a, b) => a.ident.localeCompare(b.ident),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Face to Face</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Face to Face" style={{textAlign:"center"}} onChange={(e) => this.filter(14, e.target.value)}/></div>,
         dataIndex: 'face_to_face',
         key: 'face_to_face',
         ...this.getColumnSearchProps('face_to_face'),
-        sorter: {
-            compare: (a, b) => a.face_to_face.localeCompare(b.face_to_face),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">FLG Short Code</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="FLG Short Code" style={{textAlign:"center"}} onChange={(e) => this.filter(15, e.target.value)}/></div>,
         dataIndex: 'bolts_type',
         key: 'bolts_type',
         ...this.getColumnSearchProps('bolts_type'),
-        sorter: {
-            compare: (a, b) => a.bolts_type.localeCompare(b.bolts_type),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Equipment + Nozzle</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Equipment + Nozzle" style={{textAlign:"center"}} onChange={(e) => this.filter(22, e.target.value)}/></div>,
         dataIndex: 'equipnozz',
         key: 'equipnozz',
         ...this.getColumnSearchProps('equipnozz'),
-        sorter: {
-            compare: (a, b) => a.equipnozz.localeCompare(b.equipnozz),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Utility Station</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Utility Station" style={{textAlign:"center"}} onChange={(e) => this.filter(23, e.target.value)}/></div>,
         dataIndex: 'utility_station',
         key: 'utility_station',
         ...this.getColumnSearchProps('utility_station'),
-        sorter: {
-            compare: (a, b) => a.utility_station.localeCompare(b.utility_station),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Request date</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Request Update" style={{textAlign:"center"}} onChange={(e) => this.filter(24, e.target.value)}/></div>,
         dataIndex: 'request_date',
         key: 'request_date',
         ...this.getColumnSearchProps('request_date'),
-        sorter: {
-            compare: (a, b) => a.request_date.localeCompare(b.request_date),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Ready to load date</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Ready to load date" style={{textAlign:"center"}} onChange={(e) => this.filter(25, e.target.value)}/></div>,
         dataIndex: 'ready_load_date',
         key: 'ready_load_date',
         ...this.getColumnSearchProps('ready_load_date'),
-        sorter: {
-            compare: (a, b) => a.ready_load_date.localeCompare(b.ready_load_date),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Ready in 3D date</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Ready in 3D date" style={{textAlign:"center"}} onChange={(e) => this.filter(26, e.target.value)}/></div>,
         dataIndex: 'ready_e3d_date',
         key: 'ready_e3d_date',
         ...this.getColumnSearchProps('ready_e3d_date'),
-        sorter: {
-            compare: (a, b) => a.ready_e3d_date.localeCompare(b.ready_e3d_date),
-        },
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Comments</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Comments" style={{textAlign:"center"}} onChange={(e) => this.filter(18, e.target.value)}/></div>,
         dataIndex: 'comments',
         key: 'comments',
         ...this.getColumnSearchProps('comments'),
       },
       {
-        title: <div className="dataTable__header__text">Ready to Load</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Ready to load" style={{textAlign:"center"}} onChange={(e) => this.filter(16, e.target.value)}/></div>,
         dataIndex: 'ready_load',
         key: 'ready_load',
         ...this.getColumnSearchProps('ready_load'),
-        sorter: {
-            compare: (a, b) => a.ready_load.localeCompare(b.ready_load),
-        },
         fixed: "right",
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text">Ready in 3D</div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Ready in 3D" style={{textAlign:"center"}} onChange={(e) => this.filter(17, e.target.value)}/></div>,
         dataIndex: 'ready_e3d',
         key: 'ready_e3d',
         ...this.getColumnSearchProps('ready_e3d'),
@@ -920,7 +962,7 @@ class CSPTrackerdDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container" style={{width:"auto"}}>
-        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.data} pagination={{disabled:true, defaultPageSize:5000}} size="small"
+        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.displayData} pagination={{disabled:true, defaultPageSize:5000}} size="small"
          rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:8000, y: 437}}/>
           {totalElements}
         </div>
