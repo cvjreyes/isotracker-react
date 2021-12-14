@@ -332,7 +332,6 @@ class OnHoldTable extends React.Component{
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
-        width: '23%',
         ...this.getColumnSearchProps('id'),
 
       },
@@ -349,7 +348,6 @@ class OnHoldTable extends React.Component{
         title: <center className="dataTable__header__text">Revision</center>,
         dataIndex: 'revision',
         key: 'revision',
-        width: '8%',
         ...this.getColumnSearchProps('revision'),
         sorter:{
           compare: (a, b) => a.revision.localeCompare(b.revision),
@@ -359,7 +357,6 @@ class OnHoldTable extends React.Component{
         title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'date',
         key: 'date',
-        width: '20%',
         ...this.getColumnSearchProps('date'),
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
@@ -396,7 +393,6 @@ class OnHoldTable extends React.Component{
           title: <center className="dataTable__header__text">ISO ID</center>,
           dataIndex: 'id',
           key: 'id',
-          width: '23%',
           ...this.getColumnSearchProps('id'),
           sorter:{
             compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
@@ -406,7 +402,6 @@ class OnHoldTable extends React.Component{
           title: <center className="dataTable__header__text">Revision</center>,
           dataIndex: 'revision',
           key: 'revision',
-          width: '8%',
           ...this.getColumnSearchProps('revision'),
           sorter:{
             compare: (a, b) => a.revision.localeCompare(b.revision),
@@ -416,7 +411,6 @@ class OnHoldTable extends React.Component{
           title: <div className="dataTable__header__text">Date</div>,
           dataIndex: 'date',
           key: 'date',
-          width: '20%',
           ...this.getColumnSearchProps('date'),
           sorter: {
             compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
