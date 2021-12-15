@@ -7,7 +7,8 @@ export default class UploadPopUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible : false
+            visible : false,
+            dad: null
         }
         this.id = props.id;
     }
@@ -16,12 +17,14 @@ export default class UploadPopUp extends Component {
     openModal() {      
         this.setState({
             visible : true,
+            dad: <DragAndDrop mode="update" iso={this.id} role={this.props.role} user={this.props.currentUser} reset={true}/>
         });
     }
 
     closeModal() {
         this.setState({
             visible : false,
+            dad: null
         });
     }
 
@@ -36,7 +39,7 @@ export default class UploadPopUp extends Component {
                                 
                         </div>
                         <div className="dnd__container">
-                            <DragAndDrop mode="update" iso={this.id} role={this.props.role} user={this.props.currentUser} reset={true}/>
+                            {this.state.dad}
                         </div> 
                         <center className="popUp__warning__title">***WARNING!*** This action will replace the current(s) file(s). Take appropiate cautions.</center>
                         <center className="popUp__warning__subtitle">If you are not sure of this action, click cancel and contact your supervisor.</center>
