@@ -56,6 +56,7 @@ export default class AddUserPopUp extends Component {
             ins : false,
             rev: false,
             adm: false,
+            prj: false,
             blankFields: false,
             selected: "@technipenergies.com"
         });
@@ -104,6 +105,8 @@ export default class AddUserPopUp extends Component {
                 roles.push("rev")
             }if(this.state.adm){
                 roles.push("E3D")
+            }if(this.state.prj){
+                roles.push("prj")
             }
             
             this.props.addUser(username, email, roles)
@@ -182,9 +185,10 @@ export default class AddUserPopUp extends Component {
                                     <label for="REV" className="popUp__input__checkbox__label">Review</label>
                                 </div>
                                 <div className="checkbox">
-                                    <input type="checkbox" name="3D" value="3D" className="popUp__input__checkbox" onChange={(e) => this.setState({adm: e.target.checked})} checked={this.state.adm}/>  
-                                    <label for="3D" className="popUp__input__checkbox__label">3DAdmin</label>
+                                    <input type="checkbox" name="PRJ" value="PRJ" className="popUp__input__checkbox" onChange={(e) => this.setState({prj: e.target.checked})} checked={this.state.prj}/>  
+                                    <label for="PRJ" className="popUp__input__checkbox__label">Project</label>
                                 </div>
+                                
                             </div>
                             <div className="popUp__input__checkbox__group">
                                 <div className="checkbox">
@@ -210,6 +214,10 @@ export default class AddUserPopUp extends Component {
                                 <div className="checkbox">
                                     <input type="checkbox" name="INS" value="INS" className="popUp__input__checkbox" onChange={(e) => this.setState({ins: e.target.checked})} checked={this.state.ins}/>  
                                     <label for="INS" className="popUp__input__checkbox__label">Instrumentation</label>
+                                </div>
+                                <div className="checkbox">
+                                    <input type="checkbox" name="3D" value="3D" className="popUp__input__checkbox" onChange={(e) => this.setState({adm: e.target.checked})} checked={this.state.adm}/>  
+                                    <label for="3D" className="popUp__input__checkbox__label">3DAdmin</label>
                                 </div>
                             </div>
                             
