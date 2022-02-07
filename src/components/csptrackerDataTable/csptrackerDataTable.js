@@ -140,6 +140,7 @@ class CSPTrackerdDataTable extends React.Component{
         .then(async json => {
           var rows = []
           var row = null
+          console.log(json.rows[1])
           if(process.env.REACT_APP_MMDN === "1"){
             for(let i = 0; i < json.rows.length; i++){
               row = {key:i, tag: json.rows[i].tag, quantity: json.rows[i].quantity, type: json.rows[i].type, description: json.rows[i].description, description_plane: json.rows[i].description_plan_code, description_iso: json.rows[i].description_iso, ident: json.rows[i].ident, p1bore: json.rows[i].p1diameter_nps, p2bore: json.rows[i].p2diameter_nps, p3bore: json.rows[i].p3diameter_nps, rating: json.rows[i].rating, end_preparation: json.rows[i].end_preparation, spec: json.rows[i].spec, descrition_plane: json.rows[i].description_drawing, face_to_face: json.rows[i].face_to_face, bolts_type: json.rows[i].bolt_type, ready_load: json.rows[i].ready_load, ready_e3d: json.rows[i].ready_e3d, comments: json.rows[i].comments, pid: json.rows[i].pid, line_id: json.rows[i].line_id, requisition: json.rows[i].requisition, equipnozz: json.rows[i].equipnozz, utility_station: json.rows[i].utility_station, request_date: json.rows[i].request_date.toString().substring(0,10) + " "+ json.rows[i].request_date.toString().substring(11,19)}
@@ -157,7 +158,9 @@ class CSPTrackerdDataTable extends React.Component{
               }
 
               
-              if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
+
+              
+              if(json.rows[i].drawing_filename !== null && json.rows[i].drawing_filename !== "" && row.description_plane !== null && row.description_plane !== ""){
                 if(this.props.currentRole === "Materials"){
                   row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
                 }else{
@@ -249,7 +252,7 @@ class CSPTrackerdDataTable extends React.Component{
                 row.type = ""
               }
 
-              if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
+              if(json.rows[i].drawing_filename !== null && json.rows[i].drawing_filename !== "" && row.description_plane !== null && row.description_plane !== ""){
                 if(this.props.currentRole === "Materials"){
                   row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
                 }else{
@@ -371,7 +374,7 @@ class CSPTrackerdDataTable extends React.Component{
                   row.type = ""
                 }
                 
-                if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
+                if(json.rows[i].drawing_filename !== null && json.rows[i].drawing_filename !== "" && row.description_plane !== null && row.description_plane !== ""){
                   if(this.props.currentRole === "Materials"){
                     row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
                   }else{
@@ -458,7 +461,7 @@ class CSPTrackerdDataTable extends React.Component{
                   row.ready_e3d_date = ""
                 }
                 
-                if(json.rows[i].drawing_filename !== null && row.description_plane !== null){
+                if(json.rows[i].drawing_filename !== null && json.rows[i].drawing_filename !== "" && row.description_plane !== null && row.description_plane !== ""){
                   if(this.props.currentRole === "Materials"){
                     row.drawing = <div className="drawing__column"><Link onClick={() => this.getDrawing(json.rows[i].drawing_filename)}>{json.rows[i].drawing_filename + " R" + json.rows[i].revision}</Link><UpdateDrawingPopUp description_plan_code={row.description_plane} updateDrawingSuccess={this.updateDrawingSuccess.bind(this)} drawingUploadError={this.drawingUploadError.bind(this)}/></div>
                   }else{
@@ -548,7 +551,6 @@ class CSPTrackerdDataTable extends React.Component{
                     }   
                   }else{
                     if(auxDisplayData[i][fil]){
-                      console.log(auxDisplayData[i][fil])
                       if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
                         exists = false
                       }
@@ -566,7 +568,6 @@ class CSPTrackerdDataTable extends React.Component{
                     }          
                   }else{
                     if(auxDisplayData[i][fil]){
-                      console.log(auxDisplayData[i][fil])
                       if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
                         exists = false
                       }
