@@ -20,6 +20,37 @@ import Reports from "../../assets/images/view_requests.svg"
 import Back from "../../assets/images/back.svg"
 import CSPTrackerKeyParams from "../../components/csptrackerKeyParams/csptrackerKeyParams"
 
+import { PieChart, Pie, Tooltip, Cell } from 'recharts';
+
+const COLORS = ['#D2D2D2', '#FFCA42', '#7BD36D', '#99C6F8', '#94DCAA', '#FF3358'];
+
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    if(index === 0){
+        index = "MAT"
+    }else if(index === 1){
+        index = "HOLD"
+    }else if(index === 2){
+        index = "OK-REV0"
+    }else if(index === 3){
+        index = "OK-REVN"
+    }else if(index === 4){
+        index = "EXCLUDED"
+    }else if(index === 5){
+        index = "DELETED"
+    }
+  
+    return (
+      <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+          {index}
+      </text>
+    );
+  };
+
 const CSPTracker = () => {
 
     const CryptoJS = require("crypto-js");
@@ -84,6 +115,8 @@ const CSPTracker = () => {
 
     const history = useHistory()
 
+    const [counter, setCounter] = useState([])
+
     useEffect(()=>{
         if(!secureStorage.getItem("user")){
             history.push("/"+process.env.REACT_APP_PROJECT+"/");
@@ -135,7 +168,7 @@ const CSPTracker = () => {
             
     },[currentRole]);
 
-    useEffect(()=>{
+    useEffect(async()=>{
         const body = {
             user: currentUser,
         }
@@ -150,6 +183,21 @@ const CSPTracker = () => {
             .then(response => response.json())
             .then(async json => {
 
+            })
+
+        options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/spStatusData", options)
+            .then(response => response.json())
+            .then(async json => {
+                let counter = [{name: "Materials", value: json.materials}, {name: "Hold", value: json.hold}, {name: "OK-REV0", value: json.ok_rev0}, {name: "OK-REVN", value: json.ok_revn}, {name: "Excluded", value: json.excluded}, {name: "Deleted", value: json.deleted}]
+                
+                await setCounter(counter)
             })
 
     },[updateData])
@@ -382,7 +430,6 @@ const CSPTracker = () => {
             const ws = XLSX.utils.json_to_sheet(apiData);   
             ws["!cols"] = wscols
             for(let i = 0; i < headers.length; i++){
-                console.log(i)
                 ws[header_cells[i]].v = headers[i]
             }
             const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
@@ -484,6 +531,7 @@ const CSPTracker = () => {
         table = <CSPTrackerKeyParams success={()=> setSuccessAlert(true)}/>
     }
 
+
     return(
         
         <body>
@@ -557,6 +605,14 @@ const CSPTracker = () => {
                       </div>
                       
                   </div>
+                  <PieChart width={600} height={400}>
+                    <Pie data={counter} dataKey="value" cx="50%" cy="60%"  outerRadius={120} fill="#8884d8" label={renderCustomizedLabel}>
+                    {counter.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                        ))}
+                    </Pie>
+                    <Tooltip/>
+                </PieChart>
             </div>
             <table className="isotracker__table__container">
                       <tr className="isotracker__table__navBar__container" style={{height:"65px "}}>
