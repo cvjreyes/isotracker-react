@@ -59,7 +59,7 @@ const MenuList = () =>{
                 },
             }
 
-            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgress", options)
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/pipingWeight", options)
                 .then(response => response.json())
                 .then(async json => {
                     await setPipesWeight(json.weight)
