@@ -16,6 +16,20 @@
     padding: 1px 3px 1px 3px;
 }
 
+.csp_delete_btn{
+    background: #FF3358;
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+    margin-left: 10px;
+}
+
+.csp_exclude_btn{
+    background: #FFCA42;
+    font-size: 12px;
+    padding: 1px 3px 1px 3px;
+    margin-left: 10px;
+}
+
 .update__btn{
     font-size: 12px;
     padding: 1px 3px 1px 3px;

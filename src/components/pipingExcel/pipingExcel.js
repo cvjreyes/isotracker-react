@@ -35,7 +35,7 @@ class PipingExcel extends React.Component{
       var row = null
       rows.push({"Week": "Week", "Estimated": "Estimated"})
       for(let i = 0; i < json.rows.length; i++){
-          row = {"Week": json.rows[i].week, "Estimated": json.rows[i].estimated}
+          row = {"Week": json.rows[i].week, "Estimated": json.rows[i].estimated, id: json.rows[i].id}
 
           rows.push(row)
       }

@@ -59,7 +59,7 @@ input:checked + .slide:before {
 
 .yyy{
     background: #FFCA42;
-    ;
+    
   }
 
 .ggg{
@@ -70,6 +70,11 @@ input:checked + .slide:before {
     background: #99C6F8;
     
 }
+
+.lll{
+    background-color: #94DCAA;
+}
+
 
 .ddd{
     background-color: lightgray;
