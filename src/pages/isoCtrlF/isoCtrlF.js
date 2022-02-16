@@ -127,7 +127,7 @@ const IsoCtrlF = () => {
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
     }
-    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)}/>
+    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)} sendHold = {sendHold.bind(this)}/>
     var currentUser = secureStorage.getItem('user')
 
     useEffect(() =>{
@@ -1699,6 +1699,22 @@ const IsoCtrlF = () => {
             const headers = ["ISO ID", "Revision", "Design", "Stress", "Supports", "Materials", "Issuer", "LOS/IsoControl"]
             exportToExcel(JSON.parse(json), "TimeTrack", headers)
         })
+    }
+
+    async function sendHold(fileName){
+        const body ={
+            fileName : fileName
+          }
+      
+          const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+          await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/sendHold", options)
+          await setUpdateData(!updateData)
     }
         
 

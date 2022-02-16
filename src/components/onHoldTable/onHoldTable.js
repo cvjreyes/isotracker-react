@@ -51,20 +51,23 @@ class OnHoldTable extends React.Component{
                     var rows = []
                    
                     for(let i = 0; i < json.rows.length; i++){
-                      if(json.rows[i].filename){
-                        var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
-                        var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
-    
-                        var row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}</div>, holds: <HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/>}
-                    
-                        rows.push(row)   
-                      }else{
-                        var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
-                        var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
-
-                        var row = {key:i,  id: json.rows[i].isoid, type: "", revision: "", date: "", from: "", user: "", holds: <HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/>}
-                        
-                        rows.push(row) 
+                      console.log(json.rows[i].onhold)
+                      if(json.rows[i].onhold !== 2){
+                        if(json.rows[i].filename){
+                          var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
+                          var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
+      
+                          var row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}</div>, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/> <button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeHold(json.rows[i].filename)}>EXCLUDE</button></div>}
+                      
+                          rows.push(row)   
+                        }else{
+                          var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
+                          var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
+  
+                          var row = {key:i,  id: json.rows[i].isoid, type: "", revision: "", date: "", from: "", user: "", holds: <HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/>}
+                          
+                          rows.push(row) 
+                        }
                       }
                                      
                     }
@@ -120,65 +123,100 @@ class OnHoldTable extends React.Component{
   componentDidUpdate(prevProps, prevState){
 
     if(prevProps !== this.props && process.env.REACT_APP_PROGRESS === "0"){
-      const body ={
-        currentTab : this.props.currentTab
-      }
-      const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    }
-      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
-          .then(response => response.json())
-          .then(async json => {
-                  var rows = []
-                  for(let i = 0; i < json.rows.length; i++){
-                      var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
-                   
-                      rows.push(row)                
-                  }
-                  this.setState({
-                    data : rows,
-                  });
-
-                  let auxDisplayData = this.state.data
-                  let resultData = []
-                  let fil, exists = null
-                  for(let i = 0; i < auxDisplayData.length; i++){
-                    exists = true
-                    for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
-                      fil = Object.keys(auxDisplayData[i])[column+1]
-                      if(fil === "id" && auxDisplayData[i][fil].props){
-                        if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
-                          exists = false
-                        }  
+      if(process.env.REACT_APP_PROGRESS === "1"){
+        const options = {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json"
+          },
+        }
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/holds", options)
+              .then(response => response.json())
+              .then(async json => {
+                      var rows = []
+                     
+                      for(let i = 0; i < json.rows.length; i++){
+                        if(json.rows[i].onhold !== 2){
+                          if(json.rows[i].filename){
+                            var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
+                            var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
+        
+                            var row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}</div>, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/> <button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeHold(json.rows[i].filename)}>EXCLUDE</button></div>}
                         
-                      }else{
-                        if(auxDisplayData[i][fil]){
-                          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
-                            exists = false
+                            rows.push(row)   
+                          }else{
+                            var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
+                            var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
+    
+                            var row = {key:i,  id: json.rows[i].isoid, type: "", revision: "", date: "", from: "", user: "", holds: <HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/>}
+                            
+                            rows.push(row) 
                           }
                         }
-                        
-                      }     
+                                       
+                      }
                       
-                    }
-                    if(exists){
-                      resultData.push(auxDisplayData[i])
-                    }
+                      const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(5,e.target.value)}/></div>}]
+                  
+                      this.setState({data : rows, selectedRows: [], displayData: rows});
+                      await this.setState({filters : filterRow})
+      
                   }
-                  await this.setState({displayData: resultData})
-              }
-          )
-          .catch(error => {
-              console.log(error);
-          })
+              )
+              .catch(error => {
+                  console.log(error);
+              })  
+        }else{
+          
+          
+          const body ={
+            currentTab : this.props.currentTab
+          }
+          const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+          }
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
+                .then(response => response.json())
+                .then(async json => {
+                        var rows = []
+                        for(let i = 0; i < json.rows.length; i++){
+                            var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user} <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/></div>}
+                        
+                            rows.push(row)                
+                        }
+                        
+                        const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(5,e.target.value)}/></div>}]
+                  
+                      this.setState({data : rows, selectedRows: [], displayData: rows});
+                      await this.setState({filters : filterRow})
+  
+                    }
+            )
+            .catch(error => {
+                console.log(error);
+            })
+          }
       }
 
   }
 
+  async excludeHold(fileName){
+    const options = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/pdf"
+      }
+    }
+    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/excludeHold/"+fileName, options)
+    .then(response => response.json())
+    .then(json => {
+      this.setState({updateData: !this.state.updateData})
+    })
+  }
 
   getMaster(fileName){
     const options = {
@@ -385,7 +423,7 @@ class OnHoldTable extends React.Component{
         title: <div className="dataTable__header__text">Holds</div>,
         dataIndex: 'holds',
         key: 'holds',
-        width: "100px"
+        width: "150px"
       },
     ];
 
@@ -460,7 +498,7 @@ class OnHoldTable extends React.Component{
         {this.state.updateData}
         <div className="dataTable__container">
           {table}
-          <Table className="filter__table" pagination={{disabled:true}} rowSelection={{type: 'checkbox', ...rowSelectionFilter}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/> 
+          <Table className="filter__table" pagination={{disabled:true}}  scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/> 
           {totalElements}
         </div>
         
