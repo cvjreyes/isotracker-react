@@ -122,7 +122,7 @@ class OnHoldTable extends React.Component{
 
   componentDidUpdate(prevProps, prevState){
 
-    if(prevProps !== this.props && process.env.REACT_APP_PROGRESS === "0"){
+    if(prevProps !== this.props){
       if(process.env.REACT_APP_PROGRESS === "1"){
         const options = {
           method: "GET",
@@ -205,17 +205,7 @@ class OnHoldTable extends React.Component{
   }
 
   async excludeHold(fileName){
-    const options = {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/pdf"
-      }
-    }
-    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/excludeHold/"+fileName, options)
-    .then(response => response.json())
-    .then(json => {
-      this.setState({updateData: !this.state.updateData})
-    })
+    this.props.excludeHold(fileName)
   }
 
   getMaster(fileName){

@@ -1011,8 +1011,8 @@ const IsoCtrlF = () => {
         setSelected([])
     }
 
-    function updateD(){
-        setUpdateData(!updateData)
+    async function updateD(){
+        await setUpdateData(!updateData)
     }
 
     async function downloadFiles(){
@@ -1713,8 +1713,22 @@ const IsoCtrlF = () => {
             },
             body: JSON.stringify(body)
         }
-          await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/sendHold", options)
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/sendHold", options)
           await setUpdateData(!updateData)
+          await setTransactionSuccess(true)
+    }
+
+    async function excludeHold(fileName){
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/pdf"
+            }
+          }
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/excludeHold/"+fileName, options)
+          await setUpdateData(!updateData)
+          await setTransactionSuccess(true)
+          tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData} excludeHold = {excludeHold.bind(this)}/>
     }
         
 
@@ -1728,7 +1742,7 @@ const IsoCtrlF = () => {
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){
-        tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData}/>
+        tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData} excludeHold = {excludeHold.bind(this)}/>
     }if(currentTab === "Status"){
         tableContent = <StatusDataTable onChange={value=> setSelected(value)} role = {currentRole}/>
     }if(currentTab === "History"){
