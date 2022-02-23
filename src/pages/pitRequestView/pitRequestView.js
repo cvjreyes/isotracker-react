@@ -362,8 +362,9 @@ const PitRequestView = () => {
                                 const ws = XLSX.utils.json_to_sheet(apiData);   
                                 ws["!cols"] = wscols
                                 for(let i = 0; i < headers.length; i++){
-                                    console.log(i)
-                                    ws[header_cells[i]].v = headers[i]
+                                    if(ws[header_cells[i]]){
+                                        ws[header_cells[i]].v = headers[i]
+                                    }
                                 }
                                 const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
                                 const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
