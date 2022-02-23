@@ -127,7 +127,7 @@ const IsoCtrlF = () => {
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
     }
-    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)}/>
+    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)} returnToLOS = {returnToLOS.bind(this)}/>
     var currentUser = secureStorage.getItem('user')
 
     useEffect(() =>{
@@ -1701,6 +1701,30 @@ const IsoCtrlF = () => {
         })
     }
         
+    async function returnToLOS(fileName){
+        const body = {
+            fileName: fileName,
+            email: currentUser,
+            role: currentRole
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/returnToLOS", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                successAlert()
+            }
+        })
+        setUpdateData(!updateData)
+    }
 
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
