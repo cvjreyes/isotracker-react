@@ -376,7 +376,7 @@ class CSPTrackerdDataTable extends React.Component{
                       row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                     }else{
                       row.ready_e3d = "NOT READY"
-                      row.ready_load = <div>READY <button class="csp_delete_btn btn-sm btn-danger" onClick={() => this.deleteSP(json.rows[i].tag)}>DELETE</button><button class="csp_exclude_btn btn-sm btn-danger" onClick={() => this.excludeSP(json.rows[i].tag)}>EXCLUDE 3D</button></div>
+                      row.ready_load = <div style={{display:"inline-block"}}>READY <button class="csp_delete_btn btn-sm btn-danger" onClick={() => this.deleteSP(json.rows[i].tag)}>DELETE</button><button class="csp_exclude_btn btn-sm btn-danger" onClick={() => this.excludeHold(json.rows[i].tag)}>EXCLUDE 3D</button></div>
                     }
                   }
                   
@@ -391,7 +391,7 @@ class CSPTrackerdDataTable extends React.Component{
                   }
                 }
               }
-
+              
               for (const [key, value] of Object.entries(row)) {
                 if(!value){
                   row[key] = ""
@@ -636,7 +636,7 @@ class CSPTrackerdDataTable extends React.Component{
                         row.ready_e3d = <button class="ready__btn btn-sm btn-success" onClick={() => this.readyE3D(json.rows[i].tag)}>READY</button>
                       }else{
                         row.ready_e3d = "NOT READY"
-                        row.ready_load = <div>READY <button class="csp_delete_btn btn-sm btn-danger" onClick={() => this.deleteSP(json.rows[i].tag)}>DELETE</button><button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeSP(json.rows[i].tag)}>EXCLUDE 3D</button></div>
+                        row.ready_load = <div style={{display:"inline-block"}}>READY <button class="csp_delete_btn btn-sm btn-danger" onClick={() => this.deleteSP(json.rows[i].tag)}>DELETE</button><button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeSP(json.rows[i].tag)}>EXCLUDE 3D</button></div>
                       }
                     }
                     
