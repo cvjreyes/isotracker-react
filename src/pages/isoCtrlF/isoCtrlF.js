@@ -127,8 +127,7 @@ const IsoCtrlF = () => {
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
     }
-    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)} sendHold = {sendHold.bind(this)}/>
-    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)} returnToLOS = {returnToLOS.bind(this)}/>
+    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)} sendHold = {sendHold.bind(this)} returnToLOS = {returnToLOS.bind(this)}/>
     var currentUser = secureStorage.getItem('user')
 
     useEffect(() =>{
@@ -2115,8 +2114,7 @@ const IsoCtrlF = () => {
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
                                   {isoControlFullBtn}
-                                  {isoControlBtn}
-                                  {isoControlNotModBtn}
+                                  
                                   <p className="isotracker__table__trays__group">Home</p>
                                   
                                   {myTrayBtn}
