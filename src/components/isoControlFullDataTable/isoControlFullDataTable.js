@@ -42,29 +42,25 @@ class IsoControlFullDataTable extends React.Component{
         let rows = []
         for(let i = 0; i < json.rows.length; i++){
 
-            json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
-            json.rows[i].iso_id = json.rows[i].unit + json.rows[i].area + json.rows[i].line + json.rows[i].train
             
-            if(json.rows[i].LDL === "In LDL" && json.rows[i].BOM === "Not in BOM"){
-                json.rows[i].line_id = json.rows[i].LDL_unit + json.rows[i].fluid + json.rows[i].seq
-                json.rows[i].iso_id = " "
-
-                json.rows[i].unit = json.rows[i].LDL_unit
-                json.rows[i].line = json.rows[i].fluid + json.rows[i].seq
-                json.rows[i].spec_code = json.rows[i].spec_code_ldl
+            if(json.rows[i].LDL === "In LDL"){
+              json.rows[i].line = json.rows[i].fluid + json.rows[i].seq
+              json.rows[i].line_id = json.rows[i].unit + json.rows[i].fluid + json.rows[i].seq
+              json.rows[i].iso_id = json.rows[i].unit + json.rows[i].area + json.rows[i].fluid + json.rows[i].seq + json.rows[i].train
             }else{
-                json.rows[i].LDL_unit = json.rows[i].unit
-                json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
-                json.rows[i].iso_id = json.rows[i].unit + json.rows[i].area + json.rows[i].line + json.rows[i].train
-
+              json.rows[i].unit = json.rows[i].bom_unit
+              json.rows[i].area = json.rows[i].bom_area
+              json.rows[i].spec_code = json.rows[i].bom_spec_code
+              json.rows[i].train = json.rows[i].bom_train
+              json.rows[i].iso_id = json.rows[i].line
+              json.rows[i].line_id = json.rows[i].unit + json.rows[i].line
             }
+            
 
             if(json.rows[i].diameter === null){
                 json.rows[i].modelled = "Not modelled"
             }else{
                 json.rows[i].modelled = "Modelled"
-                json.rows[i].BOM = "In BOM"
-                json.rows[i].LDL = "In LDL"
             }
 
             if(!json.rows[i].spec_code){
@@ -119,7 +115,7 @@ class IsoControlFullDataTable extends React.Component{
               json.rows[i].total_weight = ""
             }
 
-            if(!json.rows[i].to){
+            if(!json.rows[i].tray){
               json.rows[i].to = "Not in ISOTRACKER"
               json.rows[i].progress = "Not in ISOTRACKER"
             }
@@ -139,8 +135,8 @@ class IsoControlFullDataTable extends React.Component{
             }
             json.rows[i].line_id = <b>{json.rows[i].line_id}</b>
             rows.push(json.rows[i])
-            console.log(json.rows[i].length)
         }
+
         this.setState({data: rows, displayData: rows})
     })
 
@@ -160,10 +156,10 @@ class IsoControlFullDataTable extends React.Component{
       exists = true
       for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
         fil = Object.keys(auxDisplayData[i])[column+1]
+        
         if(fil === "holds"){
           if(auxDisplayData[i][fil]){
             let h = "HOLDS"
-            console.log(h.includes(this.state.filterData[column]))
             if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props && !h.includes(this.state.filterData[column])){
               exists = false
             }
