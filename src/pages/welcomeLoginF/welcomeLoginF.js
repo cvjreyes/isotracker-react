@@ -94,7 +94,8 @@ const WelcomeLoginF = () =>{
             })               
         
     }
-    
+
+
     let logo = null
 
     if(process.env.REACT_APP_PROGRESS === "0"){
@@ -132,7 +133,9 @@ const WelcomeLoginF = () =>{
                 </div>
                 <div className="login__buttons">
                     <button className="login__button" onClick={handleLogin}>Log In</button>
-                    {error && <p className="error__message" style={{color: "red", position:"absolute"}}>Email or password incorrect. Try again.</p>} 
+                    {error && <p className="error__message" style={{color: "red", position:"absolute"}}>Email or password incorrect. Try again.</p>}
+                   
+                    <button className="guide__button" onClick={(e) =>  window.open("http://wks-fr.exnet.technip.com/sites/GLOBALBPMS/EMIA/ML-380-01%20Isotracker%20QuickUsersGuide.pdf", "_blank")}>Download QuickUser'sGuide</button>
 
                     <text className="navis__text">Or you can access to NavisattSelect</text>
                     <button className="navis__button" onClick={(e) => history.push("/"+process.env.REACT_APP_PROJECT+"/navis")}>NAVISATTSELECT</button>

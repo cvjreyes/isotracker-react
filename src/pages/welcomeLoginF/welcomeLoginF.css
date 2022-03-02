@@ -178,7 +178,7 @@
     width: 320px;
     height: 40px;
     left: 3px;
-    top: 70px;
+    top: 150px;
     
     font-style: normal;
     font-weight: 300;
@@ -203,7 +203,19 @@
     height: 48px;
     font-size: 16px;
     border: 0px;
-    margin-top: 90px;
+    margin-top: 80px;
+}
+
+.guide__button{
+    background: white;
+    color: black;
+    border: 0.5px solid #979797;
+    border-radius: 10px;
+    font-weight: bold;
+    width:344px;
+    height: 48px;
+    font-size: 16px;
+    margin-top: 20px;
 }
 
 .greenCircle__image{
