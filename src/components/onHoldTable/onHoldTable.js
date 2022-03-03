@@ -57,7 +57,12 @@ class OnHoldTable extends React.Component{
                           var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
                           var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
       
-                          var row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}</div>, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/> <button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeHold(json.rows[i].filename)}>EXCLUDE</button></div>}
+                          let user = null
+                          if(json.rows[i].role && json.rows[i].user){
+                            user = <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}</div>
+                          }
+
+                          var row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} holds = {holds} descriptions = {descriptions}/> <button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeHold(json.rows[i].filename)}>EXCLUDE</button></div>}
                       
                           rows.push(row)   
                         }else{
