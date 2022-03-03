@@ -1728,7 +1728,7 @@ const IsoCtrlF = () => {
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/excludeHold/"+fileName, options)
           await setUpdateData(!updateData)
           await setTransactionSuccess(true)
-          tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData} excludeHold = {excludeHold.bind(this)}/>
+          tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole = {currentRole} updateData = {updateData} excludeHold = {excludeHold.bind(this)}/>
     }
         
     async function returnToLOS(fileName){
@@ -1766,7 +1766,7 @@ const IsoCtrlF = () => {
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){
-        tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData} excludeHold = {excludeHold.bind(this)}/>
+        tableContent = <OnHoldTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole = {currentRole} updateData = {updateData} excludeHold = {excludeHold.bind(this)}/>
     }if(currentTab === "Status"){
         tableContent = <StatusDataTable onChange={value=> setSelected(value)} role = {currentRole}/>
     }if(currentTab === "History"){
