@@ -145,6 +145,7 @@ class IsoControlFullDataTable extends React.Component{
   }
 
   async filter(column, value){
+    console.log(column, value)
     let fd = this.state.filterData
     fd[column] = value
     await this.setState({filterData: fd})
@@ -152,11 +153,11 @@ class IsoControlFullDataTable extends React.Component{
     let auxDisplayData = this.state.data
     let resultData = []
     let fil, exists = null
+    
     for(let i = 0; i < auxDisplayData.length; i++){
       exists = true
       for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
-        fil = Object.keys(auxDisplayData[i])[column+1]
-        
+        fil = Object.keys(auxDisplayData[i])[column]
         if(fil === "holds"){
           if(auxDisplayData[i][fil]){
             let h = "HOLDS"
@@ -287,26 +288,26 @@ class IsoControlFullDataTable extends React.Component{
     
     const columns = [
       {
-        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Line ID" style={{textAlign:"center"}} onChange={(e) => this.filter(41, e.target.value)}/></center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Line ID" style={{textAlign:"center"}} onChange={(e) => this.filter(44, e.target.value)}/></center>,
         dataIndex: 'line_id',
         key: 'line_id',
         fixed: "left",
         align: "center"
       },
       {
-        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Unit" style={{textAlign:"center"}} onChange={(e) => this.filter(12, e.target.value)}/></center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Unit" style={{textAlign:"center"}} onChange={(e) => this.filter(0, e.target.value)}/></center>,
         dataIndex: 'unit',
         key: 'unit',
         align: "center"
       },
       {
-        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Area" style={{textAlign:"center"}} onChange={(e) => this.filter(0, e.target.value)}/></center>,
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Area" style={{textAlign:"center"}} onChange={(e) => this.filter(1, e.target.value)}/></center>,
         dataIndex: 'area',
         key: 'area',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Line" style={{textAlign:"center"}} onChange={(e) => this.filter(1, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Line" style={{textAlign:"center"}} onChange={(e) => this.filter(21, e.target.value)}/></div>,
         dataIndex: 'line',
         key: 'line',
         align: "center"
@@ -318,21 +319,15 @@ class IsoControlFullDataTable extends React.Component{
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Fluid" style={{textAlign:"center"}} onChange={(e) => this.filter(9, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Fluid" style={{textAlign:"center"}} onChange={(e) => this.filter(10, e.target.value)}/></div>,
         dataIndex: 'fluid',
         key: 'fluid',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Sequential" style={{textAlign:"center"}} onChange={(e) => this.filter(10, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Sequential" style={{textAlign:"center"}} onChange={(e) => this.filter(11, e.target.value)}/></div>,
         dataIndex: 'seq',
         key: 'seq',
-        align: "center"
-      },
-      {
-        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Iso ID" style={{textAlign:"center"}} onChange={(e) => this.filter(42, e.target.value)}/></center>,
-        dataIndex: 'iso_id',
-        key: 'iso_id',
         align: "center"
       },
       {
@@ -342,74 +337,74 @@ class IsoControlFullDataTable extends React.Component{
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Diameter" style={{textAlign:"center"}} onChange={(e) => this.filter(4, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Diameter" style={{textAlign:"center"}} onChange={(e) => this.filter(5, e.target.value)}/></div>,
         dataIndex: 'diameter',
         key: 'diameter',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="P&ID" style={{textAlign:"center"}} onChange={(e) => this.filter(5, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="P&ID" style={{textAlign:"center"}} onChange={(e) => this.filter(6, e.target.value)}/></div>,
         dataIndex: 'pid',
         key: 'pid',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Stress level" style={{textAlign:"center"}} onChange={(e) => this.filter(6, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Stress level" style={{textAlign:"center"}} onChange={(e) => this.filter(7, e.target.value)}/></div>,
         dataIndex: 'stress_level',
         key: 'stress_level',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Calculation notes" style={{textAlign:"center"}} onChange={(e) => this.filter(7, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Calculation notes" style={{textAlign:"center"}} onChange={(e) => this.filter(8, e.target.value)}/></div>,
         dataIndex: 'calc_notes',
         key: 'calc_notes',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Insulation" style={{textAlign:"center"}} onChange={(e) => this.filter(8, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Insulation" style={{textAlign:"center"}} onChange={(e) => this.filter(9, e.target.value)}/></div>,
         dataIndex: 'insulation',
         key: 'insulation',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Total weight" style={{textAlign:"center"}} onChange={(e) => this.filter(11, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Total weight" style={{textAlign:"center"}} onChange={(e) => this.filter(12, e.target.value)}/></div>,
         dataIndex: 'total_weight',
         key: 'total_weight',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Modelled" style={{textAlign:"center"}} onChange={(e) => this.filter(43, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Modelled" style={{textAlign:"center"}} onChange={(e) => this.filter(46, e.target.value)}/></div>,
         dataIndex: 'modelled',
         key: 'modelled',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Tray" style={{textAlign:"center"}} onChange={(e) => this.filter(16, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Tray" style={{textAlign:"center"}} onChange={(e) => this.filter(47, e.target.value)}/></div>,
         dataIndex: 'to',
         key: 'to',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Progress" style={{textAlign:"center"}} onChange={(e) => this.filter(17, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Progress" style={{textAlign:"center"}} onChange={(e) => this.filter(16, e.target.value)}/></div>,
         dataIndex: 'progress',
         key: 'progress',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Holds" style={{textAlign:"center"}} onChange={(e) => this.filter(44, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Holds" style={{textAlign:"center"}} onChange={(e) => this.filter(48, e.target.value)}/></div>,
         dataIndex: 'holds',
         key: 'holds',
         width:"140px",
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="BOM" style={{textAlign:"center"}} onChange={(e) => this.filter(15, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="BOM" style={{textAlign:"center"}} onChange={(e) => this.filter(14, e.target.value)}/></div>,
         dataIndex: 'BOM',
         key: 'BOM',
         align: "center"
       },
       {
-        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="LDL" style={{textAlign:"center"}} onChange={(e) => this.filter(14, e.target.value)}/></div>,
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="LDL" style={{textAlign:"center"}} onChange={(e) => this.filter(13, e.target.value)}/></div>,
         dataIndex: 'LDL',
         key: 'LDL',
         align: "center"
