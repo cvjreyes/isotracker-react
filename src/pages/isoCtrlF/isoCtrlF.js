@@ -1622,7 +1622,7 @@ const IsoCtrlF = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportFull/")
         .then(response => response.json())
         .then(json => {           
-            const headers = ["LINE ID", "UNIT", "AREA", "LINE", "TRAIN Nº", "FLUID", "SEQUENTIAL", "ISO ID", "SPEC CODE", "DIAMETER", "P&ID", "STRESS LEVEL", "CALCULATION NOTES", "INSULATION", "TOTAL WEIGHT", "MODELLED", "TRAY", "PROGRESS", "HOLDS", "LDL", "BOM"]
+            const headers = ["LINE ID", "UNIT", "AREA", "LINE", "TRAIN Nº", "FLUID", "SEQUENTIAL", "SPEC CODE", "DIAMETER", "P&ID", "STRESS LEVEL", "CALCULATION NOTES", "INSULATION", "TOTAL WEIGHT", "MODELLED", "TRAY", "PROGRESS", "HOLDS", "LDL", "BOM"]
             exportToExcel(JSON.parse(json), "Isocontrol", headers)
         })
     }
