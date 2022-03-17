@@ -4,6 +4,7 @@ import ActionExtra from "../../components/actionExtra/actionExtra"
 import CancelIso from "../../components/cancelIso/cancelIso"
 import HoldComment from '../../components/holdComment/holdComment';
 import AddUserPopUp from '../addUserPopUp/addUserPopUp';
+import UpdateMassivePopUp from '../updateMassivePopUp/updateMassivePopUp';
 import "./actionBtns.css"
 
 const ActionBtns = props =>{
@@ -59,6 +60,10 @@ const ActionBtns = props =>{
         props.exportTimeTrack()
     }
 
+    function success(){
+        this.props.success()
+    }
+
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
@@ -69,7 +74,7 @@ const ActionBtns = props =>{
         }
         actionBtn11 = <button className="action__btn"  name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
     }else{
-        
+                
         if (props.currentTab !== "My Tray" && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold"){
             actionBtn11 = <button className="action__btn"  name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
             if (!(props.role === "SpecialityLead" && (props.currentTab === "Process" || props.currentTab === "Instrument")) && props.currentTab !== "Issued"){
@@ -87,6 +92,7 @@ const ActionBtns = props =>{
         }if (props.currentTab === "My Tray"){
             actionBtn1 = <button className="action__btn" name="destination" value="stress" onClick={() => props.unclaimClick()}>Unclaim</button>
             actionBtn11 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
+            actionBtn7 = <UpdateMassivePopUp success={success.bind(this)} role={props.role}  currentUser = {props.user}/>
             if(props.role !== "Design" && props.role !== "DesignLead" && props.role !== "Process" && props.role !== "Instrument" && props.role !== "StressLead" && props.role !== "SupportsLead" ){
                 if(props.role === "Stress"){
                     actionBtn2 = <button className="action__btn" onClick={() => props.returnIso("Design","")}>Design</button>

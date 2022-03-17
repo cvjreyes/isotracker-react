@@ -326,7 +326,7 @@ class MyTrayTable extends React.Component{
 
         for(let i = 0; i < json.rows.length; i++){
           if(this.state.role !== "SpecialityLead"){
-            if(this.state.role === "Design" || this.state.role === "DesignLead"){
+            if(this.state.role === "Design" || this.state.role === "DesignLead" || this.state.role === "Issuer" || this.state.role === "SpecialityLead"){
               switch(json.rows[i].spo){
                 case 0:
                   pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
