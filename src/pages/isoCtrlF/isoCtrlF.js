@@ -1248,7 +1248,8 @@ const IsoCtrlF = () => {
         }
     }
 
-    async function newRev() {
+    async function newRev(comments) {
+        console.log(comments)
         setErrorReports(false)
         setErrorUnclaimR(false)
         setTransactionSuccess(false);
@@ -1267,6 +1268,7 @@ const IsoCtrlF = () => {
                     user : currentUser,
                     file: selected[i],
                     role: currentRole,
+                    comments: comments
                 }
                 const options = {
                     method: "POST",

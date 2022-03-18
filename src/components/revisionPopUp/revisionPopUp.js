@@ -45,6 +45,10 @@ export default class RevisionPopUp extends Component {
                 let date = new Date(d) 
                 d = date.toISOString().substr(0,10)
                 await this.setState({dateText: d})
+            }else{
+                let today = new Date()
+                today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
+                await this.setState({dateText: today})
             }
         }) 
     
@@ -77,6 +81,10 @@ export default class RevisionPopUp extends Component {
                     let date = new Date(d) 
                     d = date.toISOString().substr(0,10)
                     await this.setState({dateText: d})
+                }else{
+                    let today = new Date()
+                    today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
+                    await this.setState({dateText: today})
                 }
                 }) 
         }
@@ -111,6 +119,10 @@ export default class RevisionPopUp extends Component {
                 d = date.toISOString().substr(0,10)
                 console.log(date, d)
                 await this.setState({dateText: d})
+            }else{
+                let today = new Date()
+                today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
+                await this.setState({dateText: today})
             }
         }) 
 
@@ -164,18 +176,21 @@ export default class RevisionPopUp extends Component {
         
         let button = null
         let datafield
+        let today = new Date()
+        today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
         if(this.state.issuer_date && this.state.issuer_designation && this.state.issuer_draw && this.state.issuer_check && this.state.issuer_appr){
             
             button = <input type="button"  value="REV" id="date" name="date" className="btn btn-success"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", borderColor:"#B0E0E6", width:"40px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} />
-            let d = this.state.issuer_date
-            let date = new Date(d) 
-            d = date.toISOString().substr(0,10)           
+            
+            
+            
+             
             
             datafield = <TextField
             onChange={this.handleDateChange}
             id="date"
             type="date"
-            defaultValue= {d}
+            defaultValue= {today}
             InputLabelProps={{
             shrink: true,
             }}
@@ -185,6 +200,7 @@ export default class RevisionPopUp extends Component {
             onChange={this.handleDateChange}
             id="date"
             type="date"
+            defaultValue= {today}
             InputLabelProps={{
             shrink: true,
             }}
@@ -230,7 +246,7 @@ export default class RevisionPopUp extends Component {
                     <Modal visible={this.state.visible} width="650" height="460" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <center className="popUp__title" style={{marginBottom: "30px"}}><h3>{this.props.fileName.split('.').slice(0, -1)} R{this.state.revision}*</h3></center>
                         <div className="request__container" style={{width: "400px"}}>   
-                            <label for="date" style={{marginRight:"10px", marginTop:"15px"}}>Date: </label>
+                            <label for="date" style={{marginRight:"10px", marginLeft:"27px", marginTop:"15px"}}>Date: </label>
                             {datafield}
                             <div>
                                 <label for="issuer_designation">Designation: </label>     

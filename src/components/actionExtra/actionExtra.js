@@ -21,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ActionExtra = (props) =>{
 
-    const [date, setDate] = useState("2021-01-01");
+    let today = new Date()
+    today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
+    const [date, setDate] = useState(today);
     const [transmittal, setTransmittal] = useState("TRN001");
 
     async function handleTransmittalChange (event) {
@@ -48,7 +50,7 @@ const ActionExtra = (props) =>{
                     onChange={handleDateChange}
                     id="date"
                     type="date"
-                    defaultValue="2021-01-01"
+                    defaultValue={today}
                     className={classes.textField}
                     InputLabelProps={{
                     shrink: true,

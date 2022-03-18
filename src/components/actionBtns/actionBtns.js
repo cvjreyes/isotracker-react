@@ -5,6 +5,7 @@ import CancelIso from "../../components/cancelIso/cancelIso"
 import HoldComment from '../../components/holdComment/holdComment';
 import AddUserPopUp from '../addUserPopUp/addUserPopUp';
 import UpdateMassivePopUp from '../updateMassivePopUp/updateMassivePopUp';
+import NewRevPopUp from '../newRevPopUp/newRevPopUp';
 import "./actionBtns.css"
 
 const ActionBtns = props =>{
@@ -83,7 +84,7 @@ const ActionBtns = props =>{
             if(props.currentTab === "Issued"){
                 
                 if(props.role === "SpecialityLead"){
-                    actionBtn1 = <button className="action__btn" name="newrev" value="newrev" onClick={() => props.newRev()}>New Rev</button>
+                    actionBtn1 = actionBtn1 = <NewRevPopUp newRev={props.newRev.bind(this)}/>
                 }else if(props.role === "Design" || props.role === "DesignLead"){
                     actionBtn1 = <button className="action__btn" name="newrev" value="newrev" onClick={() => props.request()}>Request</button>
                 }
