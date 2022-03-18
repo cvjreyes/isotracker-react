@@ -204,6 +204,8 @@ class DataTable extends React.Component{
 
                     if(this.props.currentRole === "SpecialityLead" && json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
                       rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"20px"}}>Return</button>
+                    }else{
+                      rToLOSButton = null
                     }
 
                     if(!json.rows[i].updated_at){
@@ -418,6 +420,8 @@ class DataTable extends React.Component{
 
               if(this.props.currentRole === "SpecialityLead" && json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
                 rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"20px"}}>Return</button>
+              }else{
+                rToLOSButton = null
               }
 
               if(!json.rows[i].updated_at){
