@@ -13,7 +13,8 @@ export default class RevisionPopUp extends Component {
             issuer_check: null,
             issuer_appr: null,
             revision: null,
-            dateText: null
+            dateText: null,
+            button: null
         }
 
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -138,17 +139,22 @@ export default class RevisionPopUp extends Component {
     }
 
     async request(){  
+
+        let newdate = new Date()
+        if(this.state.issuer_date){
+            newdate = this.state.issuer_date
+        }
         
         const body ={
             fileName: this.props.fileName,
-            issuer_date: this.state.issuer_date,
+            issuer_date: newdate,
             issuer_designation: this.state.issuer_designation,
             issuer_draw: this.state.issuer_draw,
             issuer_check: this.state.issuer_check,
             issuer_appr: this.state.issuer_appr
         }
 
-        const options = {
+        let options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -163,7 +169,34 @@ export default class RevisionPopUp extends Component {
                     this.props.successRequest()
                 }
             })
-            this.closeModal()
+        options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/revision/"+this.props.fileName, options)
+        .then(response => response.json())
+        .then(async json => {
+            await this.setState({
+                revision: json.rows.revision,
+                issuer_date: json.rows.issuer_date,
+                issuer_designation: json.rows.issuer_designation,
+                issuer_draw: json.rows.issuer_draw,
+                issuer_check: json.rows.issuer_check,
+                issuer_appr: json.rows.issuer_appr
+            })
+
+            if(this.state.issuer_date && this.state.issuer_designation && this.state.issuer_draw && this.state.issuer_check && this.state.issuer_appr){
+                await this.setState({button:  <input type="button"  value="REV" id="date" name="date" className="btn btn-success"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", borderColor:"#B0E0E6", width:"40px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} /> })
+            }else{
+                await this.setState({button :<input type="button" id="date" name="date" value="REV" className="btn btn-danger"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", borderColor:"#B0E0E6", width:"40px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} /> })
+            }
+            
+        }) 
+        console.log("A")
+        this.closeModal()
     
     }
 
@@ -174,17 +207,14 @@ export default class RevisionPopUp extends Component {
 
     render() {      
         
-        let button = null
+        let button = this.state.button
         let datafield
         let today = new Date()
         today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
+        
         if(this.state.issuer_date && this.state.issuer_designation && this.state.issuer_draw && this.state.issuer_check && this.state.issuer_appr){
             
-            button = <input type="button"  value="REV" id="date" name="date" className="btn btn-success"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", borderColor:"#B0E0E6", width:"40px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} />
-            
-            
-            
-             
+            button = <input type="button"  value="REV" id="date" name="date" className="btn btn-success"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", borderColor:"#B0E0E6", width:"40px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} />  
             
             datafield = <TextField
             onChange={this.handleDateChange}
