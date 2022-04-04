@@ -52,6 +52,7 @@ import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLine
 import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
+import EstimatedPipesExcel from "../../components/estimatedPipesExcel/estimatedPipesExcel"
 
 const IsoCtrlF = () => {
    
@@ -1912,6 +1913,7 @@ const IsoCtrlF = () => {
     let isoControlBtn = null
     let isoControlNotModBtn = null
     let isoControlFullBtn = null
+    let isoControlEstimatedBtn = null
     let isocontrolWeightsComponent = null
     let isoControllLineIdGroupBtn = null
     let editCustomBtn = null
@@ -1937,13 +1939,23 @@ const IsoCtrlF = () => {
         }
         if(currentTab === "IsoControlFull"){
             secureStorage.setItem("tab", "IsoControlFull")
-            isoControlFullBtn = <button type="button" className="nav__button__title text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
+            isoControlFullBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Report</button>
             tableContent = <IsoControlFullDataTable/>
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
             uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)}/>
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
-            isoControlFullBtn = <button type="button" className="nav__button__title text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>IsoControl</button>
+            isoControlFullBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>Report</button>
+            
+        }
+
+        if(currentTab === "EstimatedPipes"){
+            secureStorage.setItem("tab", "EstimatedPipes")
+            isoControlEstimatedBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Estimated</button>
+            tableContent = <EstimatedPipesExcel/>
+            //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
+        }else{
+            isoControlEstimatedBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("EstimatedPipes")}}>Estimated</button>
             
         }
 
@@ -2115,8 +2127,9 @@ const IsoCtrlF = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
+                                  <p className="isotracker__table__trays__group">IsoControl</p>
                                   {isoControlFullBtn}
-                                  
+                                  {isoControlEstimatedBtn}
                                   <p className="isotracker__table__trays__group">Home</p>
                                   
                                   {myTrayBtn}
