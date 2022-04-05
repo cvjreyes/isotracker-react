@@ -1952,7 +1952,7 @@ const IsoCtrlF = () => {
         if(currentTab === "EstimatedPipes"){
             secureStorage.setItem("tab", "EstimatedPipes")
             isoControlEstimatedBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Estimated</button>
-            tableContent = <EstimatedPipesExcel/>
+            tableContent = <EstimatedPipesExcel success={success.bind(this)}/>
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
             isoControlEstimatedBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("EstimatedPipes")}}>Estimated</button>

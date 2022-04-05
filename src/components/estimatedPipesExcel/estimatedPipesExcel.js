@@ -15,9 +15,10 @@ class EstimatedPipesExcel extends React.Component{
     updateData: this.props.updateData,
     username: "",
     acronyms : null,
-    steps: [],
+    diameters: [],
     areas: [],
-    types: [],
+    trains: ["01", "02", "03", "04", "05"],
+    line_refs: []
   };
 
   async componentDidMount(){
@@ -29,21 +30,6 @@ class EstimatedPipesExcel extends React.Component{
         },
     }
 
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipEstimatedExcel", options)
-    .then(response => response.json())
-    .then(json => {
-      var rows = []
-      var row = null
-      rows.push({"Area": "Area", "Type": "Type", "Quantity": "Quantity"})
-      for(let i = 0; i < json.rows.length; i++){
-
-          row = {"Area": json.rows[i].area, "Type": json.rows[i].type, "Quantity": json.rows[i].quantity, id: json.rows[i].id}
-
-          rows.push(row)
-      }
-      this.setState({data : rows, selectedRows: []});
-
-  }) 
 
   fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/areas", options)
     .then(response => response.json())
@@ -56,21 +42,43 @@ class EstimatedPipesExcel extends React.Component{
 
   })
 
-  fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/equipments/types", options)
-    .then(response => response.json())
-    .then(json => {
-      let types_options = []
-      for(let i = 0; i < json.rows.length; i++){
-        types_options.push(json.rows[i].name)
-      }
-      this.setState({types : types_options});
+  await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/diameters", options)
+  .then(response => response.json())
+  .then(json => {
+    let diameters = []
+    for(let i = 0; i < json.diameters.length; i++){
+      diameters.push(json.diameters[i].diameter)
+    }
+    this.setState({diameters : diameters});
 
+  })
+
+  await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/lineRefs", options)
+  .then(response => response.json())
+  .then(json => {
+    let line_refs = []
+    console.log(json)
+    for(let i = 0; i < json.line_refs.length; i++){
+      line_refs.push(json.line_refs[i].line_ref)
+    }
+    this.setState({line_refs : line_refs});
+
+  })
+
+  await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/modelledEstimatedPipes", options)
+  .then(response => response.json())
+  .then(async json => {
+    let rows = [] 
+    for(let i = 0; i < json.rows.length; i++){
+      rows.push({"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].seq, "Spec": json.rows[i].spec, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id})
+    }
+    await this.setState({data: rows})
   })
 }
 
   addRow(){
     let rows = this.state.data
-    rows.push({"Area": "", "Type": "", "Quantity": ""})
+    rows.push({"Line reference": "", "Tag": "", "Unit": "", "Area": "", "Fluid": "", "Seq": "", "Spec": "", "Diameter": "", "Insulation": "", "Train": "", "Status": ""})
     this.setState({data: rows})
   }
   
@@ -85,12 +93,17 @@ class EstimatedPipesExcel extends React.Component{
         },
         body: JSON.stringify(body)
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/equipments/estimated", options)
-    .then(response => response.json())
-    .then(json =>{
 
-    })
     this.props.success()
+  }
+
+  handleChange = (changes, source) =>{
+    // console.log(this.state.data[changes[0][0]])
+    if (source !== 'loadData'){
+      if (changes[0][1] === 'Line reference'){
+        console.log(changes[0][3])
+      }
+    }
   }
 
   render() {
@@ -117,7 +130,7 @@ class EstimatedPipesExcel extends React.Component{
                 settings={settings}
                 manualColumnResize={true}
                 manualRowResize={true}
-                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.areas },{ data: "Tag", type:'text'},{ data: "Unit", type:'text'},{ data: "Area", type:'dropdown', source: this.state.areas }, { data: "Fluid", type:'text'}, { data: "Seq", type:'text'}.data, { data: "Spec", type:'text'}, { data: "Diameter", type:'text'}, { data: "Insulation", type:'text'},{ data: "Train", type:'text'},{ data: "Status", type:'text'}]}
+                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true },{ data: "Tag", type:'text', readOnly: true},{ data: "Unit", type:'text', readOnly: true},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text', readOnly: true}, { data: "Seq", type:'text', readOnly: true}.data, { data: "Spec", type:'text', readOnly: true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text', readOnly: true},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'text', readOnly: true}]}
                 filters={true}
                 dropdownMenu= {[
                     'make_read_only',
@@ -134,6 +147,7 @@ class EstimatedPipesExcel extends React.Component{
                     '---------',
                     'filter_action_bar',
                   ]}
+                  afterChange={this.handleChange}
               />
               <br></br>
               <div style={{marginLeft:"803px"}}>
