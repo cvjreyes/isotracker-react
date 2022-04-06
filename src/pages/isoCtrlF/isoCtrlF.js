@@ -79,6 +79,8 @@ const IsoCtrlF = () => {
     const [navBar, setNavBar] = useState(null)
     const [alreadyOnRev, setAlreadyOnRev] = useState(false)
     const [errorREV, setErrorREV] = useState(false)
+    const [estimatedWarning, setEstimatedWarning] = useState(false)
+    const [estimatedEmpty, setEstimatedEmpty] = useState(false)
 
     const [modelledWeight, setModelledWeight] = useState("...")
     const [notModelledWeight, setNotModelledWeight] = useState("...")
@@ -1942,7 +1944,7 @@ const IsoCtrlF = () => {
             isoControlFullBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Report</button>
             tableContent = <IsoControlFullDataTable/>
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
-            uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)}/>
+            uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)} />
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
             isoControlFullBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>Report</button>
@@ -1952,7 +1954,7 @@ const IsoCtrlF = () => {
         if(currentTab === "EstimatedPipes"){
             secureStorage.setItem("tab", "EstimatedPipes")
             isoControlEstimatedBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Estimated</button>
-            tableContent = <EstimatedPipesExcel success={success.bind(this)}/>
+            tableContent = <EstimatedPipesExcel success={success.bind(this)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
             isoControlEstimatedBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("EstimatedPipes")}}>Estimated</button>
@@ -2087,6 +2089,18 @@ const IsoCtrlF = () => {
                         onTransitionEnd={() => setErrorREV(false)}
                         >
                         <AlertF type="warning" text="Complete the revision parameters!" margin="-20px"/>   
+                      </div>
+                      <div
+                        className={`alert alert-success ${estimatedWarning ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setEstimatedWarning(false)}
+                        >
+                        <AlertF type="warning" text="Changes on modelled can't be saved!" margin="-10px"/>   
+                      </div>
+                      <div
+                        className={`alert alert-success ${estimatedEmpty ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setEstimatedEmpty(false)}
+                        >
+                        <AlertF type="warning" text="Pipes with empty values didn't save!" margin="-10px"/>   
                       </div>
                   </center>
               {navBar}

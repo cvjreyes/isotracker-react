@@ -18,6 +18,10 @@ import AlertF from "../../components/alert/alert"
 
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
+import PipingNavBtns from "../../components/pipingNavBtns/pipingNavBtns"
+
+import PipingDataTable from "../../components/pipingDataTable/pipingDataTable"
+
 
 const Piping = () => {
 
@@ -185,6 +189,8 @@ const Piping = () => {
         table = <PipingExcel success={success.bind(this)}/>
     }else if(currentTab === "Edit"){
         table = <PipingExcelEdit success={success.bind(this)}/>
+    }else if(currentTab === "PipingModelled" || currentTab === "PipingComponents" || currentTab === "PipingSStress" || currentTab === "PipingRStress" || currentTab === "PipingStress" || currentTab === "PipingSDesign"){
+        table = <PipingDataTable currentTab = {currentTab}/>
     }
 
     
@@ -296,6 +302,8 @@ const Piping = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="disciplines__table__trays">
                               <div className="trays__container">
+                              <PipingNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/> 
+
                                   <p className="isotracker__table__trays__group">Options</p>
                                   <center className="equimentsNavBtns__center">              
                                     <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
