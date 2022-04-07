@@ -55,30 +55,59 @@ class PipingDataTable extends React.Component{
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getPipesByStatus/" + this.props.currentTab, options)
         .then(response => response.json())
         .then(async json => {
-            console.log(json)
             let rows = []
             for(let i = 0; i < json.rows.length; i++){
-                let row = {id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].user}
-                if(row){
-                    if(i % 2 === 0){
-                        row["color"] = "#fff"
-                    }else{
-                        row["color"] = "#eee"
-                    }
-                }
-                
-                rows.push(row)
+              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name}
+              if(row){
+                  if(i % 2 === 0){
+                      row["color"] = "#fff"
+                  }else{
+                      row["color"] = "#eee"
+                  }
+              }
+              if(json.rows[i].name){
+                row.actions = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
+              }
+              rows.push(row)
             }
             
-            await this.setState({data: rows, displayData: rows})
+            const filterRow = [{tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2, e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(3,e.target.value)}/></div>}]
+                
+            this.setState({data : rows, displayData: rows});
+            await this.setState({filters : filterRow})
         })
   }
 
-  componentDidUpdate(prevProps, prevState){
+  async componentDidUpdate(prevProps, prevState){
 
     if(prevProps !== this.props){
-      
-      
+
+        let options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getPipesByStatus/" + this.props.currentTab, options)
+            .then(response => response.json())
+            .then(async json => {
+                let rows = []
+                for(let i = 0; i < json.rows.length; i++){
+                  let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name}
+                  if(row){
+                        if(i % 2 === 0){
+                            row["color"] = "#fff"
+                        }else{
+                            row["color"] = "#eee"
+                        }
+                    }
+                    
+                    rows.push(row)
+                }
+                
+                console.log("ASDSADSA")    
+                await this.setState({data : rows, displayData: rows});
+            })
     }
 
   }
@@ -93,41 +122,14 @@ class PipingDataTable extends React.Component{
     let fil, exists = null
     for(let i = 0; i < auxDisplayData.length; i++){
       exists = true
-      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+      for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
         fil = Object.keys(auxDisplayData[i])[column+1]
-        if(fil === "id"){
-          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+        console.log(auxDisplayData[i][fil])
+        if(auxDisplayData[i][fil]){
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
             exists = false
           }
-        }else if(fil === "actions"){
-          
-          if(auxDisplayData[i][fil].props.children[5]){
-            if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "CLAIMED"){
-              let claimed = "claimed"
-              if(!claimed.includes(this.state.filterData[column].toLocaleLowerCase())){
-                exists = false
-              }
-            }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "PENDING"){
-              let pending = "pending"
-              if(!pending.includes(this.state.filterData[column].toLocaleLowerCase())){
-                exists = false
-              }
-            }
-          }else{
-            if(this.state.filterData[column] !== "" && this.state.filterData[column]){
-              exists = false
-            }
-          }
-          
-        }else{
-          if(auxDisplayData[i][fil]){
-            if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
-              exists = false
-            }
-          }
-          
         }
-        
       }
       if(exists){
         resultData.push(auxDisplayData[i])
@@ -153,7 +155,7 @@ class PipingDataTable extends React.Component{
   onSelectChange = (selectedRowKeys, selectedRows) => {
     let ids = []
     for(let i = 0; i < selectedRows.length; i++){
-      ids.push(selectedRows[i].id.props.children)
+      ids.push(selectedRows[i].id)
     }
     this.setState({
       selectedRowsKeys: selectedRowKeys,
@@ -172,6 +174,15 @@ class PipingDataTable extends React.Component{
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);
       },
+      getCheckboxProps: (record) => record.actions ?(
+        {
+        
+        disabled: true,
+        // Column configuration not to be checked
+        name: record.name,
+      }) : ({
+        name: record.name,
+      }),
     };
 
     const rowSelectionFilter = {
@@ -214,6 +225,7 @@ class PipingDataTable extends React.Component{
         dataIndex: 'type',
         key: 'type',
         ...this.getColumnSearchProps('type'),
+        width: "100px",
         sorter:{
           compare: (a, b) => { return a.type.localeCompare(b.type)},
         },
@@ -240,6 +252,7 @@ class PipingDataTable extends React.Component{
         title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',
         key: 'actions',
+        width: "200px",
         ...this.getColumnSearchProps('actions'),
       },
     ];
@@ -261,7 +274,6 @@ class PipingDataTable extends React.Component{
         <Table className="filter__table" pagination={{disabled:true}} rowSelection={{type: 'checkbox', ...rowSelectionFilter}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/> 
           {totalElements}
         </div>
-        
       </div>
     );
   }

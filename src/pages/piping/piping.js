@@ -33,6 +33,10 @@ const Piping = () => {
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[successAlert, setSuccessAlert] = useState(false);
+    const[selected, setSelected] = useState([])
+    const [updateData, setUpdateData] = useState();
+    const [warningSelected, setWarningSelected] = useState(false);
+    const [transactionSuccess, setTransactionSuccess] = useState(false)
 
     const history = useHistory()
 
@@ -172,14 +176,12 @@ const Piping = () => {
 
     var currentUser = secureStorage.getItem('user')
     var table = null
-    let downloadBtn = null
+    let actionBtns = null
     let adminBtn = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable/>
-    }else if(currentTab === "Modelled"){
-        downloadBtn = <button className="navBar__button" onClick={()=>downloadModelled()} style={{marginLeft:"230px", width:"115px"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
-    
+    }else if(currentTab === "Modelled"){    
         table = <ModelledDataTable/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotPiping/>
@@ -190,59 +192,41 @@ const Piping = () => {
     }else if(currentTab === "Edit"){
         table = <PipingExcelEdit success={success.bind(this)}/>
     }else if(currentTab === "PipingModelled" || currentTab === "PipingComponents" || currentTab === "PipingSStress" || currentTab === "PipingRStress" || currentTab === "PipingStress" || currentTab === "PipingSDesign"){
-        table = <PipingDataTable currentTab = {currentTab}/>
+        actionBtns = <button className="action__btn"  name="claim" value="claim" onClick={() => claimClick()}>Claim</button>
+        table = <PipingDataTable currentTab = {currentTab} onChange={value=> setSelected(value)} claimClick={claimClick.bind(this)}/>
     }
 
     
-    if(currentTab === "Edit" || currentTab === "Key parameters"){
-        dataTableHeight = "600px"
-    }
-    
-    if(currentRole === "Project"){
-        if(currentTab === "Estimated" || currentTab === "Edit"){
-            if(currentTab === "Edit"){
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#99C6F8", marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
-            }else{
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
-            }        }else{
-            adminBtn = null
+    async function claimClick(){
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            
+            const body ={
+                user: currentUser,
+                pipes: selected,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/claimPipes", options)
+            .then(response => response.json())
+            .then(json =>{
+                if(json.success){
+                    setSuccessAlert(true)
+                }
+            })
+            await setUpdateData(!updateData)
+            await setSelected([])
+            
+        }else{
+            await setWarningSelected(true)
         }
     }
-        
-
-    async function downloadModelled(){
-
-        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadModelled/")
-        .then(response => response.json())
-        .then(json => {
-            const headers = ["TAG", "ISO_ID", "TYPE"]
-            exportToExcel(JSON.parse(json), "Piping modelled", headers)
-        })
-    }
-
-    const exportToExcel = (apiData, fileName, headers) => {
-        const fileType =
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
-        const fileExtension = ".xlsx";
-
-        let wscols = []
-        for(let i = 0; i < headers.length; i++){
-            wscols.push({width:35})
-        }
-
-        const ws = XLSX.utils.json_to_sheet(apiData);   
-        ws["!cols"] = wscols
-        for(let i = 0; i < headers.length; i++){
-            ws[header_cells[i]].v = headers[i]
-        }
-        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-        const data = new Blob([excelBuffer], { type: fileType });
-        FileSaver.saveAs(data, fileName + fileExtension);
-
-    }
-
 
 
     return(
@@ -258,7 +242,19 @@ const Piping = () => {
             className={`alert alert-success ${successAlert ? 'alert-shown' : 'alert-hidden'}`}
             onTransitionEnd={() => setSuccessAlert(false)}
             >
-                <AlertF type="success" text="Changes saved!" margin="0px"/>
+                <AlertF type="success" text="Pipes claimed!" margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${transactionSuccess ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setTransactionSuccess(false)}
+            >
+                <AlertF type="success" margin="-30px" text="The action has been completed."/>
+            </div>
+            <div
+            className={`alert alert-success ${warningSelected ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setWarningSelected(false)}
+            >
+                <AlertF type="warning" text="Select at least one pipe!" margin="10px"/>   
             </div>
             <div style={{position:"absolute", marginTop:"180px", marginLeft:"48%"}}>
                 <i className="discipline__title" style={{fontStyle:"normal"}}>Piping</i>
@@ -296,7 +292,6 @@ const Piping = () => {
                       <tr className="isotracker__table__navBar__container">
                           <th  colspan="2" className="isotracker__table__navBar">
                             {adminBtn}
-                            {downloadBtn}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
@@ -318,6 +313,9 @@ const Piping = () => {
                           
                       </tr>
                   </table>
+                  <center className="actionBtns__container">
+                      {actionBtns}
+                  </center>
          </body>
     )
 }
