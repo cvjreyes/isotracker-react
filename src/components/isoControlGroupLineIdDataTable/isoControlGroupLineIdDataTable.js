@@ -26,6 +26,7 @@ class IsoControlGroupLineIdDataTable extends React.Component{
   }
 
   componentDidMount(){
+    this.props.loading(true)
     const options = {
         method: "GET",
         headers: {
@@ -44,7 +45,7 @@ class IsoControlGroupLineIdDataTable extends React.Component{
         }
         this.setState({data: json.rows})
     })
-
+    this.props.loading(false)
     
         
   }

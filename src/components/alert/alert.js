@@ -22,7 +22,7 @@ export default class Alert extends Component {
         let alertComponent = null
         if(this.state.type === "success"){
             if(this.state.change){
-                alertComponent = <div className="alert__success">
+                alertComponent = <div className="alert__success" style={{zIndex: "3"}}>
                                     
                 <img src={SuccessIcon} className="alert__icon" alt="success"></img>
                 <div className="text__alert__container">
@@ -32,7 +32,7 @@ export default class Alert extends Component {
             
             </div>
             }else{
-                alertComponent = <div className="alert__success">
+                alertComponent = <div className="alert__success" style={{zIndex: "3"}}>
                                     
                                     <img src={SuccessIcon} className="alert__icon" alt="success2"></img>
                                     <div className="text__alert__container">
@@ -45,7 +45,7 @@ export default class Alert extends Component {
             this.setState({alert: alertComponent})
         }else if(this.state.type === "error"){
             if(this.state.change){
-                alertComponent = <div className="alert__error">
+                alertComponent = <div className="alert__error" style={{zIndex: "3"}}>
                                     
                 <img src={ErrorIcon} className="alert__icon" alt="error"></img>
                 <div className="text__alert__container">

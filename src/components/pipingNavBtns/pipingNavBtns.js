@@ -29,12 +29,12 @@ const CryptoJS = require("crypto-js");
     });
 
 const PipingNavBtns = props =>{
-    var myTrayButton, modelledButton, componentsButton, sStressButton, rStressButton, stressButton, sDesignButtn
-    if(props.currentTab === "PipinMyTray"){
-        secureStorage.setItem("tab", "PipinMyTray")
+    var myTrayButton, modelledButton, componentsButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn
+    if(props.currentTab === "PipingMyTray"){
+        secureStorage.setItem("tab", "PipingMyTray")
         myTrayButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}}>My Tray</button>
     }else{
-        myTrayButton = <button  type="button" className="trays__navBtns text-left"  onClick={() => {props.onChange("PipinMyTray")}}>My tray</button>
+        myTrayButton = <button  type="button" className="trays__navBtns text-left"  onClick={() => {props.onChange("PipingMyTray")}}>My tray</button>
         
     }
     if(props.currentTab === "PipingModelled"){
@@ -42,13 +42,6 @@ const PipingNavBtns = props =>{
         modelledButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>
     }else{
         modelledButton = <button  type="button" className="trays__navBtns text-left"  onClick={() => {props.onChange("PipingModelled")}}>Modelled</button>
-        
-    }
-    if(props.currentTab === "PipingComponents"){
-        secureStorage.setItem("tab", "PipingComponents")
-        componentsButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Components</button>
-    }else{
-        componentsButton = <button  type="button" className="trays__navBtns text-left"  onClick={() => {props.onChange("PipingComponents")}}>Components</button>
         
     }
     if(props.currentTab === "PipingSStress"){
@@ -68,7 +61,14 @@ const PipingNavBtns = props =>{
         secureStorage.setItem("tab", "PipingStress")
         stressButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Stress</button>
     }else{
-        stressButton = <button  type="button" className="trays__navBtns text-left"  onClick={() => {props.onChange("PipingRStress")}}>Stress</button>
+        stressButton = <button  type="button" className="trays__navBtns text-left"  onClick={() => {props.onChange("PipingStress")}}>Stress</button>
+        
+    }
+    if(props.currentTab === "PipingSupports"){
+        secureStorage.setItem("tab", "PipingSupports")
+        supportsButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Supports</button>
+    }else{
+        supportsButton = <button  type="button" className="trays__navBtns text-left"  onClick={() => {props.onChange("PipingSupports")}}>Supports</button>
         
     }
     if(props.currentTab === "PipingSDesign"){
@@ -79,17 +79,36 @@ const PipingNavBtns = props =>{
         
     }
 
+    if(props.currentTab === "IsoControlFull"){
+        secureStorage.setItem("tab", "IsoControlFull")
+        isoControlFullBtn = <button type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Report</button>
+    }else{
+        isoControlFullBtn = <button type="button" className="trays__navBtns text-left"  onClick={() =>{props.onChange("IsoControlFull")}}>Report</button>
+        
+    }
+
+    if(props.currentTab === "EstimatedPipes"){
+        secureStorage.setItem("tab", "EstimatedPipes")
+        isoControlEstimatedBtn = <button type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Main</button>
+    }else{
+        isoControlEstimatedBtn = <button type="button" className="trays__navBtns text-left"  onClick={() =>{props.onChange("EstimatedPipes")}}>Main</button>
+        
+    }
+
+
     
     return(
         <div>                                  
             <p className="isotracker__table__trays__group">Home</p>
+            {isoControlEstimatedBtn}
+            {isoControlFullBtn}
             {myTrayButton}
             <p className="isotracker__table__trays__group">Trays</p>
             {modelledButton}
-            {componentsButton}
             {sStressButton}
             {rStressButton}
             {stressButton}
+            {supportsButton}
             {sDesignButtn}
         </div>
     );

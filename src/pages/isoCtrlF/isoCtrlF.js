@@ -120,7 +120,7 @@ const IsoCtrlF = () => {
         }
     }, [])
 
-    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) 
+    const [currentTab, setCurrentTab] = useState("Status") 
 
     var dataTableHeight = "590px"
 
@@ -1941,13 +1941,13 @@ const IsoCtrlF = () => {
         }
         if(currentTab === "IsoControlFull"){
             secureStorage.setItem("tab", "IsoControlFull")
-            isoControlFullBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Report</button>
+            isoControlFullBtn = <div><p className="isotracker__table__trays__group">IsoControl</p><button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Report</button></div>
             tableContent = <IsoControlFullDataTable/>
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
             uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)} />
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
-            isoControlFullBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>Report</button>
+            isoControlFullBtn = <div><p className="isotracker__table__trays__group">IsoControl</p><button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>Report</button></div>
             
         }
 
@@ -2141,9 +2141,7 @@ const IsoCtrlF = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
-                                  <p className="isotracker__table__trays__group">IsoControl</p>
-                                  {isoControlFullBtn}
-                                  {isoControlEstimatedBtn}
+                                  
                                   <p className="isotracker__table__trays__group">Home</p>
                                   
                                   {myTrayBtn}
@@ -2152,12 +2150,16 @@ const IsoCtrlF = () => {
                                   <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/>        
                               </div>
                           </td>
+                          
                           <td className="isotracker__table__table" style={{height: dataTableHeight}} >
                               <div style={{height: dataTableHeight, width:"2000px"}} className="isotracker__table__table__container">
+                                  {/*
                                   {isoControllLineIdGroupBtn}
                                   {uploadBOMBtn}
                                   {editCustomBtn}
+                                  */}
                                   {tableContent}
+                                  
                               </div>
                           </td>
                       </tr>

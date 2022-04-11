@@ -30,6 +30,7 @@ class IsoControlFullDataTable extends React.Component{
   }
 
   componentDidMount(){
+    this.props.loading(true)
     const options = {
         method: "GET",
         headers: {
@@ -136,6 +137,7 @@ class IsoControlFullDataTable extends React.Component{
         }
 
         this.setState({data: rows, displayData: rows})
+        this.props.loading(false)
     })
 
     

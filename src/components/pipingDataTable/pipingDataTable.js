@@ -46,6 +46,7 @@ class PipingDataTable extends React.Component{
   }; 
 
   async componentDidMount(){
+    this.props.loading(true)
     let options = {
         method: "GET",
         headers: {
@@ -57,7 +58,43 @@ class PipingDataTable extends React.Component{
         .then(async json => {
             let rows = []
             for(let i = 0; i < json.rows.length; i++){
-              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name}
+              let iButton, vButton, naButton, claimedBtn;
+              if(json.rows[i].valves === 1){
+                vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
+              }else{
+                vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
+              }
+
+              if(json.rows[i].instruments === 1){
+                iButton = <button className="btn btn-success" disabled onClick={() => this.iCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
+              }else{
+                iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
+              }
+
+              if(json.rows[i].instruments === 2){
+                naButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
+              }else{
+                naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white", color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
+              }
+
+              if(json.rows[i].name){
+                claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
+              }
+
+              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton}</div>}
+              
+              if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
+                if(row.type === "TL1"){
+                  row.progress = json.rows[i].progress + 33 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                }else if(row.type === "TL2"){
+                  row.progress = json.rows[i].progress + 20 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                }else{
+                  row.progress = json.rows[i].progress + 10 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                }              
+              }else{
+                row.progress = json.rows[i].progress + "% (" + json.rows[i].stage1 + ")"
+              }
+              
               if(row){
                   if(i % 2 === 0){
                       row["color"] = "#fff"
@@ -65,51 +102,86 @@ class PipingDataTable extends React.Component{
                       row["color"] = "#eee"
                   }
               }
-              if(json.rows[i].name){
-                row.actions = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
-              }
+              
               rows.push(row)
             }
             
-            const filterRow = [{tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2, e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(3,e.target.value)}/></div>}]
+            const filterRow = [{tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2, e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(4,e.target.value)}/></div>, isotracker: <div><input type="text" className="filter__input" placeholder="IsoTracker" onChange={(e) => this.filter(5,e.target.value)}/></div>, progress: <div><input type="text" className="filter__input" placeholder="Progress" onChange={(e) => this.filter(7,e.target.value)}/></div>}]
                 
             this.setState({data : rows, displayData: rows});
             await this.setState({filters : filterRow})
+            this.props.loading(false)
         })
   }
 
   async componentDidUpdate(prevProps, prevState){
-
-    if(prevProps !== this.props){
-
-        let options = {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        }
-        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getPipesByStatus/" + this.props.currentTab, options)
-            .then(response => response.json())
-            .then(async json => {
-                let rows = []
-                for(let i = 0; i < json.rows.length; i++){
-                  let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name}
-                  if(row){
-                        if(i % 2 === 0){
-                            row["color"] = "#fff"
-                        }else{
-                            row["color"] = "#eee"
-                        }
-                    }
-                    
-                    rows.push(row)
-                }
-                
-                console.log("ASDSADSA")    
-                await this.setState({data : rows, displayData: rows});
-            })
+    if(prevProps.currentTab !== this.props.currentTab || prevProps.updateData !== this.props.updateData){
+      this.props.loading(true)
+    let options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
     }
+    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getPipesByStatus/" + this.props.currentTab, options)
+        .then(response => response.json())
+        .then(async json => {
+            let rows = []
+            for(let i = 0; i < json.rows.length; i++){
+              let iButton, vButton, claimedBtn, naButton;
+              if(json.rows[i].valves === 1){
+                vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
+              }else{
+                vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
+              }
 
+              if(json.rows[i].instruments === 1){
+                iButton = <button className="btn btn-success" disabled onClick={() => this.iCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
+              }else{
+                iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
+              }
+
+              if(json.rows[i].instruments === 2){
+                naButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
+              }else{
+                naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white",color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
+              }
+
+              if(json.rows[i].name){
+                claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
+              }
+              
+              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton}</div>}
+              
+              if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
+                if(row.type === "TL1"){
+                  row.progress = json.rows[i].progress + 33 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                }else if(row.type === "TL2"){
+                  row.progress = json.rows[i].progress + 20 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                }else{
+                  row.progress = json.rows[i].progress + 10 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                }
+              }else{
+                row.progress = json.rows[i].progress + "% (" + json.rows[i].stage1 + ")"
+              }
+
+              if(row){
+                  if(i % 2 === 0){
+                      row["color"] = "#fff"
+                  }else{
+                      row["color"] = "#eee"
+                  }
+              }
+              
+              rows.push(row)
+            }
+            
+                
+            this.setState({data : rows, displayData: rows});
+            this.props.loading(false)
+        })
+    }
+    
   }
 
   async filter(column, value){
@@ -124,7 +196,6 @@ class PipingDataTable extends React.Component{
       exists = true
       for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
         fil = Object.keys(auxDisplayData[i])[column+1]
-        console.log(auxDisplayData[i][fil])
         if(auxDisplayData[i][fil]){
           if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
             exists = false
@@ -174,7 +245,7 @@ class PipingDataTable extends React.Component{
       onChange: (selectedRowKeys, selectedRows) => {
         this.onSelectChange(selectedRowKeys, selectedRows);
       },
-      getCheckboxProps: (record) => record.actions ?(
+      getCheckboxProps: (record) => record.user ?(
         {
         
         disabled: true,
@@ -235,6 +306,7 @@ class PipingDataTable extends React.Component{
         dataIndex: 'date',
         key: 'date',
         ...this.getColumnSearchProps('date'),
+        width:"200px",
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
         },
@@ -249,10 +321,29 @@ class PipingDataTable extends React.Component{
         },
       },
       {
+        title: <div className="dataTable__header__text">Progress</div>,
+        dataIndex: 'progress',
+        key: 'progress',
+        ...this.getColumnSearchProps('isotracker'),
+        width: "120px",
+        sorter: {
+          compare: (a, b) => { return a.progress.localeCompare(b.progress)},
+        },
+      },
+      {
+        title: <div className="dataTable__header__text">IsoTracker</div>,
+        dataIndex: 'isotracker',
+        key: 'isotracker',
+        ...this.getColumnSearchProps('isotracker'),
+        sorter: {
+          compare: (a, b) => { return a.isotracker.localeCompare(b.isotracker)},
+        },
+      },
+      {
         title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',
         key: 'actions',
-        width: "200px",
+        width: "300px",
         ...this.getColumnSearchProps('actions'),
       },
     ];
