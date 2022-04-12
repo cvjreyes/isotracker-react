@@ -609,7 +609,7 @@ const IsoCtrlF = () => {
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/piStatus/"+selected[i], options)
                     .then(response => response.json())
                     .then(async json =>{
-                        if(json.sit === 1 || json.sit === 4 || json.sit === 5|| json.spo === 1 || json.spo === 4 || json.spo === 5){
+                        if(json.sit === 1 || json.sit === 3 || json.sit === 4 || json.sit === 5|| json.spo === 1 || json.spo === 3 || json.spo === 4 || json.spo === 5){
                             localStorage.setItem("update", true)
                             setErrorPI(true);
                             setTransactionSuccess(false);
@@ -1758,6 +1758,25 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
+    async function unlockAll(){
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unlockAll", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                successAlert()
+            }
+        })
+        setUpdateData(!updateData)
+
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
@@ -1825,7 +1844,7 @@ const IsoCtrlF = () => {
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} success={success.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)} exportTimeTrack={exportTimeTrack.bind(this)}/>
     }
     if(currentTab === "Modelled"){
-        actionButtons = <button className="action__btn" onClick={()=>downloadModelled()}>Export</button>
+        actionButtons = <div><button className="action__btn" onClick={()=>downloadModelled()}>Export</button><button className="action__btn" onClick={()=>unlockAll()}>Unlock all</button></div>
     }
 
     if(currentRole === "Project"){

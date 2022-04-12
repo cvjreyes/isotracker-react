@@ -39,7 +39,9 @@ class ModelledDataTable extends React.Component{
         var row = null
         for(let i = 0; i < json.rows.length; i++){
             row = {id: json.rows[i].isoid, tag: json.rows[i].tag, type: json.rows[i].code.toString()}
+            console.log(json.rows[i].blocked)
             if(json.rows[i].blocked === 1 && this.props.role === "SpecialityLead"){
+              console.log("ASD")
               row.id = <div>{json.rows[i].isoid} <button className="btn btn-success" onClick={()=>this.unlock(json.rows[i].isoid)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px",  marginLeft:"10px"}}>UNLOCK</button></div>
             }
             if(row){
