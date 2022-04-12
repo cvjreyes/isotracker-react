@@ -233,7 +233,7 @@ class PipingMyTrayTable extends React.Component{
               }
 
               if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
-                notInSDesignButton = <button className="btn btn-warning"  disabled style={{width:"60px", fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"red", color:"white", borderColor:"black"}}>!</button>
+                notInSDesignButton = <button className="btn btn-success"  disabled style={{width:"20px", fontSize:"12px", fontWeight:"bold", padding:"2px 5px 2px 5px", marginLeft: "5px", backgroundColor:"yellow", color:"red", borderColor:"black"}}>!</button>
               }else{
                 notInSDesignButton = null
               }
@@ -356,7 +356,7 @@ class PipingMyTrayTable extends React.Component{
                 }
 
                 if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
-                  notInSDesignButton = <button className="btn btn-warning"  disabled style={{width:"60px", fontSize:"12px", padding:"2px 5px 2px 5px",  backgroundColor:"red", color:"white", borderColor:"black"}}>!</button>
+                  notInSDesignButton = <button className="btn btn-success"  disabled style={{width:"20px", fontSize:"12px", fontWeight:"bold", padding:"2px 5px 2px 5px", marginLeft: "5px", backgroundColor:"yellow", color:"red", borderColor:"black"}}>!</button>
                 }else{
                   notInSDesignButton = null
                 }
