@@ -119,7 +119,7 @@ const Piping = () => {
         }
        
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/pipingWeight", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/estimatedPipingWeight", options)
             .then(response => response.json())
             .then(json => {
                 setWeight(json.weight)

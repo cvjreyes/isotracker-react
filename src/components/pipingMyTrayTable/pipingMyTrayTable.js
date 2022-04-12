@@ -207,7 +207,7 @@ class PipingMyTrayTable extends React.Component{
         .then(async json => {
             var rows = []
             var row = null;
-            let vButton, iButton, tray, nextStep, naButton;
+            let vButton, iButton, tray, nextStep, naButton, notInSDesignButton;
 
             for(let i = 0; i < json.rows.length; i++){
               if(json.rows[i].valves === 1){
@@ -230,6 +230,12 @@ class PipingMyTrayTable extends React.Component{
                 naButton = <button className="btn btn-success" onClick={() => this.naCancelClick(json.rows[i].id)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>  
                 iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>I</button>
                 vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>V</button>
+              }
+
+              if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
+                notInSDesignButton = <button className="btn btn-warning"  disabled style={{width:"60px", fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"red", color:"white", borderColor:"black"}}>!</button>
+              }else{
+                notInSDesignButton = null
               }
 
               switch(json.rows[i].next){
@@ -273,7 +279,7 @@ class PipingMyTrayTable extends React.Component{
                   nextStep = null
               }
               
-              row = {key: json.rows[i].id, id: json.rows[i].id, status_id: json.rows[i].status_id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), tray: tray, next: nextStep, actions: <div>{vButton} {iButton} {naButton}</div>, isotracker: json.rows[i].isotracker, valves: json.rows[i].valves, instruments: json.rows[i].instruments}
+              row = {key: json.rows[i].id, id: json.rows[i].id, status_id: json.rows[i].status_id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), tray: tray, next: nextStep, actions: <div>{vButton} {iButton} {naButton} {notInSDesignButton}</div>, isotracker: json.rows[i].isotracker, valves: json.rows[i].valves, instruments: json.rows[i].instruments}
               
               if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && row.tray !== "S-Design"){
                 if(row.type === "TL1"){
@@ -324,7 +330,7 @@ class PipingMyTrayTable extends React.Component{
           .then(async json => {
               var rows = []
               var row = null;
-              let vButton, iButton, tray, nextStep, naButton;
+              let vButton, iButton, tray, nextStep, naButton, notInSDesignButton;
   
               for(let i = 0; i < json.rows.length; i++){
                 if(json.rows[i].valves === 1){
@@ -347,6 +353,12 @@ class PipingMyTrayTable extends React.Component{
                   naButton = <button className="btn btn-success" onClick={() => this.naCancelClick(json.rows[i].id)} style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>  
                   iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>I</button>
                   vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>V</button>
+                }
+
+                if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
+                  notInSDesignButton = <button className="btn btn-warning"  disabled style={{width:"60px", fontSize:"12px", padding:"2px 5px 2px 5px",  backgroundColor:"red", color:"white", borderColor:"black"}}>!</button>
+                }else{
+                  notInSDesignButton = null
                 }
 
                 switch(json.rows[i].next){
@@ -390,7 +402,7 @@ class PipingMyTrayTable extends React.Component{
                     nextStep = null
                 }
                 
-                row = {key: json.rows[i].id, id: json.rows[i].id, status_id: json.rows[i].status_id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), tray: tray, next: nextStep, actions: <div>{vButton} {iButton} {naButton}</div>, isotracker: json.rows[i].isotracker, valves: json.rows[i].valves, instruments: json.rows[i].instruments}
+                row = {key: json.rows[i].id, id: json.rows[i].id, status_id: json.rows[i].status_id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), tray: tray, next: nextStep, actions: <div>{vButton} {iButton} {naButton} {notInSDesignButton}</div>, isotracker: json.rows[i].isotracker, valves: json.rows[i].valves, instruments: json.rows[i].instruments}
                 
                 if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && row.tray !== "S-Design"){
                   if(row.type === "TL1"){

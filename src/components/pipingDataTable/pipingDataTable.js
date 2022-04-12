@@ -58,7 +58,7 @@ class PipingDataTable extends React.Component{
         .then(async json => {
             let rows = []
             for(let i = 0; i < json.rows.length; i++){
-              let iButton, vButton, naButton, claimedBtn;
+              let iButton, vButton, naButton, claimedBtn, notInSDesignButton;
               if(json.rows[i].valves === 1){
                 vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
               }else{
@@ -77,11 +77,17 @@ class PipingDataTable extends React.Component{
                 naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white", color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
               }
 
+              if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
+                notInSDesignButton = <button className="btn btn-success"  disabled style={{width:"40px", fontSize:"12px", padding:"2px 5px 2px 5px", marginLeft: "5px", backgroundColor:"red", color:"white", border:"none"}}>!</button>
+              }else{
+                notInSDesignButton = null
+              }
+
               if(json.rows[i].name){
                 claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
               }
 
-              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton}</div>}
+              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton} {notInSDesignButton}</div>}
               
               if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
                 if(row.type === "TL1"){
@@ -128,7 +134,7 @@ class PipingDataTable extends React.Component{
         .then(async json => {
             let rows = []
             for(let i = 0; i < json.rows.length; i++){
-              let iButton, vButton, claimedBtn, naButton;
+              let iButton, vButton, claimedBtn, naButton, notInSDesignButton;
               if(json.rows[i].valves === 1){
                 vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
               }else{
@@ -147,11 +153,17 @@ class PipingDataTable extends React.Component{
                 naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white",color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
               }
 
+              if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
+                notInSDesignButton = <button className="btn btn-success"  disabled style={{width:"40px", fontSize:"12px", padding:"2px 5px 2px 5px", marginLeft: "5px", backgroundColor:"red", color:"white", border:"none"}}>!</button>
+              }else{
+                notInSDesignButton = null
+              }
+
               if(json.rows[i].name){
                 claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
               }
               
-              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton}</div>}
+              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton} {notInSDesignButton}</div>}
               
               if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
                 if(row.type === "TL1"){

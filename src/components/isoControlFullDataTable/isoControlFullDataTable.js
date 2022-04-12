@@ -43,10 +43,9 @@ class IsoControlFullDataTable extends React.Component{
         let rows = []
         for(let i = 0; i < json.rows.length; i++){
 
-            
             if(json.rows[i].LDL === "In LDL"){
               json.rows[i].line = json.rows[i].fluid + json.rows[i].seq
-              json.rows[i].line_id = json.rows[i].unit + json.rows[i].fluid + json.rows[i].seq
+              json.rows[i].line_id = json.rows[i].unit + "-" + json.rows[i].fluid + "-" + json.rows[i].seq
             }else{
               json.rows[i].unit = json.rows[i].bom_unit
               json.rows[i].area = json.rows[i].bom_area
