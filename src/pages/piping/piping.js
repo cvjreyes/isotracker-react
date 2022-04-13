@@ -74,6 +74,7 @@ const Piping = () => {
     const [loading, setLoading] = useState(false)
     const [maxTrayWarning, setMaxTrayWarning] = useState(false)
     const [minTrayWarning, setMinTrayWarning] = useState(false)
+    const [unclaimAlert, setUnclaimAlert] = useState(false)
     const history = useHistory()
 
     useEffect(()=>{
@@ -315,7 +316,7 @@ const Piping = () => {
             .then(response => response.json())
             .then(json =>{
                 if(json.success){
-                    setSuccessAlert(true)
+                    setUnclaimAlert(true)
                 }
             })
             await setUpdateData(!updateData)
@@ -530,6 +531,12 @@ const Piping = () => {
             onTransitionEnd={() => setTransactionSuccess(false)}
             >
                 <AlertF type="success" margin="0px" text="The action has been completed."/>
+            </div>
+            <div
+            className={`alert alert-success ${unclaimAlert ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setUnclaimAlert(false)}
+            >
+                <AlertF type="success" margin="0px" text="Pipes unclaimed!"/>
             </div>
             <div
             className={`alert alert-success ${warningSelected ? 'alert-shown' : 'alert-hidden'}`}
