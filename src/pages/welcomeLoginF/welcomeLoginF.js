@@ -68,7 +68,6 @@ const WelcomeLoginF = () =>{
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/login", options)
             .then(response => response.json())
             .then(json => {
-                console.log(process.env.REACT_APP_PROGRESS)
                 if(process.env.REACT_APP_PROGRESS === "1"){
                     localStorage.setItem('token', json.token);
                     secureStorage.setItem('user', json.user)

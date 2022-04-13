@@ -8,8 +8,6 @@ import PipingEstimatedDataTable from "../../components/pipingEstimatedDataTable/
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
 import ProgressPlotPiping from "../../components/progressPlotPiping/progressPlotPiping"
 import PipingTypesDataTable from "../../components/pipingTypesDataTable/pipingTypesDataTable"
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
 import PipingExcel from "../../components/pipingExcel/pipingExcel"
 import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3DTracker.svg"
@@ -24,8 +22,6 @@ import PipingDataTable from "../../components/pipingDataTable/pipingDataTable"
 import PipingMyTrayTable from "../../components/pipingMyTrayTable/pipingMyTrayTable"
 import PipingBinTable from "../../components/pipingBinTable/pipingBinTable"
 
-import IsoControlModelledDataTable from "../../components/isoControlModelledDataTable/isoControlModelledDataTable"
-import IsoControlNotModelledDataTable from "../../components/isoControlNotModelledDataTable/isoControlNotModelledDataTable"
 import IsoControlFullDataTable from "../../components/isoControlFullDataTable/isoControlFullDataTable"
 import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLineIdDataTable/isoControlGroupLineIdDataTable"
 import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
@@ -76,6 +72,8 @@ const Piping = () => {
     const [notModelledWeight, setNotModelledWeight] = useState("...")
     const [totalIsocontrolWeight, setTotalIsocontrolWeight] = useState("...")
     const [loading, setLoading] = useState(false)
+    const [maxTrayWarning, setMaxTrayWarning] = useState(false)
+    const [minTrayWarning, setMinTrayWarning] = useState(false)
     const history = useHistory()
 
     useEffect(()=>{
@@ -124,6 +122,7 @@ const Piping = () => {
             .then(json => {
                 setWeight(json.weight)
                 setProgress(json.progress)
+                setModelledWeight(json.modelledWeight)
             }
             )
             .catch(error => {
@@ -146,7 +145,7 @@ const Piping = () => {
     
                 })
             
-    },[]);
+    },[updateData]);
 
     useEffect(async ()=>{
         await setSelected([])
@@ -224,7 +223,7 @@ const Piping = () => {
         actionBtns = <button className="action__btn"  name="claim" value="claim" onClick={() => claimClick()}>Claim</button>
         table = <PipingDataTable currentTab = {currentTab} updateData={updateData} onChange={value=> setSelected(value)} claimClick={claimClick.bind(this)} loading={value => setLoading(value)}/>  
     }else if(currentTab === "PipingMyTray"){
-        actionBtns = <div><button className="action__btn"  name="claim" value="claim" onClick={() => nextClick()}>Next step</button><button className="action__btn"  name="claim" value="claim" onClick={() => returnClick()}>Return</button><button className="action__btn"  name="claim" value="claim" onClick={() => deleteClick()}>Delete</button></div>
+        actionBtns = <div><button className="action__btn"  name="claim" value="claim" onClick={() => nextClick()}>Next step</button><button className="action__btn"  name="unclaim" value="unclaim" onClick={() => unclaimClick()}>Unclaim</button><button className="action__btn"  name="claim" value="claim" onClick={() => returnClick()}>Return</button><button className="action__btn"  name="claim" value="claim" onClick={() => deleteClick()}>Delete</button></div>
         table = <PipingMyTrayTable onChange={value=> setSelected(value)} updateData={updateData} updateDataMethod={() => setUpdateData(!updateData)} loading={value => setLoading(value)}/>
     }
     
@@ -245,7 +244,7 @@ const Piping = () => {
 
     if(currentTab === "EstimatedPipes"){
         secureStorage.setItem("tab", "EstimatedPipes")
-        table = <EstimatedPipesExcel success={success.bind(this)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+        table = <EstimatedPipesExcel success={success.bind(this)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
     }
 
     if(currentTab === "IsoControlLineIdGroup"){
@@ -259,7 +258,6 @@ const Piping = () => {
     
     if(currentTab === "IsoControlFull"){
         isocontrolWeightsComponent = <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button>
-
     }
 
     
@@ -297,15 +295,49 @@ const Piping = () => {
 
     }
 
+    async function unclaimClick(){
+        if(selected.length > 0){
+            await setLoading(true)
+            localStorage.setItem("update", true)
+            console.log(selected)
+            const body ={
+                pipes: selected,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unclaimPipes", options)
+            .then(response => response.json())
+            .then(json =>{
+                if(json.success){
+                    setSuccessAlert(true)
+                }
+            })
+            await setUpdateData(!updateData)
+            await setSelected([])
+            await setLoading(false)
+
+        }else{
+            await setWarningSelected(true)
+        }
+
+    }
+
     async function nextClick(){
         if(selected.length > 0){
             localStorage.setItem("update", true)
             let pipes = []
-            console.log(selected)
-            let notvi = false
+            let notvi = false,maxTrayWarning = false
             for(let i = 0; i < selected.length; i++){
-                if(selected[i][1] === 1){
+                if((selected[i][1]).indexOf(1) > -1){
                     notvi = true
+                }else if((selected[i][1]).indexOf(2) > -1){
+                    maxTrayWarning = true
                 }else{
                     pipes.push(selected[i][0])
                 }
@@ -337,6 +369,10 @@ const Piping = () => {
                 setNotVI(true)
             }
 
+            if(maxTrayWarning){
+                setMaxTrayWarning(true)
+            }
+
             await setUpdateData(!updateData)
             await setSelected([])
             
@@ -348,11 +384,13 @@ const Piping = () => {
     async function returnClick(){
         if(selected.length > 0){
             localStorage.setItem("update", true)
+            let minTrayWarning = false
             let pipes = []
             let notvi = false
+            console.log(selected)
             for(let i = 0; i < selected.length; i++){
-                if(selected[i][1] === 1){
-                    
+                if((selected[i][1]).indexOf(3) > -1){
+                    minTrayWarning = true
                 }else{
                     pipes.push(selected[i][0])
                 }
@@ -384,6 +422,10 @@ const Piping = () => {
                 setNotVI(true)
             }
 
+            if(minTrayWarning){
+                setMinTrayWarning(true)
+            }
+            
             await setUpdateData(!updateData)
             await setSelected([])
             
@@ -501,20 +543,34 @@ const Piping = () => {
             >
                 <AlertF type="warning" text="Can't send to S-Design without valves and instruments check or N/A!" margin="10px"/>   
             </div>
-            <div style={{position:"absolute", marginTop:"180px", marginLeft:"48%"}}>
-                <i className="discipline__title" style={{fontStyle:"normal"}}>Piping</i>
+            <div style={{position:"absolute", marginTop:"180px", marginLeft:"45%"}}>
+                <i className="discipline__title" style={{fontStyle:"normal"}}>Piping IsoControl</i>
             </div>
             <div
             className={`alert alert-success ${estimatedWarning ? 'alert-shown' : 'alert-hidden'}`}
             onTransitionEnd={() => setEstimatedWarning(false)}
             >
-            <AlertF type="warning" text="Changes on modelled can't be saved!" margin="-10px"/>   
+            <AlertF type="warning" text="Changes on modelled lines can't be saved!" margin="0px"/>   
             </div>
             <div
             className={`alert alert-success ${estimatedEmpty ? 'alert-shown' : 'alert-hidden'}`}
             onTransitionEnd={() => setEstimatedEmpty(false)}
             >
-            <AlertF type="warning" text="Pipes with empty values didn't save!" margin="-10px"/>   
+            <AlertF type="warning" text="Pipes with empty values didn't save!" margin="0px"/>   
+            
+            </div>
+            <div
+            className={`alert alert-success ${minTrayWarning ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setMinTrayWarning(false)}
+            >
+            <AlertF type="warning" text="Pipes on Modelled can't be returned!" margin="0px"/>   
+            
+            </div>
+            <div
+            className={`alert alert-success ${maxTrayWarning ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setMaxTrayWarning(false)}
+            >
+            <AlertF type="warning" text="Pipes on S-Design are completed!" margin="0px"/>   
             
             </div>
             <Collapse in={loading}>
@@ -535,14 +591,16 @@ const Piping = () => {
 
                   <div className="isotracker__column">
                   
-                  <table className="equipTable__table" style={{marginTop:"270px", width:"35%", marginLeft:"59%"}}>
+                  <table className="equipTable__table" style={{marginTop:"270px", width:"50%", marginLeft:"45%"}}>
                         <tbody className="equipable__body">
                             <tr>    
                                 <td  className="equipTable__header" style={{backgroundColor:"#338DF1", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                <td  className="equipTable__header" style={{backgroundColor:"#338DF1"}}>Modelled weight</td>
                                 <td className="equipTable__header" style={{backgroundColor:"#338DF1", borderRadius:"0 1em 0 0"}}>Total progress</td>
                             </tr>
                             <tr>
                                 <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
+                                <td className="equipTable__state">{modelledWeight}</td>
                                 <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
                             </tr>
                         </tbody>

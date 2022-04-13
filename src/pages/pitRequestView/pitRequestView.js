@@ -67,10 +67,6 @@ const PitRequestView = () => {
         }
     });
 
-    const settings = {
-        licenseKey: 'non-commercial-and-evaluation',
-        colWidths: 250,
-      }
 
     const [currentRole, setCurrentRole] = useState();
     const [currentTab, setCurrentTab] = useState("View")

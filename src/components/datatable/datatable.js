@@ -315,7 +315,6 @@ class DataTable extends React.Component{
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
     .then(response => response.json())
     .then(async json => {
-            console.log(json)
             var rows = []
             let row = null
             let pButton, iButton, rButton, bButton, cButton, retButton, excludeHoldButton, rToLOSButton = null

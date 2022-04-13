@@ -48,7 +48,6 @@ export default class UploadDrawingPopUp extends Component {
             })
             .then(response =>{
                 if (response.status !== 200){
-                    console.log("ya existe")
                 }else{
                     const body = {
                         description_plan_code: this.props.description_plan_code,

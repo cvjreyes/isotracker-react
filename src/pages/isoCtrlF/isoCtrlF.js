@@ -1162,7 +1162,6 @@ const IsoCtrlF = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadUsers")
         .then(response => response.json())
         .then(json => {
-            console.log(json)
             const headers = ["USERNAME", "EMAIL", "ROLE"]
             exportToExcel(json, "Users", headers)
         })
@@ -1252,7 +1251,6 @@ const IsoCtrlF = () => {
     }
 
     async function newRev(comments) {
-        console.log(comments)
         setErrorReports(false)
         setErrorUnclaimR(false)
         setTransactionSuccess(false);
@@ -1422,7 +1420,6 @@ const IsoCtrlF = () => {
       
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unlock", options)
           .then(response => {
-            console.log("Unlocked")
             setTransactionSuccess(true)
           })
 

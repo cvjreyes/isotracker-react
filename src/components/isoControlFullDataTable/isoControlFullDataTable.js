@@ -4,6 +4,7 @@ import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import HoldsPopUp from '../holdsPopUp/holdsPopUp';
 
+
 class IsoControlFullDataTable extends React.Component{
   state = {
     searchText: '',
@@ -131,8 +132,11 @@ class IsoControlFullDataTable extends React.Component{
             }else{
                 json.rows[i].color = "#eee"
             }
-            json.rows[i].line_id = <b>{json.rows[i].line_id}</b>
-            rows.push(json.rows[i])
+            if(json.rows[i].line_id){
+              json.rows[i].line_id = <b>{json.rows[i].line_id}</b>
+              rows.push(json.rows[i])
+            }
+           
         }
 
         this.setState({data: rows, displayData: rows})
@@ -144,7 +148,6 @@ class IsoControlFullDataTable extends React.Component{
   }
 
   async filter(column, value){
-    console.log(column, value)
     let fd = this.state.filterData
     fd[column] = value
     await this.setState({filterData: fd})

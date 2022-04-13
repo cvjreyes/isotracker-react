@@ -29,7 +29,7 @@ const CryptoJS = require("crypto-js");
     });
 
 const PipingNavBtns = props =>{
-    var myTrayButton, modelledButton, componentsButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn
+    var myTrayButton, modelledButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn
     if(props.currentTab === "PipingMyTray"){
         secureStorage.setItem("tab", "PipingMyTray")
         myTrayButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}}>My Tray</button>

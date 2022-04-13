@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table } from 'antd';
-import { BrandingWatermark } from '@mui/icons-material';
+import warningIT from "../../assets/images/warningIT.png"
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -233,7 +233,7 @@ class PipingMyTrayTable extends React.Component{
               }
 
               if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
-                notInSDesignButton = <button className="btn btn-success"  disabled style={{width:"20px", fontSize:"12px", fontWeight:"bold", padding:"2px 5px 2px 5px", marginLeft: "5px", backgroundColor:"yellow", color:"red", borderColor:"black"}}>!</button>
+                notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
               }else{
                 notInSDesignButton = null
               }
@@ -356,7 +356,7 @@ class PipingMyTrayTable extends React.Component{
                 }
 
                 if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
-                  notInSDesignButton = <button className="btn btn-success"  disabled style={{width:"20px", fontSize:"12px", fontWeight:"bold", padding:"2px 5px 2px 5px", marginLeft: "5px", backgroundColor:"yellow", color:"red", borderColor:"black"}}>!</button>
+                  notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
                 }else{
                   notInSDesignButton = null
                 }
@@ -499,26 +499,33 @@ class PipingMyTrayTable extends React.Component{
       if(selectedRows){
         
         for(let i = 0; i < selectedRows.length; i++){
-          let error = 0
+          let error = []
           if(selectedRows[i].valves === 0 && selectedRows[i].instruments === 0){
             switch(selectedRows[i].type){
               case "TL1":
-                error = 1
+                error.push(1)
                 break;
               case "TL2":
                 if(selectedRows[i].status_id === 8){
-                  error = 1
+                  error.push(1)
                 }
                 break;
               case "TL3":
                 if(selectedRows[i].status_id === 5){
-                  error = 1
+                  error.push(1)
                 }
                 break;
               default:
                 break;
             }
           }
+          if(selectedRows[i].tray === "Modelled"){
+            error.push(3)
+          }
+          if(selectedRows[i].tray === "S-Design"){
+            error.push(2)
+          }
+          
           ids.push([selectedRows[i].id, error])
         }
         this.setState({

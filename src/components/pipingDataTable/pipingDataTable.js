@@ -1,32 +1,8 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table } from 'antd';
-
-const CryptoJS = require("crypto-js");
-    const SecureStorage = require("secure-web-storage");
-    var SECRET_KEY = 'sanud2ha8shd72h';
-    
-    var secureStorage = new SecureStorage(localStorage, {
-        hash: function hash(key) {
-            key = CryptoJS.SHA256(key, SECRET_KEY);
-    
-            return key.toString();
-        },
-        encrypt: function encrypt(data) {
-            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
-    
-            data = data.toString();
-    
-            return data;
-        },
-        decrypt: function decrypt(data) {
-            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
-    
-            data = data.toString(CryptoJS.enc.Utf8);
-    
-            return data;
-        }
-    });
+import warningIT from "../../assets/images/warningIT.png"
+import "./pipingDataTable.css"
 
 class PipingDataTable extends React.Component{
   state = {
@@ -78,7 +54,7 @@ class PipingDataTable extends React.Component{
               }
 
               if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
-                notInSDesignButton = <button className="btn btn-success"  disabled style={{width:"20px", fontSize:"12px", fontWeight:"bold", padding:"2px 5px 2px 5px", marginLeft: "5px", backgroundColor:"yellow", color:"red", borderColor:"black"}}>!</button>
+                notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
               }else{
                 notInSDesignButton = null
               }
@@ -154,7 +130,7 @@ class PipingDataTable extends React.Component{
               }
 
               if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
-                notInSDesignButton = <button className="btn btn-success"  disabled style={{width:"20px", fontSize:"12px", fontWeight:"bold", padding:"2px 5px 2px 5px", marginLeft: "5px", backgroundColor:"yellow", color:"red", borderColor:"black"}}>!</button>
+                notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
               }else{
                 notInSDesignButton = null
               }

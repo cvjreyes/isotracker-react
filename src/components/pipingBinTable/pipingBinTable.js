@@ -2,32 +2,6 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Table } from 'antd';
 
-const CryptoJS = require("crypto-js");
-    const SecureStorage = require("secure-web-storage");
-    var SECRET_KEY = 'sanud2ha8shd72h';
-    
-    var secureStorage = new SecureStorage(localStorage, {
-        hash: function hash(key) {
-            key = CryptoJS.SHA256(key, SECRET_KEY);
-    
-            return key.toString();
-        },
-        encrypt: function encrypt(data) {
-            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
-    
-            data = data.toString();
-    
-            return data;
-        },
-        decrypt: function decrypt(data) {
-            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
-    
-            data = data.toString(CryptoJS.enc.Utf8);
-    
-            return data;
-        }
-    });
-
 class PipingBinTable extends React.Component{
   state = {
     searchText: '',
@@ -120,7 +94,6 @@ class PipingBinTable extends React.Component{
       exists = true
       for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){
         fil = Object.keys(auxDisplayData[i])[column+1]
-        console.log(auxDisplayData[i][fil])
         if(auxDisplayData[i][fil]){
           if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
             exists = false

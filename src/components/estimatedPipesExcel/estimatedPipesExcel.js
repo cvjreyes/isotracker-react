@@ -74,7 +74,7 @@ class EstimatedPipesExcel extends React.Component{
     let rows = [] 
     let tags = []
     for(let i = 0; i < json.rows.length; i++){
-      rows.push({"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].seq, "Spec": json.rows[i].spec, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id})
+      rows.push({"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].seq, "Spec": json.rows[i].spec, "Type": json.rows[i].type, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id})
       tags.push(json.rows[i].tag)
     }
     await this.setState({data: rows, tags: tags})
@@ -97,7 +97,7 @@ async componentDidUpdate(prevProps, prevState){
     .then(async json => {
       let rows = [] 
       for(let i = 0; i < json.rows.length; i++){
-        rows.push({"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].seq, "Spec": json.rows[i].spec, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id})
+        rows.push({"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].seq, "Spec": json.rows[i].spec, "Type": json.rows[i].type, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id})
       }
       await this.setState({data: rows})
     })
@@ -107,7 +107,7 @@ async componentDidUpdate(prevProps, prevState){
 
   addRow(){
     let rows = this.state.data
-    rows.push({"Line reference": "", "Tag": "", "Unit": "", "Area": "", "Fluid": "", "Seq": "", "Spec": "", "Diameter": "", "Insulation": "", "Train": "", "Status": ""})
+    rows.push({"Line reference": "", "Tag": "", "Unit": "", "Area": "", "Fluid": "", "Seq": "", "Spec": "", "Type": "", "Diameter": "", "Insulation": "", "Train": "", "Status": ""})
     this.setState({data: rows})
   }
   
@@ -119,7 +119,6 @@ async componentDidUpdate(prevProps, prevState){
     for(let i = 0; i < new_rows.length; i++){
       if(new_rows[i]["Line reference"] === "" || new_rows[i].Tag === "" || new_rows[i].Unit === "" || new_rows[i].Area === "" || new_rows[i].Fluid === "" || new_rows[i].Seq === "" || new_rows[i].Spec === "" || new_rows[i].Diameter === "" || new_rows[i].Insulation === "" || new_rows[i].Train === "" || new_rows[i]["Line reference"] === null || new_rows[i].Tag === null || new_rows[i].Unit === null || new_rows[i].Area === null || new_rows[i].Fluid === null || new_rows[i].Seq === null || new_rows[i].Spec === null || new_rows[i].Diameter === null || new_rows[i].Insulation === null || new_rows[i].Train === null){
         await this.setState({empty: true})
-        console.log(new_rows[i])
         new_rows.splice(i, 1)
       }
     }
@@ -149,18 +148,22 @@ async componentDidUpdate(prevProps, prevState){
       }
       this.setState({new_data: [], warning: false, empty: false})
     })
+
+    await this.props.updateData()
   }
 
   handleChange = async(changes, source) =>{
     if (source !== 'loadData'){
       let data_aux = this.state.data
-      let row_id = changes[0][0]
-      if(this.state.data[row_id].Status === "ESTIMATED*" || this.state.data[row_id].Status === "MODELLED"){
-        data_aux[row_id][changes[0][1]] = "##########"
-        await this.setState({data: data_aux, warning: true})
-      }else{
+      
+      for(let i = 0; i < changes.length; i+=4){
+        let row_id = changes[i][0]
+        if(this.state.data[row_id].Status === "ESTIMATED*" || this.state.data[row_id].Status === "MODELLED"){
+          data_aux[row_id][changes[0][1]] = "##########"
+          await this.setState({data: data_aux, warning: true})
+        }else{
         let row = this.state.data[row_id]
-        if (changes[0][1] === 'Line reference'){
+        if (changes[i][1] === 'Line reference'){
           const options = {
             method: "GET",
             headers: {
@@ -168,7 +171,7 @@ async componentDidUpdate(prevProps, prevState){
             },
           }
         
-          await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getDataByRef/" + changes[0][3], options)
+          await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getDataByRef/" + changes[i][3], options)
             .then(response => response.json())
             .then(async json => {
               if(json.pipe){
@@ -177,6 +180,25 @@ async componentDidUpdate(prevProps, prevState){
                 data_aux[row_id].Seq = json.pipe[0].seq
                 data_aux[row_id].Spec = json.pipe[0].spec_code
                 data_aux[row_id].Insulation = json.pipe[0].insulation
+
+                  if(json.pipe[0].calc_notes !== "NA"){
+                    data_aux[row_id].Type = "TL3"
+                  }else if(process.env.NODE_MMDN === "0"){
+                    if(data_aux[row_id].Diameter < 2.00){
+                      data_aux[row_id].Type = "TL1"
+                    }else{
+                      data_aux[row_id].Type = "TL2"
+                    }
+                  }else{
+                    if(data_aux[row_id].Diameter < 50){
+                      data_aux[row_id].Type = "TL1"
+                    }else{
+                      data_aux[row_id].Type = "TL2"
+                    }
+                  }
+                
+                
+
               await this.setState({data : data_aux})
               }
           })
@@ -195,6 +217,21 @@ async componentDidUpdate(prevProps, prevState){
           data_aux[row_id].Status = ""
         }else{
           data_aux[row_id].Status = "ESTIMATED"
+          if(data_aux[row_id].Type !== "TL3"){
+            if(process.env.NODE_MMDN === "0"){
+              if(data_aux[row_id].Diameter < 2.00){
+                data_aux[row_id].Type = "TL1"
+              }else{
+                data_aux[row_id].Type = "TL2"
+              }
+            }else{
+              if(data_aux[row_id].Diameter < 50){
+                data_aux[row_id].Type = "TL1"
+              }else{
+                data_aux[row_id].Type = "TL2"
+              }
+            }
+          }
           new_data[row_id] = row
         }
         await this.setState({data : data_aux, new_data: new_data})
@@ -205,6 +242,7 @@ async componentDidUpdate(prevProps, prevState){
           await this.setState({data : data_aux, new_data: new_data})
         }
       }
+    }
       
     }
   }
@@ -214,7 +252,7 @@ async componentDidUpdate(prevProps, prevState){
 
     const settings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: [300, 500, 105, 120, 140, 130, 140, 110, 130, 110, 143],
+        colWidths: [280, 480, 105, 100, 140, 130, 111, 100, 110, 130, 100, 143],
         fontSize: 24
         //... other options
       }
@@ -225,7 +263,7 @@ async componentDidUpdate(prevProps, prevState){
             <div id="hot-app">
               <HotTable
                 data={this.state.data}
-                colHeaders={["<b className='header'>Line reference</b>", "<b>Tag</b>", "<b>Unit</b>", "<b>Area</b>", "<b>Fluid</b>", "<b>Seq</b>", "<b>Spec</b>", "<b>Diameter</b>", "<b>Insulation</b>", "<b>Train</b>", "<b>Status</b>"]}
+                colHeaders={["<b className='header'>Line reference</b>", "<b>Tag</b>", "<b>Unit</b>", "<b>Area</b>", "<b>Fluid</b>", "<b>Seq</b>", "<b>Spec</b>", "<b>Type</b>", "<b>Diameter</b>", "<b>Insulation</b>", "<b>Train</b>", "<b>Status</b>"]}
                 rowHeaders={true}
                 rowHeights="30px"
                 columnHeaderHeight={30}
@@ -234,7 +272,7 @@ async componentDidUpdate(prevProps, prevState){
                 settings={settings}
                 manualColumnResize={true}
                 manualRowResize={true}
-                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true},{ data: "Tag", type:'text', readOnly: true},{ data: "Unit", type:'text', readOnly: true},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text', readOnly: true}, { data: "Seq", type:'text', readOnly: true}, { data: "Spec", type:'text', readOnly: true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text', readOnly: true},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'text', readOnly: true}]}
+                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true},{ data: "Tag", type:'text', readOnly: true},{ data: "Unit", type:'text', readOnly: true},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text', readOnly: true}, { data: "Seq", type:'text', readOnly: true}, { data: "Spec", type:'text', readOnly: true},  { data: "Type", type:'text', readOnly: true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text', readOnly: true},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'text', readOnly: true}]}
                 filters={true}
                 dropdownMenu= {[
                     'make_read_only',
