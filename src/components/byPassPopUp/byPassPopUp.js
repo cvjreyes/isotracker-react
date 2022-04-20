@@ -9,8 +9,9 @@ export default class ByPassPopUp extends Component {
         this.state = {
             visible : false,
             blankFields: false,
-            type: null,
-            note: null
+            type: 1,
+            note: null,
+            id: this.props.id
         }
         
     }
@@ -23,60 +24,63 @@ export default class ByPassPopUp extends Component {
     }
 
     closeModal() {
+
+        document.getElementById("notes").value = "";
         this.setState({
             visible : false,
             blankFields: false,
-            type: null,
+            type: 1,
             note: null
         });
     }
 
-    creatByPass(){
+    createByPass(){
         const notes = document.getElementById("notes").value
-        console.log(this.state.type, notes)
-        //this.props.creatByPass(type, notes)
-        this.closeModal()
+        if(notes === "" || notes === null){
+            this.setState({
+                blankFields: true
+            })
+        }else{
+            this.props.creatByPass(this.state.type, notes, this.state.id)
+            this.closeModal()
+        }
     }
 
 
     render() {
         return (
             <section >
-                <input type="button"  value="ByPass" className="btn btn_warning" style={{fontSize: "12px", padding: "2px 5px", backgroundColor: "orange", borderColor: "rgb(176, 224, 230)", width: "100px", float: "left", marginRight: "5px", marginTop: "3px"}} onClick={() => this.openModal()} />
+                <input type="button"  value="ByPass" className="btn btn_warning" style={{fontSize: "12px", padding: "2px 5px", backgroundColor: "#FF3358", color: "white", width: "100px", float: "left", marginRight: "5px", marginTop: "3px"}} onClick={() => this.openModal()} />
                 <div>
-                    <Modal visible={this.state.visible} width="650" height="530" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="350" height="370" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div
                         className={`alert alert-success ${this.state.blankFields ? 'alert-shown' : 'alert-hidden'}`}
                         onTransitionEnd={() => this.setState({blankFields: false})}
                         >
-                        <AlertF type="warning" text="Username or email missing!" popUp={true}/>
+                        <AlertF type="warning" text="The byPass needs notes!" popUp={true} margin="4px"/>
                       </div>
 
                     <div className="popUp__container" >
                             <center className="popUp__title"><h3>Create ByPass</h3></center>
                                 
                         </div>
-                        <div className="popUp__input">
-                            <h4 style={{fontWeight:"bold"}}>Type</h4>
-                            
-                        </div>
                         
-                        <div className="popUp__input">
+                        <div className="popUp__input" style={{marginTop: "20px"}}>
                             <label for="select">Type: </label>
                             <select className="popUp_input_select" name="select" onChange={(e) => this.setState({type: e.target.value})} value={this.state.selected}>
-                                <option value={0} selected>Instrument</option>
-                                <option value={1}>Equipment</option>
-                                <option value={2}>Material</option>
-                                <option value={3}>PID</option>
+                                <option value={1} selected>Instrument</option>
+                                <option value={2}>Equipment</option>
+                                <option value={3}>Material</option>
+                                <option value={4}>PID</option>
                             </select>
                         </div>
-                        <div>
-                            <textarea placeholder='Notes...' id="notes" name="notes"></textarea>
-                        </div>
-                        <div className="popUp__buttons__container__users">
+                        <center style={{marginTop: "10px"}}>
+                            <textarea style={{width: "310px", height: "170px"}} placeholder='Notes...' id="notes" name="notes"></textarea>
+                        </center>
+                        <center className="popUp__buttons__container__users">
                             <button class="btn btn-sm btn-success" onClick={() => this.createByPass()} style={{marginRight:"5px", fontSize:"16px"}}>Create</button>
                             <button class="btn btn-sm btn-danger" onClick={() => this.closeModal()} style={{marginLeft:"5px", fontSize:"16px"}}>Cancel</button>
-                        </div>
+                        </center>
                     </Modal>
                 </div>
             </section>

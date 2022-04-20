@@ -86,7 +86,7 @@ export default class Alert extends Component {
                                     <img src={WarningIcon} className="alert__icon" alt="warning"></img>
                                     <div className="text__alert__container">
                                         <text className="alert__title">Warning</text>
-                                        <text className="alert__text" >{this.props.text}</text>
+                                        <text className="alert__text" style={{marginLeft:this.props.margin}}>{this.props.text}</text>
                                     </div>
                                 
                                 </div>

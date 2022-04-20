@@ -52,6 +52,7 @@ import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLine
 import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
+import ByPassDataTable from "../../components/byPassDataTable/byPassDataTable"
 
 const IsoCtrlF = () => {
    
@@ -1777,13 +1778,39 @@ const IsoCtrlF = () => {
 
     }
 
+    async function createByPass(type, notes, id){
+        const body = {
+            type: type,
+            notes: notes,
+            username: currentUser,
+            id: id
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/createByPass", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                successAlert()
+            }
+        })
+        setUpdateData(!updateData)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} success={success.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
+        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} success={success.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} createByPass = {(type, notes, id) => createByPass(type, notes, id)} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){
@@ -1827,6 +1854,10 @@ const IsoCtrlF = () => {
  
         tableContent = <TimeTrackDataTable/>
 
+    }if(currentTab === "ByPass"){
+ 
+        tableContent = <ByPassDataTable/>
+
     }
 
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
@@ -1851,7 +1882,7 @@ const IsoCtrlF = () => {
         actionButtons = null
     }
 
-    let recycleBinBtn, onHoldBtn, issuedBtn, reportsBtn, processBtn, instrumentationBtn = null
+    let recycleBinBtn, onHoldBtn, issuedBtn, reportsBtn, processBtn, instrumentationBtn, byPassBtn = null
 
     if(currentTab === "Recycle bin"){
         recycleBinBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Recycle bin")} style={{backgroundColor:"#99C6F8", marginLeft:"232px"}}><img src={Trash} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Trash</p></button>
@@ -1921,6 +1952,11 @@ const IsoCtrlF = () => {
     }else{
         processBtn = null
         instrumentationBtn = null
+    }
+    if(currentTab === "ByPass"){
+        byPassBtn = <button className="navBar__button" onClick={()=>setCurrentTab("ByPass")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">ByPass</p></button>
+    }else{
+        byPassBtn = <button className="navBar__button" onClick={()=>setCurrentTab("ByPass")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">ByPass</p></button>
     }
 
     if(currentTab === "History"){
@@ -2120,6 +2156,7 @@ const IsoCtrlF = () => {
                               {recycleBinBtn}
                               {onHoldBtn}
                               {issuedBtn}
+                              {byPassBtn}
                               {reportsBtn}
                               {progressBtn}
                               {modelledBtn}
