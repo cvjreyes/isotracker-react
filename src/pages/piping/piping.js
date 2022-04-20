@@ -75,6 +75,7 @@ const Piping = () => {
     const [maxTrayWarning, setMaxTrayWarning] = useState(false)
     const [minTrayWarning, setMinTrayWarning] = useState(false)
     const [unclaimAlert, setUnclaimAlert] = useState(false)
+    const [changesSaved, setChangesSaved] = useState(false)
     const history = useHistory()
 
     useEffect(()=>{
@@ -245,7 +246,7 @@ const Piping = () => {
 
     if(currentTab === "EstimatedPipes"){
         secureStorage.setItem("tab", "EstimatedPipes")
-        table = <EstimatedPipesExcel success={success.bind(this)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+        table = <EstimatedPipesExcel success={() => setChangesSaved(true)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
     }
 
     if(currentTab === "IsoControlLineIdGroup"){
@@ -525,6 +526,12 @@ const Piping = () => {
             onTransitionEnd={() => setSuccessAlert(false)}
             >
                 <AlertF type="success" text="Pipes claimed!" margin="0px"/>
+            </div>
+            <div
+            className={`alert alert-success ${changesSaved ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setChangesSaved(false)}
+            >
+            <AlertF type="success" text="Changes saved!" margin="0px"/>
             </div>
             <div
             className={`alert alert-success ${transactionSuccess ? 'alert-shown' : 'alert-hidden'}`}
