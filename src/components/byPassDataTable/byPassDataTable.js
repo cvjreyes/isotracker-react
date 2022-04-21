@@ -3,6 +3,7 @@ import 'antd/dist/antd.css';
 import { Table } from 'antd';
 import AcceptByPassPopUp from '../acceptByPassPopUp/acceptByPassPopUp';
 import EditByPassPopUp from '../editByPassPopUp/editByPassPopUp';
+import DeleteByPassPopUp from '../deleteByPassPopUp/deleteByPassPopUp';
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -87,7 +88,7 @@ class ByPassDataTable extends React.Component{
               }else if(json.rows[i].type === "PID"){
                   type = 4
               }
-              row.actions = <EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/>
+              row.actions = <div style={{display: "flex"}}><EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/><DeleteByPassPopUp deleteByPass={(id) => this.props.deleteByPass(id)} tag={json.rows[i].tag} id={json.rows[i].id}/></div>
             }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
               row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"50px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
             }
@@ -136,7 +137,7 @@ class ByPassDataTable extends React.Component{
                 }else if(json.rows[i].type === "PID"){
                     type = 4
                 }
-                row.actions = <EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/>
+                row.actions = <div style={{display: "flex"}}><EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/><DeleteByPassPopUp deleteByPass={(id) => this.props.deleteByPass(id)} tag={json.rows[i].tag} id={json.rows[i].id}/></div>
               }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
                 row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"50px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
               }

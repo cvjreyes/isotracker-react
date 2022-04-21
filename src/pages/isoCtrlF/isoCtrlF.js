@@ -1829,6 +1829,29 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
+    async function deleteByPass(id){
+        const body = {
+            id: id
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/deleteByPass", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                successAlert()
+            }
+        })
+        setUpdateData(!updateData)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
@@ -1881,7 +1904,7 @@ const IsoCtrlF = () => {
 
     }if(currentTab === "ByPass"){
  
-        tableContent = <ByPassDataTable success={success.bind(this)} updateData={updateData} editByPass = {editByPass.bind(this)}/>
+        tableContent = <ByPassDataTable success={success.bind(this)} updateData={updateData} editByPass = {editByPass.bind(this)} deleteByPass={deleteByPass.bind(this)}/>
 
     }
 
