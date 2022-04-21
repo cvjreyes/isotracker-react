@@ -158,7 +158,7 @@ async componentDidUpdate(prevProps, prevState){
       
       for(let i = 0; i < changes.length; i+=4){
         let row_id = changes[i][0]
-        if(this.state.data[row_id].Status === "ESTIMATED*" || this.state.data[row_id].Status === "MODELLED"){
+        if(this.state.data[row_id].Status === "MODELLED*" || this.state.data[row_id].Status === "MODELLED"){
           data_aux[row_id][changes[0][1]] = "##########"
           await this.setState({data: data_aux, warning: true})
         }else{
