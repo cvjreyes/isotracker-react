@@ -1,13 +1,8 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Table } from 'antd';
-import UploadPopUp from '../uploadPopUp/uploadPopUp';
-import { Link } from 'react-router-dom';
-import UploadProcInst from '../uploadProcInst/uploadProcInst';
-import CommentPopUp from '../commentPopUp/commentPopUp';
-import RevisionPopUp from '../revisionPopUp/revisionPopUp';
-import ByPassPopUp from '../byPassPopUp/byPassPopUp';
-
+import AcceptByPassPopUp from '../acceptByPassPopUp/acceptByPassPopUp';
+import EditByPassPopUp from '../editByPassPopUp/editByPassPopUp';
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -45,8 +40,6 @@ class ByPassDataTable extends React.Component{
       role: secureStorage.getItem("role"),
       user: secureStorage.getItem("user"),
       tab: this.props.currentTab,
-      selectedRows: [],
-      selectedRowsKeys: [],
       updateData: this.props.updateData,
       popup: false,
       filters: []
@@ -63,17 +56,138 @@ class ByPassDataTable extends React.Component{
 
 
   componentDidMount(){
+    const options = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json"
+      },
+  }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getByPassData", options)
+        .then(response => response.json())
+        .then(async json => {
+          let row = {}
+          let rows = []
+          for(let i = 0; i < json.rows.length; i++){
+            row = {key:json.rows[i].id, tag: json.rows[i].tag, isoid: json.rows[i].isoid, type: json.rows[i].type, date: json.rows[i].date.toString().substring(0,10) + " "+ json.rows[i].date.toString().substring(11,19), user: json.rows[i].user, notes: json.rows[i].note, status: json.rows[i].status, actions: null}
+            
+            if(i % 2 === 0){
+              row["color"] = "#fff"
+            }else{
+              row["color"] = "#eee"
+            }
 
-   
+            if(secureStorage.getItem("role") === "ProjectAdmin" && row.status === "Pending"){
+              row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/><button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"50px"}} onClick={() => this.rejectByPass(json.rows[i].id)}>Reject</button><button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"50px"}} onClick={() => this.naByPass(json.rows[i].id)}>N/A</button></div>
+            }else if(json.rows[i].email === secureStorage.getItem("user") && row.status === "Pending"){
+              let type = 1
+              if(json.rows[i].type === "Equipment"){
+                  type = 2
+              }else if(json.rows[i].type === "Material"){
+                  type = 3
+              }else if(json.rows[i].type === "PID"){
+                  type = 4
+              }
+              row.actions = <EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/>
+            }
+
+            rows.push(row)
+          }
+          const filterRow = [{key:0, tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(0, e.target.value)}/></div>, isoid: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2, e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(4,e.target.value)}/></div>, status: <div><input type="text" className="filter__input" placeholder="Status" onChange={(e) => this.filter(6, e.target.value)}/></div>}]
+                
+          this.setState({data : rows, selectedRows: [], displayData: rows});
+          await this.setState({filters : filterRow})
+        })
   }
   
 
   componentDidUpdate(prevProps, prevState){
 
     if(prevProps !== this.props){
-      
+      const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    }
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getByPassData", options)
+          .then(response => response.json())
+          .then(async json => {
+            let row = {}
+            let rows = []
+            for(let i = 0; i < json.rows.length; i++){
+              row = {key:json.rows[i].id, tag: json.rows[i].tag, isoid: json.rows[i].isoid, type: json.rows[i].type, date: json.rows[i].date.toString().substring(0,10) + " "+ json.rows[i].date.toString().substring(11,19), user: json.rows[i].user, notes: json.rows[i].note, status: json.rows[i].status, actions: null}
+              
+              if(i % 2 === 0){
+                row["color"] = "#fff"
+              }else{
+                row["color"] = "#eee"
+              }
+  
+              if(secureStorage.getItem("role") === "ProjectAdmin" && row.status === "Pending"){
+                row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/><button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"50px"}} onClick={() => this.rejectByPass(json.rows[i].id)}>Reject</button><button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"50px"}} onClick={() => this.naByPass(json.rows[i].id)}>N/A</button></div>
+              }else if(json.rows[i].email === secureStorage.getItem("user") && row.status === "Pending"){
+                let type = 1
+                if(json.rows[i].type === "Equipment"){
+                    type = 2
+                }else if(json.rows[i].type === "Material"){
+                    type = 3
+                }else if(json.rows[i].type === "PID"){
+                    type = 4
+                }
+                row.actions = <EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/>
+              }
+  
+              rows.push(row)
+            }
+                  
+            this.setState({data : rows, selectedRows: [], displayData: rows});
+  
+          })
+    }
   }
+
+
+  async rejectByPass(id){
+    const body ={
+      id : id,
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
   }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/rejectByPass", options)
+        .then(response => response.json())
+        .then(async json => {
+          if(json.success){
+            this.props.success()
+          }
+        })
+  }
+
+  async naByPass(id){
+    const body ={
+      id : id,
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/naByPass", options)
+        .then(response => response.json())
+        .then(async json => {
+          if(json.success){
+            this.props.success()
+          }
+        })
+  }  
+
+  
 
   async filter(column, value){
     let fd = this.state.filterData
@@ -87,29 +201,10 @@ class ByPassDataTable extends React.Component{
       exists = true
       for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
         fil = Object.keys(auxDisplayData[i])[column+1]
-        if(fil === "id"){
-          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+        if(auxDisplayData[i][fil]){
+          if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
             exists = false
           }
-        }else if(fil === "actions"){
-          if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[0].type.name === "UploadPopUp"){
-            let upload = "upload"
-            if(!upload.includes(this.state.filterData[column].toLocaleLowerCase())){
-              exists = false
-            }
-          }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[0].type === "button"){
-            let cv = "cancel verify"
-            if(!cv.includes(this.state.filterData[column].toLocaleLowerCase())){
-              exists = false
-            }
-          }
-        }else{
-          if(auxDisplayData[i][fil]){
-            if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
-              exists = false
-            }
-          }
-          
         }
         
       }
@@ -147,60 +242,12 @@ class ByPassDataTable extends React.Component{
 
   render() {
 
-    const selectedRows = this.state.selectedRows;
-    const selectedRowsKeys = this.state.selectedRowsKeys;
-
-    const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        this.onSelectChange(selectedRowKeys, selectedRows);
-      },
-      getCheckboxProps: (record) => 
-      this.state.role !== "Instrument" && this.state.role !== "Process" ? (
-      ( 
-        {
-        
-        disabled: record.actions.props.children[0].props.children === 'CANCEL VERIFY' || record.actions.props.children[10],
-        // Column configuration not to be checked
-        name: record.name,
-      })
-      ) : (
-        {
-          name: record.name,
-        }),
-      
-      
-    };
-
-    const rowSelectionFilter = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        this.onSelectChange(selectedRowKeys, selectedRows);
-      },
-      getCheckboxProps: (record) => ({
-        disabled: true,
-        // Column configuration not to be checked
-        name: record.name,
-      }),
-    };
-
-    if(localStorage.getItem("update") === "true"){
-      this.setState({
-        selectedRows: [],
-        selectedRowsKeys: []
-      })
-      rowSelection.selectedRowKeys = []
-      rowSelection.selectedRows = []
-      localStorage.setItem("update", false)
-    }else{
-      rowSelection.selectedRowKeys = selectedRowsKeys 
-      rowSelection.selectedRows = selectedRows;
-    }
-
     let columns = [
       {
         title: <center className="dataTable__header__text">TAG</center>,
         dataIndex: 'tag',
         key: 'tag',
-        width: '23%',
+        width: '6%',
         ...this.getColumnSearchProps('tag'),
         sorter:{
           compare: (a, b) => a.tag.localeCompare(b.tag),
@@ -219,17 +266,26 @@ class ByPassDataTable extends React.Component{
         title: <center className="dataTable__header__text">Type</center>,
         dataIndex: 'type',
         key: 'type',
-        width: '8%',
+        width: '6%',
         ...this.getColumnSearchProps('type'),
         sorter:{
           compare: (a, b) => a.type.localeCompare(b.type),
         },
       },
       {
+        title: <center className="dataTable__header__text">Date</center>,
+        dataIndex: 'date',
+        key: 'date',
+        width: '10%',
+        ...this.getColumnSearchProps('date'),
+        sorter:{
+          compare: (a, b) => a.date.localeCompare(b.date),
+        },
+      },
+      {
         title: <div className="dataTable__header__text">User</div>,
         dataIndex: 'user',
         key: 'user',
-        width: '20%',
         ...this.getColumnSearchProps('user'),
         sorter: {
           compare: (a, b) =>  a.user.localeCompare(b.user),
@@ -239,22 +295,24 @@ class ByPassDataTable extends React.Component{
         title: <div className="dataTable__header__text">Notes</div>,
         dataIndex: 'notes',
         key: 'notes',
+        width:'40%',
+      },
+      {
+        title: <div className="dataTable__header__text">Status</div>,
+        dataIndex: 'status',
+        key: 'status',
+        width:'9%',
+        ...this.getColumnSearchProps('status'),
+        sorter: {
+          compare: (a, b) => a.status.type - b.status.type,
+        },
       },
       {
         title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',
         key: 'actions',
       },
-      {
-        title: <div className="dataTable__header__text">Status</div>,
-        dataIndex: 'status',
-        key: 'status',
-        width:'20%',
-        ...this.getColumnSearchProps('status'),
-        sorter: {
-          compare: (a, b) => a.status.type - b.status.type,
-        },
-      },
+      
     ];
 
     var totalElements = null;
@@ -271,8 +329,8 @@ class ByPassDataTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" style={{ height: '540px' }} bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
-        <Table className="filter__table" pagination={{disabled:true}} rowSelection={{type: 'checkbox', ...rowSelectionFilter}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
+        <Table className="customTable" style={{ height: '540px' }} bordered = {true} columns={columns} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           {totalElements}
         </div>
       </div>
