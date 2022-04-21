@@ -683,7 +683,7 @@ class MyTrayTable extends React.Component{
       ( 
         {
         
-        disabled: record.actions.props.children[0].props.children === 'CANCEL VERIFY' || record.actions.props.children[10],
+        disabled: record.actions.props.children[0].props.children === 'CANCEL VERIFY' || record.actions.props.children[12],
         // Column configuration not to be checked
         name: record.name,
       })

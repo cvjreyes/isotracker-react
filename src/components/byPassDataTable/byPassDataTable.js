@@ -61,7 +61,7 @@ class ByPassDataTable extends React.Component{
       headers: {
           "Content-Type": "application/json"
       },
-  }
+    }
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getByPassData", options)
         .then(response => response.json())
         .then(async json => {
@@ -88,6 +88,8 @@ class ByPassDataTable extends React.Component{
                   type = 4
               }
               row.actions = <EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/>
+            }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
+              row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"50px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
             }
 
             rows.push(row)
@@ -108,7 +110,7 @@ class ByPassDataTable extends React.Component{
         headers: {
             "Content-Type": "application/json"
         },
-    }
+      }
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getByPassData", options)
           .then(response => response.json())
           .then(async json => {
@@ -135,13 +137,16 @@ class ByPassDataTable extends React.Component{
                     type = 4
                 }
                 row.actions = <EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/>
+              }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
+                row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"50px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
               }
   
               rows.push(row)
             }
+            const filterRow = [{key:0, tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(0, e.target.value)}/></div>, isoid: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2, e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(4,e.target.value)}/></div>, status: <div><input type="text" className="filter__input" placeholder="Status" onChange={(e) => this.filter(6, e.target.value)}/></div>}]
                   
             this.setState({data : rows, selectedRows: [], displayData: rows});
-  
+            await this.setState({filters : filterRow})
           })
     }
   }
@@ -187,7 +192,25 @@ class ByPassDataTable extends React.Component{
         })
   }  
 
-  
+  async closeByPass(id){
+    const body ={
+      id : id,
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/closeByPass", options)
+        .then(response => response.json())
+        .then(async json => {
+          if(json.success){
+            this.props.success()
+          }
+        })
+  }
 
   async filter(column, value){
     let fd = this.state.filterData
