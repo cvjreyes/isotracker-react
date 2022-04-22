@@ -29,6 +29,7 @@ export default class AcceptByPassPopUp extends Component {
     }
 
     async acceptByPass(){
+        
         const body ={
           id : this.state.id,
           type: this.state.answer
@@ -40,7 +41,7 @@ export default class AcceptByPassPopUp extends Component {
           },
           body: JSON.stringify(body)
       }
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/acceptByPass", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/answerByPass", options)
             .then(response => response.json())
             .then(async json => {
               if(json.success){
@@ -54,11 +55,11 @@ export default class AcceptByPassPopUp extends Component {
     render() {
         return (
             <section>
-                <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"50px", height:"28px"}} onClick={() => this.openModal()}>Accept</button>
+                <button className="ready__btn btn-sm btn-info"  style={{marginRight:"5px", width:"60px", height:"28px", backgroundColor:"#66A9F4"}} onClick={() => this.openModal()}>Answer</button>
                 <div>
-                    <Modal visible={this.state.visible} width="410" height="190" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="500" height="190" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="popUp__container" >
-                            <center className="popUp__title"><h3>Accept ByPass {this.props.tag}</h3></center>
+                            <center className="popUp__title"><h3>Answer ByPass {this.props.tag}</h3></center>
                                 
                         </div>
                         

@@ -78,7 +78,7 @@ class ByPassDataTable extends React.Component{
             }
 
             if(secureStorage.getItem("role") === "ProjectAdmin" && row.status === "Pending"){
-              row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/><button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"50px"}} onClick={() => this.rejectByPass(json.rows[i].id)}>Reject</button><button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"50px"}} onClick={() => this.naByPass(json.rows[i].id)}>N/A</button></div>
+              row.actions = <div style={{display: "flex"}}><button button className="ready__btn btn-sm btn-success" style={{width:"60px", marginRight:"5px"}} onClick={() => this.approve(json.rows[i].id)}>Approve</button><button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"60px"}} onClick={() => this.rejectByPass(json.rows[i].id)}>Reject</button><button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"60px"}} onClick={() => this.naByPass(json.rows[i].id)}>N/A</button></div>
             }else if(json.rows[i].email === secureStorage.getItem("user") && row.status === "Pending"){
               let type = 1
               if(json.rows[i].type === "Equipment"){
@@ -90,7 +90,9 @@ class ByPassDataTable extends React.Component{
               }
               row.actions = <div style={{display: "flex"}}><EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/><DeleteByPassPopUp deleteByPass={(id) => this.props.deleteByPass(id)} tag={json.rows[i].tag} id={json.rows[i].id}/></div>
             }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
-              row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"50px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
+              row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"60px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
+            }else if(json.rows[i].status === "Approved"){
+              row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/></div>
             }
 
             rows.push(row)
@@ -127,7 +129,7 @@ class ByPassDataTable extends React.Component{
               }
   
               if(secureStorage.getItem("role") === "ProjectAdmin" && row.status === "Pending"){
-                row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/><button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"50px"}} onClick={() => this.rejectByPass(json.rows[i].id)}>Reject</button><button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"50px"}} onClick={() => this.naByPass(json.rows[i].id)}>N/A</button></div>
+                row.actions = <div style={{display: "flex"}}><button button className="ready__btn btn-sm btn-success" style={{width:"60px", marginRight:"5px"}} onClick={() => this.approve(json.rows[i].id)}>Approve</button><button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"60px"}} onClick={() => this.rejectByPass(json.rows[i].id)}>Reject</button><button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"60px"}} onClick={() => this.naByPass(json.rows[i].id)}>N/A</button></div>
               }else if(json.rows[i].email === secureStorage.getItem("user") && row.status === "Pending"){
                 let type = 1
                 if(json.rows[i].type === "Equipment"){
@@ -139,7 +141,9 @@ class ByPassDataTable extends React.Component{
                 }
                 row.actions = <div style={{display: "flex"}}><EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/><DeleteByPassPopUp deleteByPass={(id) => this.props.deleteByPass(id)} tag={json.rows[i].tag} id={json.rows[i].id}/></div>
               }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
-                row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"50px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
+                row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"60px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
+              }else if(json.rows[i].status === "Approved"){
+                row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/></div>
               }
   
               rows.push(row)
@@ -205,6 +209,26 @@ class ByPassDataTable extends React.Component{
       body: JSON.stringify(body)
   }
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/closeByPass", options)
+        .then(response => response.json())
+        .then(async json => {
+          if(json.success){
+            this.props.success()
+          }
+        })
+  }
+
+  async approve(id){
+    const body ={
+      id : id,
+    }
+    const options = {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+  }
+    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/acceptByPass", options)
         .then(response => response.json())
         .then(async json => {
           if(json.success){
