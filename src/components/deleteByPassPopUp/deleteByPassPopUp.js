@@ -32,9 +32,9 @@ export default class DeleteByPassPopUp extends Component {
     render() {
         return (
             <section >
-                <button className="ready__btn btn-sm btn-danger" style={{backgroundColor:"#66A9F4", width:"50px", backgroundColor:"#FF3358"}} onClick={() => this.openModal()}>Delete</button>
+                <button className="ready__btn btn-sm btn-danger" style={{fontWeight: "bold", backgroundColor:"#66A9F4", width:"60px", backgroundColor:"#FF3358"}} onClick={() => this.openModal()}>Delete</button>
                 <div>
-                    <Modal visible={this.state.visible} width="450" height="170" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="650" height="130" effect="fadeInUp" onClickAway={() => this.closeModal()}>
 
                     <div className="popUp__container" >
                             <center className="popUp__title"><h3><strong>Are you sure you want to delete {this.props.tag}?</strong></h3></center>

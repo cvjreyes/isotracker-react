@@ -90,7 +90,7 @@ class ByPassDataTable extends React.Component{
               }
               row.actions = <div style={{display: "flex"}}><EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/><DeleteByPassPopUp deleteByPass={(id) => this.props.deleteByPass(id)} tag={json.rows[i].tag} id={json.rows[i].id}/></div>
             }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
-              row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"60px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
+              row.actions = <button className="ready__btn btn-sm btn-success"  style={{fontWeight: "bold", marginRight:"5px", width:"60px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
             }else if(json.rows[i].status === "Approved"){
               row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/></div>
             }
@@ -141,7 +141,7 @@ class ByPassDataTable extends React.Component{
                 }
                 row.actions = <div style={{display: "flex"}}><EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/><DeleteByPassPopUp deleteByPass={(id) => this.props.deleteByPass(id)} tag={json.rows[i].tag} id={json.rows[i].id}/></div>
               }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
-                row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"60px", height:"28px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
+                row.actions = <button className="ready__btn btn-sm btn-success"  style={{marginRight:"5px", width:"60px", fontWeight: "bold"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
               }else if(json.rows[i].status === "Approved"){
                 row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/></div>
               }

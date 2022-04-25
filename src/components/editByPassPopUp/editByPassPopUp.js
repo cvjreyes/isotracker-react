@@ -46,7 +46,7 @@ export default class EditPassPopUp extends Component {
         
         return (
             <section >
-                <button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"50px", marginRight:"5px"}} onClick={() => this.openModal()}>Edit</button>
+                <button className="ready__btn btn-sm btn-info" style={{fontWeight: "bold", backgroundColor:"#66A9F4", width:"60px", marginRight:"5px"}} onClick={() => this.openModal()}>Edit</button>
                 <div>
                     <Modal visible={this.state.visible} width="410" height="370" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div

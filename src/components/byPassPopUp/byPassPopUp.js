@@ -50,7 +50,7 @@ export default class ByPassPopUp extends Component {
     render() {
         return (
             <section >
-                <input type="button"  value="ByPass" className="btn btn_warning" style={{fontSize: "12px", padding: "2px 5px", backgroundColor: "#FF3358", color: "white", width: "100px", float: "left", marginRight: "5px", marginTop: "3px"}} onClick={() => this.openModal()} />
+                <input type="button"  value="BYPASS" className="btn btn_warning" style={{fontSize: "12px", fontWeight:"bold", padding: "2px 5px", backgroundColor: "#FF3358", color: "white", width: "100px", float: "left", marginRight: "5px", marginTop: "3px"}} onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="350" height="370" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div

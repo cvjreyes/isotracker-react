@@ -55,7 +55,7 @@ export default class AcceptByPassPopUp extends Component {
     render() {
         return (
             <section>
-                <button className="ready__btn btn-sm btn-info"  style={{marginRight:"5px", width:"60px", height:"28px", backgroundColor:"#66A9F4"}} onClick={() => this.openModal()}>Answer</button>
+                <button className="ready__btn btn-sm btn-info"  style={{fontWeight: "bold", marginRight:"5px", width:"60px", height:"28px", backgroundColor:"#66A9F4"}} onClick={() => this.openModal()}>Doc</button>
                 <div>
                     <Modal visible={this.state.visible} width="500" height="190" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="popUp__container" >
