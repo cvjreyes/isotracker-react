@@ -18,14 +18,15 @@ export default class ByPassPopUp extends Component {
    
 
     openModal() {      
+        document.getElementById("notes").value = ""
         this.setState({
             visible : true,
+            note: null
         });
     }
 
     closeModal() {
-
-        document.getElementById("notes").value = "";
+        
         this.setState({
             visible : false,
             blankFields: false,
@@ -35,7 +36,7 @@ export default class ByPassPopUp extends Component {
     }
 
     createByPass(){
-        const notes = document.getElementById("notes").value
+        const notes = this.state.note
         if(notes === "" || notes === null){
             this.setState({
                 blankFields: true
@@ -75,7 +76,7 @@ export default class ByPassPopUp extends Component {
                             </select>
                         </div>
                         <center style={{marginTop: "10px"}}>
-                            <textarea style={{width: "310px", height: "170px"}} placeholder='Notes...' id="notes" name="notes"></textarea>
+                            <textarea style={{width: "310px", height: "170px"}} placeholder='Notes...' id="notes" name="notes" onChange={(e) => this.setState({note: e.target.value})}></textarea>
                         </center>
                         <center className="popUp__buttons__container__users">
                             <button class="btn btn-sm btn-success" onClick={() => this.createByPass()} style={{marginRight:"5px", fontSize:"16px"}}>Create</button>
