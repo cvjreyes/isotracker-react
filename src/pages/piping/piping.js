@@ -13,6 +13,7 @@ import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3DTracker.svg"
 import Trash from "../../assets/images/Trash.png"
 import AlertF from "../../components/alert/alert"
+import Hold from "../../assets/images/Prohibit.png"
 
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
@@ -26,6 +27,7 @@ import IsoControlFullDataTable from "../../components/isoControlFullDataTable/is
 import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLineIdDataTable/isoControlGroupLineIdDataTable"
 import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 import EstimatedPipesExcel from "../../components/estimatedPipesExcel/estimatedPipesExcel"
+import IsoControlHoldsDataTable from "../../components/isoControlHoldsDataTable/isoControlHoldsDataTable";
 
 const CryptoJS = require("crypto-js");
 const SecureStorage = require("secure-web-storage");
@@ -61,7 +63,7 @@ const Piping = () => {
     const[progress, setProgress] = useState();
     const[successAlert, setSuccessAlert] = useState(false);
     const[selected, setSelected] = useState([])
-    const [updateData, setUpdateData] = useState();
+    const [updateData, setUpdateData] = useState(false);
     const [warningSelected, setWarningSelected] = useState(false);
     const [transactionSuccess, setTransactionSuccess] = useState(false)
     const [notVI, setNotVI] = useState(false)
@@ -200,13 +202,9 @@ const Piping = () => {
     var table = null
     let actionBtns = null
     let recycleBinBtn = null
-    let isoControlBtn = null
-    let isoControlNotModBtn = null
-    let isoControlFullBtn = null
-    let isoControlEstimatedBtn = null
+    let holdBtn = null
     let isocontrolWeightsComponent = null
     let isoControllLineIdGroupBtn = null
-    let editCustomBtn = null
     let uploadBOMBtn = null
 
     if(currentTab === "Estimated"){
@@ -235,6 +233,13 @@ const Piping = () => {
         recycleBinBtn = <button className="navBar__button" style={{backgroundColor:"#99C6F8", marginLeft:"232px"}}><img src={Trash} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Trash</p></button>
     }else{
         recycleBinBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Piping recycle bin")} style={{marginLeft:"232px"}}><img src={Trash} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Trash</p></button>
+    }
+
+    if(currentTab === "IsocontrolHolds"){
+        table = <IsoControlHoldsDataTable updateData={updateData} updateDataMethod={() => setUpdateData(!updateData)}/>
+        holdBtn = <button className="navBar__button"  style={{backgroundColor:"#99C6F8"}}><img src={Hold} alt="hold" className="navBar__icon"></img><p className="navBar__button__text">Hold</p></button>
+    }else{
+        holdBtn = <button className="navBar__button" onClick={()=>setCurrentTab("IsocontrolHolds")}><img src={Hold} alt="hold" className="navBar__icon"></img><p className="navBar__button__text">Hold</p></button>
     }
 
     if(currentTab === "IsoControlFull"){
@@ -628,6 +633,7 @@ const Piping = () => {
                       <tr className="isotracker__table__navBar__container">
                           <th  colspan="2" className="isotracker__table__navBar">
                             {recycleBinBtn}
+                            {holdBtn}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>

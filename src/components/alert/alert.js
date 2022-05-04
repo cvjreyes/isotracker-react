@@ -81,15 +81,27 @@ export default class Alert extends Component {
              this.setState({alert: alertComponent})
         }else{
             if(this.state.popUp){
-                alertComponent = <div className="alert__warning" style={{marginTop:"-200px"}}>
+                if(this.state.type === "successPopUp"){
+                    alertComponent = <div className="alert__success" style={{marginTop:"-200px"}}>
                                     
-                                    <img src={WarningIcon} className="alert__icon" alt="warning"></img>
-                                    <div className="text__alert__container">
-                                        <text className="alert__title">Warning</text>
-                                        <text className="alert__text" >{this.props.text}</text>
-                                    </div>
-                                
-                                </div>
+                    <img src={WarningIcon} className="alert__icon" alt="success"></img>
+                    <div className="text__alert__container">
+                        <text className="alert__title" style={{width:"300px"}}>Success</text>
+                        <text className="alert__text"  style={{marginLeft:"5px"}}>{this.props.text}</text>
+                    </div>
+                
+                </div>
+                }else{
+                    alertComponent = <div className="alert__warning" style={{marginTop:"-200px"}}>
+                                    
+                    <img src={WarningIcon} className="alert__icon" alt="warning"></img>
+                    <div className="text__alert__container">
+                        <text className="alert__title">Warning</text>
+                        <text className="alert__text" >{this.props.text}</text>
+                    </div>
+                
+                </div>
+                }
             }else{
                 alertComponent = <div className="alert__warning">
                                     
