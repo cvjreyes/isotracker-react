@@ -4,6 +4,7 @@ import { Table } from 'antd';
 import AcceptByPassPopUp from '../acceptByPassPopUp/acceptByPassPopUp';
 import EditByPassPopUp from '../editByPassPopUp/editByPassPopUp';
 import DeleteByPassPopUp from '../deleteByPassPopUp/deleteByPassPopUp';
+import ByPassRejNACommentPopUp from '../byPassRejNACommentPopUp/byPassRejNACommentPopUp';
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -69,7 +70,7 @@ class ByPassDataTable extends React.Component{
           let row = {}
           let rows = []
           for(let i = 0; i < json.rows.length; i++){
-            row = {key:json.rows[i].id, tag: json.rows[i].tag, isoid: json.rows[i].isoid, type: json.rows[i].type, date: json.rows[i].date.toString().substring(0,10) + " "+ json.rows[i].date.toString().substring(11,19), user: json.rows[i].user, notes: json.rows[i].note, status: json.rows[i].status, actions: null}
+            row = {key:json.rows[i].id, tag: json.rows[i].tag, isoid: json.rows[i].isoid, type: json.rows[i].type, date: json.rows[i].date.toString().substring(0,10) + " "+ json.rows[i].date.toString().substring(11,19), user: json.rows[i].user, notes: json.rows[i].note, comments: json.rows[i].comments, status: json.rows[i].status, actions: null}
             
             if(i % 2 === 0){
               row["color"] = "#fff"
@@ -78,7 +79,7 @@ class ByPassDataTable extends React.Component{
             }
 
             if(secureStorage.getItem("role") === "ProjectAdmin" && row.status === "Pending"){
-              row.actions = <div style={{display: "flex"}}><button button className="ready__btn btn-sm btn-success" style={{width:"60px", marginRight:"5px"}} onClick={() => this.approve(json.rows[i].id)}>Approve</button><button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"60px"}} onClick={() => this.rejectByPass(json.rows[i].id)}>Reject</button><button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"60px"}} onClick={() => this.naByPass(json.rows[i].id)}>N/A</button></div>
+              row.actions = <div style={{display: "flex"}}><button button className="ready__btn btn-sm btn-success" style={{width:"60px", marginRight:"5px"}} onClick={() => this.approve(json.rows[i].id)}>Approve</button><ByPassRejNACommentPopUp type={"Reject"} tag={json.rows[i].tag} id={json.rows[i].id} rejectByPass={this.rejectByPass.bind(this)}/><ByPassRejNACommentPopUp type={"N/A"} tag={json.rows[i].tag} id={json.rows[i].id} naByPass={this.naByPass.bind(this)}/></div>
             }else if(json.rows[i].email === secureStorage.getItem("user") && row.status === "Pending"){
               let type = 1
               if(json.rows[i].type === "Equipment"){
@@ -120,7 +121,7 @@ class ByPassDataTable extends React.Component{
             let row = {}
             let rows = []
             for(let i = 0; i < json.rows.length; i++){
-              row = {key:json.rows[i].id, tag: json.rows[i].tag, isoid: json.rows[i].isoid, type: json.rows[i].type, date: json.rows[i].date.toString().substring(0,10) + " "+ json.rows[i].date.toString().substring(11,19), user: json.rows[i].user, notes: json.rows[i].note, status: json.rows[i].status, actions: null}
+              row = {key:json.rows[i].id, tag: json.rows[i].tag, isoid: json.rows[i].isoid, type: json.rows[i].type, date: json.rows[i].date.toString().substring(0,10) + " "+ json.rows[i].date.toString().substring(11,19), user: json.rows[i].user, notes: json.rows[i].note, comments: json.rows[i].comments, status: json.rows[i].status, actions: null}
               
               if(i % 2 === 0){
                 row["color"] = "#fff"
@@ -129,7 +130,7 @@ class ByPassDataTable extends React.Component{
               }
   
               if(secureStorage.getItem("role") === "ProjectAdmin" && row.status === "Pending"){
-                row.actions = <div style={{display: "flex"}}><button button className="ready__btn btn-sm btn-success" style={{width:"60px", marginRight:"5px"}} onClick={() => this.approve(json.rows[i].id)}>Approve</button><button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"60px"}} onClick={() => this.rejectByPass(json.rows[i].id)}>Reject</button><button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"60px"}} onClick={() => this.naByPass(json.rows[i].id)}>N/A</button></div>
+                row.actions = <div style={{display: "flex"}}><button button className="ready__btn btn-sm btn-success" style={{width:"60px", marginRight:"5px"}} onClick={() => this.approve(json.rows[i].id)}>Approve</button><ByPassRejNACommentPopUp type={"Reject"} tag={json.rows[i].tag} id={json.rows[i].id} rejectByPass={this.rejectByPass.bind(this)}/><ByPassRejNACommentPopUp type={"N/A"} tag={json.rows[i].tag} id={json.rows[i].id} naByPass={this.naByPass.bind(this)}/></div>
               }else if(json.rows[i].email === secureStorage.getItem("user") && row.status === "Pending"){
                 let type = 1
                 if(json.rows[i].type === "Equipment"){
@@ -157,9 +158,10 @@ class ByPassDataTable extends React.Component{
   }
 
 
-  async rejectByPass(id){
+  async rejectByPass(id, comments){
     const body ={
       id : id,
+      comments: comments
     }
     const options = {
       method: "POST",
@@ -177,9 +179,10 @@ class ByPassDataTable extends React.Component{
         })
   }
 
-  async naByPass(id){
+  async naByPass(id, comments){
     const body ={
       id : id,
+      comments: comments
     }
     const options = {
       method: "POST",
@@ -343,7 +346,12 @@ class ByPassDataTable extends React.Component{
         title: <div className="dataTable__header__text">Notes</div>,
         dataIndex: 'notes',
         key: 'notes',
-        width:'40%',
+        width:'29%',
+      },
+      {
+        title: <div className="dataTable__header__text">Comments</div>,
+        dataIndex: 'comments',
+        key: 'comments',
       },
       {
         title: <div className="dataTable__header__text">Status</div>,

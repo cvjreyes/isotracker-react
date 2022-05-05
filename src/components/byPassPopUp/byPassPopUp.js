@@ -73,6 +73,7 @@ export default class ByPassPopUp extends Component {
                                 <option value={2}>Equipment</option>
                                 <option value={3}>Material</option>
                                 <option value={4}>PID</option>
+                                <option value={5}>Civil</option>
                             </select>
                         </div>
                         <center style={{marginTop: "10px"}}>
