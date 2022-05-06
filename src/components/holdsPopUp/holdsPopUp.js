@@ -40,9 +40,9 @@ export default class HoldsPopUp extends Component {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsocontrolHolds/" + this.props.tag, options)
             .then(response => response.json())
             .then(async json => {
-                
                 if(json.holds.length > 0){
                     for(let i = 0; i < json.holds.length; i++){
+                        
                         content.push(<tr className="holds__row">                   
                             <td style={{border: "0.28px solid #D2D2D2", width:"50px", verticalAlign:"middle", textAlign:"center"}}>
                                 <p className="holds__hold__text">ISO</p>

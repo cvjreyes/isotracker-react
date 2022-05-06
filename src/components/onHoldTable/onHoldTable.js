@@ -30,7 +30,7 @@ class OnHoldTable extends React.Component{
     .then(response => response.json())
     .then(json => {
       let dict = {}
-
+      
       for(let i = 0; i < json.length; i++){
         dict[json[i].name] = json[i].code
       }
@@ -50,7 +50,6 @@ class OnHoldTable extends React.Component{
             .then(response => response.json())
             .then(async json => {
                     var rows = []
-                   
                     for(let i = 0; i < json.rows.length; i++){
                       if(json.rows[i].onhold !== 2){
                         if(json.rows[i].filename){
@@ -63,9 +62,9 @@ class OnHoldTable extends React.Component{
                           }
                           var row = null
                           if(this.state.currentRole === "SpecialityLead"){
-                            row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].tag} holds = {holds} descriptions = {descriptions}/> <button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeHold(json.rows[i].filename)}>EXCLUDE</button></div>}
+                            row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].iso_tag} holds = {holds} descriptions = {descriptions}/> <button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeHold(json.rows[i].filename)}>EXCLUDE</button></div>}
                           }else{
-                            row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].tag} holds = {holds} descriptions = {descriptions}/> </div>}
+                            row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].iso_tag} holds = {holds} descriptions = {descriptions}/> </div>}
                           }
                           
                       
@@ -74,7 +73,7 @@ class OnHoldTable extends React.Component{
                           var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
                           var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
   
-                          var row = {key:i,  id: json.rows[i].isoid, type: "", revision: "", date: "", from: "", user: "", holds: <HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].tag} holds = {holds} descriptions = {descriptions}/>}
+                          var row = {key:i,  id: json.rows[i].isoid, type: "", revision: "", date: "", from: "", user: "", holds: <HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].iso_tag} holds = {holds} descriptions = {descriptions}/>}
                           
                           rows.push(row) 
                         }
@@ -156,9 +155,9 @@ class OnHoldTable extends React.Component{
                             user = <div style={{textAlign:"left", display:"flex"}}>{this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}</div>
                           }
                             if(this.state.currentRole === "SpecialityLead"){
-                              row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].tag} holds = {holds} descriptions = {descriptions}/> <button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeHold(json.rows[i].filename)}>EXCLUDE</button></div>}
+                              row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].iso_tag} holds = {holds} descriptions = {descriptions}/> <button class="csp_exclude_btn btn-sm btn-warning" onClick={() => this.excludeHold(json.rows[i].filename)}>EXCLUDE</button></div>}
                             }else{
-                              row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].tag} holds = {holds} descriptions = {descriptions}/> </div>}
+                              row = {key:i,  id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].to, user: user, holds: <div><HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].iso_tag} holds = {holds} descriptions = {descriptions}/> </div>}
                             }
                         
                             rows.push(row)   
@@ -166,7 +165,7 @@ class OnHoldTable extends React.Component{
                             var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
                             var descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
     
-                            var row = {key:i,  id: json.rows[i].isoid, type: "", revision: "", date: "", from: "", user: "", holds: <HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].tag} holds = {holds} descriptions = {descriptions}/>}
+                            var row = {key:i,  id: json.rows[i].isoid, type: "", revision: "", date: "", from: "", user: "", holds: <HoldsPopUp isoid={json.rows[i].isoid} tag={json.rows[i].iso_tag} holds = {holds} descriptions = {descriptions}/>}
                             
                             rows.push(row) 
                           }
