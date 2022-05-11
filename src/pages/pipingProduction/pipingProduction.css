@@ -1,0 +1,83 @@
+.back__button{
+    height: 50px;
+    width: 100px;
+    border: 0;
+    background-color: transparent;
+    margin-left: 10px;
+    border-radius: 1em 1em 1em 1em;
+    transition: 0.3s;
+    font-family: 'Quicksand', sans-serif;
+    
+    background-color:#99C6F8;
+}
+
+.back__button:hover{
+    background-color: #0070ED;
+    color: white;
+}
+
+.back__button__text{
+    font-size: 17px;
+    margin-top: 9px;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.materials__tables__container{
+    margin-left: 100px;
+    margin-top: 10px;
+}
+
+.management__container{
+    margin-left: 100px;
+    margin-top: 50px;
+}
+
+.materials__title{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.graph__container{
+    background-color: blue;
+    height: 600px;
+    margin-left: 100px;
+    margin-top: 50px;
+    width: 1550px;
+}
+
+.materials__pc__container{
+    height: 600px;
+    width: 500px;
+    margin-top: 50px;
+    margin-left: 100px;
+}
+
+.top__container{
+    display: flex;
+}
+
+.save__button{
+    height: 32px;
+    width: 32px;
+    border: 0;
+    background-color:#99C6F8;
+    margin-left: 15px;
+    border-radius: 0.5em;
+    transition: 0.3s;
+    position: absolute;
+}
+
+.save__button:hover{
+    background-color:#0070ED;
+}
+
+.save__icon{
+    height: 30px;
+    width: auto;
+    margin-left: -3px;
+}
+
+.warning__text{
+    color: red;
+    font-size: 17px;
+}

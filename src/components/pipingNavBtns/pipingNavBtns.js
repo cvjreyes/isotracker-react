@@ -1,6 +1,7 @@
 //Botones inferiores para navegar por isoControl
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useHistory} from "react-router";
 
 const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
@@ -29,7 +30,8 @@ const CryptoJS = require("crypto-js");
     });
 
 const PipingNavBtns = props =>{
-    var myTrayButton, modelledButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn
+    const history = useHistory();
+    var myTrayButton, modelledButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn, prodBtn
     if(props.currentTab === "PipingMyTray"){
         secureStorage.setItem("tab", "PipingMyTray")
         myTrayButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}}>My Tray</button>
@@ -110,6 +112,8 @@ const PipingNavBtns = props =>{
             {stressButton}
             {supportsButton}
             {sDesignButtn}
+            <p className="isotracker__table__trays__group">Reporting</p>
+            <button type="button" className="trays__navBtns text-left"  onClick={() => history.push('/'+process.env.REACT_APP_PROJECT+'/pipingProduction')}>Production</button>
         </div>
     );
 };
