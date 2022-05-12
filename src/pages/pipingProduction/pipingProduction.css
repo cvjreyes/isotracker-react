@@ -1,6 +1,6 @@
 .back__button{
     height: 50px;
-    width: 100px;
+    width: 80px;
     border: 0;
     background-color: transparent;
     margin-left: 10px;
@@ -29,7 +29,6 @@
 
 .management__container{
     margin-left: 100px;
-    margin-top: 50px;
 }
 
 .materials__title{
@@ -38,18 +37,19 @@
 }
 
 .graph__container{
-    background-color: blue;
-    height: 600px;
+    height: 620px;
     margin-left: 100px;
-    margin-top: 50px;
-    width: 1550px;
+    margin-top: 30px;
+    width: 1750px;
+    border: 1px solid lightgray;
+    padding: 5px 5px 10px 5px;
 }
 
 .materials__pc__container{
     height: 600px;
     width: 500px;
-    margin-top: 50px;
-    margin-left: 100px;
+    margin-top: 87px;
+    margin-left: 70px;
 }
 
 .top__container{
@@ -81,3 +81,355 @@
     color: red;
     font-size: 17px;
 }
+
+.overall-table:not(.innerBorderLeft):not(.emptyColumns)~.handsontable:not(.ht_clone_top) thead tr th:first-child {
+    content: "ABC";
+  }
+
+.overall-table tbody tr:nth-child(3) th {
+  background-color:rgb(147,112,219);
+  color:black
+}
+
+.overall-table tbody tr:nth-child(4) th {
+    background-color:rgb(255,80,80);
+    color:black
+}
+
+.overall-table tbody tr:nth-child(1) th {
+    background-color:	rgb(245,245,245);
+}
+
+.overall-table tbody tr:nth-child(1) td {
+    background-color:	rgb(245,245,245)
+}
+
+.overall-table tbody tr:nth-child(2) th {
+    background-color:	rgb(245,245,245);
+}
+
+.overall-table tbody tr:nth-child(2) td {
+    background-color:	rgb(245,245,245)
+}
+
+.overall-table tbody tr:nth-child(3) th {
+    background-color:	rgb(147,112,219);
+}
+
+.overall-table tbody tr:nth-child(3) td {
+    background-color:	rgb(147,112,219);
+    color: black;
+}
+
+.overall-table tbody tr:nth-child(4) th {
+    background-color:	rgb(255,80,80)
+}
+
+.overall-table tbody tr:nth-child(4) td {
+    background-color:	rgb(255,80,80);
+    color: black;
+}
+
+
+
+
+
+.mat1-table tbody tr:nth-child(5) th {
+    color:black
+}
+
+.mat1-table tbody tr:nth-child(1) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat1-table tbody tr:nth-child(1) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat1-table tbody tr:nth-child(2) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat1-table tbody tr:nth-child(2) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat1-table tbody tr:nth-child(3) th {
+    background-color:	rgb(0,191,255);
+}
+
+.mat1-table tbody tr:nth-child(3) td {
+    background-color:	rgb(0,191,255);
+    color: black;
+}
+
+.mat1-table tbody tr:nth-child(4) th {
+    background-color:	rgb(65,105,225)
+}
+
+.mat1-table tbody tr:nth-child(4) td {
+    background-color:	rgb(65,105,225);
+    color: black;
+}
+
+.mat1-table tbody tr:nth-child(5) th {
+    background-color:	rgb(176,224,230)
+}
+
+.mat1-table tbody tr:nth-child(5) td {
+    background-color:	rgb(176,224,230);
+    color: black;
+}
+
+
+
+
+
+.mat2-table tbody tr:nth-child(5) th {
+    color:black
+}
+
+.mat2-table tbody tr:nth-child(1) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat2-table tbody tr:nth-child(1) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat2-table tbody tr:nth-child(2) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat2-table tbody tr:nth-child(2) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat2-table tbody tr:nth-child(3) th {
+    background-color:	rgb(50,205,50);
+}
+
+.mat2-table tbody tr:nth-child(3) td {
+    background-color:	rgb(50,205,50);
+    color: black;
+}
+
+.mat2-table tbody tr:nth-child(4) th {
+    background-color:	rgb(0,128,0)
+}
+
+.mat2-table tbody tr:nth-child(4) td {
+    background-color:	rgb(0,128,0);
+    color: black;
+}
+
+.mat2-table tbody tr:nth-child(5) th {
+    background-color:	rgb(152,251,152)
+}
+
+.mat2-table tbody tr:nth-child(5) td {
+    background-color:	rgb(152,251,152);
+    color: black;
+}
+
+
+
+
+.mat3-table tbody tr:nth-child(5) th {
+    color:black
+}
+
+.mat3-table tbody tr:nth-child(1) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat3-table tbody tr:nth-child(1) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat3-table tbody tr:nth-child(2) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat3-table tbody tr:nth-child(2) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat3-table tbody tr:nth-child(3) th {
+    background-color:	rgb(255,165,0);
+}
+
+.mat3-table tbody tr:nth-child(3) td {
+    background-color:	rgb(255,165,0);
+    color: black;
+}
+
+.mat3-table tbody tr:nth-child(4) th {
+    background-color:	rgb(255,140,0)
+}
+
+.mat3-table tbody tr:nth-child(4) td {
+    background-color:	rgb(255,140,0);
+    color: black;
+}
+
+.mat3-table tbody tr:nth-child(5) th {
+    background-color:	rgb(255,215,0)
+}
+
+.mat3-table tbody tr:nth-child(5) td {
+    background-color:	rgb(255,215,0);
+    color: black;
+}
+
+
+
+
+.mat4-table tbody tr:nth-child(5) th {
+    color:black
+}
+
+.mat4-table tbody tr:nth-child(1) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat4-table tbody tr:nth-child(1) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat4-table tbody tr:nth-child(2) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat4-table tbody tr:nth-child(2) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat4-table tbody tr:nth-child(3) th {
+    background-color:	rgb(255,192,203);
+}
+
+.mat4-table tbody tr:nth-child(3) td {
+    background-color:	rgb(255,192,203);
+    color: black;
+}
+
+.mat4-table tbody tr:nth-child(4) th {
+    background-color:	rgb(255,20,147)
+}
+
+.mat4-table tbody tr:nth-child(4) td {
+    background-color:	rgb(255,20,147);
+    color: black;
+}
+
+.mat4-table tbody tr:nth-child(5) th {
+    background-color:	rgb(255,105,180)
+}
+
+.mat4-table tbody tr:nth-child(5) td {
+    background-color:	rgb(255,105,180);
+    color: black;
+}
+
+
+
+
+.mat5-table tbody tr:nth-child(5) th {
+    color:black
+}
+
+.mat5-table tbody tr:nth-child(1) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat5-table tbody tr:nth-child(1) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat5-table tbody tr:nth-child(2) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat5-table tbody tr:nth-child(2) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat5-table tbody tr:nth-child(3) th {
+    background-color:	rgb(220,220,220);
+}
+
+.mat5-table tbody tr:nth-child(3) td {
+    background-color:	rgb(220,220,220);
+    color: black;
+}
+
+.mat5-table tbody tr:nth-child(4) th {
+    background-color:	rgb(112,128,144)
+}
+
+.mat5-table tbody tr:nth-child(4) td {
+    background-color:	rgb(112,128,144);
+    color: black;
+}
+
+.mat5-table tbody tr:nth-child(5) th {
+    background-color:	rgb(169,169,169)
+}
+
+.mat5-table tbody tr:nth-child(5) td {
+    background-color:	rgb(169,169,169);
+    color: black;
+}
+
+
+
+
+.mat6-table tbody tr:nth-child(5) th {
+    color:black
+}
+
+.mat6-table tbody tr:nth-child(1) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat6-table tbody tr:nth-child(1) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat6-table tbody tr:nth-child(2) th {
+    background-color:	rgb(245,245,245);
+}
+
+.mat6-table tbody tr:nth-child(2) td {
+    background-color:	rgb(245,245,245)
+}
+
+.mat6-table tbody tr:nth-child(3) th {
+    background-color:rgb(175,238,238)
+}
+
+.mat6-table tbody tr:nth-child(3) td {
+    background-color:rgb(175,238,238);
+    color: black;
+}
+
+.mat6-table tbody tr:nth-child(4) th {
+    background-color:rgb(32,178,170)
+}
+
+.mat6-table tbody tr:nth-child(4) td {
+    background-color:rgb(32,178,170);
+    color: black;
+}
+
+.mat6-table tbody tr:nth-child(5) th {
+    background-color:	rgb(0,206,209)
+}
+
+.mat6-table tbody tr:nth-child(5) td {
+    background-color:	rgb(0,206,209);
+    color: black;
+}
+
+

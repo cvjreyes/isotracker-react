@@ -1,4 +1,4 @@
-import NavBar from '../../components/navBar/navBar';
+
 import React, { useState , useEffect} from 'react'
 import { HotTable } from '@handsontable/react';
 
@@ -10,7 +10,9 @@ import AlertF from "../../components/alert/alert"
 
 import './pipingProduction.css'
 import SaveIcon from "../../assets/images/save.svg"
-
+import { Line } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
+import NavBarProdCurve from '../../components/navBarProdCurve/navBarProdCurve';
 //Página de home con el menú para ir a las aplicaciones de isotracker
 
 const PITRequests = () =>{
@@ -43,25 +45,28 @@ const PITRequests = () =>{
         }
     });
 
-    document.body.style.zoom = 0.8
-
     const [updateData, setUpdateData] = useState(false)
     const [updateRows, setUpdateRows] = useState(false)
     const [tables, setTables] = useState([])
     const [materials, setMaterials] = useState()
     const [materialsList, setMaterialsList] = useState([])
+    const [materialsIDList, setMaterialsIDList] = useState([])
     const [piping, setPiping] = useState()
     const [management, setManagement] = useState([])
 
     const [estimatedData, setEstimatedData] = useState({})
     const [forecastData, setForecastData] = useState({})
     const [estimatedMaterialData, setEstimatedMaterialData] = useState({})
+    const [overallTable, setOverallTable] = useState()
 
     const [success, setSuccess] = useState(false)
     const [spanAlert, setSpanAlert] = useState(false)
     const [pipingAlert, setPipingAlert] = useState(false)
     const [materialsAlert, setMaterialsAlert] = useState(false)
 
+    const [lineChart, setLineChart] = useState()
+
+    document.body.style.zoom = 1
 
     function handleOnIdle(){
         const body = {
@@ -84,190 +89,17 @@ const PITRequests = () =>{
     }
 
     useEffect(async() =>{
-    
+
+        const colors = ["rgb(65,105,225)", "rgb(176,224,230)", "rgb(0,191,255)", "rgb(0,128,0)", "rgb(124,252,0)", "rgb(152,251,152)", "rgb(255,140,0)", "rgb(255,215,0)", "rgb(255,165,0)", "rgb(255,20,147)", "rgb(255,105,180)", "rgb(255,192,203)", "rgb(112,128,144)", "rgb(169,169,169)", "rgb(220,220,220)", "rgb(32,178,170)", "rgb(0,206,209)", "	rgb(175,238,238)"]
+        
+        const table_class = ["mat1-table", "mat2-table", "mat3-table", "mat4-table", "mat5-table", "mat6-table"]
+
         const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
             },
         }
-
-        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getEstimatedByMaterial", options)
-            .then(response => response.json())
-            .then(async json => {
-                let est = estimatedMaterialData
-                for(let i = 0; i < json.estimated.length; i++){
-                    est[json.estimated[i].id] = json.estimated[i].estimated
-                }
-                await setEstimatedMaterialData(est)
-            })
-
-        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIssuedByMatWeek", options)
-        .then(response => response.json())
-        .then(async json => {
-            const issued = json.issued
-            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getEstimatedMatWeek", options)
-                .then(response => response.json())
-                .then(async json => {
-
-                    const estimated = json.estimated
-                    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getForecastMatWeek", options)
-                        .then(response => response.json())
-                        .then(async json => {
-                            const forecast = json.forecast
-                            let tables = []
-                            let material = estimated[0].material_id
-                            const settings = {
-                                licenseKey: 'non-commercial-and-evaluation',
-                                colWidths: 40,
-                                rowHeaderWidth: 190
-                                //... other options
-                            }
-                            let weeks = []
-                            let est = {}
-                            let sumEst = {}
-                            let sumReal = {}
-                            let countEst = 0
-                            let countReal = 0
-                            let forc = {}
-                            let col = []
-                            let sumEstCells = []
-                            for(let i = 0; i < estimated.length; i++){
-                                if(estimated[i].material_id === material){
-                                    weeks.push(estimated[i].week.toString())
-                                    est[estimated[i].week.toString()] = estimated[i].estimated
-                                    forc[forecast[i].week.toString()] = forecast[i].estimated
-                                    countEst += estimated[i].estimated
-                                    sumEst[estimated[i].week.toString()] = countEst
-                                    if(issued[material]){
-                                        if(issued[material][estimated[i].week]){
-                                            countReal += issued[material][estimated[i].week]
-                                        }
-                                    }
-                                    sumReal[estimated[i].week.toString()] = countReal
-                                    col.push({ data: estimated[i].week.toString(), type: "numeric"})
-                                    sumEstCells.push({row: 1, col: i, readOnly:true})
-                                    sumEstCells.push({row: 3, col: i, readOnly:true})
-                                }else{
-                                    let estData = estimatedData
-                                    estData[material] = est
-                                    await setEstimatedData(estData)
-                                    let forcData = forecastData
-                                    forcData[material] = forc
-                                    await setForecastData(forcData)
-                                    let totalEst = estimatedMaterialData[estimated[i-1].material_id]
-                                    if(!totalEst){
-                                        totalEst = 0
-                                    }
-                                    let diff = countEst - totalEst
-                                    let warning = null
-                                    if(totalEst < countEst){
-                                        warning = <text className="warning__text">*Estimated exceeded by {diff}!</text>
-                                    }
-                                    if(!totalEst){
-                                        totalEst = "(0 estimated)"
-                                    }else{
-                                        totalEst = "(" + totalEst.toString() + " estimated)"
-                                    }
-
-                                    await tables.push(<div id="hot-app"><text className="materials__title">{estimated[i-1].name.toUpperCase()} Isometrics <text style={{fontSize:"17px"}}>{totalEst}</text> {warning}</text><button className="save__button" onClick={()=> submitEstimatedForecast(estimated[i-1].material_id)}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
-                                    <div style={{marginTop:"10px"}}><HotTable
-                                    data={[est, issued[material], forc, sumEst, sumReal]}
-                                    colHeaders={weeks}
-                                    rowHeaders={["Estimated", "Real", "Forecast", "Estimated progress", "Real progress"]}
-                                    width="2150"
-                                    height="200"
-                                    settings={settings} 
-                                    manualColumnResize={true}
-                                    manualRowResize={true}
-                                    columns= {col}
-                                    filters={true}
-                                    cell = {sumEstCells}
-                                /></div></div>)
-                                weeks = [estimated[i].week.toString()]
-                                est = {}
-                                forc = {}
-                                sumEst = {}
-                                sumReal = {}
-                                est[estimated[i].week.toString()] = estimated[i].estimated
-                                forc[forecast[i].week.toString()] = forecast[i].estimated
-                                if(issued[estimated[i].material_id]){
-                                    countReal = issued[estimated[i].material_id][estimated[i].week]
-                                }else{
-                                    countReal = 0
-                                }
-                                sumReal[estimated[i].week.toString()] = countReal
-
-                                if(estimated[i].estimated){
-                                    countEst = estimated[i].estimated
-                                }else{
-                                    countEst = 0
-                                }
-                                sumEst[estimated[i].week.toString()] = countEst
-                                
-                                col = [{ data: estimated[i].week.toString(), type: "numeric"}]
-                                material = estimated[i].material_id
-                                }
-                            }
-                            let estData = estimatedData
-                            estData[material] = est
-                            await setEstimatedData(estData)
-                            let forcData = forecastData
-                            forcData[material] = forc
-                            await setForecastData(forcData)
-                            let totalEst = estimatedMaterialData[material]
-                            if(!totalEst){
-                                totalEst = 0
-                            }
-                            let diff = countEst - totalEst
-                            let warning = null
-                            if(totalEst < countEst){
-                                warning = <text className="warning__text">*Estimated exceeded by {diff}!</text>
-                            }
-                            if(!totalEst){
-                                totalEst = "(0 estimated)"
-                            }else{
-                                totalEst = "(" + totalEst.toString() + " estimated)"
-                            }
-
-
-
-                            await tables.push(<div id="hot-app"><text className="materials__title">{estimated[estimated.length-1].name.toUpperCase()} Isometrics <text style={{fontSize:"17px"}}>{totalEst}</text> {warning}</text><button className="save__button" onClick={()=> submitEstimatedForecast(material)}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
-                            <div style={{marginTop:"10px"}}><HotTable
-                                    data={[est, issued[material], forc, sumEst, sumReal]}
-                                    colHeaders={weeks}
-                                    rowHeaders={["Estimated", "Real", "Forecast", "Estimated progress", "Real progress"]}
-                                    width="2150"
-                                    height="200"
-                                    settings={settings} 
-                                    manualColumnResize={true}
-                                    manualRowResize={true}
-                                    columns= {col}
-                                    filters={true}
-                                    cell = {sumEstCells}
-                                /></div></div>)
-
-                            setTables(tables)
-                        })
-                })
-         })  
-
-        
-
-        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaterials", options)
-            .then(response => response.json())
-            .then(async json => {
-                const materials = json.materials
-                let mat = []
-                let matList = []
-                for(let i = 0; i < materials.length; i++){
-                    mat.push({"id": materials[i].id, "Material": materials[i].name})
-                    matList.push(materials[i].name)
-                }
-                await setMaterials(mat)
-                await setMaterialsList(matList)
-            })
-
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaterialsPipingClass", options)
             .then(response => response.json())
             .then(async json => {
@@ -285,6 +117,422 @@ const PITRequests = () =>{
             .then(async json => {
                 const span = json.span
                 await setManagement({"Starting date": span[0].starting_date.toString().substring(8,10) + "/" + span[0].starting_date.toString().substring(5,7) + "/" + span[0].starting_date.toString().substring(0,4), "Finishing date": span[0].finishing_date.toString().substring(8,10) + "/" + span[0].finishing_date.toString().substring(5,7) + "/" + span[0].finishing_date.toString().substring(0,4)})
+            })
+
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getEstimatedByMaterial", options)
+            .then(response => response.json())
+            .then(async json => {
+                let est = estimatedMaterialData
+                for(let i = 0; i < json.estimated.length; i++){
+                    est[json.estimated[i].id] = json.estimated[i].estimated
+                }
+                await setEstimatedMaterialData(est)
+            })
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaterials", options)
+            .then(response => response.json())
+            .then(async json => {
+                const materials = json.materials
+                let mat = []
+                let matList = []
+                let matIDList = []
+                for(let i = 0; i < materials.length; i++){
+                    mat.push({"id": materials[i].id, "Material": materials[i].name})
+                    matList.push(materials[i].name)
+                    matIDList.push(materials[i].id)
+                }
+                await setMaterialsIDList(matIDList)
+                await setMaterials(mat)
+                await setMaterialsList(matList)
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIssuedByMatWeek", options)
+                .then(response => response.json())
+                .then(async json => {
+                    const issued = json.issued
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getEstimatedMatWeek", options)
+                        .then(response => response.json())
+                        .then(async json => {
+
+                            const estimated = json.estimated
+                            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getForecastMatWeek", options)
+                                .then(response => response.json())
+                                .then(async json => {
+                                    const forecast = json.forecast
+                                    let tables = []
+                                    let material = estimated[0].material_id
+                                    const settings = {
+                                        licenseKey: 'non-commercial-and-evaluation',
+                                        colWidths: 40,
+                                        rowHeaderWidth: 190
+                                        //... other options
+                                    }
+
+                                    let weeks = []
+                                    let graphData = []
+                                    let est = {}
+                                    let sumEst = {}
+                                    let sumReal = {}
+                                    let sumForc = {}
+                                    let sumEstGraph = []
+                                    let sumRealGraph = []
+                                    let sumForcGraph = []
+                                    let countEst = 0
+                                    let countReal = 0
+                                    let countForc = 0
+                                    let forc = {}
+                                    let col = []
+                                    let sumEstCells = []
+
+                                    for(let i = 0; i < estimated.length; i++){
+                                        if(estimated[i].material_id === material){
+                                            weeks.push(estimated[i].week.toString())
+                                            est[estimated[i].week.toString()] = estimated[i].estimated
+                                            forc[forecast[i].week.toString()] = forecast[i].estimated
+                                            countForc += forecast[i].estimated
+                                            countEst += estimated[i].estimated
+                                            sumEst[estimated[i].week.toString()] = countEst
+                                            if(issued[material]){
+                                                if(issued[material][estimated[i].week]){
+                                                    countReal += issued[material][estimated[i].week]
+                                                }
+                                            }
+                                            sumReal[estimated[i].week.toString()] = countReal
+                                            sumForc[estimated[i].week.toString()] = countForc
+                                            col.push({ data: estimated[i].week.toString(), type: "numeric"})
+                                            sumEstCells.push({row: 1, col: i, readOnly:true})
+                                            sumEstCells.push({row: 3, col: i, readOnly:true})
+                                            sumEstCells.push({row: 4, col: i, readOnly:true})
+                                        }else{
+                                            let estData = estimatedData
+                                            estData[material] = est
+                                            await setEstimatedData(estData)
+                                            let forcData = forecastData
+                                            forcData[material] = forc
+                                            await setForecastData(forcData)
+                                            let totalEst = estimatedMaterialData[estimated[i-1].material_id]
+                                            if(!totalEst){
+                                                totalEst = 0
+                                            }
+                                            let diff = countEst - totalEst
+                                            let warning = null
+                                            if(totalEst < countEst){
+                                                warning = <text className="warning__text">*Estimated exceeded by {diff}!</text>
+                                            }
+                                            if(!totalEst){
+                                                totalEst = "(0 estimated)"
+                                            }else{
+                                                totalEst = "(" + totalEst.toString() + " estimated)"
+                                            }
+
+                                            let t_class = table_class[matIDList.indexOf(material)]
+
+                                            await tables.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"30px", marginTop:"20px"}}><text className="materials__title">{estimated[i-1].name.toUpperCase()} Isometrics <text style={{fontSize:"17px"}}>{totalEst}</text> {warning}</text><button className="save__button" onClick={()=> submitEstimatedForecast(estimated[i-1].material_id)}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                            data={[est, issued[material], forc, sumEst, sumReal]}
+                                            colHeaders={weeks}
+                                            rowHeaders={["Estimated", "Real", "Forecast", "Estimated progress", "Real progress"]}
+                                            width="1750"
+                                            height="160"
+                                            settings={settings} 
+                                            manualColumnResize={true}
+                                            manualRowResize={true}
+                                            columns= {col}
+                                            filters={true}
+                                            cell = {sumEstCells}
+                                            className={t_class}
+                                        /></div></div>)
+
+                                        Object.keys(sumEst).map(function(key, index) {
+                                            sumEstGraph.push(sumEst[key])
+                                        });
+
+                                        Object.keys(sumReal).map(function(key, index) {
+                                            sumRealGraph.push(sumReal[key])
+                                        });
+
+                                        Object.keys(sumForc).map(function(key, index) {
+                                            sumForcGraph.push(sumForc[key])
+                                        });
+
+                                        let color_index = ((matIDList.indexOf(material)) * 3)
+                                        
+                                        graphData.push({
+                                            label: 'Estimated ' + estimated[i-1].name,
+                                            fill: false,
+                                            lineTension: 0.2,
+                                            backgroundColor: colors[color_index],
+                                            borderColor: colors[color_index],
+                                            borderWidth: 1,
+                                            data: sumEstGraph
+                                        })
+
+                                        graphData.push({
+                                            label: 'Forecast ' + estimated[i-1].name,
+                                            fill: false,
+                                            lineTension: 0.2,
+                                            backgroundColor: colors[color_index + 2],
+                                            borderColor: colors[color_index + 2],
+                                            borderWidth: 1,
+                                            data: sumForcGraph
+                                        })
+
+                                        graphData.push({
+                                            label: 'Real ' + estimated[i-1].name,
+                                            fill: false,
+                                            lineTension: 0.2,
+                                            backgroundColor: colors[color_index + 1],
+                                            borderColor: colors[color_index + 1],
+                                            borderWidth: 1,
+                                            data: sumRealGraph
+                                        })
+            
+                                        weeks = [estimated[i].week.toString()]
+                                        est = {}
+                                        forc = {}
+                                        sumEst = {}
+                                        sumReal = {}
+                                        sumForc = {}
+                                        sumEstGraph = []
+                                        sumRealGraph = []
+                                        sumForcGraph = []
+                                        est[estimated[i].week.toString()] = estimated[i].estimated
+                                        forc[forecast[i].week.toString()] = forecast[i].estimated
+                                        if(issued[estimated[i].material_id]){
+                                            if(issued[estimated[i].material_id]["1"]){
+                                                countReal = issued[estimated[i].material_id][estimated[i].week]
+                                            }else{
+                                                countReal = 0
+                                            }
+                                        }else{
+                                            countReal = 0
+                                        }
+                                        sumReal[estimated[i].week.toString()] = countReal
+
+                                        if(estimated[i].estimated){
+                                            countEst = estimated[i].estimated
+                                        }else{
+                                            countEst = 0
+                                        }
+
+                                        if(forecast[i].estimated){
+                                            countForc = forecast[i].estimated
+                                        }else{
+                                            countForc = 0
+                                        }
+                                        sumForc[forecast[i].week.toString()] = countForc
+                                        sumEst[estimated[i].week.toString()] = countEst
+                                        
+                                        col = [{ data: estimated[i].week.toString(), type: "numeric"}]
+                                        material = estimated[i].material_id
+                                        }
+                                    }
+                                    let estData = estimatedData
+                                    estData[material] = est
+                                    await setEstimatedData(estData)
+                                    let forcData = forecastData
+                                    forcData[material] = forc
+                                    await setForecastData(forcData)
+                                    let totalEst = estimatedMaterialData[material]
+                                    if(!totalEst){
+                                        totalEst = 0
+                                    }
+                                    let diff = countEst - totalEst
+                                    let warning = null
+                                    if(totalEst < countEst){
+                                        warning = <text className="warning__text">*Estimated exceeded by {diff}!</text>
+                                    }
+                                    if(!totalEst){
+                                        totalEst = "(0 estimated)"
+                                    }else{
+                                        totalEst = "(" + totalEst.toString() + " estimated)"
+                                    }
+
+                                    let t_class = table_class[matIDList.indexOf(material)]
+
+                                    await tables.push(<div id="hot-app" style={{width:"1750px", paddingBottom:"30px", marginTop:"20px"}}><text className="materials__title">{estimated[estimated.length-1].name.toUpperCase()} Isometrics <text style={{fontSize:"17px"}}>{totalEst}</text> {warning}</text><button className="save__button" onClick={()=> submitEstimatedForecast(material)}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
+                                    <div style={{marginTop:"10px"}}><HotTable
+                                            data={[est, issued[material], forc, sumEst, sumReal]}
+                                            colHeaders={weeks}
+                                            rowHeaders={["Estimated", "Real", "Forecast", "Estimated progress", "Real progress"]}
+                                            width="1750"
+                                            height="160"
+                                            settings={settings} 
+                                            manualColumnResize={true}
+                                            manualRowResize={true}
+                                            columns= {col}
+                                            filters={true}
+                                            cell = {sumEstCells}
+                                            className={t_class}
+                                        /></div></div>)
+
+                                    setTables(tables)
+
+                                    Object.keys(sumEst).map(function(key, index) {
+                                        sumEstGraph.push(sumEst[key])
+                                    });
+
+                                    Object.keys(sumReal).map(function(key, index) {
+                                        sumRealGraph.push(sumReal[key])
+                                    });
+                                    Object.keys(sumForc).map(function(key, index) {
+                                        sumForcGraph.push(sumForc[key])
+                                    });
+
+                                    let color_index = (matIDList.indexOf(material)) * 3
+                                    
+                                    graphData.push({
+                                        label: 'Estimated ' + estimated[estimated.length-1].name,
+                                        fill: false,
+                                        lineTension: 0.2,
+                                        backgroundColor: colors[color_index],
+                                        borderColor: colors[color_index],
+                                        borderWidth: 1,
+                                        data: sumEstGraph
+                                    })
+
+                                    graphData.push({
+                                        label: 'Forecast ' + estimated[estimated.length-1].name,
+                                        fill: false,
+                                        lineTension: 0.2,
+                                        backgroundColor: colors[color_index + 2],
+                                        borderColor: colors[color_index + 2],
+                                        borderWidth: 1,
+                                        data: sumForcGraph
+                                    })
+
+                                    graphData.push({
+                                        label: 'Real ' + estimated[estimated.length-1].name,
+                                        fill: false,
+                                        lineTension: 0.2,
+                                        backgroundColor: colors[color_index + 1],
+                                        borderColor: colors[color_index + 1],
+                                        borderWidth: 1,
+                                        data: sumRealGraph
+                                    })
+
+                                
+                                    let overallTable = []
+                                    let totalEstimated = 0
+
+                                    let estimatedOverall = {}
+                                    let esimatedOverallSum = {}
+                                    let estimatedOverallCount = 0
+                                    let estimatedOverallGraph = []
+
+                                    let realOverall = {}
+                                    let realOverallSum = {}
+                                    let realOverallCount = 0
+                                    let realOverallGraph = []
+
+                                    Object.keys(estimatedMaterialData).map(function(key, index) {
+                                        totalEstimated += estimatedMaterialData[key]
+                                    });
+
+                                    Object.keys(issued).map(function(key, index) {
+                                        Object.keys(issued[key]).map(function(k, index) {
+                                            if(realOverall[k]){
+                                                realOverall[k] += issued[key][k]
+                                            }else{
+                                                realOverall[k] = issued[key][k]
+                                            }
+                                        })
+                                    });
+
+                                    Object.keys(estimated).map(function(key, index) {
+                                        if(estimatedOverall[estimated[key].week]){
+                                            estimatedOverall[estimated[key].week] += estimated[key].estimated
+                                        }else{
+                                            estimatedOverall[estimated[key].week] = estimated[key].estimated
+                                        }
+                                    });
+
+                                    let labels = []
+                                    let overallCells = []
+                                    await Object.keys(estimatedOverall).map(function(key, index) {
+                                        if(realOverall[key]){
+                                            realOverallCount += realOverall[key]
+                                        }
+                                        realOverallSum[key] = realOverallCount
+                                        estimatedOverallCount += estimatedOverall[key]
+                                        esimatedOverallSum[key] = estimatedOverallCount
+                                        estimatedOverallGraph.push(estimatedOverallCount)
+                                        realOverallGraph.push(realOverallCount)
+
+                                        overallCells.push({row: 2, col: index, className: "overallCell__estSum"})
+                                        overallCells.push({row: 3, col: index, className: "overallCell__realSum"})
+
+                                        labels.push("W" + key.toString())
+                                    });
+
+                                    graphData.push({
+                                        label: 'Estimated Overall',
+                                        fill: false,
+                                        lineTension: 0.2,
+                                        backgroundColor: 'rgb(147,112,219)',
+                                        borderColor: 'rgb(147,112,219)',
+                                        borderWidth: 1,
+                                        data: estimatedOverallGraph
+                                    })
+
+                                    graphData.push({
+                                        label: 'Real Overall',
+                                        fill: false,
+                                        lineTension: 0.2,
+                                        backgroundColor: 'rgb(255,80,80)',
+                                        borderColor: 'rgb(255,80,80)',
+                                        borderWidth: 1,
+                                        data: realOverallGraph
+                                    })
+
+                                    warning = null
+                                    if(totalEstimated < estimatedOverallCount){
+                                        warning = <text className="warning__text">*Estimated exceeded by {estimatedOverallCount-totalEstimated}!</text>
+                                    }
+
+                                    await overallTable.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", borderTop:"1px solid lightgray", width:"1750px", paddingBottom:"30px", paddingTop:"30px", marginTop:"20px"}}><text className="materials__title">OVERALL Isometrics <text style={{fontSize:"17px"}}>({totalEstimated} estimated)</text> {warning}</text>
+                                    <div style={{marginTop:"10px"}}><HotTable
+                                            data={[estimatedOverall, realOverall, esimatedOverallSum, realOverallSum]}
+                                            colHeaders={weeks}
+                                            rowHeaders={["Estimated", "Real", "Estimated progress", "Real progress"]}
+                                            width="1750"
+                                            height="138"
+                                            settings={settings} 
+                                            manualColumnResize={true}
+                                            manualRowResize={true}
+                                            columns= {col}
+                                            filters={true}
+                                            readOnly= {true}
+                                            className='overall-table'
+                                        /></div></div>)
+
+                                    await setOverallTable(overallTable)
+                                    await setLineChart(<Line
+                                        data={{
+                                            labels: labels,
+                                            datasets: graphData
+                                        }}
+                                        options={{
+                                            hover: {
+                                                mode: 'new mode'
+                                            },
+                                            plugins: {
+                                                title: {
+                                                    display: true,
+                                                    text: "ISOMETRICS IFC",
+                                                    font: {size: "22px"}
+                                                },
+                                                legend: {
+                                                    display: true,
+                                                    position: "left"
+                                                },
+                                                
+                                            }
+                                            
+                                        }}
+                                    />)
+                                })
+                        })
+                })  
             })
 
     }, [updateData])
@@ -395,16 +643,16 @@ const PITRequests = () =>{
     
     const matSettings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: 450,
+        colWidths: 400,
         //... other options
     }
 
     const pipingSettings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: 225,
+        colWidths: 200,
         //... other options
     }
-
+    
     return(
 
         <body>
@@ -415,7 +663,7 @@ const PITRequests = () =>{
                 onIdle={handleOnIdle}
                 debounce={250}
             />
-            <NavBar/>
+            <NavBarProdCurve/>
             <div className={`alert alert-success ${spanAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSpanAlert(false)}>
                 <AlertF type="success" text="Project week span saved!" margin="0px"/>
             </div>
@@ -428,10 +676,10 @@ const PITRequests = () =>{
             <div className={`alert alert-success ${success ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSuccess(false)}>
                 <AlertF type="success" text="Changes saved!" margin="0px"/>
             </div>
-            <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"175px", marginLeft:"100px", marginTop: "120px"}}><img src={BackIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="back__button__text">Back</p></button>
+            <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"175px", marginLeft:"100px", marginTop: "80px"}}><img src={BackIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="back__button__text">Back</p></button>
             <div className="top__container">
                 <div className="graph__container">
-
+                {lineChart}
                 </div>
                 <div className="materials__pc__container">
                 <div id="hot-app" style={{marginBottom:"20px"}}>
@@ -439,8 +687,8 @@ const PITRequests = () =>{
                         data={materials}
                         colHeaders = {["<b>Material</b>"]}
                         rowHeaders={true}
-                        width="500"
-                        height="225"
+                        width="450"
+                        height="200"
                         settings={matSettings} 
                         manualColumnResize={true}
                         manualRowResize={true}
@@ -463,7 +711,7 @@ const PITRequests = () =>{
                         ]}
                     />
                     </div>
-                        <button class="btn btn-sm btn-info" onClick={() => addRowMaterials()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"190px"}}>Add</button>
+                        <button class="btn btn-sm btn-info" onClick={() => addRowMaterials()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"165px"}}>Add</button>
                         <button class="btn btn-sm btn-success" onClick={() => submitChangesMaterials()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
                     <div id="hot-app" style={{marginBottom:"20px", marginTop:"40px"}}>
                     <HotTable
@@ -471,7 +719,7 @@ const PITRequests = () =>{
                         colHeaders = {["<b>Piping class</b>", "<b>Material</b>"]}
                         rowHeaders={true}
                         width="500"
-                        height="225"
+                        height="200"
                         settings={pipingSettings} 
                         manualColumnResize={true}
                         manualRowResize={true}
@@ -494,7 +742,7 @@ const PITRequests = () =>{
                         ]}
                     />
                     </div>
-                    <button class="btn btn-sm btn-info" onClick={() => addRowPiping()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"190px"}}>Add</button>
+                    <button class="btn btn-sm btn-info" onClick={() => addRowPiping()} style={{marginRight:"5px", fontSize:"16px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"165px"}}>Add</button>
                     <button class="btn btn-sm btn-success" onClick={() => submitChangesPiping()} style={{marginRight:"5px", fontSize:"16px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
 
                 </div>
@@ -502,15 +750,14 @@ const PITRequests = () =>{
             <div className="management__container">
                 <text className="materials__title">Project Management</text>
                 <button className="save__button" onClick={()=> submitManagement()}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
-                
-                
+ 
                 <div style={{marginTop:"10px"}}>
                     <HotTable
                         data={management}
                         colHeaders = {["<b>Starting date</b>", "<b>Finishing date</b>"]}
                         rowHeaders={true}
                         width="500"
-                        height="120"
+                        height="60"
                         settings={pipingSettings} 
                         manualColumnResize={true}
                         manualRowResize={true}
@@ -535,7 +782,7 @@ const PITRequests = () =>{
                 </div>
             </div>
             <div className="materials__tables__container">
-                
+                {overallTable}
                 {tables}
             </div>
         </body>
