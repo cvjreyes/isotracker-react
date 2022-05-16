@@ -48,10 +48,10 @@ const PITRequests = () =>{
     const [updateData, setUpdateData] = useState(false)
     const [updateRows, setUpdateRows] = useState(false)
     const [tables, setTables] = useState([])
-    const [materials, setMaterials] = useState()
+    const [materials, setMaterials] = useState([])
     const [materialsList, setMaterialsList] = useState([])
     const [materialsIDList, setMaterialsIDList] = useState([])
-    const [piping, setPiping] = useState()
+    const [piping, setPiping] = useState([])
     const [management, setManagement] = useState([])
 
     const [estimatedData, setEstimatedData] = useState({})
@@ -117,6 +117,7 @@ const PITRequests = () =>{
             .then(async json => {
                 const span = json.span
                 await setManagement({"Starting date": span[0].starting_date.toString().substring(8,10) + "/" + span[0].starting_date.toString().substring(5,7) + "/" + span[0].starting_date.toString().substring(0,4), "Finishing date": span[0].finishing_date.toString().substring(8,10) + "/" + span[0].finishing_date.toString().substring(5,7) + "/" + span[0].finishing_date.toString().substring(0,4)})
+                
             })
 
 
@@ -145,6 +146,7 @@ const PITRequests = () =>{
                 await setMaterialsIDList(matIDList)
                 await setMaterials(mat)
                 await setMaterialsList(matList)
+                console.log(materials)
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIssuedByMatWeek", options)
                 .then(response => response.json())
                 .then(async json => {
@@ -503,6 +505,7 @@ const PITRequests = () =>{
                                             filters={true}
                                             readOnly= {true}
                                             className='overall-table'
+                                            
                                         /></div></div>)
 
                                     await setOverallTable(overallTable)
@@ -523,7 +526,7 @@ const PITRequests = () =>{
                                                 },
                                                 legend: {
                                                     display: true,
-                                                    position: "left"
+                                                    position: "left",
                                                 },
                                                 
                                             }
@@ -552,6 +555,7 @@ const PITRequests = () =>{
     }
 
     async function submitChangesMaterials(){
+        console.log(materials)
         const body ={
             materials : materials
         }
