@@ -156,6 +156,7 @@ const PITRequests = () =>{
                         .then(async json => {
 
                             const estimated = json.estimated
+                            if(estimated.length > 0){
                             fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getForecastMatWeek", options)
                                 .then(response => response.json())
                                 .then(async json => {
@@ -527,13 +528,23 @@ const PITRequests = () =>{
                                                 legend: {
                                                     display: true,
                                                     position: "left",
+                                                    labels: {
+                                                        filter: function (legendItem, chartData) {
+                                                                chartData.datasets[legendItem.datasetIndex].hidden = true
+                                                            return true
+                                                        },
+                                                    },
                                                 },
                                                 
-                                            }
+                                            },
+                                            
                                             
                                         }}
                                     />)
+
+                                    console.log(lineChart)
                                 })
+                            }
                         })
                 })  
             })
@@ -555,7 +566,6 @@ const PITRequests = () =>{
     }
 
     async function submitChangesMaterials(){
-        console.log(materials)
         const body ={
             materials : materials
         }
