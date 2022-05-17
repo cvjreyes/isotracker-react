@@ -52,6 +52,7 @@ import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLine
 import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
+import ByPassDataTable from "../../components/byPassDataTable/byPassDataTable"
 
 const IsoCtrlF = () => {
    
@@ -1703,6 +1704,18 @@ const IsoCtrlF = () => {
         })
     }
 
+    async function exportByPass(){
+        setErrorReports(false)
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportByPass")
+        .then(response => response.json())
+        .then(json => {
+            
+            const headers = ["TAG", "ISO ID", "Type", "Date", "User", "Notes", "Comments", "Status"]
+            exportToExcel(JSON.parse(json), "ByPass", headers)
+        })
+    }
+
     async function sendHold(fileName){
         const body ={
             fileName : fileName
@@ -1777,13 +1790,87 @@ const IsoCtrlF = () => {
 
     }
 
+    async function createByPass(type, notes, id){
+        const body = {
+            type: type,
+            notes: notes,
+            username: currentUser,
+            id: id
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/createByPass", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                successAlert()
+            }
+        })
+        setUpdateData(!updateData)
+    }
+
+    async function editByPass(type, notes, id){
+        const body = {
+            type: type,
+            notes: notes,
+            id: id
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/editByPass", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                successAlert()
+            }
+        })
+        setUpdateData(!updateData)
+    }
+
+    async function deleteByPass(id){
+        const body = {
+            id: id
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/deleteByPass", options)
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                successAlert()
+            }
+        })
+        setUpdateData(!updateData)
+    }
+
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
     }if(currentTab === "CheckBy"){
         tableContent = <CheckInTable/>
     }if(currentTab === "My Tray"){
-        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} success={success.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
+        tableContent = <MyTrayTable  updateData = {updateData} onChange={value=> setSelected(value)} cancelVerifyClick={cancelVerifyClick.bind(this)} sendProcessClick={sendProcessClick.bind(this)} success={success.bind(this)} sendInstrumentClick = {sendInstrumentClick.bind(this)} sendCancelProcessClick={sendCancelProcessClick.bind(this)} sendCancelInstrumentClick={sendCancelInstrumentClick.bind(this)} updateD = {updateD.bind(this)} createByPass = {(type, notes, id) => createByPass(type, notes, id)} currentRole = {currentRole} currentUser = {currentUser} selected={selected} />
     }if(currentTab === "Recycle bin"){
         tableContent = <BinTable onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} updateData = {updateData}/>
     }if(currentTab === "On hold"){
@@ -1827,6 +1914,10 @@ const IsoCtrlF = () => {
  
         tableContent = <TimeTrackDataTable/>
 
+    }if(currentTab === "ByPass"){
+ 
+        tableContent = <ByPassDataTable success={success.bind(this)} updateData={updateData} editByPass = {editByPass.bind(this)} deleteByPass={deleteByPass.bind(this)}/>
+
     }
 
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
@@ -1839,9 +1930,9 @@ const IsoCtrlF = () => {
     currentRole === "SpecialityLead" && currentTab !== "Progress") || (currentTab === "Process" && currentRole === "Process") ||
     (currentRole === "Instrument" && currentTab === "Instrument") ||
     (currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Issued"){
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} success={success.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)} exportTimeTrack={exportTimeTrack.bind(this)}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} success={success.bind(this)} onlyDownload = {false} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)} exportTimeTrack={exportTimeTrack.bind(this)} exportByPass={exportByPass.bind(this)}/>
     }else if(currentTab !== "History" && currentTab !== "Upload IsoFiles" && currentTab !== "Recycle bin" && currentTab !== "Reports" && currentTab !== "Progress" && currentTab !== "Modelled"){
-        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} success={success.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)} exportTimeTrack={exportTimeTrack.bind(this)}/>
+        actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} success={success.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)} exportTimeTrack={exportTimeTrack.bind(this)} exportByPass={exportByPass.bind(this)}/>
     }
     if(currentTab === "Modelled"){
         actionButtons = <div><button className="action__btn" onClick={()=>downloadModelled()}>Export</button><button className="action__btn" onClick={()=>unlockAll()}>Unlock all</button></div>
@@ -1851,7 +1942,7 @@ const IsoCtrlF = () => {
         actionButtons = null
     }
 
-    let recycleBinBtn, onHoldBtn, issuedBtn, reportsBtn, processBtn, instrumentationBtn = null
+    let recycleBinBtn, onHoldBtn, issuedBtn, reportsBtn, processBtn, instrumentationBtn, byPassBtn = null
 
     if(currentTab === "Recycle bin"){
         recycleBinBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Recycle bin")} style={{backgroundColor:"#99C6F8", marginLeft:"232px"}}><img src={Trash} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Trash</p></button>
@@ -1921,6 +2012,11 @@ const IsoCtrlF = () => {
     }else{
         processBtn = null
         instrumentationBtn = null
+    }
+    if(currentTab === "ByPass"){
+        byPassBtn = <button className="navBar__button" onClick={()=>setCurrentTab("ByPass")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">ByPass</p></button>
+    }else{
+        byPassBtn = <button className="navBar__button" onClick={()=>setCurrentTab("ByPass")} style={{width:"120px"}}><img src={Reports} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">ByPass</p></button>
     }
 
     if(currentTab === "History"){
@@ -2120,6 +2216,7 @@ const IsoCtrlF = () => {
                               {recycleBinBtn}
                               {onHoldBtn}
                               {issuedBtn}
+                              {byPassBtn}
                               {reportsBtn}
                               {progressBtn}
                               {modelledBtn}
