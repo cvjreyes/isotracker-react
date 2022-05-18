@@ -744,7 +744,7 @@ class DataTable extends React.Component{
         sorter:{
           compare: (a, b) => { return a.type.localeCompare(b.type)},
         },
-        width:"130px"
+        width:"100px"
       },
       {
         title: <center className="dataTable__header__text">Revision</center>,
@@ -764,7 +764,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
         },
-        width:"180px"
+        width:"190px"
       },
       {
         title: <div className="dataTable__header__text">From</div>,
@@ -794,7 +794,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
-        width:"420px"
+        width:"400px"
       },
       {
         title: <div className="dataTable__header__text">Actions</div>,

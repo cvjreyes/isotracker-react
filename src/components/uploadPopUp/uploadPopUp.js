@@ -41,6 +41,7 @@ export default class UploadPopUp extends Component {
                         <div className="dnd__container">
                             {this.state.dad}
                         </div> 
+                        
                         <center className="popUp__warning__title">***WARNING!*** This action will replace the current(s) file(s). Take appropiate cautions.</center>
                         <center className="popUp__warning__subtitle">If you are not sure of this action, click cancel and contact your supervisor.</center>
                         <div className="popUp__buttons__container">
