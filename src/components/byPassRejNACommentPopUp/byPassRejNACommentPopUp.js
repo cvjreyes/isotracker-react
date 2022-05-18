@@ -19,9 +19,9 @@ export default class ByPassRejNACommentPopUp extends Component {
 
     componentDidMount(){
         if(this.state.type === "Reject"){
-            this.setState({button: <button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"60px"}} onClick={() => this.openModal()}>Reject</button>})
+            this.setState({button: <button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"60px", height:"27px"}} onClick={() => this.openModal()}>Reject</button>})
         }else{
-            this.setState({button: <button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"60px"}} onClick={() => this.openModal()}>N/A</button>})     
+            this.setState({button: <button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"60px", height:"27px"}} onClick={() => this.openModal()}>N/A</button>})     
         }
     }
    
