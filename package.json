@@ -19,6 +19,8 @@
     "downloadjs": "^1.4.7",
     "file-saver": "^2.0.5",
     "handsontable": "^9.0.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "jszip": "^3.6.0",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
@@ -38,7 +40,8 @@
     "recharts": "^2.0.9",
     "secure-web-storage": "^1.0.2",
     "web-vitals": "^1.1.0",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.16.9",
+    "xlsx-js-style": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
