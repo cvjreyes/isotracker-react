@@ -8,7 +8,8 @@ import BackIcon from "../../assets/images/back.svg"
 import Reports from "../../assets/images/Notepad.png"
 import Graph from "../../assets/images/ChartBar.png"
 import AlertF from "../../components/alert/alert"
-
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx-js-style";
@@ -89,6 +90,8 @@ const PITRequests = () =>{
 
     const [lineChart, setLineChart] = useState()
 
+    const [loading, setLoading] = useState(false)
+
     const [estimatedOverall, setEstimatedOverall] = useState([])
     const [realOverall, setRealOverall] = useState([])
     const [estimatedProgressOverall, setEstimatedProgressOverall] = useState([])
@@ -121,7 +124,8 @@ const PITRequests = () =>{
         const table_class = ["mat1-table", "mat2-table", "mat3-table", "mat4-table", "mat5-table", "mat6-table"]
         const weight_table_class = ["wmat1-table", "wmat2-table", "wmat3-table", "wmat4-table", "wmat5-table", "wmat6-table"]
         
-        
+        await setLoading(true)
+
         const options = {
             method: "GET",
             headers: {
@@ -869,7 +873,7 @@ const PITRequests = () =>{
                 }
 
             })
-
+            await setLoading(false)
     }, [updateData, tab])
 
     async function printDocument() {
@@ -1498,6 +1502,12 @@ const PITRequests = () =>{
             <div className={`alert alert-success ${success ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSuccess(false)}>
                 <AlertF type="success" text="Changes saved!" margin="0px"/>
             </div>
+            <Collapse in={loading}>
+                <Alert style={{fontSize:"16px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"0"}} severity="info"
+                    >
+                    Processing...
+                </Alert>
+            </Collapse>
             <div id="pdf">
             <div className="top__container">
                 {tabBtns}
