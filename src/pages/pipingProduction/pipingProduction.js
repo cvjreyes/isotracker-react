@@ -56,6 +56,8 @@ const PITRequests = () =>{
 
     const [tab, setTab] = useState("prod")
     const [tabBtns, setTabBtns] = useState(null)
+    const [usersType, setUsersType] = useState("iso")
+    const [usersData, setUsersData] = useState(null)
 
     const [updateData, setUpdateData] = useState(false)
     const [updateRows, setUpdateRows] = useState(false)
@@ -180,9 +182,10 @@ const PITRequests = () =>{
                 await setMaterialsList(matList)
 
                 if(tab === "prod"){
-                    setTabBtns(<div>
+                    setTabBtns(<div style={{width: "140px"}}>
                         <button className="reporting__tab__button" style={{backgroundColor:"#338DF1"}}>P</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("weight")}>W</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("users")}>U</button>
                     </div>)
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIssuedByMatWeek", options)
                     .then(response => response.json())
@@ -607,9 +610,10 @@ const PITRequests = () =>{
                             })
                     })  
                 }else if(tab === "weight"){
-                    setTabBtns(<div>
+                    setTabBtns(<div style={{width: "140px"}}>
                         <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px",backgroundColor:"#338DF1"}}>W</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("users")}>U</button>
                     </div>)
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIssuedWeightByMatWeek", options)
                     .then(response => response.json())
@@ -870,11 +874,115 @@ const PITRequests = () =>{
                                 }
                             })
                     })  
+                }else if(tab === "users"){
+                    if(usersType === "iso"){
+                        await setTabBtns(<div style={{width: "90px"}}>
+                        <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("weight")}>W</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px", backgroundColor:"#338DF1"}}>U</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px", backgroundColor:"#338DF1"}}>I</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setUsersType("weight")}>W</button>
+                        </div>)
+                    }else if(usersType === "weight"){
+                        await setTabBtns(<div style={{width: "90px"}}>
+                        <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("weight")}>W</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px", backgroundColor:"#338DF1"}}>U</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setUsersType("iso")}>I</button>
+                        <button className="reporting__tab__button" style={{marginTop:"10px", backgroundColor:"#338DF1"}}>W</button>
+                        </div>)
+                    }
+                   
+
+                    await setTables([])
+                    await setLineChart(null)
+                    await setOverallTable([])
+                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getEstimatedForecastWeight", options)
+                    .then(response => response.json())
+                    .then(async json => {
+                        const estimated = json.estimated
+                        const usersSettings = {
+                            licenseKey: 'non-commercial-and-evaluation',
+                            colWidths: 40,
+                            rowHeaderWidth: 190
+                            //... other options
+                        }
+                        let weeks = []
+                        let col = []
+                        if(estimated.length > 0){
+                            for(let i = 0; i < estimated.length; i++){
+                                weeks.push(estimated[i].week.toString())
+                                col.push({ data: estimated[i].week.toString(), type: "numeric"})
+                            }
+                            if(usersType === "iso"){
+                                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsosByUserWeek", options)
+                                .then(response => response.json())
+                                .then(async json => {
+                                    const user_isos = json.user_isos
+                                    await setUsersData(user_isos)
+                                    let t = []
+                                    Object.keys(user_isos).map(async function(user, index) {
+    
+                                        await t.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                        <div style={{marginTop:"10px"}}><HotTable
+                                                data={[user_isos[user]["assigned"], user_isos[user]["sent"], user_isos[user]["returned"], user_isos[user]["remaining"]]}
+                                                colHeaders={weeks}
+                                                rowHeaders={["Assigned", "Sent", "Returned", "Remaining"]}
+                                                width="1750"
+                                                height="145"
+                                                settings={usersSettings} 
+                                                manualColumnResize={true}
+                                                manualRowResize={true}
+                                                columns= {col}
+                                                filters={true}
+                                                className='users-table'
+                                                readOnly={true}
+                                                
+                                        /></div></div>)
+                                    });
+                                    
+                                    await setTables(t)
+                                })
+                            }else if(usersType === "weight"){
+                                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getWeightByUserWeek", options)
+                            .then(response => response.json())
+                            .then(async json => {
+                                const user_isos = json.user_isos
+                                await setUsersData(user_isos)
+                                let t = []
+                                Object.keys(user_isos).map(async function(user, index) {
+
+                                    await t.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Weight)<text style={{fontSize:"17px"}}></text></text></div>
+                                    <div style={{marginTop:"10px"}}><HotTable
+                                            data={[user_isos[user]["assigned"], user_isos[user]["sent"], user_isos[user]["returned"], user_isos[user]["remaining"]]}
+                                            colHeaders={weeks}
+                                            rowHeaders={["Assigned", "Sent", "Returned", "Remaining"]}
+                                            width="1750"
+                                            height="145"
+                                            settings={usersSettings} 
+                                            manualColumnResize={true}
+                                            manualRowResize={true}
+                                            columns= {col}
+                                            filters={true}
+                                            className='users-table'
+                                            readOnly={true}
+                                            
+                                    /></div></div>)
+                                });
+                                
+                                await setTables(t)
+                            })
+                            }
+                            
+                        }
+                        
+                    })
+                    
                 }
 
             })
             await setLoading(false)
-    }, [updateData, tab])
+    }, [updateData, tab, usersType])
 
     async function printDocument() {
         const input = document.getElementById('graph');
@@ -1463,6 +1571,208 @@ const PITRequests = () =>{
             const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
             const data = new Blob([excelBuffer], { type: fileType });
             FileSaver.saveAs(data, "Weights.xlsx");
+        }else if(tab === "users"){
+            let apiData = []
+            let type = ""
+            if(usersType === "iso"){
+                apiData = [{},{0:"User efficiency (Isometrics)"}]
+                type = "User efficiency (Isometrics)"
+            }else if(usersType === "weight"){
+                apiData = [{},{0:"User efficiency (Weight)"}]
+                type = "User efficiency (Weight)"
+
+            }
+
+            Object.keys(usersData).map(function(user, index) {
+                apiData.push({})
+                apiData.push({})
+                apiData.push({0:user})
+
+                let assigned = {}, sent = {}, returned = {}, remaining = {}, weeks = {0: "WEEK"}
+                
+                assigned[0] = "Assigned"
+                sent[0] = "Sent"
+                returned[0] = "Returned"
+                remaining[0] = "Remaining"
+                Object.keys(usersData[user]["remaining"]).map(function(key, index) {
+                    weeks[key] = "W" + key
+                    if(usersData[user]["assigned"]){
+                        if(usersData[user]["assigned"][key]){
+                            assigned[key] = usersData[user]["assigned"][key]
+                        }else{
+                            assigned[key] = ""
+                        }
+                    }else{
+                        assigned[key] = ""
+                    }
+
+                    if(usersData[user]["sent"]){
+                        if(usersData[user]["sent"][key]){
+                            sent[key] = usersData[user]["sent"][key]
+                        }else{
+                            sent[key] = ""
+                        }
+                    }else{
+                        sent[key] = ""
+                    }
+
+                    if(usersData[user]["returned"]){
+                        if(usersData[user]["returned"][key]){
+                            returned[key] = usersData[user]["returned"][key]
+                        }else{
+                            returned[key] = ""
+                        }
+                    }else{
+                        returned[key] = ""
+                    }
+
+                    if(usersData[user]["remaining"]){
+                        if(usersData[user]["remaining"][key]){
+                            remaining[key] = usersData[user]["remaining"][key]
+                        }else{
+                            remaining[key] = 0
+                        }
+                    }else{
+                        remaining[key] = ""
+                    }
+
+                });
+                apiData.push(weeks)
+                apiData.push(assigned)
+                apiData.push(sent)
+                apiData.push(returned)
+                apiData.push(remaining)
+                
+            });
+            const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+            let ws = XLSX.utils.json_to_sheet(apiData, {skipHeader: 1}); 
+
+            Object.keys(ws).map(function(i, index) {
+               
+                if (typeof(ws[i]) != "string"){
+                    if(index === 0){
+                        ws[i].s = { 
+                            font: {
+                                name: "arial",
+                                weight: "bold",
+                                sz: 12,
+                                color: {rgb: "4169E1"}
+                            },
+                            alignment: {
+                                vertical: "center",
+                                horizontal: "center",
+                                wrapText: '3',
+                            },
+                        }  ;
+                    }else if(ws[i].v === type){
+                        ws[i].s = { 
+                            font: {
+                                name: "arial",
+                            },
+                            alignment: {
+                                vertical: "center",
+                                horizontal: "center",
+                            },
+                            border: {
+                                right: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                left: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                bottom: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                top: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                            },
+                            fill: { fgColor: { rgb: "9370DB"} }  
+                        }  ;
+                    }else if(ws[i].v.toString().includes("W")){
+                        ws[i].s = { 
+                            font: {
+                                name: "arial",
+                            },
+                            alignment: {
+                                vertical: "center",
+                                horizontal: "center",
+                            },
+                            border: {
+                                right: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                left: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                bottom: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                top: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                            },
+                            fill: { fgColor: { rgb: "C0C0C0"} }  
+                        }  ;
+                    }else{
+                        ws[i].s = { 
+                            font: {
+                                name: "arial",
+                                
+                            },
+                            alignment: {
+                                vertical: "center",
+                            },
+                            border: {
+                                right: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                left: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                bottom: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                                top: {
+                                    style: "thin",
+                                    color: "000000"
+                                },
+                            },
+                            fill: { fgColor: { rgb: "DCDCDC"} }  
+                        }  ;
+                    }
+    
+                }
+            })
+
+
+            var wscols = [
+                {wch: 30}, // "characters"
+            ];
+    
+            ws['!cols'] = wscols
+    
+            const wb = { Sheets: { Production: ws }, SheetNames: ["Production"] };
+            const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+            const data = new Blob([excelBuffer], { type: fileType });
+            let name = ""
+            if(usersType === "iso"){
+                name = "Users efficiency (Isometrics).xlsx"
+            }else if(usersType === "weight"){
+                name = "Users efficiency (Weight).xlsx"
+            }
+            FileSaver.saveAs(data, name);
         }
         
     }
@@ -1478,158 +1788,207 @@ const PITRequests = () =>{
         colWidths: 200,
         //... other options
     }
-    
-    return(
-
-        <body style={{overflow:"hidden", height:"100vh"}}>
-            {updateData}
-            {updateRows}
-            <IdleTimer
-                timeout={1000 * 60 * 15}
-                onIdle={handleOnIdle}
-                debounce={250}
-            />
-            <NavBarProdCurve/>
-            <div className={`alert alert-success ${spanAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSpanAlert(false)}>
-                <AlertF type="success" text="Project week span saved!" margin="0px"/>
-            </div>
-            <div className={`alert alert-success ${pipingAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setPipingAlert(false)}>
-                <AlertF type="success" text="Piping classes saved!" margin="0px"/>
-            </div>
-            <div className={`alert alert-success ${materialsAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setMaterialsAlert(false)}>
-                <AlertF type="success" text="Materials saved!" margin="0px"/>
-            </div>
-            <div className={`alert alert-success ${success ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSuccess(false)}>
-                <AlertF type="success" text="Changes saved!" margin="0px"/>
-            </div>
-            <Collapse in={loading}>
-                <Alert style={{fontSize:"16px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"0"}} severity="info"
-                    >
-                    Processing...
-                </Alert>
-            </Collapse>
-            <div id="pdf">
-            <div className="top__container">
-                {tabBtns}
-                <div id="graph" className="graph__container">
-                
-                {lineChart}
-                
+    if(tab === "users"){
+        return(
+            <body style={{overflow:"hidden", height:"100vh"}}>
+                {updateData}
+                {updateRows}
+                <IdleTimer
+                    timeout={1000 * 60 * 15}
+                    onIdle={handleOnIdle}
+                    debounce={250}
+                />
+                <NavBarProdCurve/>
+                <div className={`alert alert-success ${spanAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSpanAlert(false)}>
+                    <AlertF type="success" text="Project week span saved!" margin="0px"/>
                 </div>
-                <div className="materials__pc__container">
-                    <div style={{marginBottom:"30px"}}>
-                        <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"110px", marginTop: "80px"}}><img src={BackIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back</p></button>
-                        <button className="back__button" onClick={()=> printDocument()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={Graph} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Graph</p></button>
-                        <button className="back__button" onClick={()=> exportPiping()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={Reports} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Export</p></button>
-                    </div>
+                <div className={`alert alert-success ${pipingAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setPipingAlert(false)}>
+                    <AlertF type="success" text="Piping classes saved!" margin="0px"/>
+                </div>
+                <div className={`alert alert-success ${materialsAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setMaterialsAlert(false)}>
+                    <AlertF type="success" text="Materials saved!" margin="0px"/>
+                </div>
+                <div className={`alert alert-success ${success ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSuccess(false)}>
+                    <AlertF type="success" text="Changes saved!" margin="0px"/>
+                </div>
+                <Collapse in={loading}>
+                    <Alert style={{fontSize:"16px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"0"}} severity="info"
+                        >
+                        Processing...
+                    </Alert>
+                </Collapse>
+                <div id="pdf">
                     <div style={{display:"flex"}}>
-                        <text className="materials__title">Project Management</text>
-                        <button className="save__button" onClick={()=> submitManagement()}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
-                    </div>
-                    <div style={{marginBottom:"20px", marginTop:"10px"}}>
-                        <HotTable
-                            data={management}
-                            colHeaders = {["<b>Starting date</b>", "<b>Finishing date</b>"]}
-                            rowHeaders={true}
-                            width="500"
-                            height="60"
-                            settings={pipingSettings} 
-                            manualColumnResize={true}
-                            manualRowResize={true}
-                            columns= {[{ data: "Starting date", type:"date"}, { data: "Finishing date", type:"date"}]}
-                            filters={true}
-                            className='project__management'
-                            dropdownMenu= {[
-                                'make_read_only',
-                                '---------',
-                                'alignment',
-                                '---------',
-                                'filter_by_condition',
-                                '---------',
-                                'filter_operators',
-                                '---------',
-                                'filter_by_condition2',
-                                '---------',
-                                'filter_by_value',
-                                '---------',
-                                'filter_action_bar',
-                            ]}
-                        />
-                    </div>
-                    <div id="hot-app" style={{marginBottom:"20px"}}>
-                        <HotTable
-                            data={materials}
-                            colHeaders = {["<b>Material</b>"]}
-                            rowHeaders={true}
-                            width="450"
-                            height="130"
-                            settings={matSettings} 
-                            manualColumnResize={true}
-                            manualRowResize={true}
-                            columns= {[{ data: "Material"}]}
-                            filters={true}
-                            className='project__management'
-                            dropdownMenu= {[
-                                'make_read_only',
-                                '---------',
-                                'alignment',
-                                '---------',
-                                'filter_by_condition',
-                                '---------',
-                                'filter_operators',
-                                '---------',
-                                'filter_by_condition2',
-                                '---------',
-                                'filter_by_value',
-                                '---------',
-                                'filter_action_bar',
-                            ]}
-                        />
+                        {tabBtns}
+                        <div className="users__tables__container">
+                            <div>
+                                <h4 style={{fontSize:"22px", fontWeight:"bold", fontFamily:"Helvetica", color:"gray", marginTop:"20px", marginLeft:"700px"}}>USER EFFICIENCY</h4>
+                            </div>
+                            {tables}
                         </div>
-                            <button class="btn btn-sm btn-info" onClick={() => addRowMaterials()} style={{marginRight:"5px", fontSize:"12px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"165px"}}>Add</button>
-                            <button class="btn btn-sm btn-success" onClick={() => submitChangesMaterials()} style={{marginRight:"5px", fontSize:"12px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
-                        <div id="hot-app" style={{marginBottom:"20px", marginTop:"40px"}}>
-                        <HotTable
-                            data={piping}
-                            colHeaders = {["<b>Piping class</b>", "<b>Material</b>"]}
-                            rowHeaders={true}
-                            width="500"
-                            height="130"
-                            settings={pipingSettings} 
-                            manualColumnResize={true}
-                            manualRowResize={true}
-                            columns= {[{ data: "PipingClass"}, { data: "Material", type:"dropdown",strict:"true", source: materialsList}]}
-                            filters={true}
-                            className='project__management'
-                            dropdownMenu= {[
-                                'make_read_only',
-                                '---------',
-                                'alignment',
-                                '---------',
-                                'filter_by_condition',
-                                '---------',
-                                'filter_operators',
-                                '---------',
-                                'filter_by_condition2',
-                                '---------',
-                                'filter_by_value',
-                                '---------',
-                                'filter_action_bar',
-                            ]}
-                        />
+                        <div style={{marginBottom:"30px", marginLeft:"1630px", position:"absolute"}}>
+                            <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"110px", marginTop: "80px"}}><img src={BackIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back</p></button>
+                            <button className="back__button" onClick={()=> exportPiping()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={Reports} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Export</p></button>
                         </div>
-                        <button class="btn btn-sm btn-info" onClick={() => addRowPiping()} style={{marginRight:"5px", fontSize:"12px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"165px"}}>Add</button>
-                        <button class="btn btn-sm btn-success" onClick={() => submitChangesPiping()} style={{marginRight:"5px", fontSize:"12px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
+                        
+                    </div>
+                </div>
+            </body>
+        )
+    }else{
+        return(
 
+            <body style={{overflow:"hidden", height:"100vh"}}>
+                {updateData}
+                {updateRows}
+                <IdleTimer
+                    timeout={1000 * 60 * 15}
+                    onIdle={handleOnIdle}
+                    debounce={250}
+                />
+                <NavBarProdCurve/>
+                <div className={`alert alert-success ${spanAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSpanAlert(false)}>
+                    <AlertF type="success" text="Project week span saved!" margin="0px"/>
+                </div>
+                <div className={`alert alert-success ${pipingAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setPipingAlert(false)}>
+                    <AlertF type="success" text="Piping classes saved!" margin="0px"/>
+                </div>
+                <div className={`alert alert-success ${materialsAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setMaterialsAlert(false)}>
+                    <AlertF type="success" text="Materials saved!" margin="0px"/>
+                </div>
+                <div className={`alert alert-success ${success ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSuccess(false)}>
+                    <AlertF type="success" text="Changes saved!" margin="0px"/>
+                </div>
+                <Collapse in={loading}>
+                    <Alert style={{fontSize:"16px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)",zIndex:"0"}} severity="info"
+                        >
+                        Processing...
+                    </Alert>
+                </Collapse>
+                <div id="pdf">
+                <div className="top__container">
+                    {tabBtns}
+                    <div id="graph" className="graph__container">
+                    
+                    {lineChart}
+                    
                     </div>
-            </div>
-            <div className="materials__tables__container">
-                {overallTable}
-                {tables}
-            </div>
-            </div>
-        </body>
-    );
+                    <div className="materials__pc__container">
+                        <div style={{marginBottom:"30px"}}>
+                            <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"110px", marginTop: "80px"}}><img src={BackIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back</p></button>
+                            <button className="back__button" onClick={()=> printDocument()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={Graph} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Graph</p></button>
+                            <button className="back__button" onClick={()=> exportPiping()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={Reports} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Export</p></button>
+                        </div>
+                        <div style={{display:"flex"}}>
+                            <text className="materials__title">Project Management</text>
+                            <button className="save__button" onClick={()=> submitManagement()}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
+                        </div>
+                        <div style={{marginBottom:"20px", marginTop:"10px"}}>
+                            <HotTable
+                                data={management}
+                                colHeaders = {["<b>Starting date</b>", "<b>Finishing date</b>"]}
+                                rowHeaders={true}
+                                width="500"
+                                height="60"
+                                settings={pipingSettings} 
+                                manualColumnResize={true}
+                                manualRowResize={true}
+                                columns= {[{ data: "Starting date", type:"date"}, { data: "Finishing date", type:"date"}]}
+                                filters={true}
+                                className='project__management'
+                                dropdownMenu= {[
+                                    'make_read_only',
+                                    '---------',
+                                    'alignment',
+                                    '---------',
+                                    'filter_by_condition',
+                                    '---------',
+                                    'filter_operators',
+                                    '---------',
+                                    'filter_by_condition2',
+                                    '---------',
+                                    'filter_by_value',
+                                    '---------',
+                                    'filter_action_bar',
+                                ]}
+                            />
+                        </div>
+                        <div id="hot-app" style={{marginBottom:"20px"}}>
+                            <HotTable
+                                data={materials}
+                                colHeaders = {["<b>Material</b>"]}
+                                rowHeaders={true}
+                                width="450"
+                                height="130"
+                                settings={matSettings} 
+                                manualColumnResize={true}
+                                manualRowResize={true}
+                                columns= {[{ data: "Material"}]}
+                                filters={true}
+                                className='project__management'
+                                dropdownMenu= {[
+                                    'make_read_only',
+                                    '---------',
+                                    'alignment',
+                                    '---------',
+                                    'filter_by_condition',
+                                    '---------',
+                                    'filter_operators',
+                                    '---------',
+                                    'filter_by_condition2',
+                                    '---------',
+                                    'filter_by_value',
+                                    '---------',
+                                    'filter_action_bar',
+                                ]}
+                            />
+                            </div>
+                                <button class="btn btn-sm btn-info" onClick={() => addRowMaterials()} style={{marginRight:"5px", fontSize:"12px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"165px"}}>Add</button>
+                                <button class="btn btn-sm btn-success" onClick={() => submitChangesMaterials()} style={{marginRight:"5px", fontSize:"12px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
+                            <div id="hot-app" style={{marginBottom:"20px", marginTop:"40px"}}>
+                            <HotTable
+                                data={piping}
+                                colHeaders = {["<b>Piping class</b>", "<b>Material</b>"]}
+                                rowHeaders={true}
+                                width="500"
+                                height="130"
+                                settings={pipingSettings} 
+                                manualColumnResize={true}
+                                manualRowResize={true}
+                                columns= {[{ data: "PipingClass"}, { data: "Material", type:"dropdown",strict:"true", source: materialsList}]}
+                                filters={true}
+                                className='project__management'
+                                dropdownMenu= {[
+                                    'make_read_only',
+                                    '---------',
+                                    'alignment',
+                                    '---------',
+                                    'filter_by_condition',
+                                    '---------',
+                                    'filter_operators',
+                                    '---------',
+                                    'filter_by_condition2',
+                                    '---------',
+                                    'filter_by_value',
+                                    '---------',
+                                    'filter_action_bar',
+                                ]}
+                            />
+                            </div>
+                            <button class="btn btn-sm btn-info" onClick={() => addRowPiping()} style={{marginRight:"5px", fontSize:"12px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"165px"}}>Add</button>
+                            <button class="btn btn-sm btn-success" onClick={() => submitChangesPiping()} style={{marginRight:"5px", fontSize:"12px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
+    
+                        </div>
+                </div>
+                <div className="materials__tables__container">
+                    {overallTable}
+                    {tables}
+                </div>
+                </div>
+            </body>
+        );
+    }
+    
 };
 
 export default PITRequests;

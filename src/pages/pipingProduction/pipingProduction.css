@@ -42,8 +42,13 @@
 
 .materials__tables__container{
     margin-left: 100px;
-    height: 600px;
+    height: 400px;
     overflow: scroll;
+}
+
+.users__tables__container{
+    margin-left: 40px;
+    margin-top: 65px;
 }
 
 .management__container{
@@ -789,5 +794,63 @@
 
 .wmat6-table tbody tr:nth-child(2) td {
     background-color:	rgb(0,206,209);
+    font-size: 14px;
+}
+
+
+
+.users-table tbody tr:nth-child(1) th {
+    background-color:	rgb(255,215,0);
+    font-size: 14px;
+    color: black;
+}
+
+.users-table tbody tr:nth-child(1) td {
+    background-color:	rgb(255,215,0);
+    font-size: 14px;
+    color: black;
+}
+
+.users-table tbody tr:nth-child(2) th {
+    background-color:	rgb(60,179,113);
+    font-size: 14px;
+    color: black;
+}
+
+.users-table tbody tr:nth-child(2) td {
+    background-color:	rgb(60,179,113);
+    font-size: 14px;
+    color: black;
+}
+
+.users-table tbody tr:nth-child(3) th {
+    background-color:	rgb(255,80,80);
+    font-size: 14px;
+    color: black;
+}
+
+.users-table tbody tr:nth-child(3) td {
+    background-color:	rgb(255,80,80);
+    color: black;
+    font-size: 14px;
+}
+
+.users-table tbody tr:nth-child(4) th {
+    background-color:	rgb(0,206,209);
+    font-size: 14px;
+    color: black;
+}
+
+.users-table tbody tr:nth-child(4) td {
+    background-color:	rgb(0,206,209);
+    font-size: 14px;
+    color: black;
+}
+
+.handsontable .users-table{
+    font-size: 14px;
+}
+
+.users-table span.colHeader {
     font-size: 14px;
 }
