@@ -1,7 +1,6 @@
 
 import React, { useState , useEffect} from 'react'
 import { HotTable } from '@handsontable/react';
-
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
 import BackIcon from "../../assets/images/back.svg"
@@ -19,7 +18,7 @@ import SaveIcon from "../../assets/images/save.svg"
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import NavBarProdCurve from '../../components/navBarProdCurve/navBarProdCurve';
-
+import ProductionUserTabs from "../../components/productionUserTabs/productionUserTabs";
 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -941,7 +940,32 @@ const PITRequests = () =>{
                                         /></div></div>)
                                     });
                                     
-                                    await setTables(t)
+                                    await setTables(<div><ProductionUserTabs>
+                                        <div label="Design">
+                                          {t}
+                                        </div>
+                                        <div label="DesignLead">
+                                          After 'while, <em>Crocodile</em>!
+                                        </div>
+                                        <div label="Supports">
+                                          Nothing to see here, this tab is <em>extinct</em>!
+                                        </div>
+                                        <div label="SupportsLead">
+                                          Nothing to see here, this tab is <em>extinct</em>!
+                                        </div>
+                                        <div label="Stress">
+                                          Nothing to see here, this tab is <em>extinct</em>!
+                                        </div>
+                                        <div label="StressLead">
+                                          Nothing to see here, this tab is <em>extinct</em>!
+                                        </div>
+                                        <div label="Materials">
+                                          Nothing to see here, this tab is <em>extinct</em>!
+                                        </div>
+                                        <div label="Issuer">
+                                          Nothing to see here, this tab is <em>extinct</em>!
+                                        </div>
+                                      </ProductionUserTabs></div>)
                                 })
                             }else if(usersType === "weight"){
                                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getWeightByUserWeek", options)
@@ -970,7 +994,32 @@ const PITRequests = () =>{
                                     /></div></div>)
                                 });
                                 
-                                await setTables(t)
+                                await setTables(<div><ProductionUserTabs>
+                                    <div label="Design">
+                                      {t}
+                                    </div>
+                                    <div label="DesignLead">
+                                      After 'while, <em>Crocodile</em>!
+                                    </div>
+                                    <div label="Supports">
+                                      Nothing to see here, this tab is <em>extinct</em>!
+                                    </div>
+                                    <div label="SupportsLead">
+                                      Nothing to see here, this tab is <em>extinct</em>!
+                                    </div>
+                                    <div label="Stress">
+                                      Nothing to see here, this tab is <em>extinct</em>!
+                                    </div>
+                                    <div label="StressLead">
+                                      Nothing to see here, this tab is <em>extinct</em>!
+                                    </div>
+                                    <div label="Materials">
+                                      Nothing to see here, this tab is <em>extinct</em>!
+                                    </div>
+                                    <div label="Issuer">
+                                      Nothing to see here, this tab is <em>extinct</em>!
+                                    </div>
+                                  </ProductionUserTabs></div>)
                             })
                             }
                             
@@ -1822,7 +1871,7 @@ const PITRequests = () =>{
                         {tabBtns}
                         <div className="users__tables__container">
                             <div>
-                                <h4 style={{fontSize:"22px", fontWeight:"bold", fontFamily:"Helvetica", color:"gray", marginTop:"20px", marginLeft:"700px"}}>USER EFFICIENCY</h4>
+                                <h4 style={{fontSize:"22px", fontWeight:"bold", fontFamily:"Helvetica", color:"gray", marginTop:"30px", marginLeft:"700px"}}>USER EFFICIENCY</h4>
                             </div>
                             {tables}
                         </div>
