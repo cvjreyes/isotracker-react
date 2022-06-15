@@ -914,113 +914,423 @@ const PITRequests = () =>{
                                 col.push({ data: estimated[i].week.toString(), type: "numeric"})
                             }
                             if(usersType === "iso"){
-                                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsosByUserWeek", options)
+                                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsosByUserWeekDesign", options)
                                 .then(response => response.json())
                                 .then(async json => {
-                                    const user_isos = json.user_isos
-                                    await setUsersData(user_isos)
-                                    let t = []
-                                    Object.keys(user_isos).map(async function(user, index) {
-    
-                                        await t.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
-                                        <div style={{marginTop:"10px"}}><HotTable
-                                                data={[user_isos[user]["assigned"], user_isos[user]["sent"], user_isos[user]["returned"], user_isos[user]["remaining"]]}
-                                                colHeaders={weeks}
-                                                rowHeaders={["Assigned", "Sent", "Returned", "Remaining"]}
-                                                width="1750"
-                                                height="145"
-                                                settings={usersSettings} 
-                                                manualColumnResize={true}
-                                                manualRowResize={true}
-                                                columns= {col}
-                                                filters={true}
-                                                className='users-table'
-                                                readOnly={true}
-                                                
-                                        /></div></div>)
-                                    });
-                                    
-                                    await setTables(<div><ProductionUserTabs>
-                                        <div label="Design">
-                                          {t}
-                                        </div>
-                                        <div label="DesignLead">
-                                          After 'while, <em>Crocodile</em>!
-                                        </div>
-                                        <div label="Supports">
-                                          Nothing to see here, this tab is <em>extinct</em>!
-                                        </div>
-                                        <div label="SupportsLead">
-                                          Nothing to see here, this tab is <em>extinct</em>!
-                                        </div>
-                                        <div label="Stress">
-                                          Nothing to see here, this tab is <em>extinct</em>!
-                                        </div>
-                                        <div label="StressLead">
-                                          Nothing to see here, this tab is <em>extinct</em>!
-                                        </div>
-                                        <div label="Materials">
-                                          Nothing to see here, this tab is <em>extinct</em>!
-                                        </div>
-                                        <div label="Issuer">
-                                          Nothing to see here, this tab is <em>extinct</em>!
-                                        </div>
-                                      </ProductionUserTabs></div>)
+                                    const design_isos = json.design_isos
+                                    await setUsersData(design_isos)
+                                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsosByUserWeek", options)
+                                    .then(response => response.json())
+                                    .then(async json => {
+                                        const user_isos = json.user_isos
+                                        console.log(user_isos)
+                                        let design = []
+                                        let designLead = []
+                                        let stress = []
+                                        let stressLead = []
+                                        let supports = []
+                                        let supportsLead = []
+                                        let materials = []
+                                        let issuer = []
+                                        Object.keys(design_isos).map(async function(user, index) {
+                                            await design.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[design_isos[user]["assigned"], design_isos[user]["sent"], design_isos[user]["returned"], design_isos[user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Assigned", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["DesignLead"]).map(async function(user, index) {
+                                            await designLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["DesignLead"][user]["claimed"], user_isos["DesignLead"][user]["sent"], user_isos["DesignLead"][user]["returned"], user_isos["DesignLead"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["Stress"]).map(async function(user, index) {
+                                            await stress.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["Stress"][user]["claimed"], user_isos["Stress"][user]["sent"], user_isos["Stress"][user]["returned"], user_isos["Stress"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["StressLead"]).map(async function(user, index) {
+                                            await stressLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["StressLead"][user]["claimed"], user_isos["StressLead"][user]["sent"], user_isos["StressLead"][user]["returned"], user_isos["StressLead"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["Supports"]).map(async function(user, index) {
+                                            await supports.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["Supports"][user]["claimed"], user_isos["Supports"][user]["sent"], user_isos["Supports"][user]["returned"], user_isos["Supports"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["SupportsLead"]).map(async function(user, index) {
+                                            await supportsLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["SupportsLead"][user]["claimed"], user_isos["SupportsLead"][user]["sent"], user_isos["SupportsLead"][user]["returned"], user_isos["SupportsLead"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["Materials"]).map(async function(user, index) {
+                                            await materials.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["Materials"][user]["claimed"], user_isos["Materials"][user]["sent"], user_isos["Materials"][user]["returned"], user_isos["Materials"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["Issuer"]).map(async function(user, index) {
+                                            await issuer.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["Issuer"][user]["claimed"], user_isos["Issuer"][user]["sent"], user_isos["Issuer"][user]["returned"], user_isos["Issuer"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+
+                                        await setTables(<div><ProductionUserTabs>
+                                                <div label="Design">
+                                                    <div className="user__productivity__tables__container">
+                                                        {design}
+                                                    </div>
+                                                </div>
+                                                <div label="DesignLead">
+                                                    <div className="user__productivity__tables__container">
+                                                        {designLead}
+                                                    </div>
+                                                </div>
+                                                <div label="Stress">
+                                                    <div className="user__productivity__tables__container">
+                                                        {stress}
+                                                    </div>
+                                                </div>
+                                                <div label="StressLead">
+                                                    <div className="user__productivity__tables__container">
+                                                        {stressLead}
+                                                    </div>
+                                                </div>
+                                                <div label="Supports">
+                                                    <div className="user__productivity__tables__container">
+                                                        {supports}
+                                                    </div>
+                                                </div>
+                                                <div label="SupportsLead">
+                                                    <div className="user__productivity__tables__container">
+                                                        {supportsLead}
+                                                    </div>
+                                                </div>
+                                                <div label="Materials">
+                                                    <div className="user__productivity__tables__container">
+                                                        {materials}
+                                                    </div>
+                                                </div>
+                                                <div label="Issuer">
+                                                    <div className="user__productivity__tables__container">
+                                                        {issuer}
+                                                    </div>
+                                                </div>
+                                        </ProductionUserTabs></div>)
+                                        
+                                    })
                                 })
                             }else if(usersType === "weight"){
-                                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getWeightByUserWeek", options)
-                            .then(response => response.json())
-                            .then(async json => {
-                                const user_isos = json.user_isos
-                                await setUsersData(user_isos)
-                                let t = []
-                                Object.keys(user_isos).map(async function(user, index) {
+                                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getWeightByUserWeekDesign", options)
+                                .then(response => response.json())
+                                .then(async json => {
+                                    const design_isos = json.design_isos
+                                    await setUsersData(design_isos)
+                                    let design = []
+                                    let designLead = []
+                                    let stress = []
+                                    let stressLead = []
+                                    let supports = []
+                                    let supportsLead = []
+                                    let materials = []
+                                    let issuer = []
+                                    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getWeightByUserWeek", options)
+                                    .then(response => response.json())
+                                    .then(async json => {
+                                        let user_isos = json.user_isos
+                                        Object.keys(design_isos).map(async function(user, index) {
 
-                                    await t.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Weight)<text style={{fontSize:"17px"}}></text></text></div>
-                                    <div style={{marginTop:"10px"}}><HotTable
-                                            data={[user_isos[user]["assigned"], user_isos[user]["sent"], user_isos[user]["returned"], user_isos[user]["remaining"]]}
-                                            colHeaders={weeks}
-                                            rowHeaders={["Assigned", "Sent", "Returned", "Remaining"]}
-                                            width="1750"
-                                            height="145"
-                                            settings={usersSettings} 
-                                            manualColumnResize={true}
-                                            manualRowResize={true}
-                                            columns= {col}
-                                            filters={true}
-                                            className='users-table'
-                                            readOnly={true}
-                                            
-                                    /></div></div>)
-                                });
-                                
-                                await setTables(<div><ProductionUserTabs>
-                                    <div label="Design">
-                                      {t}
-                                    </div>
-                                    <div label="DesignLead">
-                                      After 'while, <em>Crocodile</em>!
-                                    </div>
-                                    <div label="Supports">
-                                      Nothing to see here, this tab is <em>extinct</em>!
-                                    </div>
-                                    <div label="SupportsLead">
-                                      Nothing to see here, this tab is <em>extinct</em>!
-                                    </div>
-                                    <div label="Stress">
-                                      Nothing to see here, this tab is <em>extinct</em>!
-                                    </div>
-                                    <div label="StressLead">
-                                      Nothing to see here, this tab is <em>extinct</em>!
-                                    </div>
-                                    <div label="Materials">
-                                      Nothing to see here, this tab is <em>extinct</em>!
-                                    </div>
-                                    <div label="Issuer">
-                                      Nothing to see here, this tab is <em>extinct</em>!
-                                    </div>
-                                  </ProductionUserTabs></div>)
-                            })
+                                            await design.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Weight)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[design_isos[user]["assigned"], design_isos[user]["sent"], design_isos[user]["returned"], design_isos[user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Assigned", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["DesignLead"]).map(async function(user, index) {
+                                            await designLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["DesignLead"][user]["claimed"], user_isos["DesignLead"][user]["sent"], user_isos["DesignLead"][user]["returned"], user_isos["DesignLead"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["Stress"]).map(async function(user, index) {
+                                            await stress.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["Stress"][user]["claimed"], user_isos["Stress"][user]["sent"], user_isos["Stress"][user]["returned"], user_isos["Stress"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["StressLead"]).map(async function(user, index) {
+                                            await stressLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["StressLead"][user]["claimed"], user_isos["StressLead"][user]["sent"], user_isos["StressLead"][user]["returned"], user_isos["StressLead"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["Supports"]).map(async function(user, index) {
+                                            await supports.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["Supports"][user]["claimed"], user_isos["Supports"][user]["sent"], user_isos["Supports"][user]["returned"], user_isos["Supports"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["SupportsLead"]).map(async function(user, index) {
+                                            await supportsLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["SupportsLead"][user]["claimed"], user_isos["SupportsLead"][user]["sent"], user_isos["SupportsLead"][user]["returned"], user_isos["SupportsLead"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["Materials"]).map(async function(user, index) {
+                                            await materials.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["Materials"][user]["claimed"], user_isos["Materials"][user]["sent"], user_isos["Materials"][user]["returned"], user_isos["Materials"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+                                        Object.keys(user_isos["Issuer"]).map(async function(user, index) {
+                                            await issuer.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()} (Isometrics)<text style={{fontSize:"17px"}}></text></text></div>
+                                            <div style={{marginTop:"10px"}}><HotTable
+                                                    data={[user_isos["Issuer"][user]["claimed"], user_isos["Issuer"][user]["sent"], user_isos["Issuer"][user]["returned"], user_isos["Issuer"][user]["remaining"]]}
+                                                    colHeaders={weeks}
+                                                    rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
+                                                    width="1750"
+                                                    height="145"
+                                                    settings={usersSettings} 
+                                                    manualColumnResize={true}
+                                                    manualRowResize={true}
+                                                    columns= {col}
+                                                    filters={true}
+                                                    className='users-table'
+                                                    readOnly={true}
+                                                    
+                                            /></div></div>)
+                                        });
+
+                                        await setTables(<div><ProductionUserTabs>
+                                            <div label="Design">
+                                                <div className="user__productivity__tables__container">
+                                                    {design}
+                                                </div>
+                                            </div>
+                                            <div label="DesignLead">
+                                                <div className="user__productivity__tables__container">
+                                                    {designLead}
+                                                </div>
+                                            </div>
+                                            <div label="Stress">
+                                                <div className="user__productivity__tables__container">
+                                                    {stress}
+                                                </div>
+                                            </div>
+                                            <div label="StressLead">
+                                                <div className="user__productivity__tables__container">
+                                                    {stressLead}
+                                                </div>
+                                            </div>
+                                            <div label="Supports">
+                                                <div className="user__productivity__tables__container">
+                                                    {supports}
+                                                </div>
+                                            </div>
+                                            <div label="SupportsLead">
+                                                <div className="user__productivity__tables__container">
+                                                    {supportsLead}
+                                                </div>
+                                            </div>
+                                            <div label="Materials">
+                                                <div className="user__productivity__tables__container">
+                                                    {materials}
+                                                </div>
+                                            </div>
+                                            <div label="Issuer">
+                                                <div className="user__productivity__tables__container">
+                                                    {issuer}
+                                                </div>
+                                            </div>
+                                    </ProductionUserTabs></div>)
+                                        
+                                    })
+                                })
                             }
                             
                         }

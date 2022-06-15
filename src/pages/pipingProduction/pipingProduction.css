@@ -107,6 +107,11 @@
     font-size: 15px;
 }
 
+.user__productivity__tables__container{
+    overflow-y: scroll;
+    height: 700px
+}
+
 .project__management span.colHeader{
     font-size: 14px
 }
