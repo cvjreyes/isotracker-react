@@ -109,7 +109,8 @@
 
 .user__productivity__tables__container{
     overflow-y: scroll;
-    height: 700px
+    height: 700px;
+    min-width: 1770px;
 }
 
 .project__management span.colHeader{
@@ -122,6 +123,13 @@
 
 .project__management  tbody td{
     font-size: 14px
+}
+
+.isoCount__text{
+    float: right;
+    margin-right: 30px;
+    margin-top: 10px;
+    font-size: 17px
 }
 
 .overall-table tbody tr:nth-child(3) th {
