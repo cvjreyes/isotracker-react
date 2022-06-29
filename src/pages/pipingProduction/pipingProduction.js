@@ -1163,7 +1163,7 @@ const PITRequests = () =>{
                                 .then(response => response.json())
                                 .then(async json => {
                                     const design_isos = json.design_isos
-                                    await setUsersData(design_isos)
+                                    console.log(design_isos)
                                     let design = []
                                     let designLead = []
                                     let stress = []
