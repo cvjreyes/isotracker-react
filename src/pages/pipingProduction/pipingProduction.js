@@ -57,7 +57,7 @@ const PITRequests = () =>{
     const [tabBtns, setTabBtns] = useState(null)
     const [usersType, setUsersType] = useState("iso")
     const [usersData, setUsersData] = useState(null)
-    const [userEffTitle, setUserEffTitle] = useState(<h4 style={{fontSize:"22px", fontWeight:"bold", fontFamily:"Helvetica", color:"gray", marginTop:"30px", marginLeft:"700px"}}>USER ISOMETRICS EFFICIENCY</h4>)
+    const [userEffTitle, setUserEffTitle] = useState(<h4 style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"30px", marginLeft:"690px"}}>USER ISOMETRICS EFFICIENCY</h4>)
 
     const [updateData, setUpdateData] = useState(false)
     const [updateRows, setUpdateRows] = useState(false)
@@ -586,7 +586,7 @@ const PITRequests = () =>{
                                                     title: {
                                                         display: true,
                                                         text: "PRODUCTION CURVES",
-                                                        font: {size: "22px"}
+                                                        font: {size: "22px", family:"Quicksand"}
                                                     },
                                                     legend: {
                                                         display: true,
@@ -851,7 +851,8 @@ const PITRequests = () =>{
                                                     title: {
                                                         display: true,
                                                         text: "WEIGHT CURVES",
-                                                        font: {size: "22px"}
+                                                        font: {size: "22px", family:"Quicksand"},
+                                                    
                                                     },
                                                     legend: {
                                                         display: true,
@@ -876,7 +877,7 @@ const PITRequests = () =>{
                     })  
                 }else if(tab === "users"){
                     if(usersType === "iso"){
-                        await setUserEffTitle(<h4 style={{fontSize:"22px", fontWeight:"bold", fontFamily:"Helvetica", color:"gray", marginTop:"30px", marginLeft:"700px"}}>USER ISOMETRICS EFFICIENCY</h4>)
+                        await setUserEffTitle(<h4 style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"30px", marginLeft:"690px"}}>USER ISOMETRICS EFFICIENCY</h4>)
                         await setTabBtns(<div style={{width: "90px"}}>
                         <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("weight")}>W</button>
@@ -885,7 +886,7 @@ const PITRequests = () =>{
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setUsersType("weight")}>W</button>
                         </div>)
                     }else if(usersType === "weight"){
-                        await setUserEffTitle(<h4 style={{fontSize:"22px", fontWeight:"bold", fontFamily:"Helvetica", color:"gray", marginTop:"30px", marginLeft:"700px"}}>USER WEIGHT EFFICIENCY</h4>)
+                        await setUserEffTitle(<h4 style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"30px", marginLeft:"700px"}}>USER WEIGHT EFFICIENCY</h4>)
                         await setTabBtns(<div style={{width: "90px"}}>
                         <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("weight")}>W</button>

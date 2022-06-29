@@ -108,10 +108,14 @@
 }
 
 .user__productivity__tables__container{
-    overflow-y: scroll;
-    height: 700px;
+    height: 730px;
     min-width: 1770px;
+    overflow-y: scroll;
 }
+
+.user__productivity__tables__container::-webkit-scrollbar {
+    display: none;
+  }
 
 .project__management span.colHeader{
     font-size: 14px
