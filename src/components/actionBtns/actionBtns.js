@@ -69,7 +69,7 @@ const ActionBtns = props =>{
         props.exportByPass()
     }
 
-    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12
+    var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12, actionBtn13
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
             actionBtn6 = <button className="action__btn" name="destination" value="stress" onClick={() => props.transaction("Recycle bin")}>Delete</button>
@@ -78,10 +78,14 @@ const ActionBtns = props =>{
             }
         }
         actionBtn11 = <button className="action__btn"  name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
+        actionBtn13 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadMaster()}>Master</button>
+
     }else{
                 
         if (props.currentTab !== "My Tray" && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold"){
             actionBtn11 = <button className="action__btn"  name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
+            actionBtn13 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadMaster()}>Master</button>
+
             if (!(props.role === "SpecialityLead" && (props.currentTab === "Process" || props.currentTab === "Instrument")) && props.currentTab !== "Issued"){
                 actionBtn1 = <button className="action__btn"  name="destination" value="stress" onClick={() => props.claimClick()}>Claim</button>
             }
@@ -97,6 +101,7 @@ const ActionBtns = props =>{
         }if (props.currentTab === "My Tray"){
             actionBtn1 = <button className="action__btn" name="destination" value="stress" onClick={() => props.unclaimClick()}>Unclaim</button>
             actionBtn11 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
+            actionBtn13 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadMaster()}>Master</button>
             actionBtn7 = <UpdateMassivePopUp success={success.bind(this)} role={props.role}  currentUser = {props.user}/>
             if(props.role !== "Design" && props.role !== "DesignLead" && props.role !== "Process" && props.role !== "Instrument" && props.role !== "StressLead" && props.role !== "SupportsLead" ){
                 if(props.role === "Stress"){
@@ -182,10 +187,12 @@ const ActionBtns = props =>{
                 if(process.env.REACT_APP_PROGRESS === "0"){
                     actionBtn8 = <button className="action__btn" onClick={() => props.restoreClick()}>Restore</button>
                     actionBtn7 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
+                    actionBtn13 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadMaster()}>Master</button>
                 }
                 if(props.currentTab === "Recycle bin" && (props.role === "DesignLead" || props.role === "SpecialityLead")){
                     actionBtn8 = <button className="action__btn" onClick={() => props.restoreClick()}>Restore</button>
                     actionBtn7 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadFiles()}>Download</button>
+                    actionBtn13 = <button className="action__btn" name="destination" value="stress" onClick={() => props.downloadMaster()}>Master</button>
                 }
         }
         if((props.role === "SpecialityLead" || props.role === "DesignLead") && props.currentTab !== "Recycle bin" && props.currentTab !== "On hold" && props.currentTab !== "Process" && props.currentTab !== "Instrument" && props.currentTab !== "Issued"){
@@ -275,6 +282,7 @@ const ActionBtns = props =>{
             {actionBtn10}
             {actionBtn11}
             {actionBtn12}
+            {actionBtn13}
         </div>
     );
 };
