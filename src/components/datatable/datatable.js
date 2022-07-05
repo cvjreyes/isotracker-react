@@ -5,6 +5,7 @@ import './datatable.css'
 import { Link } from 'react-router-dom';
 import RenamePopUp from '../renamePopUp/renamePopUp';
 import CommentPopUp from '../commentPopUp/commentPopUp';
+import CancelRevPopUp from '../cancelRevPopUp/cancelRevPopUp';
 
 
 const CryptoJS = require("crypto-js");
@@ -47,7 +48,8 @@ class DataTable extends React.Component{
     updateData: this.props.updateData,
     username: "",
     acronyms : null,
-    filters: []
+    filters: [],
+    cancellable: false
   };
 
   unlock(filename){
@@ -56,6 +58,10 @@ class DataTable extends React.Component{
 
   rename(newName, oldName){
     this.props.rename(newName, oldName)
+  }
+
+  cancelRev(filename){
+    this.props.cancelRev(filename)
   }
 
   async sendHold(fileName){
@@ -101,7 +107,7 @@ class DataTable extends React.Component{
           .then(async json => {
                   var rows = []
                   let row = null
-                  let pButton, iButton, rButton, bButton, cButton, retButton, excludeHoldButton, rToLOSButton
+                  let pButton, iButton, rButton, bButton, cButton, retButton, excludeHoldButton, rToLOSButton, cancelRevButton
                    = null
                   
                   for(let i = 0; i < json.rows.length; i++){
@@ -157,6 +163,22 @@ class DataTable extends React.Component{
                       revision = "*R" + json.rows[i].revision
                     }
 
+                    if(this.props.currentTab === "Issued" && json.rows[i].requested === 2 && this.props.currentRole === "SpecialityLead"){
+                      const optionsD = {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/pdf"
+                        }
+                      }
+                      await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isCancellable/" + json.rows[i].filename, optionsD)
+                      .then(response => response.json())
+                      .then(async json => {
+                        if(json.cancellable){
+                          await this.setState({cancellable: true})
+                        }
+                      })
+                    }
+
                     if(json.rows[i].requested === 1){
                       rButton = <button className="btn btn-danger" disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
                     }else if(json.rows[i].requested !== 1 && json.rows[i].requested !== 2){
@@ -203,14 +225,20 @@ class DataTable extends React.Component{
                     }
 
                     if(this.props.currentRole === "SpecialityLead" && json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
-                      rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"20px"}}>Return</button>
+                      rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"5px"}}>Return</button>
                     }else{
                       rToLOSButton = null
+                    }
+                    if(this.state.cancellable){
+                      cancelRevButton = <CancelRevPopUp iso = {json.rows[i].filename} cancelRev={this.cancelRev.bind(this)}/>
+                      await this.setState({cancellable: false})
+                    }else{
+                      cancelRevButton = null
                     }
 
                     if(!json.rows[i].updated_at){
                       if(json.rows[i].claimed === 1){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else{
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
                       }
@@ -218,51 +246,51 @@ class DataTable extends React.Component{
 
                     if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){
                       if(this.props.currentRole === "SpecialityLead"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> <button className="btn btn-danger" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>FORCE UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> <button className="btn btn-danger" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>FORCE UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else{
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }
                     }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){
-                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                     }else if(json.rows[i].claimed === 1){
                       if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code,  revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code,  revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> ,type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> ,type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
                         row = null
                       }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
                         row = null
                       }else{
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                         if(secureStorage.getItem("role") === "SpecialityLead" && secureStorage.getItem("tab") !== "LDE/IsoControl"){
-                          row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> <button className="btn btn-danger" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>FORCE UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                          row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> <button className="btn btn-danger" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>FORCE UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                         }
                       }
                     }else if(json.rows[i].user !== "None"){           
                       if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} </div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
                         row = null
                       }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
                         row = null
                       }else{
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} </div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }
 
                     }else{                
                       if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
                         row = null
                       }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
                         row = null
                       }else{
-                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }                   
                     }
                   }
@@ -275,7 +303,7 @@ class DataTable extends React.Component{
                        
                       rows.push(row)
                     }
-
+                   
                     
                     }
                     const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, to: <div><input type="text" className="filter__input" placeholder="To" onChange={(e) => this.filter(5,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(6,e.target.value)}/></div>, actions: <div><input type="text" className="filter__input" placeholder="Actions" onChange={(e) => this.filter(7,e.target.value)}/></div>}]
@@ -295,6 +323,19 @@ class DataTable extends React.Component{
 
     if(prevProps !== this.props){
       
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/acronyms")
+      .then(response => response.json())
+      .then(json => {
+        let dict = {}
+
+        for(let i = 0; i < json.length; i++){
+          dict[json[i].name] = json[i].code
+        }
+        this.setState({
+          acronyms: dict
+        })
+      })
+
       let body 
       if(this.props.currentTab === "Issued"){
         body ={
@@ -312,243 +353,220 @@ class DataTable extends React.Component{
         },
         body: JSON.stringify(body)
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
-    .then(response => response.json())
-    .then(async json => {
-            console.log(json)
-            var rows = []
-            let row = null
-            let pButton, iButton, rButton, bButton, cButton, retButton, excludeHoldButton, rToLOSButton = null
-            
-            for(let i = 0; i < json.rows.length; i++){
-              switch(json.rows[i].spo){
-                case 0:
-                  pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
-                  break;
-                case 1:
-                  pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
-                  break;
-                case 2:
-                  pButton = <button className="btn btn-success" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
-                  break; 
-                case 3:
-                  pButton = <button className="btn btn-danger" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
-                  break;
-                case 4:
-                  pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"orange", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
-                  break;
-                case 5:
-                  pButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"#696969", color:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
-                  break;
-                default:  
-                  pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>      
-              }
-              switch(json.rows[i].sit){
-                case 0:
-                  iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
-                  break;
-                case 1:
-                  iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
-                  break;
-                case 2:
-                  iButton = <button className="btn btn-success" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
-                  break; 
-                case 3:
-                  iButton = <button className="btn btn-danger" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
-                  break;
-                case 4:
-                  iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"orange", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
-                  break;
-                case 5:
-                  iButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"#696969", color:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
-                  break;
-                default:  
-                  iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>      
-              }
-              
-              let revision = ""
-              if(this.props.currentTab === "Issued"){
-                revision = "R" + String(json.rows[i].revision - 1) + " - " + json.rows[i].transmittal + "/" + json.rows[i].issued_date
-              }else{
-                revision = "*R" + json.rows[i].revision
-              }
-
-              if(json.rows[i].requested === 1){
-                rButton = <button className="btn btn-danger" disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
-              }else if(json.rows[i].requested !== 1 && json.rows[i].requested !== 2){
-                rButton = <button className="btn btn-warning" disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
-              }else if(json.rows[i].requested === 2){
-                rButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
-              }
-
-              if(json.rows[i].blocked === 1){
-                if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
-                  if(secureStorage.getItem('user') === "super@user.com"){
-                    bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)}/>
-                  }else{
-                    bButton = <button className="btn btn-danger" disabled style={{backgroundColor:"red", fontSize:"12px", borderColor:"red", padding:"2px 5px 2px 5px", marginRight:"5px"}}>LOCKED</button>
-                  }
-                }else{
-                  if(secureStorage.getItem('user') === "super@user.com"){
-                    bButton = null
-                  }else{
-                    bButton = null
-                  }
+      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
+          .then(response => response.json())
+          .then(async json => {
+                  var rows = []
+                  let row = null
+                  let pButton, iButton, rButton, bButton, cButton, retButton, excludeHoldButton, rToLOSButton, cancelRevButton
+                   = null
                   
-                }
-              }else{
-                bButton = null
-              }
+                  for(let i = 0; i < json.rows.length; i++){
+                    switch(json.rows[i].spo){
+                      case 0:
+                        pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
+                        break;
+                      case 1:
+                        pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
+                        break;
+                      case 2:
+                        pButton = <button className="btn btn-success" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
+                        break; 
+                      case 3:
+                        pButton = <button className="btn btn-danger" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
+                        break;
+                      case 4:
+                        pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"orange", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
+                        break;
+                      case 5:
+                        pButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"#696969", color:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
+                        break;
+                      default:  
+                        pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>      
+                    }
+                    switch(json.rows[i].sit){
+                      case 0:
+                        iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
+                        break;
+                      case 1:
+                        iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
+                        break;
+                      case 2:
+                        iButton = <button className="btn btn-success" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
+                        break; 
+                      case 3:
+                        iButton = <button className="btn btn-danger" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
+                        break;
+                      case 4:
+                        iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"orange", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
+                        break;
+                      case 5:
+                        iButton = <button className="btn btn-warning" onClick={() => this.props.sendCancelInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"#696969", color:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
+                        break;
+                      default:  
+                        iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>      
+                    }
+                    
+                    let revision = ""
+                    if(this.props.currentTab === "Issued"){
+                      revision = "R" + String(json.rows[i].revision - 1) + " - " + json.rows[i].transmittal + "/" + json.rows[i].issued_date
+                    }else{
+                      revision = "*R" + json.rows[i].revision
+                    }
 
-              if(json.rows[i].returned === 1){
-                retButton = <button className="btn btn-danger" disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
-              }else{
-                retButton = null
-              }
-
-              if(json.rows[i].comments){
-                cButton = <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/>
-              }else{
-                cButton = null
-              }
-
-              if(json.rows[i].onhold === 2){
-                excludeHoldButton = <button className="btn btn-warning" onClick={() => this.sendHold(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>H</button>
-              }else{
-                excludeHoldButton = null
-              }
-
-              if(this.props.currentRole === "SpecialityLead" && json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
-                rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"20px"}}>Return</button>
-              }else{
-                rToLOSButton = null
-              }
-
-              if(!json.rows[i].updated_at){
-                if(json.rows[i].claimed === 1){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }else{
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }
-              }else{
-
-              if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){
-                if(this.props.currentRole === "SpecialityLead"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> <button className="btn btn-danger" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>FORCE UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }else{
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }
-              }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){
-                row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-              }else if(json.rows[i].claimed === 1){
-                if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code,  revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> ,type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
-                  row = null
-                }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
-                  row = null
-                }else{
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                  if(secureStorage.getItem("role") === "SpecialityLead" && secureStorage.getItem("tab") !== "LDE/IsoControl"){
-                    row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> <button className="btn btn-danger" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>FORCE UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                  }
-                }
-              }else if(json.rows[i].user !== "None"){           
-                if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} </div>}
-                }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
-                  row = null
-                }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
-                  row = null
-                }else{
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} </div>}
-                }
-
-              }else{                
-                if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
-                  row = null
-                }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
-                  row = null
-                }else{
-                  row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
-                }                   
-              }
-            }
-              if(row){
-                if(i % 2 === 0){
-                  row["color"] = "#fff"
-                }else{
-                  row["color"] = "#eee"
-                }
-                 
-                rows.push(row)
-              }
-
-              
-              }
-            this.setState({
-              data : rows,
-            });
-
-            let auxDisplayData = this.state.data
-            let resultData = []
-            let fil, exists = null
-            for(let i = 0; i < auxDisplayData.length; i++){
-              exists = true
-              for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
-                fil = Object.keys(auxDisplayData[i])[column+1]
-                if(fil === "id"){
-                  if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
-                    exists = false
-                  }
-                }else if(fil === "actions"){
-                  
-                  if(auxDisplayData[i][fil].props.children[5]){
-                    if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "CLAIMED"){
-                      let claimed = "claimed"
-                      if(!claimed.includes(this.state.filterData[column].toLocaleLowerCase())){
-                        exists = false
+                    if(this.props.currentTab === "Issued" && json.rows[i].requested === 2 && this.props.currentRole === "SpecialityLead"){
+                      const optionsD = {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/pdf"
+                        }
                       }
-                    }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "PENDING"){
-                      let pending = "pending"
-                      if(!pending.includes(this.state.filterData[column].toLocaleLowerCase())){
-                        exists = false
+                      let fn = json.rows[i].filename
+                      await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isCancellable/" + json.rows[i].filename, optionsD)
+                      .then(response => response.json())
+                      .then(async json => {
+                        if(json.cancellable === true){
+                          await this.setState({cancellable: true})
+                        }
+                      })
+                    }
+
+                    if(json.rows[i].requested === 1){
+                      rButton = <button className="btn btn-danger" disabled style={{backgroundColor:"yellow", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }else if(json.rows[i].requested !== 1 && json.rows[i].requested !== 2){
+                      rButton = <button className="btn btn-warning" disabled style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }else if(json.rows[i].requested === 2){
+                      rButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }
+
+                    if(json.rows[i].blocked === 1){
+                      if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
+                        if(secureStorage.getItem('user') === "super@user.com"){
+                          bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)} />
+                        }else{
+                          bButton = <button className="btn btn-danger" disabled style={{backgroundColor:"red", fontSize:"12px", borderColor:"red", padding:"2px 5px 2px 5px", marginRight:"5px"}}>LOCKED</button>
+                        }
+                      }else{
+                        if(secureStorage.getItem('user') === "super@user.com"){
+                          bButton = null
+                        }else{
+                          bButton = null
+                        }
+                        
                       }
+                    }else{
+                      bButton = null
                     }
-                  }else{
-                    if(this.state.filterData[column] !== "" && this.state.filterData[column]){
-                      exists = false
+
+                    if(json.rows[i].returned === 1){
+                      retButton = <button className="btn btn-danger" disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
+                    }else{
+                      retButton = null
+                    }
+
+                    if(json.rows[i].comments){
+                      cButton = <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/>
+                    }else{
+                      cButton = null
+                    }
+
+                    if(json.rows[i].onhold === 2){
+                      excludeHoldButton = <button className="btn btn-warning" onClick={() => this.sendHold(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>H</button>
+                    }else{
+                      excludeHoldButton = null
+                    }
+
+                    if(this.props.currentRole === "SpecialityLead" && json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
+                      rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"5px"}}>Return</button>
+                    }else{
+                      rToLOSButton = null
+                    }
+
+                    if(this.state.cancellable === true){
+                      cancelRevButton = <CancelRevPopUp iso = {json.rows[i].filename} cancelRev={this.cancelRev.bind(this)}/>
+                      await this.setState({cancellable: false})
+                    }else{
+                      cancelRevButton = null
+                    }
+
+                    if(!json.rows[i].updated_at){
+                      if(json.rows[i].claimed === 1){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }else{
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
+                      }
+                    }else{
+
+                    if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){
+                      if(this.props.currentRole === "SpecialityLead"){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> <button className="btn btn-danger" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>FORCE UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }else{
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }
+                    }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){
+                      row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                    }else if(json.rows[i].claimed === 1){
+                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code,  revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> ,type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
+                        row = null
+                      }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
+                        row = null
+                      }else{
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                        if(secureStorage.getItem("role") === "SpecialityLead" && secureStorage.getItem("tab") !== "LDE/IsoControl"){
+                          row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> <button className="btn btn-danger" style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>FORCE UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                        }
+                      }
+                    }else if(json.rows[i].user !== "None"){           
+                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
+                        row = null
+                      }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
+                        row = null
+                      }else{
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }
+
+                    }else{                
+                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
+                        row = null
+                      }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
+                        row = null
+                      }else{
+                        row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
+                      }                   
                     }
                   }
-                  
-                }else{
-                  if(auxDisplayData[i][fil]){
-                    if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
-                      exists = false
+                    if(row){
+                      if(i % 2 === 0){
+                        row["color"] = "#fff"
+                      }else{
+                        row["color"] = "#eee"
+                      }
+                       
+                      rows.push(row)
                     }
-                  }
-                  
-                }
+                    
+                    }
+                    const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, to: <div><input type="text" className="filter__input" placeholder="To" onChange={(e) => this.filter(5,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(6,e.target.value)}/></div>, actions: <div><input type="text" className="filter__input" placeholder="Actions" onChange={(e) => this.filter(7,e.target.value)}/></div>}]
                 
+                    this.setState({data : rows, displayData: rows});
+                    await this.setState({filters : filterRow})
               }
-              if(exists){
-                resultData.push(auxDisplayData[i])
-              }
-            }
-            await this.setState({displayData: resultData})
-            }
-    )
-    .catch(error => {
-        console.log(error);
-    })
+          )
+          .catch(error => {
+              console.log(error);
+          })
       }
 
   }

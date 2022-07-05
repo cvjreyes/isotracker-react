@@ -128,7 +128,7 @@ const IsoCtrlF = () => {
     if(currentTabText === "LDE/IsoControl"){
         currentTabText = "LOS/IsoControl"
     }
-    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)} sendHold = {sendHold.bind(this)} returnToLOS = {returnToLOS.bind(this)}/>
+    tableContent = <DataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)} sendHold = {sendHold.bind(this)} returnToLOS = {returnToLOS.bind(this)} cancelRev = {cancelRev.bind(this)}/>
     var currentUser = secureStorage.getItem('user')
 
     useEffect(() =>{
@@ -1108,10 +1108,6 @@ const IsoCtrlF = () => {
                     setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
                     
                 })
-                
-            
-
-                
         
             }
             const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
@@ -1510,6 +1506,39 @@ const IsoCtrlF = () => {
         .then(response => console.log("Cambiado"))
 
         successAlert()
+        
+        setUpdateData(!updateData)
+    }
+
+    async function cancelRev(filename){
+
+        setErrorUnclaimR(false)
+        setErrorReports(false)
+        setTransactionSuccess(false);
+        setErrorCL(false)
+        setErrorUnclaim(false)
+        setWarningSelected(false)
+        setErrorReportD(false)
+        setBlocked(false)
+        setErrorDeleteUser(false)
+        
+        localStorage.setItem("update", true)
+
+        const body = {
+            filename: filename,
+        }
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/cancelRev", options)
+        .then(response => successAlert())
+
         
         setUpdateData(!updateData)
     }
