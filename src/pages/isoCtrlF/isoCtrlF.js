@@ -1134,7 +1134,7 @@ const IsoCtrlF = () => {
             json = JSON.parse(json)
             const headers = ["ISO_ID", "FROM", "TO", "DATE", "COMMENT", "USER"]
             for (let i=0; i<json.length; i++){
-                json[i].created_at = json[i].created_at.substring(8,10) + " - " + json[i].created_at.substring(5,7) + " - " + json[i].created_at.substring(0,4);
+                json[i].created_at = json[i].created_at.substring(8,10) + "/" + json[i].created_at.substring(5,7) + "/" + json[i].created_at.substring(0,4);
             } 
             exportToExcel(json, "Comments", headers)
         })
@@ -1811,7 +1811,7 @@ const IsoCtrlF = () => {
         .then(json => {
             json = JSON.parse(json);
             for (let i=0; i<json.length; i++){
-                json[i].date = json[i].date.substring(8,10) + " - " + json[i].date.substring(5,7) + " - " + json[i].date.substring(0,4);
+                json[i].date = json[i].date.substring(8,10) + "/" + json[i].date.substring(5,7) + "/" + json[i].date.substring(0,4);
             } 
             const headers = ["TAG", "ISO ID", "Type", "Date", "User", "Notes", "Comments", "Status"]
             exportToExcel(json, "ByPass", headers)
