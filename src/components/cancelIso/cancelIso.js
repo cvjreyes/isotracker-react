@@ -33,33 +33,33 @@ export default class CancelIso extends Component {
 
     render() {
         var trayHeader, traySelect
-        trayHeader = <h4 className="cancel__header__tray">Tray</h4>
+        trayHeader = <div className="cancel__header__tray">Tray</div>
         if(this.props.role === "SpecialityLead"){
-            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
+            traySelect = <select className="destination__select__return" id="tray" ><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
         }else if(this.props.role === "Supports"){
-            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option></select>
+            traySelect = <select className="destination__select__return" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option></select>
         }else if(this.props.role === "Materials"){
-            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option></select>
+            traySelect = <select className="destination__select__return" id="tray" ><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option></select>
         }else if(this.props.role === "Issuer"){
-            traySelect = <select className="destination__select" id="tray"><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option><option value="Materials">Materials</option></select>
+            traySelect = <select className="destination__select__return" id="tray" ><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option><option value="Materials">Materials</option></select>
         }
         
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
                 <button className="action__btn" onClick={() => this.openModal()}>Return</button>
                 <div>
-                    <Modal visible={this.state.visible} width="650" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="650" height="370" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="header__container">
                             {trayHeader}
-                            <h4 className="cancel__header__comments">Comments</h4>
+                            <div className="cancel__header__comments">Comments</div>
                         </div>
                         <div className="body__container">   
                             {traySelect}
-                            <textarea id="comments" placeholder="Comments" class="comments" cols="51" rows="6" required="" maxlength="400" name="comments" style={{margin: "10px 10px 10px 10px"}}></textarea>
+                            <textarea id="comments" class="comments" cols="51" rows="6" required="" maxlength="400" name="comments" className='popUp__textarea__return' style={{marginTop: "20px"}}></textarea>
                         </div>
-                        <center className="buttons__container">
-                            <button class="btn btn-sm btn-success" style={{marginRight:"5px", fontSize:"16px"}} onClick={()=>this.return()}>Confirm</button>
-                            <button class="btn btn-sm btn-danger" style={{marginRight:"5px", fontSize:"16px"}} onClick={()=>this.closeModal()}>Cancel</button>
+                        <center className="popUpP__buttons__container__return">
+                            <button class="btn__confirm__return" onClick={()=>this.return()}>Confirm</button>
+                            <button class="btn__cancel__return" onClick={()=>this.closeModal()}>Cancel</button>
                         </center>
                     </Modal>
                 </div>
