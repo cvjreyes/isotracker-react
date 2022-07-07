@@ -317,10 +317,10 @@ class DragAndDrop extends React.Component{
       inputContent = "Drop the files to update"
       styles = {
         dropzone: {
-          height: '250px'
+          height: '350px'
         },
         dropzoneActive: {
-          height: '300px'
+          height: '350px'
         },
         previewContainer:{
           height: '2px'
