@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import AlertF from "../../components/alert/alert"
+import "./byPassPopUp.css"
 
 
 export default class ByPassPopUp extends Component {
@@ -53,7 +54,7 @@ export default class ByPassPopUp extends Component {
             <section >
                 <input type="button"  value="BYPASS" className="btn btn_warning" style={{fontSize: "12px", fontWeight:"bold", padding: "2px 5px", backgroundColor: "#FF3358", color: "white", width: "100px", float: "left", marginRight: "5px", marginTop: "3px"}} onClick={() => this.openModal()} />
                 <div>
-                    <Modal visible={this.state.visible} width="350" height="370" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <Modal visible={this.state.visible} width="400" height="410" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div
                         className={`alert alert-success ${this.state.blankFields ? 'alert-shown' : 'alert-hidden'}`}
                         onTransitionEnd={() => this.setState({blankFields: false})}
@@ -62,13 +63,13 @@ export default class ByPassPopUp extends Component {
                       </div>
 
                     <div className="popUp__container" >
-                            <center className="popUp__title"><h3>Create ByPass</h3></center>
+                            <center className="popUp__title">Create ByPass</center>
                                 
                         </div>
                         
-                        <div className="popUp__input" style={{marginTop: "20px"}}>
+                        <div className="popUp__input__bypass" style={{marginTop: "20px"}}>
                             <label for="select">Type: </label>
-                            <select className="popUp_input_select" name="select" onChange={(e) => this.setState({type: e.target.value})} value={this.state.selected}>
+                            <select className="popUp_input_select__bypass" name="select" onChange={(e) => this.setState({type: e.target.value})} value={this.state.selected}>
                                 <option value={1} selected>Instrument</option>
                                 <option value={2}>Equipment</option>
                                 <option value={3}>Material</option>
@@ -77,11 +78,11 @@ export default class ByPassPopUp extends Component {
                             </select>
                         </div>
                         <center style={{marginTop: "10px"}}>
-                            <textarea style={{width: "310px", height: "170px"}} placeholder='Notes...' id="notes" name="notes" onChange={(e) => this.setState({note: e.target.value})}></textarea>
+                            <textarea className='popUp__textarea__bypass' placeholder=' Notes...' id="notes" name="notes" onChange={(e) => this.setState({note: e.target.value})}></textarea>
                         </center>
                         <center className="popUp__buttons__container__users">
-                            <button class="btn btn-sm btn-success" onClick={() => this.createByPass()} style={{marginRight:"5px", fontSize:"16px"}}>Create</button>
-                            <button class="btn btn-sm btn-danger" onClick={() => this.closeModal()} style={{marginLeft:"5px", fontSize:"16px"}}>Cancel</button>
+                            <button class="btn__create__bypass" onClick={() => this.createByPass()}>Create</button>
+                            <button class="btn__cancel__bypass" onClick={() => this.closeModal()}>Cancel</button>
                         </center>
                     </Modal>
                 </div>
