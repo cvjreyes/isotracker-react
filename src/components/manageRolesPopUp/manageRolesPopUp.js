@@ -347,7 +347,7 @@ export default class ManageRolesPopUp extends Component {
                         <AlertF type="warning" text="Username or email missing!" popUp={true}/>
                       </div>
                         <div>
-                            <center className="popUp__title"><strong>Manage roles</strong></center>
+                            <center className="popUp__title">Manage roles</center>
                                 
                         </div>
 
@@ -356,23 +356,23 @@ export default class ManageRolesPopUp extends Component {
                         <div class='table__columns'>
                             
                             <div class="column main__class">
-                                <label className="popUp__title" style={{fontSize: "22px"}}>Main</label>
+                                <label className="popUp__title" style={{fontSize: "20px"}}>Main</label>
 
                                 {this.state.selectedRolesMain}
                             </div>
                             
                             <div class="column leads__class">
-                                <label className="popUp__title" style={{fontSize: "22px"}}>Leads</label>
+                                <label className="popUp__title" style={{fontSize: "20px"}}>Leads</label>
 
                                 {this.state.selectedRolesLeads}
                             </div>
                             <div class="column fk__class">
-                                <label className="popUp__title" style={{fontSize: "22px"}}>Foreign Checkers</label>
+                                <label className="popUp__title" style={{fontSize: "20px"}}>Foreign Checkers</label>
 
                                 {this.state.selectedRolesForeignCheckers}
                             </div>
                             <div class="column misc__class">
-                                <label className="popUp__title" style={{fontSize: "22px"}}>Miscellaneous</label>
+                                <label className="popUp__title" style={{fontSize: "20px"}}>Miscellaneous</label>
 
                                 {this.state.selectedRolesMiscellaneous}
                             </div>
