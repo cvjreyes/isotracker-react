@@ -140,7 +140,7 @@ export default class UploadPopUp extends Component {
                 <button value="Force claim" className="action__btn"  onClick={() => this.openModal()}>Assign</button>                <div>
                     <Modal visible={this.state.visible} width="650" height="180" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="popUp__container" >
-                            <center className="popUp__title"><h1>Select a user</h1></center>          
+                            <center className="popUp__title">Select a user</center>          
                         </div>
                         <div className="selector__container">
                         
@@ -150,7 +150,7 @@ export default class UploadPopUp extends Component {
                                 ))}
                             </select>
                                 
-                            <button class="btn btn-sm btn-success" style={{fontSize:"15px"}} onClick={()=>this.getUser()}>Assign</button>
+                            <button class="btn__assign__user" onClick={()=>this.getUser()}>Assign</button>
                         </div>
                     </Modal>
                 </div>
