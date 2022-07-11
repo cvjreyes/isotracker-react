@@ -33,59 +33,61 @@ class PipingDataTable extends React.Component{
         .then(response => response.json())
         .then(async json => {
             let rows = []
-            for(let i = 0; i < json.rows.length; i++){
-              let iButton, vButton, naButton, claimedBtn, notInSDesignButton;
-              if(json.rows[i].valves === 1){
-                vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
-              }else{
-                vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
-              }
-
-              if(json.rows[i].instruments === 1){
-                iButton = <button className="btn btn-success" disabled onClick={() => this.iCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
-              }else{
-                iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
-              }
-
-              if(json.rows[i].instruments === 2){
-                naButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
-              }else{
-                naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white", color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
-              }
-
-              if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
-                notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
-              }else{
-                notInSDesignButton = null
-              }
-
-              if(json.rows[i].name){
-                claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
-              }
-
-              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton} {notInSDesignButton}</div>}
-              
-              if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
-                if(row.type === "TL1"){
-                  row.progress = json.rows[i].progress + 33 + "% (" + (json.rows[i].stage1 + 1) + ")"
-                }else if(row.type === "TL2"){
-                  row.progress = json.rows[i].progress + 20 + "% (" + (json.rows[i].stage1 + 1) + ")"
+            if(json.rows){
+              for(let i = 0; i < json.rows.length; i++){
+                let iButton, vButton, naButton, claimedBtn, notInSDesignButton;
+                if(json.rows[i].valves === 1){
+                  vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
                 }else{
-                  row.progress = json.rows[i].progress + 10 + "% (" + (json.rows[i].stage1 + 1) + ")"
-                }              
-              }else{
-                row.progress = json.rows[i].progress + "% (" + json.rows[i].stage1 + ")"
-              }
-              
-              if(row){
-                  if(i % 2 === 0){
-                      row["color"] = "#fff"
+                  vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
+                }
+
+                if(json.rows[i].instruments === 1){
+                  iButton = <button className="btn btn-success" disabled onClick={() => this.iCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
+                }else{
+                  iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
+                }
+
+                if(json.rows[i].instruments === 2){
+                  naButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
+                }else{
+                  naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white", color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
+                }
+
+                if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
+                  notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
+                }else{
+                  notInSDesignButton = null
+                }
+
+                if(json.rows[i].name){
+                  claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
+                }
+
+                let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton} {notInSDesignButton}</div>}
+                
+                if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
+                  if(row.type === "TL1"){
+                    row.progress = json.rows[i].progress + 33 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                  }else if(row.type === "TL2"){
+                    row.progress = json.rows[i].progress + 20 + "% (" + (json.rows[i].stage1 + 1) + ")"
                   }else{
-                      row["color"] = "#eee"
-                  }
+                    row.progress = json.rows[i].progress + 10 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                  }              
+                }else{
+                  row.progress = json.rows[i].progress + "% (" + json.rows[i].stage1 + ")"
+                }
+                
+                if(row){
+                    if(i % 2 === 0){
+                        row["color"] = "#fff"
+                    }else{
+                        row["color"] = "#eee"
+                    }
+                }
+                
+                rows.push(row)
               }
-              
-              rows.push(row)
             }
             
             const filterRow = [{tag: <div><input type="text" className="filter__input" placeholder="TAG" onChange={(e) => this.filter(1, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(2, e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(4,e.target.value)}/></div>, isotracker: <div><input type="text" className="filter__input" placeholder="IsoTracker" onChange={(e) => this.filter(5,e.target.value)}/></div>, progress: <div><input type="text" className="filter__input" placeholder="Progress" onChange={(e) => this.filter(7,e.target.value)}/></div>}]
@@ -109,61 +111,62 @@ class PipingDataTable extends React.Component{
         .then(response => response.json())
         .then(async json => {
             let rows = []
-            for(let i = 0; i < json.rows.length; i++){
-              let iButton, vButton, claimedBtn, naButton, notInSDesignButton;
-              if(json.rows[i].valves === 1){
-                vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
-              }else{
-                vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
-              }
-
-              if(json.rows[i].instruments === 1){
-                iButton = <button className="btn btn-success" disabled onClick={() => this.iCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
-              }else{
-                iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
-              }
-
-              if(json.rows[i].instruments === 2){
-                naButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
-              }else{
-                naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white",color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
-              }
-
-              if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
-                notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
-              }else{
-                notInSDesignButton = null
-              }
-
-              if(json.rows[i].name){
-                claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
-              }
-              
-              let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton} {notInSDesignButton}</div>}
-              
-              if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
-                if(row.type === "TL1"){
-                  row.progress = json.rows[i].progress + 33 + "% (" + (json.rows[i].stage1 + 1) + ")"
-                }else if(row.type === "TL2"){
-                  row.progress = json.rows[i].progress + 20 + "% (" + (json.rows[i].stage1 + 1) + ")"
+            if(json.rows){
+              for(let i = 0; i < json.rows.length; i++){
+                let iButton, vButton, claimedBtn, naButton, notInSDesignButton;
+                if(json.rows[i].valves === 1){
+                  vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
                 }else{
-                  row.progress = json.rows[i].progress + 10 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                  vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
                 }
-              }else{
-                row.progress = json.rows[i].progress + "% (" + json.rows[i].stage1 + ")"
-              }
 
-              if(row){
-                  if(i % 2 === 0){
-                      row["color"] = "#fff"
+                if(json.rows[i].instruments === 1){
+                  iButton = <button className="btn btn-success" disabled onClick={() => this.iCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
+                }else{
+                  iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
+                }
+
+                if(json.rows[i].instruments === 2){
+                  naButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
+                }else{
+                  naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white",color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
+                }
+
+                if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
+                  notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
+                }else{
+                  notInSDesignButton = null
+                }
+
+                if(json.rows[i].name){
+                  claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
+                }
+                
+                let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton} {notInSDesignButton}</div>}
+                
+                if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
+                  if(row.type === "TL1"){
+                    row.progress = json.rows[i].progress + 33 + "% (" + (json.rows[i].stage1 + 1) + ")"
+                  }else if(row.type === "TL2"){
+                    row.progress = json.rows[i].progress + 20 + "% (" + (json.rows[i].stage1 + 1) + ")"
                   }else{
-                      row["color"] = "#eee"
+                    row.progress = json.rows[i].progress + 10 + "% (" + (json.rows[i].stage1 + 1) + ")"
                   }
+                }else{
+                  row.progress = json.rows[i].progress + "% (" + json.rows[i].stage1 + ")"
+                }
+
+                if(row){
+                    if(i % 2 === 0){
+                        row["color"] = "#fff"
+                    }else{
+                        row["color"] = "#eee"
+                    }
+                }
+                
+                rows.push(row)
               }
-              
-              rows.push(row)
             }
-            
                 
             this.setState({data : rows, displayData: rows});
             this.props.loading(false)

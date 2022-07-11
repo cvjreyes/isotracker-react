@@ -150,7 +150,11 @@ const PITRequests = () =>{
             .then(response => response.json())
             .then(async json => {
                 const span = json.span
-                await setManagement({"Starting date": span[0].starting_date.toString().substring(8,10) + "/" + span[0].starting_date.toString().substring(5,7) + "/" + span[0].starting_date.toString().substring(0,4), "Finishing date": span[0].finishing_date.toString().substring(8,10) + "/" + span[0].finishing_date.toString().substring(5,7) + "/" + span[0].finishing_date.toString().substring(0,4)})
+                if(span.length > 0){
+                    await setManagement({"Starting date": span[0].starting_date.toString().substring(8,10) + "/" + span[0].starting_date.toString().substring(5,7) + "/" + span[0].starting_date.toString().substring(0,4), "Finishing date": span[0].finishing_date.toString().substring(8,10) + "/" + span[0].finishing_date.toString().substring(5,7) + "/" + span[0].finishing_date.toString().substring(0,4)})
+                }else{
+                    await setManagement({"Starting date": "", "Finishing date": ""})
+                }
                 
             })
 
@@ -277,7 +281,6 @@ const PITRequests = () =>{
                                                 }
 
                                                 let t_class = table_class[matIDList.indexOf(material)]
-
                                                 await tables.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"30px", marginTop:"20px"}}><div style={{display:"flex"}}><text className="materials__title">{estimated[i-1].name.toUpperCase()} Isometrics <text style={{fontSize:"17px"}}>{totalEst}</text> {warning}</text><button className="save__button" onClick={()=> submitEstimatedForecast(estimated[i-1].material_id)}><img src={SaveIcon} alt="save" className="save__icon"></img></button></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                 data={[est, issued[material], forc, sumEst, sumReal]}
@@ -662,7 +665,6 @@ const PITRequests = () =>{
 
                                             col.push({ data: estimated[i].week.toString(), type: "numeric"})
                                         }
-
                                         Object.keys(issued).map(async function(key, index) {
                                             let countReal = 0
                                             let sumReal = {}
@@ -689,7 +691,7 @@ const PITRequests = () =>{
                                                 colHeaders={weeks}
                                                 rowHeaders={["Real", "Real progress"]}
                                                 width="1750"
-                                                height="80"
+                                                height="95"
                                                 settings={weightSettings} 
                                                 manualColumnResize={true}
                                                 manualRowResize={true}
@@ -820,7 +822,7 @@ const PITRequests = () =>{
                                                 colHeaders={weeks}
                                                 rowHeaders={["Estimated", "Real", "Forecast", "Estimated progress", "Real progress"]}
                                                 width="1750"
-                                                height="145"
+                                                height="165"
                                                 settings={weightSettings} 
                                                 manualColumnResize={true}
                                                 manualRowResize={true}
@@ -2200,6 +2202,12 @@ const PITRequests = () =>{
         colWidths: 200,
         //... other options
     }
+
+    const spanSettings = {
+        licenseKey: 'non-commercial-and-evaluation',
+        colWidths: 190,
+        //... other options
+    }
     if(tab === "users"){
         return(
             <body style={{overflow:"hidden", height:"100vh"}}>
@@ -2302,7 +2310,7 @@ const PITRequests = () =>{
                                 rowHeaders={true}
                                 width="500"
                                 height="60"
-                                settings={pipingSettings} 
+                                settings={spanSettings} 
                                 manualColumnResize={true}
                                 manualRowResize={true}
                                 columns= {[{ data: "Starting date", type:"date"}, { data: "Finishing date", type:"date"}]}
