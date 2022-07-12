@@ -1541,6 +1541,7 @@ const IsoCtrlF = () => {
 
         const body = {
             filename: filename,
+            user: currentUser
         }
 
         const options = {
