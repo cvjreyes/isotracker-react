@@ -108,7 +108,7 @@ class MyTrayTable extends React.Component{
     });
   }
 
-  componentDidMount(){
+  async componentDidMount(){
 
     const bodyUsername = {
       email: secureStorage.getItem("user")
@@ -141,7 +141,7 @@ class MyTrayTable extends React.Component{
       },
       body: JSON.stringify(body)
   }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/myTrayFiles/myFiles", options)
+    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/myTrayFiles/myFiles", options)
         .then(response => response.json())
         .then(async json => {
             var rows = []
@@ -335,7 +335,7 @@ class MyTrayTable extends React.Component{
   }
   
 
-  componentDidUpdate(prevProps, prevState){
+  async componentDidUpdate(prevProps, prevState){
 
     if(prevProps !== this.props){
       const bodyUsername = {
@@ -349,7 +349,7 @@ class MyTrayTable extends React.Component{
         body: JSON.stringify(bodyUsername)
       }
   
-      fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/findByEmail", optionsUsername)
+      await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/findByEmail", optionsUsername)
       .then(response => response.json())
       .then(json => {
         this.setState({
@@ -369,14 +369,16 @@ class MyTrayTable extends React.Component{
         },
         body: JSON.stringify(body)
     }
-    fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/myTrayFiles/myFiles", options)
+    await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/myTrayFiles/myFiles", options)
     .then(response => response.json())
     .then(async json => {
         var rows = []
         var row = null;
-        let pButton, iButton, fButton, rButton, bButton, cButton, revButton = null;
-
+        let pButton, iButton, fButton, rButton, bButton, cButton, revButton, uploadButton = null;
+        await this.setState({data : [], displayData: []});
         for(let i = 0; i < json.rows.length; i++){
+            uploadButton = <UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} role={this.state.role}  currentUser = {this.state.user}/>
+            console.log(uploadButton)
             if(this.state.role === "Design" || this.state.role === "DesignLead" || this.state.role === "Issuer" || this.state.role === "SpecialityLead"){
               switch(json.rows[i].spo){
                 case 0:
@@ -516,7 +518,7 @@ class MyTrayTable extends React.Component{
                   row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link>, type: json.rows[i].code, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div style={{display:"flex"}}><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px", marginRight: "5px"}}>CANCEL VERIFY</button> <ByPassPopUp creatByPass={(type, notes) => this.creatByPass(type, notes, json.rows[i].iso_id)}/> {pButton} {iButton} {fButton} {rButton} {bButton} {cButton} {revButton}</div>}
                 }
               }else{
-                row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div style={{display:"flex"}}><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} role={this.state.role}  currentUser = {this.state.user}/> <ByPassPopUp creatByPass={(type, notes) => this.creatByPass(type, notes, json.rows[i].iso_id)}/> {pButton} {iButton} {fButton} {rButton} {bButton} {cButton} {revButton}</div>}
+                row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div style={{display:"flex"}}>{uploadButton} <ByPassPopUp creatByPass={(type, notes) => this.creatByPass(type, notes, json.rows[i].iso_id)}/> {pButton} {iButton} {fButton} {rButton} {bButton} {cButton} {revButton}</div>}
               } 
             }
           }
@@ -531,7 +533,7 @@ class MyTrayTable extends React.Component{
               if(json.rows[i].verifydesign === 1 && json.rows[i].role === secureStorage.getItem("role")){
                 row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div style={{display:"flex"}}><button className="btn btn-warning" onClick={() => this.props.cancelVerifyClick(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"120px", marginRight: "5px"}}>CANCEL VERIFY</button> <ByPassPopUp creatByPass={(type, notes) => this.creatByPass(type, notes, json.rows[i].iso_id)}/>  {pButton} {iButton} {fButton} {rButton} {bButton} {cButton} {revButton}</div>}
               }else{  
-                row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div style={{display:"flex"}}><UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)}  role={this.state.role} currentUser = {this.state.user} /> <ByPassPopUp creatByPass={(type, notes) => this.creatByPass(type, notes, json.rows[i].iso_id)}/> {pButton} {iButton} {fButton} {rButton} {bButton} {cButton} {revButton}</div>}
+                row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "R" + json.rows[i].revision + "*", date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from.toString(), to: json.rows[i].to, actions:<div style={{display:"flex"}}>{uploadButton} <ByPassPopUp creatByPass={(type, notes) => this.creatByPass(type, notes, json.rows[i].iso_id)}/> {pButton} {iButton} {fButton} {rButton} {bButton} {cButton} {revButton}</div>}
               }
             }
             
@@ -549,7 +551,7 @@ class MyTrayTable extends React.Component{
           }
         }
                 
-        this.setState({data : rows});
+        await this.setState({data : rows});
 
         let auxDisplayData = this.state.data
         let resultData = []
