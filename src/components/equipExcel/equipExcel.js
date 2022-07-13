@@ -167,12 +167,6 @@ class EquipExcel extends React.Component{
         //... other options
       }
   
-      const stepsSettings = {
-        licenseKey: 'non-commercial-and-evaluation',
-        colWidths: 200,
-        //... other options
-      }
-  
       const progressSettings = {
         licenseKey: 'non-commercial-and-evaluation',
         colWidths: 195,

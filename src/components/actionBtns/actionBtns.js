@@ -234,6 +234,12 @@ const ActionBtns = props =>{
         actionBtn7 = null
         actionBtn10 = null
         actionBtn11 = null
+    }else if(props.currentTab === "EstimatedPipes"){
+        actionBtn1 = null
+        actionBtn6 = null
+        actionBtn7 = null
+        actionBtn10 = null
+        actionBtn11 = null
     }else if(props.currentTab === "IsoControlLineIdGroup"){
         actionBtn1 = <button className="action__btn" name="export" value="export" onClick={() => exportLineIdGroup()}>Export</button>
         actionBtn6 = null

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import TreeView from '@mui/lab/TreeView';
 import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';

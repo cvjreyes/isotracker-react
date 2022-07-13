@@ -17,9 +17,8 @@ import IsoCtrlF from './pages/isoCtrlF/isoCtrlF';
 import CSPTracker from './pages/sptracker/sptracker';
 import PITRequests from './pages/pitrequests/pitrequests';
 import PitRequestView from './pages/pitRequestView/pitRequestView';
+import PipingProduction from './pages/pipingProduction/pipingProduction'
 require('dotenv').config();
-
-
 
 function App() {
   return (
@@ -41,6 +40,7 @@ function App() {
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/csptracker"} component={CSPTracker}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/pitrequests"} component={PITRequests}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/pitrequestsview"} component={PitRequestView}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/pipingProduction"} component={PipingProduction}></Route>
 
         </Switch>
       </Router>

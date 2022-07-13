@@ -134,7 +134,7 @@ class QTrackerViewDataTable extends React.Component{
                       row.color = "#rrr"
                   }
 
-                  row.observations = <input style={{width: "310px"}} type="text" defaultValue={json.rows[i].observations} style={{width: "310px"}} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
+                  row.observations = <input style={{width: "310px"}} type="text" defaultValue={json.rows[i].observations} onChange={(event)=>this.updateObservations(json.rows[i].incidence_number, event.target.value)}/>
 
                 }else{
                   if(json.rows[i].status === 0){
@@ -1032,10 +1032,8 @@ class QTrackerViewDataTable extends React.Component{
           
         }else{
           if(auxDisplayData[i][fil]){
-            console.log(this.state.filterData[column], auxDisplayData[i][fil] )
             if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
               exists = false
-              console.log("A")
             }
           }
           

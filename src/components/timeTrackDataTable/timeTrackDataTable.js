@@ -71,11 +71,9 @@ class TimeTrackDataTable extends React.Component{
       exists = true
       for(let column = 0; column < Object.keys(auxDisplayData[i]).length-7; column ++){
         fil = Object.keys(auxDisplayData[i])[column]
-        console.log(fil)
         if(auxDisplayData[i][fil]){
           if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
             exists = false
-            console.log(auxDisplayData[i][fil].toString(), this.state.filterData[column])
           }
         }else{
           

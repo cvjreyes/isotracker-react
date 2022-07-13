@@ -39,7 +39,6 @@ export default class ManageRolesPopUp extends Component {
    
     async openModal() {      
 
-        console.log(this.props.roles)
         let selectedLeft = []
 
         if(this.props.roles.indexOf("Design") > -1){

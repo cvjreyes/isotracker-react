@@ -67,7 +67,6 @@ class CivilTypesDataTable extends React.Component{
         if(auxDisplayData[i][fil]){
           if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
             exists = false
-            console.log(auxDisplayData[i][fil].toString(), this.state.filterData[column])
           }
         }else{
           

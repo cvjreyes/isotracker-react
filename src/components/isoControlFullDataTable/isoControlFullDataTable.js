@@ -4,6 +4,7 @@ import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import HoldsPopUp from '../holdsPopUp/holdsPopUp';
 
+
 class IsoControlFullDataTable extends React.Component{
   state = {
     searchText: '',
@@ -30,6 +31,7 @@ class IsoControlFullDataTable extends React.Component{
   }
 
   componentDidMount(){
+    this.props.loading(true)
     const options = {
         method: "GET",
         headers: {
@@ -42,10 +44,9 @@ class IsoControlFullDataTable extends React.Component{
         let rows = []
         for(let i = 0; i < json.rows.length; i++){
 
-            
             if(json.rows[i].LDL === "In LDL"){
               json.rows[i].line = json.rows[i].fluid + json.rows[i].seq
-              json.rows[i].line_id = json.rows[i].unit + json.rows[i].fluid + json.rows[i].seq
+              json.rows[i].line_id = json.rows[i].unit + "-" + json.rows[i].fluid + "-" + json.rows[i].seq
             }else{
               json.rows[i].unit = json.rows[i].bom_unit
               json.rows[i].area = json.rows[i].bom_area
@@ -131,11 +132,15 @@ class IsoControlFullDataTable extends React.Component{
             }else{
                 json.rows[i].color = "#eee"
             }
-            json.rows[i].line_id = <b>{json.rows[i].line_id}</b>
-            rows.push(json.rows[i])
+            if(json.rows[i].line_id){
+              json.rows[i].line_id = <b>{json.rows[i].line_id}</b>
+              rows.push(json.rows[i])
+            }
+           
         }
 
         this.setState({data: rows, displayData: rows})
+        this.props.loading(false)
     })
 
     
@@ -143,7 +148,6 @@ class IsoControlFullDataTable extends React.Component{
   }
 
   async filter(column, value){
-    console.log(column, value)
     let fd = this.state.filterData
     fd[column] = value
     await this.setState({filterData: fd})

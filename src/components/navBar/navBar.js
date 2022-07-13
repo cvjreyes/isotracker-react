@@ -73,7 +73,7 @@ const NavBar = (props) =>{
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
     };
-
+    
     const handleCloseUser = () => {
         setAnchorElUser(null);
     };

@@ -11,7 +11,7 @@ export default class HoldsPopUp extends Component {
         }
     }
 
-    openModal() {
+    async openModal() {
 
         const holds = this.props.holds
         const descriptions = this.props.descriptions
@@ -30,7 +30,32 @@ export default class HoldsPopUp extends Component {
             }
         }
 
-        this.setState({
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+          }
+
+        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsocontrolHolds/" + this.props.tag, options)
+            .then(response => response.json())
+            .then(async json => {
+                if(json.holds.length > 0){
+                    for(let i = 0; i < json.holds.length; i++){
+                        
+                        content.push(<tr className="holds__row">                   
+                            <td style={{border: "0.28px solid #D2D2D2", width:"50px", verticalAlign:"middle", textAlign:"center"}}>
+                                <p className="holds__hold__text">ISO</p>
+                            </td>
+                            <td style={{border: "0.28px solid #D2D2D2", width:"400px", verticalAlign:"middle"}}>
+                                <p className="holds__description__text">{json.holds[i].description}</p>
+                            </td>              
+                        </tr>)
+                    }
+                }
+            })
+
+        await this.setState({
             content: content,
             visible : true
         });

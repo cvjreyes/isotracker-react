@@ -29,9 +29,11 @@ class DragAndDrop extends React.Component{
     success: false,
     error: false,
     pipeError: false,
+    ownerError: false,
     uploaded: false,
     errorAlerts: [],
     pipeErrorAlerts: [],
+    ownerErrorAlerts: [],
     max: 0,
     uploadingPreview: false,
     uploading: false,
@@ -203,6 +205,7 @@ class DragAndDrop extends React.Component{
       pipeError: false,
       errorAlerts: [],
       pipeErrorAlerts: [],
+      ownerErrorAlerts: [],
       counter: 0,
       max: files.length,
       uploading: true,
@@ -213,10 +216,38 @@ class DragAndDrop extends React.Component{
       const formData  = new FormData(); 
       formData.append('file', file.file);  
       if(this.props.mode === "upload"){
+
         if(process.env.REACT_APP_PROGRESS === "0"){
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkOwner/"+file.file.name)
+        .then(response => response.json())
+        .then(async json =>{
+          if(json.owner){
+            this.uploadFile(formData);
+          }else{
+            let joined = this.state.ownerErrorAlerts.concat(file.file.name);
+            this.setState({
+              ownerErrorAlerts : joined,
+              ownerError: true
+            })
+            let max = this.state.max - 1
+            this.setState({
+              max: max
+            })
+            if (max === 0){
+              this.setState({
+                uploaded: true,
+                uploading: false
+              })
+            }
+          }
+        })
           this.uploadFile(formData);
         }else{
-          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+file.file.name)
+          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkOwner/"+file.file.name)
+        .then(response => response.json())
+        .then(async json =>{
+          if(json.owner){
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+file.file.name)
           .then(response => response.json())
           .then(async json =>{
             if(json.exists){
@@ -239,6 +270,25 @@ class DragAndDrop extends React.Component{
               }
             }
           })
+          }else{
+            let joined = this.state.ownerErrorAlerts.concat(file.file.name);
+            this.setState({
+              ownerErrorAlerts : joined,
+              ownerError: true
+            })
+            let max = this.state.max - 1
+            this.setState({
+              max: max
+            })
+            if (max === 0){
+              this.setState({
+                uploaded: true,
+                uploading: false
+              })
+            }
+          }
+        })
+          
         }
         
       }else{
@@ -270,8 +320,10 @@ class DragAndDrop extends React.Component{
 
     const errorAlerts = this.state.errorAlerts;
     const pipeErrorAlerts = this.state.pipeErrorAlerts;
+    const ownerErrorAlerts = this.state.ownerErrorAlerts;
     let errors = []
     let pipeErrors = []
+    let ownerErrors =[]
     if(errorAlerts.length > 0){
       for(let i = 0; i < errorAlerts.length; i++){
         
@@ -297,6 +349,17 @@ class DragAndDrop extends React.Component{
           pipeErrors.push(<Alert severity="error"
           >
             The file {pipeErrorAlerts[i]} doesn't belong to this project!
+
+          </Alert>)
+      }
+    }
+
+    if(ownerErrorAlerts.length > 0){
+      for(let i = 0; i < ownerErrorAlerts.length; i++){
+        
+          ownerErrors.push(<Alert severity="error"
+          >
+            The isometric {ownerErrorAlerts[i]} doesn't have an owner!
 
           </Alert>)
       }
@@ -356,6 +419,12 @@ class DragAndDrop extends React.Component{
         <Collapse in={this.state.pipeError}>
           <Collapse in={this.state.uploaded}>
             {pipeErrors}
+          </Collapse>
+          
+        </Collapse>
+        <Collapse in={this.state.ownerError}>
+          <Collapse in={this.state.uploaded}>
+            {ownerErrors}
           </Collapse>
           
         </Collapse>

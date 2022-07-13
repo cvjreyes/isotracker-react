@@ -2,34 +2,82 @@ import "./piping.css"
 import React, { useState , useEffect} from 'react'
 import NavBar from '../../components/navBar/navBar'
 import RoleDropDown from '../../components/roleDropDown/roleDropDown'
-import EquipmentsNavBtns from "../../components/EquipmentsNavBtns/equipmentsNavBtns"
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse'
 import PipingEstimatedDataTable from "../../components/pipingEstimatedDataTable/pipingEstimatedDataTable"
 import ModelledDataTable from "../../components/modelledDataTable/modelledDataTable"
 import ProgressPlotPiping from "../../components/progressPlotPiping/progressPlotPiping"
 import PipingTypesDataTable from "../../components/pipingTypesDataTable/pipingTypesDataTable"
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
 import PipingExcel from "../../components/pipingExcel/pipingExcel"
 import PipingExcelEdit from "../../components/pipingExcelEdit/pipingExcelEdit"
 import IsoTrackerLogo from "../../assets/images/3DTracker.svg"
-import ExportIcon from "../../assets/images/downloadicon.png"
-import EditIcon from "../../assets/images/edit.png"
+import Trash from "../../assets/images/Trash.png"
 import AlertF from "../../components/alert/alert"
+import Hold from "../../assets/images/Prohibit.png"
 
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
+import PipingNavBtns from "../../components/pipingNavBtns/pipingNavBtns"
+
+import PipingDataTable from "../../components/pipingDataTable/pipingDataTable"
+import PipingMyTrayTable from "../../components/pipingMyTrayTable/pipingMyTrayTable"
+import PipingBinTable from "../../components/pipingBinTable/pipingBinTable"
+
+import IsoControlFullDataTable from "../../components/isoControlFullDataTable/isoControlFullDataTable"
+import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLineIdDataTable/isoControlGroupLineIdDataTable"
+import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
+import EstimatedPipesExcel from "../../components/estimatedPipesExcel/estimatedPipesExcel"
+import IsoControlHoldsDataTable from "../../components/isoControlHoldsDataTable/isoControlHoldsDataTable";
+
+const CryptoJS = require("crypto-js");
+const SecureStorage = require("secure-web-storage");
+var SECRET_KEY = 'sanud2ha8shd72h';
+
+var secureStorage = new SecureStorage(localStorage, {
+    hash: function hash(key) {
+        key = CryptoJS.SHA256(key, SECRET_KEY);
+
+        return key.toString();
+    },
+    encrypt: function encrypt(data) {
+        data = CryptoJS.AES.encrypt(data, SECRET_KEY);
+
+        data = data.toString();
+
+        return data;
+    },
+    decrypt: function decrypt(data) {
+        data = CryptoJS.AES.decrypt(data, SECRET_KEY);
+
+        data = data.toString(CryptoJS.enc.Utf8);
+
+        return data;
+    }
+});
 
 const Piping = () => {
 
-    const CryptoJS = require("crypto-js");
-    const SecureStorage = require("secure-web-storage");
-    var SECRET_KEY = 'sanud2ha8shd72h';
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
     const[weight, setWeight] = useState();
     const[progress, setProgress] = useState();
     const[successAlert, setSuccessAlert] = useState(false);
-
+    const[selected, setSelected] = useState([])
+    const [updateData, setUpdateData] = useState(false);
+    const [warningSelected, setWarningSelected] = useState(false);
+    const [transactionSuccess, setTransactionSuccess] = useState(false)
+    const [notVI, setNotVI] = useState(false)
+    const [currentTab, setCurrentTab] = useState("PipingMyTray")
+    const [estimatedWarning, setEstimatedWarning] = useState(false)
+    const [estimatedEmpty, setEstimatedEmpty] = useState(false)
+    const [modelledWeight, setModelledWeight] = useState("...")
+    const [notModelledWeight, setNotModelledWeight] = useState("...")
+    const [totalIsocontrolWeight, setTotalIsocontrolWeight] = useState("...")
+    const [loading, setLoading] = useState(false)
+    const [maxTrayWarning, setMaxTrayWarning] = useState(false)
+    const [minTrayWarning, setMinTrayWarning] = useState(false)
+    const [unclaimAlert, setUnclaimAlert] = useState(false)
+    const [changesSaved, setChangesSaved] = useState(false)
     const history = useHistory()
 
     useEffect(()=>{
@@ -73,11 +121,12 @@ const Piping = () => {
         }
        
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/pipingWeight", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/estimatedPipingWeight", options)
             .then(response => response.json())
             .then(json => {
                 setWeight(json.weight)
                 setProgress(json.progress)
+                setModelledWeight(json.modelledWeight)
             }
             )
             .catch(error => {
@@ -100,7 +149,11 @@ const Piping = () => {
     
                 })
             
-    },[]);
+    },[updateData]);
+
+    useEffect(async ()=>{
+        await setSelected([])
+    },[currentTab]);
 
     function success(){
         setSuccessAlert(true)
@@ -129,27 +182,7 @@ const Piping = () => {
         history.push("/" + process.env.REACT_APP_PROJECT)
     }
     
-    var secureStorage = new SecureStorage(localStorage, {
-        hash: function hash(key) {
-            key = CryptoJS.SHA256(key, SECRET_KEY);
-    
-            return key.toString();
-        },
-        encrypt: function encrypt(data) {
-            data = CryptoJS.AES.encrypt(data, SECRET_KEY);
-    
-            data = data.toString();
-    
-            return data;
-        },
-        decrypt: function decrypt(data) {
-            data = CryptoJS.AES.decrypt(data, SECRET_KEY);
-    
-            data = data.toString(CryptoJS.enc.Utf8);
-    
-            return data;
-        }
-    });
+   
 
     useEffect(()=>{
         if(!secureStorage.getItem("user")){
@@ -161,21 +194,22 @@ const Piping = () => {
 
     document.body.style.zoom = 0.8
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("piping_tab"))
     if(currentTab === "" || currentTab === null){
         setCurrentTab("Estimated")
     }
 
     var currentUser = secureStorage.getItem('user')
     var table = null
-    let downloadBtn = null
-    let adminBtn = null
+    let actionBtns = null
+    let recycleBinBtn = null
+    let holdBtn = null
+    let isocontrolWeightsComponent = null
+    let isoControllLineIdGroupBtn = null
+    let uploadBOMBtn = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable/>
-    }else if(currentTab === "Modelled"){
-        downloadBtn = <button className="navBar__button" onClick={()=>downloadModelled()} style={{marginLeft:"230px", width:"115px"}}><img src={ExportIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Export</p></button>
-    
+    }else if(currentTab === "Modelled"){    
         table = <ModelledDataTable/>
     }else if(currentTab === "Progress"){
         table = <ProgressPlotPiping/>
@@ -185,58 +219,302 @@ const Piping = () => {
         table = <PipingExcel success={success.bind(this)}/>
     }else if(currentTab === "Edit"){
         table = <PipingExcelEdit success={success.bind(this)}/>
+    }else if(currentTab === "PipingModelled" || currentTab === "PipingSStress" || currentTab === "PipingRStress" || currentTab === "PipingStress" || currentTab === "PipingSupports" || currentTab === "PipingSDesign"){
+        actionBtns = <button className="action__btn"  name="claim" value="claim" onClick={() => claimClick()}>Claim</button>
+        table = <PipingDataTable currentTab = {currentTab} updateData={updateData} onChange={value=> setSelected(value)} claimClick={claimClick.bind(this)} loading={value => setLoading(value)}/>  
+    }else if(currentTab === "PipingMyTray"){
+        actionBtns = <div><button className="action__btn"  name="claim" value="claim" onClick={() => nextClick()}>Next step</button><button className="action__btn"  name="unclaim" value="unclaim" onClick={() => unclaimClick()}>Unclaim</button><button className="action__btn"  name="claim" value="claim" onClick={() => returnClick()}>Return</button><button className="action__btn"  name="claim" value="claim" onClick={() => deleteClick()}>Delete</button></div>
+        table = <PipingMyTrayTable onChange={value=> setSelected(value)} updateData={updateData} updateDataMethod={() => setUpdateData(!updateData)} loading={value => setLoading(value)}/>
+    }
+    
+    if(currentTab === "Piping recycle bin"){
+        table = <PipingBinTable onChange={value=> setSelected(value)} updateData={updateData} updateDataMethod={() => setUpdateData(!updateData)}/>
+        actionBtns = <button className="action__btn"  name="restore" value="restore" onClick={() => restoreClick()}>Restore</button>
+        recycleBinBtn = <button className="navBar__button" style={{backgroundColor:"#99C6F8", marginLeft:"232px"}}><img src={Trash} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Trash</p></button>
+    }else{
+        recycleBinBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Piping recycle bin")} style={{marginLeft:"232px"}}><img src={Trash} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Trash</p></button>
+    }
+
+    if(currentTab === "IsocontrolHolds"){
+        table = <IsoControlHoldsDataTable updateData={updateData} updateDataMethod={() => setUpdateData(!updateData)}/>
+        holdBtn = <button className="navBar__button"  style={{backgroundColor:"#99C6F8"}}><img src={Hold} alt="hold" className="navBar__icon"></img><p className="navBar__button__text">Hold</p></button>
+    }else{
+        holdBtn = <button className="navBar__button" onClick={()=>setCurrentTab("IsocontrolHolds")}><img src={Hold} alt="hold" className="navBar__icon"></img><p className="navBar__button__text">Hold</p></button>
+    }
+
+    if(currentTab === "IsoControlFull"){
+        secureStorage.setItem("tab", "IsoControlFull")
+        table = <IsoControlFullDataTable loading={value => setLoading(value)}/>
+        uploadBOMBtn = <UploadBOMIsocontrolPopUp success={success.bind(this)} />
+        isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() =>{setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
+    }
+
+    if(currentTab === "EstimatedPipes"){
+        secureStorage.setItem("tab", "EstimatedPipes")
+        table = <EstimatedPipesExcel success={() => setChangesSaved(true)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+    }
+
+    if(currentTab === "IsoControlLineIdGroup"){
+        secureStorage.setItem("tab", "IsoControlLineIdGroup")
+        isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" style={{backgroundColor: "rgb(148, 220, 170)"}} onClick={() => {setCurrentTab("IsoControlFull")}}>Group by line ID</button>
+        table = <IsoControlGroupLineIdDataTable loading={value => setLoading(value)}/>
+        //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
+
+    }
+    
+    
+    if(currentTab === "IsoControlFull"){
+        isocontrolWeightsComponent = <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button>
     }
 
     
-    if(currentTab === "Edit" || currentTab === "Key parameters"){
-        dataTableHeight = "600px"
+    async function claimClick(){
+        if(selected.length > 0){
+            await setLoading(true)
+            localStorage.setItem("update", true)
+            
+            const body ={
+                user: currentUser,
+                pipes: selected,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/claimPipes", options)
+            .then(response => response.json())
+            .then(json =>{
+                if(json.success){
+                    setSuccessAlert(true)
+                }
+            })
+            await setUpdateData(!updateData)
+            await setSelected([])
+            await setLoading(false)
+
+        }else{
+            await setWarningSelected(true)
+        }
+
     }
+
+    async function unclaimClick(){
+        if(selected.length > 0){
+            await setLoading(true)
+            localStorage.setItem("update", true)
+            console.log(selected)
+            const body ={
+                pipes: selected,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
+
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unclaimPipes", options)
+            .then(response => response.json())
+            .then(json =>{
+                if(json.success){
+                    setUnclaimAlert(true)
+                }
+            })
+            await setUpdateData(!updateData)
+            await setSelected([])
+            await setLoading(false)
+
+        }else{
+            await setWarningSelected(true)
+        }
+
+    }
+
+    async function nextClick(){
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            let pipes = []
+            let notvi = false,maxTrayWarning = false
+            for(let i = 0; i < selected.length; i++){
+                if((selected[i][1]).indexOf(1) > -1){
+                    notvi = true
+                }else if((selected[i][1]).indexOf(2) > -1){
+                    maxTrayWarning = true
+                }else{
+                    pipes.push(selected[i][0])
+                }
+            }
+
+            if(pipes.length > 0){
+                const body ={
+                    user: currentUser,
+                    pipes: pipes,
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
     
-    if(currentRole === "Project"){
-        if(currentTab === "Estimated" || currentTab === "Edit"){
-            if(currentTab === "Edit"){
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{backgroundColor:"#99C6F8", marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
-            }else{
-                adminBtn = <button className="navBar__button" onClick={()=>setCurrentTab("Edit")} style={{marginLeft:"230px"}}><img src={EditIcon} alt="trash" className="navBar__icon"></img><p className="navBar__button__text">Edit</p></button>
-            }        }else{
-            adminBtn = null
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/nextStep", options)
+                .then(response => response.json())
+                .then(json =>{
+                    if(json.success){
+                        setTransactionSuccess(true)
+                    }
+                })
+            }
+
+            if(notvi){
+                setNotVI(true)
+            }
+
+            if(maxTrayWarning){
+                setMaxTrayWarning(true)
+            }
+
+            await setUpdateData(!updateData)
+            await setSelected([])
+            
+        }else{
+            await setWarningSelected(true)
         }
     }
-        
 
-    async function downloadModelled(){
+    async function returnClick(){
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            let minTrayWarning = false
+            let pipes = []
+            let notvi = false
+            console.log(selected)
+            for(let i = 0; i < selected.length; i++){
+                if((selected[i][1]).indexOf(3) > -1){
+                    minTrayWarning = true
+                }else{
+                    pipes.push(selected[i][0])
+                }
+            }
 
-        await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadModelled/")
-        .then(response => response.json())
-        .then(json => {
-            const headers = ["TAG", "ISO_ID", "TYPE"]
-            exportToExcel(JSON.parse(json), "Piping modelled", headers)
-        })
+            if(pipes.length > 0){
+                const body ={
+                    user: currentUser,
+                    pipes: pipes,
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+    
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/returnPipes", options)
+                .then(response => response.json())
+                .then(json =>{
+                    if(json.success){
+                        setTransactionSuccess(true)
+                    }
+                })
+            }
+
+            if(notvi){
+                setNotVI(true)
+            }
+
+            if(minTrayWarning){
+                setMinTrayWarning(true)
+            }
+            
+            await setUpdateData(!updateData)
+            await setSelected([])
+            
+        }else{
+            await setWarningSelected(true)
+        }
     }
 
-    const exportToExcel = (apiData, fileName, headers) => {
-        const fileType =
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-        const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'O1']
-        const fileExtension = ".xlsx";
+    async function restoreClick(){
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            
+            const body ={
+                user: currentUser,
+                pipes: selected,
+            }
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            }
 
-        let wscols = []
-        for(let i = 0; i < headers.length; i++){
-            wscols.push({width:35})
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/restorePipes", options)
+            .then(response => response.json())
+            .then(json =>{
+                if(json.success){
+                    setTransactionSuccess(true)
+                }
+            })
+
+            await setUpdateData(!updateData)
+            await setSelected([])
+            
+        }else{
+            await setWarningSelected(true)
         }
-
-        const ws = XLSX.utils.json_to_sheet(apiData);   
-        ws["!cols"] = wscols
-        for(let i = 0; i < headers.length; i++){
-            ws[header_cells[i]].v = headers[i]
-        }
-        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-        const data = new Blob([excelBuffer], { type: fileType });
-        FileSaver.saveAs(data, fileName + fileExtension);
-
     }
 
+    async function deleteClick(){
+        if(selected.length > 0){
+            localStorage.setItem("update", true)
+            let pipes = []
+            let notvi = false
+            for(let i = 0; i < selected.length; i++){
+                pipes.push(selected[i][0])
+            }
+
+            if(pipes.length > 0){
+                const body ={
+                    user: currentUser,
+                    pipes: pipes,
+                }
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                }
+    
+                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/deletePipes", options)
+                .then(response => response.json())
+                .then(json =>{
+                    if(json.success){
+                        setTransactionSuccess(true)
+                    }
+                })
+            }
+
+            if(notvi){
+                setNotVI(true)
+            }
+
+            await setUpdateData(!updateData)
+            await setSelected([])
+            
+        }else{
+            await setWarningSelected(true)
+        }
+    }
 
 
     return(
@@ -252,11 +530,74 @@ const Piping = () => {
             className={`alert alert-success ${successAlert ? 'alert-shown' : 'alert-hidden'}`}
             onTransitionEnd={() => setSuccessAlert(false)}
             >
-                <AlertF type="success" text="Changes saved!" margin="0px"/>
+                <AlertF type="success" text="Pipes claimed!" margin="0px"/>
             </div>
-            <div style={{position:"absolute", marginTop:"180px", marginLeft:"48%"}}>
-                <i className="discipline__title" style={{fontStyle:"normal"}}>Piping</i>
+            <div
+            className={`alert alert-success ${changesSaved ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setChangesSaved(false)}
+            >
+            <AlertF type="success" text="Changes saved!" margin="0px"/>
             </div>
+            <div
+            className={`alert alert-success ${transactionSuccess ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setTransactionSuccess(false)}
+            >
+                <AlertF type="success" margin="0px" text="The action has been completed."/>
+            </div>
+            <div
+            className={`alert alert-success ${unclaimAlert ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setUnclaimAlert(false)}
+            >
+                <AlertF type="success" margin="0px" text="Pipes unclaimed!"/>
+            </div>
+            <div
+            className={`alert alert-success ${warningSelected ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setWarningSelected(false)}
+            >
+                <AlertF type="warning" text="Select at least one pipe!" margin="10px"/>   
+            </div>
+            <div
+            className={`alert alert-success ${notVI ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setNotVI(false)}
+            >
+                <AlertF type="warning" text="Can't send to S-Design without valves and instruments check or N/A!" margin="10px"/>   
+            </div>
+            <div style={{position:"absolute", marginTop:"180px", marginLeft:"45%"}}>
+                <i className="discipline__title" style={{fontStyle:"normal"}}>Piping IsoControl</i>
+            </div>
+            <div
+            className={`alert alert-success ${estimatedWarning ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setEstimatedWarning(false)}
+            >
+            <AlertF type="warning" text="Changes on modelled lines can't be saved!" margin="0px"/>   
+            </div>
+            <div
+            className={`alert alert-success ${estimatedEmpty ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setEstimatedEmpty(false)}
+            >
+            <AlertF type="warning" text="Pipes with empty values didn't save!" margin="0px"/>   
+            
+            </div>
+            <div
+            className={`alert alert-success ${minTrayWarning ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setMinTrayWarning(false)}
+            >
+            <AlertF type="warning" text="Pipes on Modelled can't be returned!" margin="0px"/>   
+            
+            </div>
+            <div
+            className={`alert alert-success ${maxTrayWarning ? 'alert-shown' : 'alert-hidden'}`}
+            onTransitionEnd={() => setMaxTrayWarning(false)}
+            >
+            <AlertF type="warning" text="Pipes on S-Design are completed!" margin="0px"/>   
+            
+            </div>
+            <Collapse in={loading}>
+                <Alert style={{fontSize:"20px",position: "fixed", left: "50%", top:"10%", transform: "translate(-50%, -50%)"}} severity="info"
+                    >
+                    Processing...
+                </Alert>
+            </Collapse>
                 <div className="isotracker__row">
                   <div className="isotracker__column">
                       <img src={IsoTrackerLogo} alt="isoTrackerLogo" className="isoTrackerLogo__image2"/>
@@ -269,14 +610,16 @@ const Piping = () => {
 
                   <div className="isotracker__column">
                   
-                  <table className="equipTable__table" style={{marginTop:"270px", width:"35%", marginLeft:"59%"}}>
+                  <table className="equipTable__table" style={{marginTop:"270px", width:"50%", marginLeft:"45%"}}>
                         <tbody className="equipable__body">
                             <tr>    
                                 <td  className="equipTable__header" style={{backgroundColor:"#338DF1", borderRadius:"1em 0 0 0"}}>Estimated weight</td>
+                                <td  className="equipTable__header" style={{backgroundColor:"#338DF1"}}>Modelled weight</td>
                                 <td className="equipTable__header" style={{backgroundColor:"#338DF1", borderRadius:"0 1em 0 0"}}>Total progress</td>
                             </tr>
                             <tr>
                                 <td className="equipTable__state" style={{borderRadius:"0 0 0 1em"}}>{weight}</td>
+                                <td className="equipTable__state">{modelledWeight}</td>
                                 <td className="equipTable__state" style={{borderRadius:"0 0 1em 0"}}>{progress}%</td>
                             </tr>
                         </tbody>
@@ -289,27 +632,36 @@ const Piping = () => {
               <table className="isotracker__table__container">
                       <tr className="isotracker__table__navBar__container">
                           <th  colspan="2" className="isotracker__table__navBar">
-                            {adminBtn}
-                            {downloadBtn}
+                            {recycleBinBtn}
+                            {holdBtn}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="disciplines__table__trays">
                               <div className="trays__container">
+                              
+                              <PipingNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/> 
+                                    {/* 
                                   <p className="isotracker__table__trays__group">Options</p>
                                   <center className="equimentsNavBtns__center">              
                                     <EquipmentsNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole} discipline = "Equipment"/>               
                                     </center>
+                                    */}
                               </div>
                           </td>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
-                              <div  style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                              <div  style={{height: dataTableHeight, width:"2000px"}} className="isotracker__table__table__container">
+                                  {isoControllLineIdGroupBtn}
+                                  {uploadBOMBtn}
                                   {table}
                               </div>
                           </td>
                           
                       </tr>
                   </table>
+                  <center className="actionBtns__container">
+                      {actionBtns}
+                  </center>
          </body>
     )
 }

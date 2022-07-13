@@ -52,6 +52,7 @@ import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLine
 import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
+import EstimatedPipesExcel from "../../components/estimatedPipesExcel/estimatedPipesExcel"
 import ByPassDataTable from "../../components/byPassDataTable/byPassDataTable"
 
 const IsoCtrlF = () => {
@@ -79,6 +80,8 @@ const IsoCtrlF = () => {
     const [navBar, setNavBar] = useState(null)
     const [alreadyOnRev, setAlreadyOnRev] = useState(false)
     const [errorREV, setErrorREV] = useState(false)
+    const [estimatedWarning, setEstimatedWarning] = useState(false)
+    const [estimatedEmpty, setEstimatedEmpty] = useState(false)
 
     const [modelledWeight, setModelledWeight] = useState("...")
     const [notModelledWeight, setNotModelledWeight] = useState("...")
@@ -118,7 +121,7 @@ const IsoCtrlF = () => {
         }
     }, [])
 
-    const [currentTab, setCurrentTab] = useState(secureStorage.getItem("tab")) 
+    const [currentTab, setCurrentTab] = useState("Status") 
 
     var dataTableHeight = "590px"
 
@@ -1222,7 +1225,6 @@ const IsoCtrlF = () => {
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadUsers")
         .then(response => response.json())
         .then(json => {
-            console.log(json)
             const headers = ["USERNAME", "EMAIL", "ROLE"]
             exportToExcel(json, "Users", headers)
         })
@@ -1313,7 +1315,6 @@ const IsoCtrlF = () => {
     }
 
     async function newRev(comments) {
-        console.log(comments)
         setErrorReports(false)
         setErrorUnclaimR(false)
         setTransactionSuccess(false);
@@ -1483,7 +1484,6 @@ const IsoCtrlF = () => {
       
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unlock", options)
           .then(response => {
-            console.log("Unlocked")
             setTransactionSuccess(true)
           })
 
@@ -2130,6 +2130,7 @@ const IsoCtrlF = () => {
     let isoControlBtn = null
     let isoControlNotModBtn = null
     let isoControlFullBtn = null
+    let isoControlEstimatedBtn = null
     let isocontrolWeightsComponent = null
     let isoControllLineIdGroupBtn = null
     let editCustomBtn = null
@@ -2155,13 +2156,23 @@ const IsoCtrlF = () => {
         }
         if(currentTab === "IsoControlFull"){
             secureStorage.setItem("tab", "IsoControlFull")
-            isoControlFullBtn = <button type="button" className="nav__button__title text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >IsoControl</button>
+            isoControlFullBtn = <div><p className="isotracker__table__trays__group">IsoControl</p><button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Report</button></div>
             tableContent = <IsoControlFullDataTable/>
             isoControllLineIdGroupBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlLineIdGroup")}}>Group by line ID</button>
-            uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)}/>
+            uploadBOMBtn = <UploadBOMIsocontrolPopUp success={successAlert.bind(this)} />
             //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
         }else{
-            isoControlFullBtn = <button type="button" className="nav__button__title text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>IsoControl</button>
+            isoControlFullBtn = <div><p className="isotracker__table__trays__group">IsoControl</p><button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("IsoControlFull")}}>Report</button></div>
+            
+        }
+
+        if(currentTab === "EstimatedPipes"){
+            secureStorage.setItem("tab", "EstimatedPipes")
+            isoControlEstimatedBtn = <button type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Estimated</button>
+            tableContent = <EstimatedPipesExcel success={success.bind(this)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+            //editCustomBtn = <button className="isocontrol__lineid__group__button" onClick={() => {setCurrentTab("IsoControlEditCustom")}} style={{marginLeft:"20px"}}>Edit custom fields</button>
+        }else{
+            isoControlEstimatedBtn = <button type="button" className="nav__button text-left"  onClick={() => {setCurrentTab("EstimatedPipes")}}>Estimated</button>
             
         }
 
@@ -2294,6 +2305,18 @@ const IsoCtrlF = () => {
                         >
                         <AlertF type="warning" text="Complete the revision parameters!" margin="-20px"/>   
                       </div>
+                      <div
+                        className={`alert alert-success ${estimatedWarning ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setEstimatedWarning(false)}
+                        >
+                        <AlertF type="warning" text="Changes on modelled can't be saved!" margin="-10px"/>   
+                      </div>
+                      <div
+                        className={`alert alert-success ${estimatedEmpty ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setEstimatedEmpty(false)}
+                        >
+                        <AlertF type="warning" text="Pipes with empty values didn't save!" margin="-10px"/>   
+                      </div>
                   </center>
               {navBar}
               <div className="isotracker__row">
@@ -2334,7 +2357,6 @@ const IsoCtrlF = () => {
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="isotracker__table__trays">
                               <div className="trays__container">
-                                  {isoControlFullBtn}
                                   
                                   <p className="isotracker__table__trays__group">Home</p>
                                   
@@ -2344,12 +2366,16 @@ const IsoCtrlF = () => {
                                   <NavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/>        
                               </div>
                           </td>
+                          
                           <td className="isotracker__table__table" style={{height: dataTableHeight}} >
                               <div style={{height: dataTableHeight, width:"2000px"}} className="isotracker__table__table__container">
+                                  {/*
                                   {isoControllLineIdGroupBtn}
                                   {uploadBOMBtn}
                                   {editCustomBtn}
+                                  */}
                                   {tableContent}
+                                  
                               </div>
                           </td>
                       </tr>

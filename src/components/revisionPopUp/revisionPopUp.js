@@ -118,7 +118,6 @@ export default class RevisionPopUp extends Component {
                 d = this.state.issuer_date
                 let date = new Date(d) 
                 d = date.toISOString().substr(0,10)
-                console.log(date, d)
                 await this.setState({dateText: d})
             }else{
                 let today = new Date()
@@ -195,7 +194,6 @@ export default class RevisionPopUp extends Component {
             }
             
         }) 
-        console.log("A")
         this.closeModal()
     
     }

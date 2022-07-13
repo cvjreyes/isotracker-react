@@ -99,7 +99,6 @@ class IsoControlNotModelledDataTable extends React.Component{
         fil = Object.keys(auxDisplayData[i])[column+1]
         
         if(auxDisplayData[i][fil]){
-          console.log(auxDisplayData[i][fil])
           if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].toString().includes(this.state.filterData[column])){
             exists = false
           }
