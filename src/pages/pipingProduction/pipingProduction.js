@@ -90,6 +90,8 @@ const PITRequests = () =>{
     const [pipingAlert, setPipingAlert] = useState(false)
     const [materialsAlert, setMaterialsAlert] = useState(false)
 
+    const [weeksYDiff, setWeeksYDiff] = useState()
+
     const [lineChart, setLineChart] = useState()
 
     const [loading, setLoading] = useState(false)
@@ -200,6 +202,8 @@ const PITRequests = () =>{
                             .then(async json => {
 
                                 const estimated = json.estimated
+                                await setWeeksYDiff(estimated[0].weekY - 1)
+                                const weekYdiff = estimated[0].weekY - 1
                                 if(estimated.length > 0){
                                 fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getForecastMatWeek", options)
                                     .then(response => response.json())
@@ -214,7 +218,7 @@ const PITRequests = () =>{
                                             //... other options
                                         }
 
-                                        let weeks = []
+                                        let weeks = []                                        
                                         let graphData = []
                                         let est = {}
                                         let sumEst = {}
@@ -513,6 +517,7 @@ const PITRequests = () =>{
 
                                         let labels = []
                                         let overallCells = []
+                                        console.log(estimatedOverall)
                                         await Object.keys(estimatedOverall).map(function(key, index) {
                                             if(realOverall[key]){
                                                 realOverallCount += realOverall[key]
@@ -526,7 +531,7 @@ const PITRequests = () =>{
                                             overallCells.push({row: 2, col: index, className: "overallCell__estSum"})
                                             overallCells.push({row: 3, col: index, className: "overallCell__realSum"})
 
-                                            labels.push("W" + key.toString())
+                                            labels.push("w" + key.toString() + " / w" + (parseInt(key) + weekYdiff))
                                         });
 
                                         graphData.push({
@@ -782,7 +787,8 @@ const PITRequests = () =>{
                                             overallCells.push({row: 3, col: index, className: "overallCell__estSum", readOnly: true})
                                             overallCells.push({row: 4, col: index, className: "overallCell__realSum", readOnly: true})
 
-                                            labels.push("W" + key.toString())
+
+                                            labels.push("w" + key.toString() + " / w" + (parseInt(key) + weeksYDiff))
                                         });
 
                                         
