@@ -137,7 +137,7 @@ export default class UploadPopUp extends Component {
     render() {
         return (
             <section style={{float:"left"}}>
-                <button value="Force claim" className="action__btn"  onClick={() => this.openModal()}>Assign</button>                <div>
+                <button value="Force claim" className="action__btn" style={{zoom:0.8}} onClick={() => this.openModal()}>Assign</button>                <div>
                     <Modal visible={this.state.visible} width="650" height="180" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <div className="popUp__container" >
                             <center className="popUp__title">Select a user</center>          

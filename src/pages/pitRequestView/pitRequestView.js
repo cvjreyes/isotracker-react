@@ -455,9 +455,9 @@ const PitRequestView = () => {
         
     }
 
-    document.body.style.zoom = 0.8
+    
 
-    var dataTableHeight = "600px"
+    var dataTableHeight = "500px"
 
     
 

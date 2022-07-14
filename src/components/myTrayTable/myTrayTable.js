@@ -724,7 +724,7 @@ class MyTrayTable extends React.Component{
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
-        width: '23%',
+        width: '20%',
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
@@ -734,6 +734,7 @@ class MyTrayTable extends React.Component{
         title: <div className="dataTable__header__text">Type</div>,
         dataIndex: 'type',
         key: 'type',
+        width: '5%',
         ...this.getColumnSearchProps('type'),
         sorter: {
           compare: (a, b) => { return a.type.localeCompare(b.type)},
@@ -753,7 +754,7 @@ class MyTrayTable extends React.Component{
         title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'date',
         key: 'date',
-        width: '20%',
+        width: '10%',
         ...this.getColumnSearchProps('date'),
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
@@ -868,8 +869,8 @@ class MyTrayTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" style={{ height: '540px' }} bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
-        <Table className="filter__table" pagination={{disabled:true}} rowSelection={{type: 'checkbox', ...rowSelectionFilter}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
+        <Table className="customTable" style={{ height: '430px', width: "1540px"}} bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} dataSource={this.state.displayData} scroll={{y:330}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} rowSelection={{type: 'checkbox', ...rowSelectionFilter}} scroll={{y:400}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           {totalElements}
         </div>
       </div>

@@ -78,7 +78,7 @@ const PITRequests = () =>{
     }, [])
 
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    document.body.style.zoom = 0.8
+    
 
     function handleOnIdle(){
         const body = {

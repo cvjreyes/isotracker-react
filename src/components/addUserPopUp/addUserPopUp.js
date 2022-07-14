@@ -130,7 +130,7 @@ export default class AddUserPopUp extends Component {
     render() {
         return (
             <section >
-                <input type="button"  value="Add user" className="action__btn" onClick={() => this.openModal()} />
+                <input type="button"  value="Add user" style={{zoom:0.8}} className="action__btn" onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="1100" height="500" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div
