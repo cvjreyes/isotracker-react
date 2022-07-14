@@ -231,7 +231,9 @@ const StateTable = props =>{
         await setLoading(true)
     }, [props.updateData, props.currentRole])
 
-    
+    useEffect(async ()=>{
+        setTimeout(() => setLoading(true), 2000);
+    }, [])
 
     return (
         
