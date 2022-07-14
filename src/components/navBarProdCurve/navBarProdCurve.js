@@ -390,7 +390,7 @@ const NavBarProdCurve = (props) =>{
                 projectBtn = <Button class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="nb__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
-                rightButtons= <div style={{width:"48%"}}>
+                rightButtons= <div style={{width:"40%"}}>
                         
                             
                 <button style={{float:"right", marginLeft:"20px", border:"none", background:"none", paddingTop: "0px"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
