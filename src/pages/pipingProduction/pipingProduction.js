@@ -12,7 +12,7 @@ import Collapse from '@material-ui/core/Collapse'
 import { saveAs } from 'file-saver';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx-js-style";
-
+import SaveIcon2 from "../../assets/images/SaveIcon2.svg"
 import './pipingProduction.css'
 import SaveIcon from "../../assets/images/save.svg"
 import { Line } from 'react-chartjs-2';
@@ -590,6 +590,7 @@ const PITRequests = () =>{
                                                 hover: {
                                                     mode: 'new mode'
                                                 },
+                                                maintainAspectRatio: false,
                                                 plugins: {
                                                     title: {
                                                         display: true,
@@ -2199,19 +2200,19 @@ const PITRequests = () =>{
     
     const matSettings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: 400,
+        colWidths: 430,
         //... other options
     }
 
     const pipingSettings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: 200,
+        colWidths: 215,
         //... other options
     }
 
     const spanSettings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: 190,
+        colWidths: 215,
         //... other options
     }
     if(tab === "users"){
@@ -2313,96 +2314,45 @@ const PITRequests = () =>{
                             <HotTable
                                 data={management}
                                 colHeaders = {["<b>Starting date</b>", "<b>Finishing date</b>"]}
-                                rowHeaders={true}
                                 width="500"
                                 height="60"
                                 settings={spanSettings} 
                                 manualColumnResize={true}
                                 manualRowResize={true}
                                 columns= {[{ data: "Starting date", type:"date"}, { data: "Finishing date", type:"date"}]}
-                                filters={true}
                                 className='project__management'
-                                dropdownMenu= {[
-                                    'make_read_only',
-                                    '---------',
-                                    'alignment',
-                                    '---------',
-                                    'filter_by_condition',
-                                    '---------',
-                                    'filter_operators',
-                                    '---------',
-                                    'filter_by_condition2',
-                                    '---------',
-                                    'filter_by_value',
-                                    '---------',
-                                    'filter_action_bar',
-                                ]}
                             />
                         </div>
                         <div id="hot-app" style={{marginBottom:"20px"}}>
                             <HotTable
                                 data={materials}
-                                colHeaders = {["<b>Material</b>"]}
-                                rowHeaders={true}
+                                colHeaders = {["<b>Materials</b>"]}
                                 width="450"
                                 height="130"
                                 settings={matSettings} 
                                 manualColumnResize={true}
                                 manualRowResize={true}
                                 columns= {[{ data: "Material"}]}
-                                filters={true}
-                                className='project__management'
-                                dropdownMenu= {[
-                                    'make_read_only',
-                                    '---------',
-                                    'alignment',
-                                    '---------',
-                                    'filter_by_condition',
-                                    '---------',
-                                    'filter_operators',
-                                    '---------',
-                                    'filter_by_condition2',
-                                    '---------',
-                                    'filter_by_value',
-                                    '---------',
-                                    'filter_action_bar',
-                                ]}
+                                className='materials__management'
                             />
                             </div>
-                                <button class="btn btn-sm btn-info" onClick={() => addRowMaterials()} style={{marginRight:"5px", fontSize:"12px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"165px"}}>Add</button>
-                                <button class="btn btn-sm btn-success" onClick={() => submitChangesMaterials()} style={{marginRight:"5px", fontSize:"12px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
+                            <button className="projects__add__button" onClick={()=>addRowMaterials()}><p className="projects__add__button__text">+ Add</p></button>
+                            <button className="projects__button__save" onClick={()=> submitChangesMaterials()} ><img src={SaveIcon2} alt="hold" className="navBar__icon__save" style={{marginRight:"-20px"}}></img><p className="projects__button__text">Save</p></button>
                             <div id="hot-app" style={{marginBottom:"20px", marginTop:"40px"}}>
                             <HotTable
                                 data={piping}
                                 colHeaders = {["<b>Piping class</b>", "<b>Material</b>"]}
-                                rowHeaders={true}
-                                width="500"
+                                width="450"
                                 height="130"
                                 settings={pipingSettings} 
                                 manualColumnResize={true}
                                 manualRowResize={true}
                                 columns= {[{ data: "PipingClass"}, { data: "Material", type:"dropdown",strict:"true", source: materialsList}]}
-                                filters={true}
-                                className='project__management'
-                                dropdownMenu= {[
-                                    'make_read_only',
-                                    '---------',
-                                    'alignment',
-                                    '---------',
-                                    'filter_by_condition',
-                                    '---------',
-                                    'filter_operators',
-                                    '---------',
-                                    'filter_by_condition2',
-                                    '---------',
-                                    'filter_by_value',
-                                    '---------',
-                                    'filter_action_bar',
-                                ]}
+                                className='pipingclass__management'
                             />
                             </div>
-                            <button class="btn btn-sm btn-info" onClick={() => addRowPiping()} style={{marginRight:"5px", fontSize:"12px",width:"60px", borderRadius:"10px", backgroundColor:"#338DF1", marginLeft:"165px"}}>Add</button>
-                            <button class="btn btn-sm btn-success" onClick={() => submitChangesPiping()} style={{marginRight:"5px", fontSize:"12px", width:"60px", borderRadius:"10px", backgroundColor:"#7BD36D"}}>Save</button>
+                            <button className="projects__add__button" onClick={()=>addRowPiping()}><p className="projects__add__button__text">+ Add</p></button>
+                            <button className="projects__button__save" onClick={()=> submitChangesPiping()} ><img src={SaveIcon2} alt="hold" className="navBar__icon__save" style={{marginRight:"-20px"}}></img><p className="projects__button__text">Save</p></button>
     
                         </div>
                 </div>

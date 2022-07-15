@@ -61,12 +61,13 @@
 }
 
 .graph__container{
-    height: 630px;
+    height: 490px;
     margin-left: 3px;
-    margin-top: 80px;
+    margin-top: 190px;
     width: 1750px;
-    border: 1px solid lightgray;
+    border: 10px solid #FAFAFA;
     padding: 5px 5px 10px 5px;
+    border-radius: 0px 8px 8px 0px;
 }
 
 .materials__pc__container{
@@ -115,18 +116,111 @@
 
 .user__productivity__tables__container::-webkit-scrollbar {
     display: none;
-  }
+}
 
 .project__management span.colHeader{
+    font-size: 14px;
+    color: white;
+}
+
+.project__management th{
+    font-size: 14px;
+    color: white;
+    background-color: #338DF1;
+}
+
+.project__management tbody tr{
+    font-size: 14px;
+    text-align: center;
+}
+
+.project__management tbody td{
     font-size: 14px
 }
 
-.project__management  tbody tr{
+.project__management tr:first-child th:first-child { 
+    border-top-left-radius:  6.99824px; 
+}
+
+.project__management tr:last-child th:last-child { 
+    border-top-right-radius:  6.99824px; 
+}
+
+.project__management tr:last-child td:last-child { 
+    border-bottom-right-radius:  6.99824px; 
+}
+
+.project__management tr:first-child td:first-child { 
+    border-bottom-left-radius:  6.99824px; 
+}
+
+.materials__management span.colHeader{
+    font-size: 14px;
+    color: white;
+}
+
+.materials__management th{
+    font-size: 14px;
+    color: white;
+    background-color: #338DF1;
+}
+
+.materials__management tbody tr{
+    font-size: 14px;
+    text-align: center;
+}
+
+.materials__management tbody td{
     font-size: 14px
 }
 
-.project__management  tbody td{
+.materials__management tr:first-child th:first-child { 
+    border-top-left-radius:  6.99824px; 
+}
+
+.materials__management tr:last-child th:last-child { 
+    border-top-right-radius:  6.99824px; 
+}
+
+.materials__management tr:last-child td:first-child { 
+    border-bottom-left-radius:  6.99824px; 
+    border-bottom-right-radius:  6.99824px; 
+}
+
+.pipingclass__management span.colHeader{
+    font-size: 14px;
+    color: white;
+}
+
+.pipingclass__management th{
+    font-size: 14px;
+    color: white;
+    background-color: #338DF1;
+}
+
+.pipingclass__management tbody tr{
+    font-size: 14px;
+    text-align: center;
+}
+
+.pipingclass__management tbody td{
     font-size: 14px
+}
+
+.pipingclass__management tr:first-child th:first-child { 
+    border-top-left-radius:  6.99824px; 
+}
+
+.pipingclass__management tr:last-child th:last-child { 
+    border-top-right-radius:  6.99824px; 
+}
+
+.pipingclass__management tr:last-child td:first-child { 
+    border-bottom-left-radius:  6.99824px; 
+}
+
+.pipingclass__management tr:last-child td:last-child { 
+    border-bottom-right-radius:  6.99824px; 
 }
 
 .isoCount__text{
@@ -136,7 +230,74 @@
     font-size: 17px
 }
 
-.overall-table tbody tr:nth-child(3) th {
+/*Boton de save*/
+.projects__button__save{
+    height: 32px;
+    width: 90px;
+    border: 0;
+    background-color: transparent;
+    border-radius: 8px;
+    transition: 0.3s; 
+    color: white;
+    background-color:#338DF1;
+    font-weight: bold;
+}
+
+.projects__button__save:hover{
+    background-color: #99C6F8;
+    color: black;
+}
+
+.projects__add__button{
+    height: 32px;
+    width: 100px;
+    border: 0;
+    background-color: transparent;
+    margin-left: 113px;
+    border-radius: 8px;
+    transition: 0.3s; 
+    margin-right: 10px;
+}
+
+.navBar__icon__save{
+    height: 16px;
+    width: 16px;
+    margin-left: 14px;
+    margin-top: 7px;
+}
+
+.projects__button__text{
+    font-size: 12px;
+    margin-top: 7px;
+    font-family: 'Montserrat', sans-serif;    
+}
+
+
+.projects__add__button__text{
+    font-size: 12px;  
+    color: #0070ED;
+    font-style: normal;
+    font-weight: bold;
+
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 24px;
+    gap: 8px;
+
+
+    border: 1px solid #0070ED;
+    border-radius: 8px;
+}
+
+.overall-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
+
+.overall-table tbody tr:nth-child(3) th{
   background-color:rgb(147,112,219);
   color:black;
   font-size: 14px;
@@ -149,43 +310,49 @@
 }
 
 .overall-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);;
+    background-color:	rgb(252,252,252);;
     font-size: 14px;
+    color:black;
 }
 
 .overall-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .overall-table tbody tr:nth-child(2) th {
-    background-color:	rgb(245,245,245);;
+    background-color:	rgb(252,252,252);;
     font-size: 14px;
+    color:black;
 }
 
 .overall-table tbody tr:nth-child(2) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .overall-table tbody tr:nth-child(3) th {
-    background-color:	rgb(147,112,219);;
+    background-color:	rgb(147,112,219, 0.8);
     font-size: 14px;
+    font-weight: bold;
 }
 
 .overall-table tbody tr:nth-child(3) td {
-    background-color:	rgb(147,112,219);;
+    background-color:	rgb(147,112,219, 0.4);
     font-size: 14px;
     color: black;
+    
 }
 
 .overall-table tbody tr:nth-child(4) th {
-    background-color:	rgb(255,80,80);
+    background-color:	rgb(255,80,80, 0.8);
     font-size: 14px;
+    font-weight: bold;
 }
 
 .overall-table tbody tr:nth-child(4) td {
-    background-color:	rgb(255,80,80);
+    background-color:	rgb(255,80,80, 0.4);
     color: black;;
     font-size: 14px;
 }
@@ -198,7 +365,11 @@
     font-size: 14px;
 }
 
-
+.overallWeight-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .overallWeight-table tbody tr:nth-child(3) th {
     background-color:rgb(60,179,113);
@@ -219,54 +390,58 @@
 }
 
 .overallWeight-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);;
+    background-color:	rgb(252,252,252);;
     font-size: 14px;
+    color:black;
 }
 
 .overallWeight-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .overallWeight-table tbody tr:nth-child(2) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .overallWeight-table tbody tr:nth-child(2) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .overallWeight-table tbody tr:nth-child(3) th {
-    background-color:	rgb(60,179,113);
+    background-color:	rgb(60,179,113, 0.8);
     font-size: 14px;
 }
 
 .overallWeight-table tbody tr:nth-child(3) td {
-    background-color:	rgb(60,179,113);
+    background-color:	rgb(60,179,113, 0.4);
     
     font-size: 14px;
 }
 
 .overallWeight-table tbody tr:nth-child(4) th {
-    background-color:	rgb(147,112,219);;
+    background-color:	rgb(147,112,219, 0.8);
     font-size: 14px;
+    font-weight: bold;
 }
 
 .overallWeight-table tbody tr:nth-child(4) td {
-    background-color:	rgb(147,112,219);;
+    background-color:	rgb(147,112,219, 0.4);;
     font-size: 14px;
     color: black;
 }
 
 .overallWeight-table tbody tr:nth-child(5) th {
-    background-color:	rgb(255,80,80);
+    background-color:	rgb(255,80,80, 0.8);
     font-size: 14px;
+    font-weight: bold;
 }
 
 .overallWeight-table tbody tr:nth-child(5) td {
-    background-color:	rgb(255,80,80);
+    background-color:	rgb(255,80,80, 0.4);
     color: black;;
     font-size: 14px;
 }
@@ -279,7 +454,11 @@
     font-size: 14px;
 }
 
-
+.mat1-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .mat1-table span.colHeader {
     font-size: 14px;
@@ -291,84 +470,109 @@
 }
 
 .mat1-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat1-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
+    
 }
 
 .mat1-table tbody tr:nth-child(2) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat1-table tbody tr:nth-child(2) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat1-table tbody tr:nth-child(3) th {
-    background-color:	rgb(0,191,255);
+    font-size: 14px;
+    color:black;
+}
+
+.mat1-table tbody tr:nth-child(3) th {
+    background-color:	rgb(0,191,255, 0.8);
     font-size: 14px;
 }
 
 .mat1-table tbody tr:nth-child(3) td {
-    background-color:	rgb(0,191,255);
+    background-color:	rgb(0,191,255, 0.4);
     font-size: 14px;
     color: black;
 }
 
 .mat1-table tbody tr:nth-child(4) th {
-    background-color:	rgb(65,105,225);
+    background-color:	rgb(65,105,225, 0.8);
     font-size: 14px;
+    font-weight: bold;
+    color: black;
 }
 
 .mat1-table tbody tr:nth-child(4) td {
-    background-color:	rgb(65,105,225);
+    background-color:	rgb(65,105,225, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat1-table tbody tr:nth-child(5) th {
-    background-color:	rgb(176,224,230);
+    background-color:	rgb(176,224,230, 0.8);
     font-size: 14px;
+    font-weight: bold;
 }
 
 .mat1-table tbody tr:nth-child(5) td {
-    background-color:	rgb(176,224,230);
+    background-color:	rgb(176,224,230, 0.4);
     color: black;
     font-size: 14px;
 }
 
-
+.wmat1-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .wmat1-table span.colHeader {
     font-size: 14px;
 }
 
 .wmat1-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color: black;
 }
 
 .wmat1-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .wmat1-table tbody tr:nth-child(2) th {
-    background-color:	rgb(176,224,230);
+    background-color:	rgb(176,224,230, 0.8);
     font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 .wmat1-table tbody tr:nth-child(2) td {
-    background-color:	rgb(176,224,230);
+    background-color:	rgb(176,224,230, 0.4);
     font-size: 14px;
 }
 
+.mat2-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .mat2-table span.colHeader {
     font-size: 14px;
@@ -380,55 +584,69 @@
 }
 
 .mat2-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat2-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat2-table tbody tr:nth-child(2) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat2-table tbody tr:nth-child(2) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat2-table tbody tr:nth-child(3) th {
-    background-color:	rgb(50,205,50);
+    background-color:	rgb(50,205,50, 0.8);
     font-size: 14px;
+    color:black;
 }
 
 .mat2-table tbody tr:nth-child(3) td {
-    background-color:	rgb(50,205,50);
+    background-color:	rgb(50,205,50, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat2-table tbody tr:nth-child(4) th {
-    background-color:	rgb(0,128,0);
+    background-color:	rgb(0,128,0, 0.8);
     font-size: 14px;
+    font-weight: bold;
+    color:black;
 }
 
 .mat2-table tbody tr:nth-child(4) td {
-    background-color:	rgb(0,128,0);
+    background-color:	rgb(0,128,0, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat2-table tbody tr:nth-child(5) th {
-    background-color:	rgb(152,251,152);
+    background-color:	rgb(152,251,152, 0.8);
     font-size: 14px;
+    font-weight: bold;
 }
 
 .mat2-table tbody tr:nth-child(5) td {
-    background-color:	rgb(152,251,152);
+    background-color:	rgb(152,251,152, 0.4);
     color: black;
+    font-size: 14px;
+}
+
+.wmat2-table th{
+    background-color:#338DF1;;
+    color:white;
     font-size: 14px;
 }
 
@@ -437,25 +655,33 @@
 }
 
 .wmat2-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color: black;
 }
 
 .wmat2-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .wmat2-table tbody tr:nth-child(2) th {
-    background-color:	rgb(152,251,152);
+    background-color:	rgb(152,251,152, 0.8);
     font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 .wmat2-table tbody tr:nth-child(2) td {
-    background-color:	rgb(152,251,152);
+    background-color:	rgb(152,251,152, 0.4);
     font-size: 14px;
 }
 
+.mat3-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .mat3-table span.colHeader {
     font-size: 14px;
@@ -467,85 +693,107 @@
 }
 
 .mat3-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat3-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat3-table tbody tr:nth-child(2) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat3-table tbody tr:nth-child(2) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat3-table tbody tr:nth-child(3) th {
-    background-color:	rgb(255,165,0);
+    background-color:	rgb(255,165,0, 0.8);
     font-size: 14px;
+    color:black;
 }
 
 .mat3-table tbody tr:nth-child(3) td {
-    background-color:	rgb(255,165,0);
+    background-color:	rgb(255,165,0, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat3-table tbody tr:nth-child(4) th {
-    background-color:	rgb(255,140,0);
+    background-color:	rgb(255,140,0, 0.8);
     font-size: 14px;
+    font-weight: bold;
+    color:black;
 }
 
 .mat3-table tbody tr:nth-child(4) td {
-    background-color:	rgb(255,140,0);
+    background-color:	rgb(255,140,0, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat3-table tbody tr:nth-child(5) th {
-    background-color:	rgb(255,215,0);
+    background-color:	rgb(255,215,0, 0.8);
     font-size: 14px;
+    font-weight: bold;
+
 }
 
 .mat3-table tbody tr:nth-child(5) td {
-    background-color:	rgb(255,215,0);
+    background-color:	rgb(255,215,0, 0.4);
     color: black;
     font-size: 14px;
 }
 
 
+.wmat3-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .wmat3-table span.colHeader {
     font-size: 14px;
 }
 
 .wmat3-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color: black;
 }
 
 .wmat3-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .wmat3-table tbody tr:nth-child(2) th {
-    background-color:	rgb(255,215,0);
+    background-color:	rgb(255,215,0, 0.8);
     font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 .wmat3-table tbody tr:nth-child(2) td {
-    background-color:	rgb(255,215,0);
+    background-color:	rgb(255,215,0, 0.4);
     font-size: 14px;
 }
 
 
+.mat4-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .mat4-table span.colHeader {
     font-size: 14px;
@@ -557,84 +805,109 @@
 }
 
 .mat4-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat4-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat4-table tbody tr:nth-child(2) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
+    font-weight: bold;
 }
 
 .mat4-table tbody tr:nth-child(2) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat4-table tbody tr:nth-child(3) th {
-    background-color:	rgb(255,192,203);
+    background-color:	rgb(255,192,203, 0.8);
     font-size: 14px;
+    color:black;
 }
 
 .mat4-table tbody tr:nth-child(3) td {
-    background-color:	rgb(255,192,203);
+    background-color:	rgb(255,192,203, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat4-table tbody tr:nth-child(4) th {
-    background-color:	rgb(255,20,147);
+    background-color:	rgb(255,20,147, 0.8);
     font-size: 14px;
+    font-weight: bold;
+    color:black;
 }
 
 .mat4-table tbody tr:nth-child(4) td {
-    background-color:	rgb(255,20,147);
+    background-color:	rgb(255,20,147, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat4-table tbody tr:nth-child(5) th {
-    background-color:	rgb(255,105,180);
+    background-color:	rgb(255,105,180, 0.8);
     font-size: 14px;
+    font-weight: bold;
+
 }
 
 .mat4-table tbody tr:nth-child(5) td {
-    background-color:	rgb(255,105,180);
+    background-color:	rgb(255,105,180, 0.4);
     color: black;
     font-size: 14px;
 }
 
+
+.wmat4-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .wmat4-table span.colHeader {
     font-size: 14px;
 }
 
 .wmat4-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color: black;
 }
 
 .wmat4-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .wmat4-table tbody tr:nth-child(2) th {
-    background-color:	rgb(255,105,180);
+    background-color:	rgb(255,105,180, 0.8);
     font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 .wmat4-table tbody tr:nth-child(2) td {
-    background-color:	rgb(255,105,180);
+    background-color:	rgb(255,105,180, 0.4);
     font-size: 14px;
 }
 
 
+
+.mat5-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .mat5-table span.colHeader {
     font-size: 14px;
@@ -646,85 +919,106 @@
 }
 
 .mat5-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat5-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat5-table tbody tr:nth-child(2) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 .mat5-table tbody tr:nth-child(2) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .mat5-table tbody tr:nth-child(3) th {
-    background-color:	rgb(220,220,220);
+    background-color:	rgb(220,220,220, 0.8);
     font-size: 14px;
+    color:black;
 }
 
 .mat5-table tbody tr:nth-child(3) td {
-    background-color:	rgb(220,220,220);
+    background-color:	rgb(220,220,220, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat5-table tbody tr:nth-child(4) th {
-    background-color:	rgb(112,128,144);
+    background-color:	rgb(112,128,144, 0.8);
     font-size: 14px;
+    color:black;
+    font-weight: bold;
 }
 
 .mat5-table tbody tr:nth-child(4) td {
-    background-color:	rgb(112,128,144);
+    background-color:	rgb(112,128,144, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat5-table tbody tr:nth-child(5) th {
-    background-color:	rgb(169,169,169);
+    background-color:	rgb(169,169,169, 0.8);
     font-size: 14px;
+    font-weight: bold;
+
 }
 
 .mat5-table tbody tr:nth-child(5) td {
-    background-color:	rgb(169,169,169);
+    background-color:	rgb(169,169,169, 0.4);
     color: black;
     font-size: 14px;
 }
 
+.wmat5-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .wmat5-table span.colHeader {
     font-size: 14px;
 }
 
 .wmat5-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color: black;
 }
 
 .wmat5-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .wmat5-table tbody tr:nth-child(2) th {
-    background-color:	rgb(169,169,169);
+    background-color:	rgb(169,169,169, 0.8);
     font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 .wmat5-table tbody tr:nth-child(2) td {
-    background-color:	rgb(169,169,169);
+    background-color:	rgb(169,169,169, 0.4);
     font-size: 14px;
 }
 
 
-
+.mat6-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .mat6-table span.colHeader {
     font-size: 14px;
@@ -736,130 +1030,153 @@
 }
 
 .mat6-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat6-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat6-table tbody tr:nth-child(2) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 .mat6-table tbody tr:nth-child(2) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color:black;
 }
 
 .mat6-table tbody tr:nth-child(3) th {
-    background-color:rgb(175,238,238);
+    background-color:rgb(175,238,238, 0.8);
     font-size: 14px;
+    color:black;
 }
 
 .mat6-table tbody tr:nth-child(3) td {
-    background-color:rgb(175,238,238);
+    background-color:rgb(175,238,238, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat6-table tbody tr:nth-child(4) th {
-    background-color:rgb(32,178,170);
+    background-color:rgb(32,178,170, 0.8);
     font-size: 14px;
+    color:black;
+    font-weight: bold;
 }
 
 .mat6-table tbody tr:nth-child(4) td {
-    background-color:rgb(32,178,170);
+    background-color:rgb(32,178,170, 0.4);
     color: black;
     font-size: 14px;
 }
 
 .mat6-table tbody tr:nth-child(5) th {
-    background-color:	rgb(0,206,209);
+    background-color:	rgb(0,206,209, 0.8);
     font-size: 14px;
+    color:black;
+    font-weight: bold;
 }
 
 .mat6-table tbody tr:nth-child(5) td {
-    background-color:	rgb(0,206,209);
+    background-color:	rgb(0,206,209, 0.4);
     color: black;
     font-size: 14px;
 }
 
 
+.wmat6-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
 
 .wmat6-table span.colHeader {
     font-size: 14px;
 }
 
 .wmat6-table tbody tr:nth-child(1) th {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
+    color: black;
 }
 
 .wmat6-table tbody tr:nth-child(1) td {
-    background-color:	rgb(245,245,245);
+    background-color:	rgb(252,252,252);
     font-size: 14px;
 }
 
 .wmat6-table tbody tr:nth-child(2) th {
-    background-color:	rgb(0,206,209);
+    background-color:	rgb(0,206,209, 0.8);
     font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 .wmat6-table tbody tr:nth-child(2) td {
-    background-color:	rgb(0,206,209);
+    background-color:	rgb(0,206,209, 0.4);
+    font-size: 14px;
+    
+}
+
+.users-table th{
+    background-color:#338DF1;;
+    color:white;
     font-size: 14px;
 }
 
-
-
 .users-table tbody tr:nth-child(1) th {
-    background-color:	rgb(255,215,0);
+    background-color:	#FFFF0060;
     font-size: 14px;
     color: black;
 }
 
 .users-table tbody tr:nth-child(1) td {
-    background-color:	rgb(255,215,0);
+    background-color:		#FFFF0040;
     font-size: 14px;
     color: black;
 }
 
 .users-table tbody tr:nth-child(2) th {
-    background-color:	rgb(60,179,113);
+    background-color:	#D4F1DD;
     font-size: 14px;
     color: black;
 }
 
 .users-table tbody tr:nth-child(2) td {
-    background-color:	rgb(60,179,113);
+    background-color:	#D4F1DD66;
     font-size: 14px;
     color: black;
 }
 
 .users-table tbody tr:nth-child(3) th {
-    background-color:	rgb(255,80,80);
+    background-color:	#FF335890;
     font-size: 14px;
     color: black;
 }
 
 .users-table tbody tr:nth-child(3) td {
-    background-color:	rgb(255,80,80);
+    background-color:	#FF335840;
     color: black;
     font-size: 14px;
 }
 
 .users-table tbody tr:nth-child(4) th {
-    background-color:	rgb(0,206,209);
+    background-color:	#00CED190;
     font-size: 14px;
     color: black;
 }
 
 .users-table tbody tr:nth-child(4) td {
-    background-color:	rgb(0,206,209);
+    background-color:	#00CED140;
     font-size: 14px;
     color: black;
 }
