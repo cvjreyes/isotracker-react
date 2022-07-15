@@ -102,7 +102,15 @@ const PITRequests = () =>{
     const [realProgressOverall, setRealProgressOverall] = useState([])
     const colors = ["#4169E1", "#B0E0E6", "#00BFFF", "#008000", "#7CFC00", "#98FB98", "#FF8C00", "#FFD700", "#FF0000", "#FF1493", "#FF69B4", "#FFC0CB", "#708090", "#A9A9A9", "#DCDCDC", "#20B2AA", "#00CED1", "#AFEEEE"]
 
+    //menu desplegable
+    const [menu, setMenu ] = useState( false )
+    const toggleMenu = () => {
+        setMenu ( !menu )
+    }
+
     document.body.style.zoom = 1
+
+
 
     function handleOnIdle(){
         const body = {
@@ -2294,11 +2302,28 @@ const PITRequests = () =>{
                 </Collapse>
                 <div id="pdf">
                 <div className="top__container">
-                    {tabBtns}
-                    <div id="graph" className="graph__container">
-                    
-                    {lineChart}
-                    
+                    {/*{tabBtns}*/}
+                    <div className={`Cabecera ${ menu ? 'isActive' : '' }` }>
+                            <button 
+                                onClick={ toggleMenu }
+                                className="Cabecera__button">
+                                <svg className="Cabecera__svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                                </svg>
+                            </button>
+                            <nav className={`Cabecera__nav ${ menu ? 'isActive' : '' }` }>
+                                <ul className="Cabecera__ul">
+                                    <li className="Cabecera__li">
+                                        <a href="#" className="Cabecera__a">By Weight</a>
+                                    </li>
+                                    <li className="Cabecera__li">
+                                        <a href="#" className="Cabecera__a">By Materials</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    <div id="graph" className={`graph__container ${ menu ? 'isActive' : '' }` }>
+                        {lineChart}
                     </div>
                     <div className="materials__pc__container">
                         <div style={{marginBottom:"30px"}}>

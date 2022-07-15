@@ -81,6 +81,7 @@
     display: flex;
     resize: vertical;
     overflow: hidden;
+    margin-left: 5%;
 }
 
 .save__button{
@@ -1187,4 +1188,98 @@
 
 .users-table span.colHeader {
     font-size: 14px;
+}
+
+.Cabecera {
+    background: #F3F3F3;
+    padding: 1em;
+    margin-top: 10.5%;
+    height: 490px;
+
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.Cabecera__button {
+    border: 0px solid black;
+}
+
+.Cabecera__nav {
+
+}
+
+.Cabecera__ul {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.Cabecera__li {
+    list-style: none;
+    margin: 0 .5em;
+    width: 100px;
+}
+
+.Cabecera__a {
+    color: black;
+}
+
+.Cabecera__a:hover {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.Cabecera__svg {
+    fill: black;
+    border: 0px;
+}
+
+@media screen {
+    
+    .Cabecera {
+        width: 6vh;
+        transition: all .5s ease;
+    }
+
+    .Cabecera.isActive {
+        width: 52vh;
+        transition: all .5s ease;
+    }
+
+    .Cabecera__button {
+        display: flex;
+    }
+
+    .Cabecera__nav {
+        opacity: 0;
+        overflow: hidden;
+        transition: all .5s ease;
+    }
+
+    .Cabecera__nav.isActive{
+        height: 42vh;
+        opacity: 1;
+        transition: all .5s ease;
+    }
+
+    .Cabecera__ul {
+        flex-direction: column;
+    }
+
+    .Cabecera__li{
+        margin: .5em 0;
+    }
+
+    .graph__container {
+        width: 122vh;
+        transition: all .5s ease;
+    }
+
+    .graph__container.isActive {
+        width: 110vh;
+        transition: all .5s ease;
+    }
 }
