@@ -101,7 +101,7 @@ const PITRequests = () =>{
     }
 
     return(
-        <body>
+        <body >
             <IdleTimer
                 timeout={1000 * 60 * 15}
                 onIdle={handleOnIdle}
