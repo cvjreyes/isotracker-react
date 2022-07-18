@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import TextField from '@material-ui/core/TextField';
+import './revisionPopUp.css'
 
 export default class RevisionPopUp extends Component {
     constructor(props) {
@@ -195,7 +196,6 @@ export default class RevisionPopUp extends Component {
             }
             
         }) 
-        console.log("A")
         this.closeModal()
     
     }
@@ -273,11 +273,13 @@ export default class RevisionPopUp extends Component {
             <div style={{marginRight:"5px", float:"right"}}>
                 {button}
                 <div>
-                    <Modal visible={this.state.visible} width="650" height="460" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                        <center className="popUp__title" style={{marginBottom: "30px"}}><h3>{this.props.fileName.split('.').slice(0, -1)} R{this.state.revision}*</h3></center>
+                    <Modal visible={this.state.visible} width="650" height="480" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                        <center className="popUp__title" style={{marginBottom: "30px"}}><h3 className="popUpTitleText">{this.props.fileName.split('.').slice(0, -1)} R{this.state.revision}*</h3></center>
                         <div className="request__container" style={{width: "400px"}}>   
-                            <label for="date" style={{marginRight:"10px", marginLeft:"27px", marginTop:"15px"}}>Date: </label>
-                            {datafield}
+                            <label for="date" style={{marginRight:"10px", marginLeft:"2px", marginTop:"15px"}}>Date: </label>
+                            <div style={{display:"inline-block", paddingBottom:"5px"}}>
+                                {datafield}
+                            </div>
                             <div>
                                 <label for="issuer_designation">Designation: </label>     
                                 <input type="text" placeholder="Designation" id="issuer_designation" name="issuer_designation" className="popUp__input__text" ref="issuer_designation" style={{marginBottom: "20px", color:'black'}} defaultValue={def_designation} onChange={(e) => this.setState({issuer_designation: e.target.value})} ></input>
@@ -292,10 +294,10 @@ export default class RevisionPopUp extends Component {
                             </div>
                             <div style={{marginLeft:"24px", marginBottom:"20px"}}>
                                 <label for="issuer_designation">Approval: </label>    
-                                <input type="text" placeholder="Approval" id="issuer_appr" className="popUp__input__text" ref="issuer_appr" style={{marginBottom: "20px", color:'black'}} defaultValue={def_aprr} onChange={(e) => this.setState({issuer_appr: e.target.value})} ></input>
+                                <input type="text" placeholder="Approval" id="issuer_appr" className="popUp__input__text" ref="issuer_appr" style={{marginBottom: "30px", color:'black'}} defaultValue={def_aprr} onChange={(e) => this.setState({issuer_appr: e.target.value})} ></input>
                             </div>
-                           <button class="btn btn-sm btn-success" onClick={() => this.request()} style={{marginRight:"5px", fontSize:"16px"}}>Submit</button>
-                            <button class="btn btn-sm btn-danger" onClick={() => this.closeModal()} style={{marginLeft:"5px", fontSize:"16px"}}>Cancel</button>
+                           <button class="btn__submit__adduser" onClick={() => this.request()} style={{marginRight:"5px", marginLeft:"10px", fontSize:"16px"}}>Submit</button>
+                            <button class="btn__cancel__adduser" onClick={() => this.closeModal()} style={{marginLeft:"5px", fontSize:"16px"}}>Cancel</button>
                         </div>
                     </Modal>
                 </div>
