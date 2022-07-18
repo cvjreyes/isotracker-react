@@ -6,6 +6,13 @@ import {useHistory} from "react-router";
 import BackIcon from "../../assets/images/back.svg"
 import Reports from "../../assets/images/Notepad.png"
 import Graph from "../../assets/images/ChartBar.png"
+import GraphImage from "../../assets/images/ChartBarGraph.svg"
+import ExportImage from "../../assets/images/ShareNetwork.svg"
+import IsometricsImage from "../../assets/images/CodesandboxLogo.svg"
+import WeightImage from "../../assets/images/Barbell.svg"
+import ArrowImage from "../../assets/images/ArrowLeft.svg"
+import ArrowDownImage from "../../assets/images/Vector.svg"
+import AtomImage from "../../assets/images/Atom.svg"
 import AlertF from "../../components/alert/alert"
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse'
@@ -102,16 +109,27 @@ const PITRequests = () =>{
     const [realProgressOverall, setRealProgressOverall] = useState([])
     const colors = ["#4169E1", "#B0E0E6", "#00BFFF", "#008000", "#7CFC00", "#98FB98", "#FF8C00", "#FFD700", "#FF0000", "#FF1493", "#FF69B4", "#FFC0CB", "#708090", "#A9A9A9", "#DCDCDC", "#20B2AA", "#00CED1", "#AFEEEE"]
 
+    
+    document.body.style.zoom = 1
+    
     //menu desplegable
     const [menu, setMenu ] = useState( false )
     const toggleMenu = () => {
         setMenu ( !menu )
     }
 
-    document.body.style.zoom = 1
+    //menu desplegable users
+    const [menuUsers, setMenuUsers ] = useState( false )
+    const toggleMenuUsers = () => {
+        setMenuUsers ( !menuUsers )
+    }
 
-
-
+    //menu desplegable production
+    const [menuProduction, setMenuProduction ] = useState( false )
+    const toggleMenuProduction = () => {
+        setMenuProduction ( !menuProduction )
+    }
+    
     function handleOnIdle(){
         const body = {
             user: secureStorage.getItem("user"),
@@ -2301,90 +2319,119 @@ const PITRequests = () =>{
                     </Alert>
                 </Collapse>
                 <div id="pdf">
-                <div className="top__container">
-                    {/*{tabBtns}*/}
-                    <div className={`Cabecera ${ menu ? 'isActive' : '' }` }>
-                            <button 
-                                onClick={ toggleMenu }
-                                className="Cabecera__button">
-                                <svg className="Cabecera__svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-                                </svg>
-                            </button>
-                            <nav className={`Cabecera__nav ${ menu ? 'isActive' : '' }` }>
-                                <ul className="Cabecera__ul">
-                                    <li className="Cabecera__li">
-                                        <a href="#" className="Cabecera__a">By Weight</a>
-                                    </li>
-                                    <li className="Cabecera__li">
-                                        <a href="#" className="Cabecera__a">By Materials</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    <div id="graph" className={`graph__container ${ menu ? 'isActive' : '' }` }>
-                        {lineChart}
+                    <div style={{marginLeft: "100px", marginBottom: "-120px"}}>
+                        <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"180px", marginTop: "80px"}}><img src={ArrowImage} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back to menu</p></button>
                     </div>
-                    <div className="materials__pc__container">
-                        <div style={{marginBottom:"30px"}}>
-                            <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"110px", marginTop: "80px"}}><img src={BackIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back</p></button>
-                            <button className="back__button" onClick={()=> printDocument()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={Graph} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Graph</p></button>
-                            <button className="back__button" onClick={()=> exportPiping()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={Reports} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Export</p></button>
-                        </div>
-                        <div style={{display:"flex"}}>
-                            <text className="materials__title">Project Management</text>
-                            <button className="save__button" onClick={()=> submitManagement()}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
-                        </div>
-                        <div style={{marginBottom:"20px", marginTop:"10px"}}>
-                            <HotTable
-                                data={management}
-                                colHeaders = {["<b>Starting date</b>", "<b>Finishing date</b>"]}
-                                width="500"
-                                height="60"
-                                settings={spanSettings} 
-                                manualColumnResize={true}
-                                manualRowResize={true}
-                                columns= {[{ data: "Starting date", type:"date"}, { data: "Finishing date", type:"date"}]}
-                                className='project__management'
-                            />
-                        </div>
-                        <div id="hot-app" style={{marginBottom:"20px"}}>
-                            <HotTable
-                                data={materials}
-                                colHeaders = {["<b>Materials</b>"]}
-                                width="450"
-                                height="130"
-                                settings={matSettings} 
-                                manualColumnResize={true}
-                                manualRowResize={true}
-                                columns= {[{ data: "Material"}]}
-                                className='materials__management'
-                            />
+                    <div className="top__container">
+                        {/*{tabBtns}*/}
+                        <div className={`Cabecera ${ menu ? 'isActive' : '' }` }>
+                                <button 
+                                    onClick={ toggleMenu }
+                                    className="Cabecera__button">
+                                    <svg className="Cabecera__svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                                    </svg>
+                                </button>
+                                <nav className={`Cabecera__nav ${ menu ? 'isActive' : '' }` }>
+                                    
+                                    {/* Menu Users */}
+                                    <button className={`Cabecera__titulo ${ menuUsers ? 'isActiveUsers' : '' }` } onClick={ toggleMenuUsers }>
+                                        <img src={ArrowDownImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "10px"}}></img>
+                                        Users 
+                                    </button>
+                                    <ul className={`Cabecera__ul ${ menuUsers ? 'isActiveUsers' : '' }` }>
+                                        <li className="Cabecera__li">
+                                            <img src={WeightImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
+                                            <a onClick={async() => await setTab("weight")} className="Cabecera__a">By Weights</a>
+                                        </li>
+                                        <li className="Cabecera__li">
+                                            <img src={IsometricsImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
+                                            <a onClick={async() => await setTab("prod")} className="Cabecera__a">By Isometrics</a>
+                                        </li>
+                                    </ul>
+
+                                    {/* Menu Production */}
+
+                                    <button className={`Cabecera__titulo ${ menuProduction ? 'isActiveProduction' : '' }` } onClick={ toggleMenuProduction }>
+                                        <img src={ArrowDownImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "10px"}}></img>
+                                        Production 
+                                    </button>
+                                    <ul className={`Cabecera__ul ${ menuProduction ? 'isActiveProduction' : '' }` }>
+                                        <li className="Cabecera__li">
+                                            <img src={WeightImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
+                                            <a onClick={async() => await setTab("weight")} className="Cabecera__a">By Weight</a>
+                                        </li>
+                                        <li className="Cabecera__li">
+                                            <img src={AtomImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
+                                            <a onClick={async() => await setTab("weight")} className="Cabecera__a">By Material</a>
+                                        </li>
+                                    </ul>
+
+                                </nav>
                             </div>
-                            <button className="projects__add__button" onClick={()=>addRowMaterials()}><p className="projects__add__button__text">+ Add</p></button>
-                            <button className="projects__button__save" onClick={()=> submitChangesMaterials()} ><img src={SaveIcon2} alt="hold" className="navBar__icon__save" style={{marginRight:"-20px"}}></img><p className="projects__button__text">Save</p></button>
-                            <div id="hot-app" style={{marginBottom:"20px", marginTop:"40px"}}>
-                            <HotTable
-                                data={piping}
-                                colHeaders = {["<b>Piping class</b>", "<b>Material</b>"]}
-                                width="450"
-                                height="130"
-                                settings={pipingSettings} 
-                                manualColumnResize={true}
-                                manualRowResize={true}
-                                columns= {[{ data: "PipingClass"}, { data: "Material", type:"dropdown",strict:"true", source: materialsList}]}
-                                className='pipingclass__management'
-                            />
-                            </div>
-                            <button className="projects__add__button" onClick={()=>addRowPiping()}><p className="projects__add__button__text">+ Add</p></button>
-                            <button className="projects__button__save" onClick={()=> submitChangesPiping()} ><img src={SaveIcon2} alt="hold" className="navBar__icon__save" style={{marginRight:"-20px"}}></img><p className="projects__button__text">Save</p></button>
-    
+                        <div id="graph" className={`graph__container ${ menu ? 'isActive' : '' }` }>
+                            {lineChart}
                         </div>
-                </div>
-                <div className="materials__tables__container">
-                    {overallTable}
-                    {tables}
-                </div>
+                        <div className="materials__pc__container">
+                            <div style={{marginBottom:"30px"}}>
+                                {/*<button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"110px", marginTop: "80px"}}><img src={BackIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back</p></button>*/}
+                                <button className="right__button" onClick={()=> printDocument()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={GraphImage} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "25px"}}></img><p className="right__button__text">Graph</p></button>
+                                <button className="right__button" onClick={()=> exportPiping()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={ExportImage} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "23px"}}></img><p className="right__button__text">Export</p></button>
+                            </div>
+                            <div style={{display:"flex"}}>
+                                <text className="materials__title">Project Management</text>
+                                <button className="save__button" onClick={()=> submitManagement()}><img src={SaveIcon} alt="save" className="save__icon"></img></button>
+                            </div>
+                            <div style={{marginBottom:"20px", marginTop:"10px"}}>
+                                <HotTable
+                                    data={management}
+                                    colHeaders = {["<b>Starting date</b>", "<b>Finishing date</b>"]}
+                                    width="500"
+                                    height="60"
+                                    settings={spanSettings} 
+                                    manualColumnResize={true}
+                                    manualRowResize={true}
+                                    columns= {[{ data: "Starting date", type:"date"}, { data: "Finishing date", type:"date"}]}
+                                    className='project__management'
+                                />
+                            </div>
+                            <div id="hot-app" style={{marginBottom:"20px"}}>
+                                <HotTable
+                                    data={materials}
+                                    colHeaders = {["<b>Materials</b>"]}
+                                    width="450"
+                                    height="130"
+                                    settings={matSettings} 
+                                    manualColumnResize={true}
+                                    manualRowResize={true}
+                                    columns= {[{ data: "Material"}]}
+                                    className='materials__management'
+                                />
+                                </div>
+                                <button className="projects__add__button" onClick={()=>addRowMaterials()}><p className="projects__add__button__text">+ Add</p></button>
+                                <button className="projects__button__save" onClick={()=> submitChangesMaterials()} ><img src={SaveIcon2} alt="hold" className="navBar__icon__save" style={{marginRight:"-20px"}}></img><p className="projects__button__text">Save</p></button>
+                                <div id="hot-app" style={{marginBottom:"20px", marginTop:"40px"}}>
+                                <HotTable
+                                    data={piping}
+                                    colHeaders = {["<b>Piping class</b>", "<b>Material</b>"]}
+                                    width="450"
+                                    height="130"
+                                    settings={pipingSettings} 
+                                    manualColumnResize={true}
+                                    manualRowResize={true}
+                                    columns= {[{ data: "PipingClass"}, { data: "Material", type:"dropdown",strict:"true", source: materialsList}]}
+                                    className='pipingclass__management'
+                                />
+                                </div>
+                                <button className="projects__add__button" onClick={()=>addRowPiping()}><p className="projects__add__button__text">+ Add</p></button>
+                                <button className="projects__button__save" onClick={()=> submitChangesPiping()} ><img src={SaveIcon2} alt="hold" className="navBar__icon__save" style={{marginRight:"-20px"}}></img><p className="projects__button__text">Save</p></button>
+        
+                            </div>
+                    </div>
+                    <div className="materials__tables__container">
+                        {overallTable}
+                        {tables}
+                    </div>
                 </div>
             </body>
         );

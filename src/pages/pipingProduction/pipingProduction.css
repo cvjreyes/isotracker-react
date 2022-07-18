@@ -3,11 +3,23 @@
     width: 60px;
     border: 0;
     background-color: transparent;
-    border-radius: 1em 1em 1em 1em;
+    border-radius: 8px;
     transition: 0.3s;
     font-family: 'Quicksand', sans-serif;
-    
-    background-color:#99C6F8;
+
+    background-color: white;
+}
+
+.right__button{
+    height: 40px;
+    width: 60px;
+    border: 1px solid #0070ED;
+    background-color: transparent;
+    border-radius: 8px;
+    transition: 0.3s;
+    font-family: 'Quicksand', sans-serif;
+
+    background-color: white;
 }
 
 .reporting__tab__button{
@@ -29,14 +41,23 @@
     color: white;
 }
 
-.back__button:hover{
-    background-color: #0070ED;
-    color: white;
+.right__button:hover{
+    background-color: #99C6F8;
+}
+
+.right__button__text{
+    font-size: 15px;
+    margin-top: 6px;
+    font-weight: 600;
+    color: #0070ED;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .back__button__text{
-    font-size: 15px;
-    margin-top: 9px;
+    font-size: 18px;
+    margin-top: 7px;
+    font-weight: 600;
+    color: black;
     font-family: 'Quicksand', sans-serif;
 }
 
@@ -1210,21 +1231,34 @@
 
 }
 
-.Cabecera__ul {
+.Cabecera__titulo {
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
-    align-items: center;
+    margin-top: 20px;
+    margin-left: 10px;
+    color: black;
+    font-weight: bold;
+    border: 0px;
+    background: transparent;
+}
+
+.Cabecera__titulo:hover {
+    color: black;
+    text-decoration: none;
+
+}
+.Cabecera__ul {
+    display: none;
 }
 
 .Cabecera__li {
     list-style: none;
     margin: 0 .5em;
-    width: 100px;
+    width: 120px;
 }
 
 .Cabecera__a {
     color: black;
+    
 }
 
 .Cabecera__a:hover {
@@ -1237,6 +1271,12 @@
     border: 0px;
 }
 
+.Cabecera__navBar__icon{
+    width: auto;
+    margin-right: -10px;
+    margin-left: 5px
+}
+
 @media screen {
     
     .Cabecera {
@@ -1245,12 +1285,30 @@
     }
 
     .Cabecera.isActive {
-        width: 52vh;
+        width: 21vh;
         transition: all .5s ease;
     }
 
-    .Cabecera__button {
-        display: flex;
+    .Cabecera__titulo {
+        width: 0vh;
+        transition: all .5s ease;
+
+    }
+
+    .Cabecera__titulo.isActiveUsers {
+        width: 20vh;
+        height: 3vh;
+        transition: all .5s ease;
+        border: 0px;
+
+    }
+
+    .Cabecera__titulo.isActiveProduction {
+        width: 20vh;
+        height: 3vh;
+        transition: all .5s ease;
+        border: 0px;
+
     }
 
     .Cabecera__nav {
@@ -1267,6 +1325,14 @@
 
     .Cabecera__ul {
         flex-direction: column;
+    }
+
+    .Cabecera__ul.isActiveUsers {
+        display: flex;
+    }
+
+    .Cabecera__ul.isActiveProduction {
+        display: flex;
     }
 
     .Cabecera__li{
