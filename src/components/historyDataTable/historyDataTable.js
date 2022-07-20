@@ -243,7 +243,6 @@ class HistoryDataTable extends React.Component{
         title: <center className="dataTable__header__text">ISO ID</center>,
         dataIndex: 'id',
         key: 'id',
-        width: '23%',
         ...this.getColumnSearchProps('id'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
@@ -254,17 +253,16 @@ class HistoryDataTable extends React.Component{
         title: <center className="dataTable__header__text">Revision</center>,
         dataIndex: 'revision',
         key: 'revision',
-        width: '8%',
         ...this.getColumnSearchProps('revision'),
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
+        width: "100px",
       },
       {
         title: <div className="dataTable__header__text">Date</div>,
         dataIndex: 'date',
         key: 'date',
-        width: '20%',
         ...this.getColumnSearchProps('date'),
         sorter: {
           compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
@@ -278,6 +276,7 @@ class HistoryDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.from.localeCompare(b.from)},
         },
+        width: "200px",
       },
       {
         title: <div className="dataTable__header__text">To</div>,
@@ -287,6 +286,7 @@ class HistoryDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.to.localeCompare(b.to)},
         },
+        width: "200px",
       },
       {
         title: <div className="dataTable__header__text">User</div>,
@@ -296,7 +296,6 @@ class HistoryDataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.user.localeCompare(b.user)},
         },
-        width:"600px"
       },
     ];
 
@@ -314,8 +313,8 @@ class HistoryDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container">
-        <Table style={{ height: '540px' }} bordered = {true} columns={columns} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} dataSource={this.state.displayData} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
-        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
+        <Table className='customTable' style={{ height: '430px' }} bordered = {true} columns={columns} scroll={{y:330}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} dataSource={this.state.displayData} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:400}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           {totalElements}
 
         </div>

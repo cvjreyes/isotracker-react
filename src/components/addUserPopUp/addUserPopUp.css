@@ -89,7 +89,6 @@
     font-weight: bold;
     text-align: left;
     width: 650px;
-
 }
 
 .popUp__warning__subtitle{
@@ -122,6 +121,8 @@
     -webkit-border-radius: 5px;
     border-radius: 5px;
     margin-left: 5px;
+    height: 30px;
+    margin-top: 10px;
 }
 
 .popUp_input_select{
@@ -160,6 +161,8 @@
 
 .checkbox__container{
     display: flex;
+    text-align: left;
+
 }
 
 .checkbox__container:after {
@@ -168,6 +171,93 @@
     clear: both;
   }
 
-  .checkbox{
-      width: 150px;
-  }
+.checkbox{
+    width: 150px;
+    text-align: left;
+}
+
+.table__columns__adduser{
+    box-sizing: border-box;
+}
+
+.table__columns__adduser::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.column {
+    float: left;
+}
+
+.main__class {
+    width: 25%;
+}
+
+.leads__class {
+    width: 25%;
+}
+
+.fk__class {
+    width: 25%;
+}
+
+.misc__class {
+    width: 25%;
+}
+
+.btn__submit__adduser{
+    align-items: center;
+    color: #FFFFFF;
+    width: 120px;
+    height: 43px;
+    border: 1px solid #338DF1;
+    background: #338DF1;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.btn__submit__adduser:hover{
+    background-color: #99C6F8;
+    color: black;
+}
+
+.btn__cancel__adduser{
+    align-items: center;
+    color: #0070ED;
+    width: 120px;
+    height: 43px;
+    border: 1px solid #0070ED;
+    margin-left: 30px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.btn__cancel__adduser:hover{
+    background-color: #99C6F8;
+    color: black;
+}
+
+.titulo__email__adduser{
+    font-size: 20px;
+    text-align: left;
+    margin-left: 5%;
+    color: #338df1;
+    font-family: Arial;
+}
+
+.titulo__grupos__adduser{
+    font-size: 20px;
+    text-align: left;
+    color: #338df1;
+    font-family: Arial;
+    float: left;
+    margin-left: 22%;
+}
+
+.select__email__adduser{
+    text-align: left;
+    margin-left: 4.5%;
+    margin-bottom: 3%;
+}

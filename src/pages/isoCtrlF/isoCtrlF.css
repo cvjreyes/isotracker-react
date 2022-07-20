@@ -1,5 +1,5 @@
 .isoTrackerLogo__image2{
-    width: 270.57px;
+    width: 200px;
     height: auto;
     margin-top: 110px;
     margin-left: 110px;
@@ -9,6 +9,7 @@
     width: 300px;
     margin-left: 100px;
     margin-top: 70px;
+    zoom:0.8;
 }
 
 .stateTable__containerF{
@@ -50,13 +51,15 @@
 }
 
 .isotracker__table__navBar{
+    zoom:0.85;
     color:white;
     border-radius: 1em 1em 0em 0em;
 }
 
 .isotracker__table__trays{
+    zoom: 0.9;
     width: 20px;
-    height: 400px;
+    height: 300px;
     border-radius: 0em 0em 0em 1em;
     border: 1px solid lightgray;
     top: 0;
@@ -90,7 +93,11 @@
 
 .isotracker__table__table__container{
     margin: 10px 10px 10px 10px;
-    
+}
+
+.isotracker__table__table__container__2{
+    margin: 10px 10px 10px 10px;
+    height: 400px;
 }
 
 .navBar__icon{
@@ -132,6 +139,7 @@
     font-size: 34px;
     font-weight: 500;
     color: black;
+    zoom:0.8;
 }
 
 .alert-shown {
@@ -163,12 +171,20 @@
     margin-left:50px;
 }
 
+.isocontrol__weigths__2{
+    width: 500px;
+    border: 0;
+    background-color: transparent;
+    border-radius: 1em 1em 1em 1em;
+    float:center;
+}
+
 .isocontrol__lineid__group__button{
     margin-bottom: 15px;
     background-color: white;
     border-radius: 10px;
     font-weight: bold;
-    margin-top: -25px;
+    margin-top: -35px;
 }
 
 .actionBtns__container{

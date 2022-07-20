@@ -82,7 +82,7 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.equipTable__table{
+.equipTable__table{zoom:0.8;
     background-color: rgba(0, 0, 0, 0); 
     border-collapse: separate;
     border-radius: 0.5em;
@@ -186,5 +186,4 @@
 
 .discplines__table__table{
     border: 1px solid lightgray;
-    display: block;
 }

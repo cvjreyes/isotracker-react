@@ -34,7 +34,7 @@ export default class NewRevPopUp extends Component {
         
         return (
             <div style={{marginRight:"5px", marginLeft:"5px", float:"right"}}>
-                <button className="action__btn" onClick={() => this.openModal()}>New Rev</button>
+                <button className="action__btn" style={{zoom:0.8}} onClick={() => this.openModal()}>New Rev</button>
                 <div>
                     <Modal visible={this.state.visible} width="650" height="300" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <center style={{fontSize:"22px", marginTop:"20px"}}>
