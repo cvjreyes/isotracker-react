@@ -1,9 +1,19 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var _exportNames = {};
+var _exportNames = {
+  backdropClasses: true
+};
+Object.defineProperty(exports, "backdropClasses", {
+  enumerable: true,
+  get: function () {
+    return _backdropClasses.default;
+  }
+});
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function () {
@@ -11,16 +21,18 @@ Object.defineProperty(exports, "default", {
   }
 });
 
-var _Backdrop = _interopRequireWildcard(require("./Backdrop"));
+var _Backdrop = _interopRequireDefault(require("./Backdrop"));
 
-Object.keys(_Backdrop).forEach(function (key) {
+var _backdropClasses = _interopRequireWildcard(require("./backdropClasses"));
+
+Object.keys(_backdropClasses).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  if (key in exports && exports[key] === _Backdrop[key]) return;
+  if (key in exports && exports[key] === _backdropClasses[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function () {
-      return _Backdrop[key];
+      return _backdropClasses[key];
     }
   });
 });

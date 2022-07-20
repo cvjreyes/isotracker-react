@@ -10,6 +10,88 @@
     background-color: white;
 }
 
+.users__button{
+    height: 40px;
+    width: 100px;
+    border: 1px solid #0070ED;
+    background-color: transparent;
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+    margin-left: 20px;
+    background-color: white;
+    color: #0070ED;
+    font-weight: bold;
+    font-size: 15px;
+
+}
+
+.users__button__inUsers{
+    height: 40px;
+    width: 100px;
+    background-color: #99C6F8;
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+    margin-left: 20px;
+    color: #0070ED;
+    font-weight: bold;
+    border: 0px;
+    font-size: 15px;
+
+}
+
+.users__button:hover{
+    height: 40px;
+    width: 100px;
+    background-color: #99C6F8;
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+    margin-left: 20px;
+    color: #0070ED;
+    font-weight: bold;
+    font-size: 15px;
+
+}
+
+.production__button{
+    height: 40px;
+    width: 100px;
+    border: 1px solid #0070ED;
+    background-color: transparent;
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+    margin-left: 20px;
+    background-color: white;
+    color: #0070ED;
+    font-weight: bold;
+    font-size: 15px;
+
+}
+
+.production__button__inProduction{
+    height: 40px;
+    width: 100px;
+    background-color: #99C6F8;
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+    margin-left: 20px;
+    color: #0070ED;
+    font-size: 15px;
+    font-weight: bold;
+    border: 0px;
+}
+
+.production__button:hover{
+    height: 40px;
+    width: 100px;
+    background-color: #99C6F8;
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+    margin-left: 20px;
+    color: #0070ED;
+    font-size: 15px;
+
+}
+
 .right__button{
     height: 40px;
     width: 60px;
@@ -63,13 +145,14 @@
 
 .materials__tables__container{
     margin-left: 100px;
-    height: 400px;
+    height: 300px;
     overflow: scroll;
+    margin-top: 10px;
 }
 
 .users__tables__container{
     margin-left: 40px;
-    margin-top: 65px;
+    margin-top: 40px;
 }
 
 .management__container{
@@ -122,7 +205,7 @@
 .save__icon{
     height: 25px;
     width: auto;
-    margin-left: -3px;
+    margin-left: 2px;
 }
 
 .warning__text{
@@ -131,7 +214,7 @@
 }
 
 .user__productivity__tables__container{
-    height: 730px;
+    height: 550px;
     min-width: 1770px;
     overflow-y: scroll;
 }
@@ -247,7 +330,7 @@
 
 .isoCount__text{
     float: right;
-    margin-right: 30px;
+    margin-right: 180px;
     margin-top: 10px;
     font-size: 17px
 }
@@ -311,6 +394,10 @@
 
     border: 1px solid #0070ED;
     border-radius: 8px;
+}
+
+.overall-table thead th:first-child{
+    border-radius: 8px 0px 0px 0px;
 }
 
 
@@ -409,6 +496,7 @@
     background-color:rgb(255,80,80);
     color:black;
     font-size: 14px;
+    border-radius: 0px 0px 0px 8px;
 }
 
 .overall-table tbody tr:nth-child(1) th {
@@ -1229,16 +1317,28 @@
     
 }
 
+.users-table thead{
+    overflow: hidden;
+}
+
+.users-table th:first-child{
+    border-radius: 8px 0px 0px 0px;
+    overflow: hidden;
+}
+
 .users-table th{
     background-color:#338DF1;;
     color:white;
     font-size: 14px;
 }
 
+
+
 .users-table tbody tr:nth-child(1) th {
     background-color:	#FFFF0060;
     font-size: 14px;
     color: black;
+    border-radius: 0;
 }
 
 .users-table tbody tr:nth-child(1) td {
@@ -1251,6 +1351,7 @@
     background-color:	#D4F1DD;
     font-size: 14px;
     color: black;
+    border-radius: 0;
 }
 
 .users-table tbody tr:nth-child(2) td {
@@ -1263,6 +1364,7 @@
     background-color:	#FF335890;
     font-size: 14px;
     color: black;
+    border-radius: 0;
 }
 
 .users-table tbody tr:nth-child(3) td {
@@ -1275,6 +1377,7 @@
     background-color:	#00CED190;
     font-size: 14px;
     color: black;
+    border-radius: 0px 0px 0px 8px;
 }
 
 .users-table tbody tr:nth-child(4) td {
@@ -1361,7 +1464,7 @@
     }
 
     .Cabecera.isActive {
-        width: 21vh;
+        width: 18vh;
         transition: all .5s ease;
     }
 
@@ -1394,13 +1497,14 @@
     }
 
     .Cabecera__nav.isActive{
-        height: 42vh;
+        height: 52vh;
         opacity: 1;
         transition: all .5s ease;
     }
 
     .Cabecera__ul {
         flex-direction: column;
+        margin-left: 20px;
     }
 
     .Cabecera__ul.isActiveUsers {
@@ -1411,17 +1515,99 @@
         display: flex;
     }
 
-    .Cabecera__li{
-        margin: .5em 0;
-    }
-
-    .graph__container {
+    /* Eliminar si queremos poner un titulo*/
+    .Cabecera__ul.isActive {
+        display: flex;
         width: 122vh;
         transition: all .5s ease;
+    }
+
+    .Cabecera__li{
+        margin: .5em 0;
     }
 
     .graph__container.isActive {
         width: 110vh;
         transition: all .5s ease;
     }
+}
+
+/* Users Tabs */
+*, ::before, ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.container-tabs {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 500px;
+    height: 300px;
+    margin-top: 50px;
+    background: #f1f1f1;
+    word-break: break-all;
+}
+  
+.bloc-tabs {
+    display: flex;
+}
+.tabs {
+    padding: 15px;
+    text-align: center;
+    background: white;
+    width: 50%;
+    cursor: pointer;
+    border: 1px solid transparent;
+    box-sizing: content-box;
+    position: relative;
+    outline: none;
+    float:none;
+    display:inline-block;
+    font-size: 18px;
+}
+
+.tabs-nohover {
+    padding: 15px;
+    text-align: center;
+    background: white;
+    width: 50%;
+    cursor: pointer;
+    border: 1px solid transparent;
+    box-sizing: content-box;
+    position: relative;
+    outline: none;
+    float:none;
+    display:inline-block;
+    font-size: 18px;
+}
+
+.active-tabs  {
+    border-bottom: 3px solid #0070ED;
+    border-radius: 8px 8px 0px 0px;
+    transition: all .15s ease;
+}
+
+.tabs:hover  {
+    transition: all .15s ease;
+    border-bottom: 3px solid #0070ED;
+    border-radius: 8px 8px 0px 0px;
+}
+
+.content-tabs {
+    flex-grow : 1;
+    background: white;
+}
+
+.content {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background: white;
+}
+.active-content {
+    display: block;
+    background: white;
 }
