@@ -145,8 +145,9 @@
 
 .materials__tables__container{
     margin-left: 100px;
-    height: 400px;
+    height: 300px;
     overflow: scroll;
+    margin-top: 10px;
 }
 
 .users__tables__container{
@@ -395,6 +396,10 @@
     border-radius: 8px;
 }
 
+.overall-table thead th:first-child{
+    border-radius: 8px 0px 0px 0px;
+}
+
 .overall-table th{
     background-color:#338DF1;;
     color:white;
@@ -411,6 +416,7 @@
     background-color:rgb(255,80,80);
     color:black;
     font-size: 14px;
+    border-radius: 0px 0px 0px 8px;
 }
 
 .overall-table tbody tr:nth-child(1) th {
