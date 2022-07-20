@@ -29,6 +29,7 @@ import ProductionUserTabs from "../../components/productionUserTabs/productionUs
 
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { TabContext, TabPanel } from '@mui/lab';
 
 const PITRequests = () =>{
 
@@ -64,7 +65,7 @@ const PITRequests = () =>{
     const [tabBtns, setTabBtns] = useState(null)
     const [usersType, setUsersType] = useState("iso")
     const [usersData, setUsersData] = useState(null)
-    const [userEffTitle, setUserEffTitle] = useState(<h4 style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"30px", marginLeft:"690px"}}>USER ISOMETRICS EFFICIENCY</h4>)
+    const [userEffTitle, setUserEffTitle] = useState(<center style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"-10px", marginLeft:"-200px"}}>USER ISOMETRICS EFFICIENCY</center>)
 
     const [updateData, setUpdateData] = useState(false)
     const [updateRows, setUpdateRows] = useState(false)
@@ -129,7 +130,7 @@ const PITRequests = () =>{
     const toggleMenuProduction = () => {
         setMenuProduction ( !menuProduction )
     }
-    
+
     function handleOnIdle(){
         const body = {
             user: secureStorage.getItem("user"),
@@ -912,7 +913,7 @@ const PITRequests = () =>{
                     })  
                 }else if(tab === "users"){
                     if(usersType === "iso"){
-                        await setUserEffTitle(<h4 style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"30px", marginLeft:"690px"}}>USER ISOMETRICS EFFICIENCY</h4>)
+                        await setUserEffTitle(<center style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"-10px", marginLeft:"-200px"}}>USER ISOMETRICS EFFICIENCY</center>)
                         await setTabBtns(<div style={{width: "90px"}}>
                         <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("weight")}>W</button>
@@ -921,7 +922,7 @@ const PITRequests = () =>{
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setUsersType("weight")}>W</button>
                         </div>)
                     }else if(usersType === "weight"){
-                        await setUserEffTitle(<h4 style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"30px", marginLeft:"700px"}}>USER WEIGHT EFFICIENCY</h4>)
+                        await setUserEffTitle(<center style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"-10px", marginLeft:"-200px"}}>USER WEIGHT EFFICIENCY</center>)
                         await setTabBtns(<div style={{width: "90px"}}>
                         <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("weight")}>W</button>
@@ -980,12 +981,12 @@ const PITRequests = () =>{
                                             if(design_isos){
                                                 console.log(design_isos)
                                                 Object.keys(design_isos).map(async function(user, index) {
-                                                    await design.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                    await design.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[design_isos[user]["assigned"], design_isos[user]["sent"], design_isos[user]["returned"], design_isos[user]["remaining"]]}
                                                             colHeaders={weeks}
                                                             rowHeaders={["Assigned", "Sent", "Returned", "Remaining"]}
-                                                            width="1750"
+                                                            width="1590"
                                                             height="145"
                                                             settings={usersSettings} 
                                                             manualColumnResize={true}
@@ -1000,12 +1001,12 @@ const PITRequests = () =>{
                                             }
                                             if(user_isos["DesignLead"]){
                                                 Object.keys(user_isos["DesignLead"]).map(async function(user, index) {
-                                                    await designLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                    await designLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[user_isos["DesignLead"][user]["claimed"], user_isos["DesignLead"][user]["sent"], user_isos["DesignLead"][user]["returned"], user_isos["DesignLead"][user]["remaining"]]}
                                                             colHeaders={weeks}
                                                             rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                            width="1750"
+                                                            width="1590"
                                                             height="145"
                                                             settings={usersSettings} 
                                                             manualColumnResize={true}
@@ -1020,12 +1021,12 @@ const PITRequests = () =>{
                                             }
                                             if(user_isos["Stress"]){
                                                 Object.keys(user_isos["Stress"]).map(async function(user, index) {
-                                                    await stress.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                    await stress.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[user_isos["Stress"][user]["claimed"], user_isos["Stress"][user]["sent"], user_isos["Stress"][user]["returned"], user_isos["Stress"][user]["remaining"]]}
                                                             colHeaders={weeks}
                                                             rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                            width="1750"
+                                                            width="1590"
                                                             height="145"
                                                             settings={usersSettings} 
                                                             manualColumnResize={true}
@@ -1040,12 +1041,12 @@ const PITRequests = () =>{
                                             }
                                             if(user_isos["StressLead"]){
                                                 Object.keys(user_isos["StressLead"]).map(async function(user, index) {
-                                                    await stressLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                    await stressLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[user_isos["StressLead"][user]["claimed"], user_isos["StressLead"][user]["sent"], user_isos["StressLead"][user]["returned"], user_isos["StressLead"][user]["remaining"]]}
                                                             colHeaders={weeks}
                                                             rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                            width="1750"
+                                                            width="1590"
                                                             height="145"
                                                             settings={usersSettings} 
                                                             manualColumnResize={true}
@@ -1060,12 +1061,12 @@ const PITRequests = () =>{
                                             }
                                             if(user_isos["Supports"]){
                                                 Object.keys(user_isos["Supports"]).map(async function(user, index) {
-                                                    await supports.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                    await supports.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[user_isos["Supports"][user]["claimed"], user_isos["Supports"][user]["sent"], user_isos["Supports"][user]["returned"], user_isos["Supports"][user]["remaining"]]}
                                                             colHeaders={weeks}
                                                             rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                            width="1750"
+                                                            width="1590"
                                                             height="145"
                                                             settings={usersSettings} 
                                                             manualColumnResize={true}
@@ -1080,12 +1081,12 @@ const PITRequests = () =>{
                                             }
                                             if(user_isos["SupportsLead"]){
                                                 Object.keys(user_isos["SupportsLead"]).map(async function(user, index) {
-                                                    await supportsLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                    await supportsLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[user_isos["SupportsLead"][user]["claimed"], user_isos["SupportsLead"][user]["sent"], user_isos["SupportsLead"][user]["returned"], user_isos["SupportsLead"][user]["remaining"]]}
                                                             colHeaders={weeks}
                                                             rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                            width="1750"
+                                                            width="1590"
                                                             height="145"
                                                             settings={usersSettings} 
                                                             manualColumnResize={true}
@@ -1100,12 +1101,12 @@ const PITRequests = () =>{
                                             }
                                             if(user_isos["Materials"]){
                                                 Object.keys(user_isos["Materials"]).map(async function(user, index) {
-                                                    await materials.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                    await materials.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[user_isos["Materials"][user]["claimed"], user_isos["Materials"][user]["sent"], user_isos["Materials"][user]["returned"], user_isos["Materials"][user]["remaining"]]}
                                                             colHeaders={weeks}
                                                             rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                            width="1750"
+                                                            width="1590"
                                                             height="145"
                                                             settings={usersSettings} 
                                                             manualColumnResize={true}
@@ -1120,12 +1121,12 @@ const PITRequests = () =>{
                                             }
                                             if(user_isos["Issuer"]){
                                                 Object.keys(user_isos["Issuer"]).map(async function(user, index) {
-                                                    await issuer.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                    await issuer.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[user_isos["Issuer"][user]["claimed"], user_isos["Issuer"][user]["sent"], user_isos["Issuer"][user]["returned"], user_isos["Issuer"][user]["remaining"]]}
                                                             colHeaders={weeks}
                                                             rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                            width="1750"
+                                                            width="1590"
                                                             height="145"
                                                             settings={usersSettings} 
                                                             manualColumnResize={true}
@@ -1215,12 +1216,12 @@ const PITRequests = () =>{
                                         if(design_isos){
                                             Object.keys(design_isos).map(async function(user, index) {
 
-                                                await design.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                await design.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                         data={[design_isos[user]["assigned"], design_isos[user]["sent"], design_isos[user]["returned"], design_isos[user]["remaining"]]}
                                                         colHeaders={weeks}
                                                         rowHeaders={["Assigned", "Sent", "Returned", "Remaining"]}
-                                                        width="1750"
+                                                        width="1590"
                                                         height="145"
                                                         settings={usersSettings} 
                                                         manualColumnResize={true}
@@ -1235,12 +1236,12 @@ const PITRequests = () =>{
                                         }
                                         if(user_isos["DesignLead"]){
                                             Object.keys(user_isos["DesignLead"]).map(async function(user, index) {
-                                                await designLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                await designLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                         data={[user_isos["DesignLead"][user]["claimed"], user_isos["DesignLead"][user]["sent"], user_isos["DesignLead"][user]["returned"], user_isos["DesignLead"][user]["remaining"]]}
                                                         colHeaders={weeks}
                                                         rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                        width="1750"
+                                                        width="1590"
                                                         height="145"
                                                         settings={usersSettings} 
                                                         manualColumnResize={true}
@@ -1255,12 +1256,12 @@ const PITRequests = () =>{
                                         }
                                         if(user_isos["Stress"]){
                                             Object.keys(user_isos["Stress"]).map(async function(user, index) {
-                                                await stress.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                await stress.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                         data={[user_isos["Stress"][user]["claimed"], user_isos["Stress"][user]["sent"], user_isos["Stress"][user]["returned"], user_isos["Stress"][user]["remaining"]]}
                                                         colHeaders={weeks}
                                                         rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                        width="1750"
+                                                        width="1590"
                                                         height="145"
                                                         settings={usersSettings} 
                                                         manualColumnResize={true}
@@ -1275,12 +1276,12 @@ const PITRequests = () =>{
                                         }
                                         if(user_isos["StressLead"]){
                                             Object.keys(user_isos["StressLead"]).map(async function(user, index) {
-                                                await stressLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                await stressLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                         data={[user_isos["StressLead"][user]["claimed"], user_isos["StressLead"][user]["sent"], user_isos["StressLead"][user]["returned"], user_isos["StressLead"][user]["remaining"]]}
                                                         colHeaders={weeks}
                                                         rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                        width="1750"
+                                                        width="1590"
                                                         height="145"
                                                         settings={usersSettings} 
                                                         manualColumnResize={true}
@@ -1295,12 +1296,12 @@ const PITRequests = () =>{
                                         }
                                         if(user_isos["Supports"]){
                                             Object.keys(user_isos["Supports"]).map(async function(user, index) {
-                                                await supports.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                await supports.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                         data={[user_isos["Supports"][user]["claimed"], user_isos["Supports"][user]["sent"], user_isos["Supports"][user]["returned"], user_isos["Supports"][user]["remaining"]]}
                                                         colHeaders={weeks}
                                                         rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                        width="1750"
+                                                        width="1590"
                                                         height="145"
                                                         settings={usersSettings} 
                                                         manualColumnResize={true}
@@ -1315,12 +1316,12 @@ const PITRequests = () =>{
                                         }
                                         if(user_isos["SupportsLead"]){
                                             Object.keys(user_isos["SupportsLead"]).map(async function(user, index) {
-                                                await supportsLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                await supportsLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                         data={[user_isos["SupportsLead"][user]["claimed"], user_isos["SupportsLead"][user]["sent"], user_isos["SupportsLead"][user]["returned"], user_isos["SupportsLead"][user]["remaining"]]}
                                                         colHeaders={weeks}
                                                         rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                        width="1750"
+                                                        width="1590"
                                                         height="145"
                                                         settings={usersSettings} 
                                                         manualColumnResize={true}
@@ -1335,12 +1336,12 @@ const PITRequests = () =>{
                                         }
                                         if(user_isos["Materials"]){
                                             Object.keys(user_isos["Materials"]).map(async function(user, index) {
-                                                await materials.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                await materials.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                         data={[user_isos["Materials"][user]["claimed"], user_isos["Materials"][user]["sent"], user_isos["Materials"][user]["returned"], user_isos["Materials"][user]["remaining"]]}
                                                         colHeaders={weeks}
                                                         rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                        width="1750"
+                                                        width="1590"
                                                         height="145"
                                                         settings={usersSettings} 
                                                         manualColumnResize={true}
@@ -1355,12 +1356,12 @@ const PITRequests = () =>{
                                         }
                                         if(user_isos["Issuer"]){
                                             Object.keys(user_isos["Issuer"]).map(async function(user, index) {
-                                                await issuer.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
+                                                await issuer.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                         data={[user_isos["Issuer"][user]["claimed"], user_isos["Issuer"][user]["sent"], user_isos["Issuer"][user]["returned"], user_isos["Issuer"][user]["remaining"]]}
                                                         colHeaders={weeks}
                                                         rowHeaders={["Claimed", "Sent", "Returned", "Remaining"]}
-                                                        width="1750"
+                                                        width="1590"
                                                         height="145"
                                                         settings={usersSettings} 
                                                         manualColumnResize={true}
@@ -2223,7 +2224,7 @@ const PITRequests = () =>{
         }
         
     }
-    
+
     const matSettings = {
         licenseKey: 'non-commercial-and-evaluation',
         colWidths: 430,
@@ -2241,6 +2242,19 @@ const PITRequests = () =>{
         colWidths: 215,
         //... other options
     }
+
+    const [toggleState, setToggleState] = useState(1);
+
+    const toggleTab = (index) => {
+        setToggleState(index);
+        if(index === 1){
+            setUsersType("iso")
+        }else{
+            setUsersType("weight")
+        }
+        
+    };
+
     if(tab === "users"){
         return(
             <body style={{overflow:"hidden", height:"100vh"}}>
@@ -2271,17 +2285,55 @@ const PITRequests = () =>{
                     </Alert>
                 </Collapse>
                 <div id="pdf">
-                    <div style={{display:"flex"}}>
-                        {tabBtns}
+                    <div style={{display:"flex", marginLeft: "70px", marginTop: "80px"}}>
+                        {/*{tabBtns}*/}
                         <div className="users__tables__container">
-                            <div>
-                                {userEffTitle}
+                            
+                            <div className="container-tabs">
+
+                                <div className="bloc-tabs">
+                                    <button
+                                    className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
+                                    onClick={() => toggleTab(1)}
+                                    >
+                                    Isometrics
+                                    </button>
+                                    <button
+                                    className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
+                                    onClick={() => toggleTab(2)}
+                                    >
+                                    Weight
+                                    </button>
+                                    
+                                </div>
+
+                                <div className="content-tabs">
+                                    <div
+                                    className={toggleState === 1 ? "content active-content" : "content"}
+                                    >
+                                        {userEffTitle}
+                                        {tables}
+                                    </div>
+
+                                    <div
+                                    className={toggleState === 2 ? "content active-content" : "content"}
+                                    >
+                                        
+                                        {userEffTitle}
+                                        
+                                        {tables}
+                                    </div>
+                                </div>
+
                             </div>
-                            {tables}
+                            
                         </div>
-                        <div style={{marginBottom:"30px", marginLeft:"1630px", position:"absolute"}}>
-                            <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"110px", marginTop: "80px"}}><img src={BackIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back</p></button>
-                            <button className="back__button" onClick={()=> exportPiping()} style={{width:"110px", marginLeft:"10px", marginTop: "80px"}}><img src={Reports} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Export</p></button>
+                        <div style={{marginBottom:"0px", marginLeft:"30px", position:"absolute"}}>
+                            <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"180px"}}><img src={ArrowImage} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back to menu</p></button>
+                            <button onClick={async() => await setTab("prod")} className="production__button">Production</button>
+                            <button className="users__button__inUsers">Users</button>
+                        
+                            <button className="right__button" onClick={()=> exportPiping()} style={{width:"110px", marginLeft:"1200px"}}><img src={ExportImage} alt="report" className="navBar__icon" style={{marginRight:"0px", height: "23px"}}></img><p className="right__button__text">Export</p></button>
                         </div>
                         
                     </div>
@@ -2321,6 +2373,9 @@ const PITRequests = () =>{
                 <div id="pdf">
                     <div style={{marginLeft: "100px", marginBottom: "-120px"}}>
                         <button className="back__button" onClick={()=>history.push('/'+process.env.REACT_APP_PROJECT+'/piping')} style={{width:"180px", marginTop: "80px"}}><img src={ArrowImage} alt="hold" className="navBar__icon" style={{marginRight:"0px", height: "30px"}}></img><p className="back__button__text">Back to menu</p></button>
+                        <button className="production__button__inProduction">Production</button>
+                        <button onClick={async() => await setTab("users")} className="users__button">Users</button>
+
                     </div>
                     <div className="top__container">
                         {/*{tabBtns}*/}
@@ -2332,10 +2387,28 @@ const PITRequests = () =>{
                                         <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                                     </svg>
                                 </button>
-                                <nav className={`Cabecera__nav ${ menu ? 'isActive' : '' }` }>
-                                    
+                                <nav className={`Cabecera__nav ${ menu ? 'isActive' : '' }` }>              
+
+                                    {/* Menu Production */}
+
+                                    {/*<button className={`Cabecera__titulo ${ menuProduction ? 'isActiveProduction' : '' }` } onClick={ toggleMenuProduction }>
+                                        <img src={ArrowDownImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "10px"}}></img>
+                                        Production 
+                                    </button>*/}
+                                    <ul className={`Cabecera__ul ${ menu ? 'isActive' : '' }` }>
+                                        <li className="Cabecera__li">
+                                            <img src={IsometricsImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
+                                            <a onClick={async() => await setTab("prod")} className="Cabecera__a">By Isometrics</a>
+                                        </li>
+                                        <li className="Cabecera__li">
+                                            <img src={WeightImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
+                                            <a onClick={async() => await setTab("weight")} className="Cabecera__a">By Weight</a>
+                                        </li>
+                                    </ul>
+
                                     {/* Menu Users */}
-                                    <button className={`Cabecera__titulo ${ menuUsers ? 'isActiveUsers' : '' }` } onClick={ toggleMenuUsers }>
+
+                                    {/*<button className={`Cabecera__titulo ${ menuUsers ? 'isActiveUsers' : '' }` } onClick={ toggleMenuUsers }>
                                         <img src={ArrowDownImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "10px"}}></img>
                                         Users 
                                     </button>
@@ -2348,24 +2421,7 @@ const PITRequests = () =>{
                                             <img src={IsometricsImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
                                             <a onClick={async() => await setTab("prod")} className="Cabecera__a">By Isometrics</a>
                                         </li>
-                                    </ul>
-
-                                    {/* Menu Production */}
-
-                                    <button className={`Cabecera__titulo ${ menuProduction ? 'isActiveProduction' : '' }` } onClick={ toggleMenuProduction }>
-                                        <img src={ArrowDownImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "10px"}}></img>
-                                        Production 
-                                    </button>
-                                    <ul className={`Cabecera__ul ${ menuProduction ? 'isActiveProduction' : '' }` }>
-                                        <li className="Cabecera__li">
-                                            <img src={WeightImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
-                                            <a onClick={async() => await setTab("weight")} className="Cabecera__a">By Weight</a>
-                                        </li>
-                                        <li className="Cabecera__li">
-                                            <img src={AtomImage} alt="hold" className="Cabecera__navBar__icon" style={{marginRight:"5px", height: "22px"}}></img>
-                                            <a onClick={async() => await setTab("weight")} className="Cabecera__a">By Material</a>
-                                        </li>
-                                    </ul>
+                                    </ul>*/}
 
                                 </nav>
                             </div>
