@@ -82,6 +82,7 @@ const RoleDropDown = (props) => {
     <div className={classes.root}>
       <List component="nav" aria-label="Device settings" >
         <ListItem
+          style={{marginLeft:"25px"}}
           button
           aria-haspopup="true"
           aria-controls="lock-menu"
@@ -101,7 +102,7 @@ const RoleDropDown = (props) => {
       >
         {options.map((option, index) => (
           <MenuItem
-            style={{fontSize: "16px", fontFamily:"Quicksand"}}
+            style={{fontSize: "14px", fontFamily:"Quicksand"}}
             key={option}
             selected={index === selectedIndex}
             onClick={(event) => handleMenuItemClick(event, index)}

@@ -87,12 +87,12 @@
 .popUp__warning__container{
     margin-left: 40px;
     margin-right: 40px;
-    background-color: yellow;
+    background-color: antiquewhite;
     border-radius: 1em;
 }
 
 .popUp__warning__container:hover{
-    background-color: antiquewhite;
+    background-color: yellow;
 }
 
 .popUp__warning__title{

@@ -157,9 +157,9 @@ const Piping = () => {
         }
     }, [])
 
-    var dataTableHeight = "600px"
+    var dataTableHeight = "540px"
 
-    document.body.style.zoom = 0.8
+    
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("piping_tab"))
     if(currentTab === "" || currentTab === null){
@@ -189,7 +189,7 @@ const Piping = () => {
 
     
     if(currentTab === "Edit" || currentTab === "Key parameters"){
-        dataTableHeight = "600px"
+        dataTableHeight = "500px"
     }
     
     if(currentRole === "Project"){
@@ -236,7 +236,6 @@ const Piping = () => {
         FileSaver.saveAs(data, fileName + fileExtension);
 
     }
-
 
 
     return(
@@ -303,7 +302,7 @@ const Piping = () => {
                               </div>
                           </td>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
-                              <div  style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                              <div  style={{height: dataTableHeight, width: "1550px"}} className="isotracker__table__table__container">
                                   {table}
                               </div>
                           </td>

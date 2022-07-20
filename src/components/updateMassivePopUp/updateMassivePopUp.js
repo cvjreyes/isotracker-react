@@ -31,7 +31,7 @@ export default class UpdateMassivePopUp extends Component {
     render() {
         return (
             <section >
-                <input type="button"  value="Upload" className="upload__massive__button" onClick={() => this.openModal()} />
+                <input type="button" style={{zoom:0.8}} value="Upload" className="upload__massive__button" onClick={() => this.openModal()} />
                 <div>
                     <Modal visible={this.state.visible} width="900" height="1000" effect="fadeInUp" onClickAway={() => this.closeModal()}>
                         <p className="upload__massive__title">Upload files for your isometrics</p>

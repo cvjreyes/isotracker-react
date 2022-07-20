@@ -114,7 +114,7 @@ const Civil = () => {
     var dataTableHeight = "550px"
 
 
-    document.body.style.zoom = 0.8
+    
     document.title= process.env.REACT_APP_PROJECT
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("civ_tab"))
     if(currentTab === "" || currentTab === null){

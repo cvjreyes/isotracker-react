@@ -41,7 +41,7 @@ var secureStorage = new SecureStorage(localStorage, {
 
 const ChangePasswordPage = () =>{
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    document.body.style.zoom = 0.8
+    
 
     const [password, setPassword] = useState(null);
     const [newPassword, setNewPassword] = useState(null);

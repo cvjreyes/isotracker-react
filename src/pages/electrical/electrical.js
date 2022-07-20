@@ -157,9 +157,9 @@ const Electrical = () => {
         }
     });
 
-    var dataTableHeight = "600px"
+    var dataTableHeight = "500px"
 
-    document.body.style.zoom = 0.8
+    
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentTab, setCurrentTab] = useState(secureStorage.getItem("elec_tab"))
     if(currentTab === "" || currentTab === null){
@@ -191,7 +191,7 @@ const Electrical = () => {
 
     
     if(currentTab === "Edit" || currentTab === "Key parameters"){
-        dataTableHeight = "600px"
+        dataTableHeight = "500px"
     }
     
     if(currentRole === "Project"){
@@ -302,8 +302,8 @@ const Electrical = () => {
                                     </center>
                               </div>
                           </td>
-                          <td className="discplines__table__table" style={{height: dataTableHeight}} >
-                              <div  style={{height: dataTableHeight}} className="isotracker__table__table__container">
+                          <td className="discplines__table__table" >
+                              <div  style={{height: "540px", width: "1550px"}} className="isotracker__table__table__container">
                                   {table}
                               </div>
                           </td>

@@ -142,7 +142,7 @@ class CivilEstimatedDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.area.localeCompare(b.area),
         },
-        width: "300px"
+        width:"100px"
       },
       {
         title: <center className="dataTable__header__text">Type</center>,
@@ -152,7 +152,6 @@ class CivilEstimatedDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.type.localeCompare(b.type),
         },
-        with: "300px"
       },
       {
         title: <div className="dataTable__header__text">Qty</div>,
@@ -162,7 +161,7 @@ class CivilEstimatedDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.quantity-b.quantity,
         },
-        width: "300px"
+        width:"100px"
       },
       {
         title: <div className="dataTable__header__text">Modelled</div>,
@@ -172,7 +171,7 @@ class CivilEstimatedDataTable extends React.Component{
         sorter: {
           compare: (a, b) => a.modelled-b.modelled,
         },
-        width: "300px"
+        width:"100px"
       },
     ];
     
@@ -203,9 +202,9 @@ class CivilEstimatedDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} style={{ height: '540px' }} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"
+        <Table className="customTable" bordered = {true} columns={columns} style={{ height: '500px' }} dataSource={this.state.displayData} scroll={{y:400}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"
          rowClassName= {(record) => record.color.replace('#', '')}/>
-        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
+        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:400}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           {totalElements}
         </div>
         

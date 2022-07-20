@@ -11,7 +11,7 @@ const MenuListPIT = (props) =>{
     }
 
     return(
-        <div class="panel__container">
+        <div style={{zoom:0.8}} class="panel__container">
             <div className="panel__heading__container">
                 <h4>
                     <text className="panel__heading__text">PITRequests</text>
