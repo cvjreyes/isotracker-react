@@ -13,7 +13,7 @@
 .users__button{
     height: 40px;
     width: 100px;
-    border: 1px solid #99C6F8;
+    border: 1px solid #0070ED;
     background-color: transparent;
     border-radius: 8px;
     font-family: 'Quicksand', sans-serif;
@@ -55,7 +55,7 @@
 .production__button{
     height: 40px;
     width: 100px;
-    border: 1px solid #99C6F8;
+    border: 1px solid #0070ED;
     background-color: transparent;
     border-radius: 8px;
     font-family: 'Quicksand', sans-serif;
