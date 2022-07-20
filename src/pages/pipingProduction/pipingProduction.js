@@ -150,7 +150,7 @@ const PITRequests = () =>{
         history.push("/" + process.env.REACT_APP_PROJECT)
     }
 
-    useEffect(async() =>{        
+    useEffect(async() =>{   
         const table_class = ["mat1-table", "mat2-table", "mat3-table", "mat4-table", "mat5-table", "mat6-table"]
         const weight_table_class = ["wmat1-table", "wmat2-table", "wmat3-table", "wmat4-table", "wmat5-table", "wmat6-table"]
         

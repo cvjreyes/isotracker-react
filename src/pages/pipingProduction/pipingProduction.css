@@ -313,6 +313,86 @@
     border-radius: 8px;
 }
 
+
+
+.progress-table th{
+    background-color:#338DF1;;
+    color:white;
+    font-size: 14px;
+}
+
+.progress-table tbody tr:nth-child(1) th{
+  background-color:rgb(147,112,219);
+  color:black;
+  font-size: 14px;
+}
+
+.progress-table tbody tr:nth-child(2) th {
+    background-color:rgb(255,80,80);
+    color:black;
+    font-size: 14px;
+}
+
+.progress-table tbody tr:nth-child(1) th {
+    background-color:	rgb(252,252,252);;
+    font-size: 14px;
+    color:black;
+}
+
+.progress-table tbody tr:nth-child(1) td {
+    background-color:	rgb(252,252,252);
+    font-size: 14px;
+    color:black;
+}
+
+.progress-table tbody tr:nth-child(3) th {
+    background-color:	rgb(34,139,34, 0.8);;
+    font-size: 14px;
+    font-weight: bold;
+    color:black;
+}
+
+.progress-table tbody tr:nth-child(3) td {
+    background-color:	rgb(34,139,34, 0.6);
+    font-size: 14px;
+    color:black;
+}
+
+.progress-table tbody tr:nth-child(1) th {
+    background-color:	rgb(147,112,219, 0.8);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.progress-table tbody tr:nth-child(1) td {
+    background-color:	rgb(147,112,219, 0.4);
+    font-size: 14px;
+    color: black;
+    
+}
+
+.progress-table tbody tr:nth-child(2) th {
+    background-color:	rgb(255,80,80, 0.8);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.progress-table tbody tr:nth-child(2) td {
+    background-color:	rgb(255,80,80, 0.4);
+    color: black;;
+    font-size: 14px;
+}
+
+.handsontable .progress-table{
+    font-size: 14px;
+}
+
+.progress-table span.colHeader {
+    font-size: 14px;
+}
+
+
+
 .overall-table th{
     background-color:#338DF1;;
     color:white;
