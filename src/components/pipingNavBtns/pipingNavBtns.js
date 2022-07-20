@@ -86,7 +86,6 @@ const PipingNavBtns = props =>{
         isoControlFullBtn = <button type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Report</button>
     }else{
         isoControlFullBtn = <button type="button" className="trays__navBtns text-left"  onClick={() =>{props.onChange("IsoControlFull")}}>Report</button>
-        
     }
 
     if(props.currentTab === "EstimatedPipes"){
@@ -94,7 +93,12 @@ const PipingNavBtns = props =>{
         isoControlEstimatedBtn = <button type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Main</button>
     }else{
         isoControlEstimatedBtn = <button type="button" className="trays__navBtns text-left"  onClick={() =>{props.onChange("EstimatedPipes")}}>Main</button>
-        
+    }
+
+    if(process.env.REACT_APP_IFC === "0"){
+        prodBtn = <button type="button" className="trays__navBtns text-left"  onClick={() => history.push('/'+process.env.REACT_APP_PROJECT+'/pipingProgress')}>Progress</button>
+    }else{
+        prodBtn = <button type="button" className="trays__navBtns text-left"  onClick={() => history.push('/'+process.env.REACT_APP_PROJECT+'/pipingProduction')}>Production</button>
     }
 
 
@@ -113,7 +117,7 @@ const PipingNavBtns = props =>{
             {supportsButton}
             {sDesignButtn}
             <p className="isotracker__table__trays__group">Reporting</p>
-            <button type="button" className="trays__navBtns text-left"  onClick={() => history.push('/'+process.env.REACT_APP_PROJECT+'/pipingProduction')}>Production</button>
+            {prodBtn}
         </div>
     );
 };
