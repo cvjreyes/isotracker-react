@@ -285,7 +285,7 @@ async componentDidUpdate(prevProps, prevState){
   
 
       return (
-          <div>
+          <div style={{zoom:"0.75"}}>
             <div id="hot-app">
               <HotTable
                 data={this.state.data}
@@ -293,8 +293,8 @@ async componentDidUpdate(prevProps, prevState){
                 rowHeaders={true}
                 rowHeights="30px"
                 columnHeaderHeight={30}
-                width="100%"
-                height="520"
+                width="101%"
+                height="470"
                 settings={settings}
                 manualColumnResize={true}
                 manualRowResize={true}

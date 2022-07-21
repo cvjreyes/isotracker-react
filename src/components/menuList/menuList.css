@@ -4,14 +4,14 @@
     width: 30%;
     position: absolute; 
     left: 35%;
-    
+    margin-bottom: 500px;
+    zoom: 0.9;
 }
 
 .panel__heading__container{
     background-color: #338df1; 
     border-radius: 20px 20px 0px 0px; 
     text-align: center;
-    height: 70px;
     margin-top: 120px;
     padding-top:12px;
     border-bottom: 1px solid rgb(211, 224, 233);

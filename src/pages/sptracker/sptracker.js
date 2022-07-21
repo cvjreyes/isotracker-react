@@ -439,7 +439,7 @@ const CSPTracker = () => {
         })
     }
 
-    document.body.style.zoom = 0.8
+    
 
     var dataTableHeight = "570px"
 
@@ -614,7 +614,7 @@ const CSPTracker = () => {
                     <Tooltip/>
                 </PieChart>
             </div>
-            <table className="isotracker__table__container">
+            <table className="isotracker__table__container" style={{zoom:0.8, marginTop: "-80px"}}>
                       <tr className="isotracker__table__navBar__container" style={{height:"65px "}}>
                           <th  className="isotracker__table__navBar">
                               <div style={{display:"flex"}}>
@@ -629,7 +629,7 @@ const CSPTracker = () => {
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
                           <td className="discplines__table__table" style={{height: dataTableHeight}} >
-                              <div  style={{height: dataTableHeight, width:"2200px"}} className="isotracker__table__table__container">
+                              <div  style={{height: dataTableHeight, width: "2200px"}} className="isotracker__table__table__container">
                                 {table}
                                 {addRowBtn}
                               </div>

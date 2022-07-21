@@ -138,6 +138,7 @@ class TimeTrackDataTable extends React.Component{
         sorter:{
             compare: (a, b) => a.revision.localeCompare(b.revision),
         },
+        width: "160px",
       },
       {
         title: <center className="dataTable__header__text">Design</center>,
@@ -147,6 +148,8 @@ class TimeTrackDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.design - b.design,
         },
+        width: "160px",
+
       },
       {
         title: <center className="dataTable__header__text">Stress</center>,
@@ -156,6 +159,8 @@ class TimeTrackDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.stress - b.stress,
         },
+        width: "160px",
+
       },
       {
         title: <center className="dataTable__header__text">Supports</center>,
@@ -165,6 +170,8 @@ class TimeTrackDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.supports - b.supports,
         },
+        width: "160px",
+
       },
       {
         title: <center className="dataTable__header__text">Materials</center>,
@@ -174,6 +181,8 @@ class TimeTrackDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.materials - b.materials,
         },
+        width: "160px",
+
       },
       {
         title: <center className="dataTable__header__text">Issuer</center>,
@@ -183,6 +192,8 @@ class TimeTrackDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.issuer - b.issuer,
         },
+        width: "160px",
+
       },
       {
         title: <center className="dataTable__header__text">LOS/IsoControl</center>,
@@ -192,6 +203,8 @@ class TimeTrackDataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.isocontrol - b.isocontrol,
         },
+        width: "160px",
+
       },
     ];
 
@@ -209,8 +222,8 @@ class TimeTrackDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="dataTable__container" style={{float:"top", position:"relative"}}>
-        <Table className="customTable" style={{ height: '540px' }} bordered = {true}  columns={columns} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
-        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
+        <Table className="customTable" style={{ height: '430px' }} bordered = {true}  columns={columns} dataSource={this.state.displayData} scroll={{y:330}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:400}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           {totalElements}
         </div>
         

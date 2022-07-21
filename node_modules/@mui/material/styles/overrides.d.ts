@@ -1,4 +1,5 @@
 import { CSSObject, CSSInterpolation } from '@mui/system';
+import { ComponentsPropsList } from './props';
 import { AccordionActionsClassKey } from '../AccordionActions';
 import { AccordionClassKey } from '../Accordion';
 import { AccordionDetailsClassKey } from '../AccordionDetails';
@@ -43,6 +44,7 @@ import { FormGroupClassKey } from '../FormGroup';
 import { FormHelperTextClassKey } from '../FormHelperText';
 import { FormLabelClassKey } from '../FormLabel';
 import { GridClassKey } from '../Grid';
+import { Grid2Slot } from '../Unstable_Grid2';
 import { IconButtonClassKey } from '../IconButton';
 import { IconClassKey } from '../Icon';
 import { ImageListClassKey } from '../ImageList';
@@ -111,17 +113,28 @@ import { TooltipClassKey } from '../Tooltip';
 import { TouchRippleClassKey } from '../ButtonBase/TouchRipple';
 import { TypographyClassKey } from '../Typography';
 
-export type OverridesStyleRules<ClassKey extends string = string> = Record<
+export type OverridesStyleRules<
+  ClassKey extends string = string,
+  ComponentName = keyof ComponentsPropsList,
+  Theme = unknown,
+> = Record<
   ClassKey,
-  CSSInterpolation
+  | CSSInterpolation
+  | ((
+      // Record<string, unknown> is for other props that the slot receive internally
+      // Documenting all ownerStates could be a huge work, let's wait until we have a real needs from developers.
+      props: (ComponentName extends keyof ComponentsPropsList
+        ? { ownerState: ComponentsPropsList[ComponentName] & Record<string, unknown> }
+        : {}) & { theme: Theme } & Record<string, unknown>,
+    ) => CSSInterpolation)
 >;
 
-export type ComponentsOverrides = {
+export type ComponentsOverrides<Theme = unknown> = {
   [Name in keyof ComponentNameToClassKey]?: Partial<
-    OverridesStyleRules<ComponentNameToClassKey[Name]>
+    OverridesStyleRules<ComponentNameToClassKey[Name], Name, Theme>
   >;
 } & {
-  MuiCssBaseline?: CSSObject | string;
+  MuiCssBaseline?: CSSObject | string | ((theme: Theme) => CSSInterpolation);
 };
 
 export interface ComponentNameToClassKey {
@@ -169,6 +182,7 @@ export interface ComponentNameToClassKey {
   MuiFormHelperText: FormHelperTextClassKey;
   MuiFormLabel: FormLabelClassKey;
   MuiGrid: GridClassKey;
+  MuiGrid2: Grid2Slot;
   MuiIcon: IconClassKey;
   MuiIconButton: IconButtonClassKey;
   MuiImageList: ImageListClassKey;

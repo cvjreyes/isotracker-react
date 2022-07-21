@@ -39,6 +39,7 @@ img{
     transition: 0.3s;
     opacity: 0.8;
     color: white;
+    zoom: 0.8;
 }
 
 .dropdown__text:hover{
@@ -56,7 +57,7 @@ img{
     font-size: 22px;
     font-weight: bold;
     font-style: normal;
-    
+    zoom:0.8;
     opacity: 0.8;
     color: #A9E3BB
 }
@@ -147,6 +148,7 @@ img{
 }
 
 .notificationBell__icon{
+    zoom:0.8;
     width: 35px;
     height: 35px;
 }
