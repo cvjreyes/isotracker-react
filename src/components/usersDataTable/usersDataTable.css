@@ -9,6 +9,11 @@
     position: relative;
   }
   
+  .dataTable__container__piping{
+    position: relative;
+    margin-top: -80px;
+  }
+
   .dataTable__elements{
     position: absolute;
     bottom: 25;

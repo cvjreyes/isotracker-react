@@ -123,7 +123,7 @@ const IsoCtrlF = () => {
 
     const [currentTab, setCurrentTab] = useState("Status") 
 
-    var dataTableHeight = "500px"
+    var dataTableHeight = "470px"
 
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, actionButtons, tableContent, progressBtn, modelledBtn, myTrayBtn, usersButton, ttButton
@@ -2367,7 +2367,7 @@ const IsoCtrlF = () => {
                           </td>
                           
                           <td className="isotracker__table__table" style={{height: dataTableHeight}} >
-                              <div style={{height: dataTableHeight, width:"2000px"}} className="isotracker__table__table__container">
+                              <div style={{height: dataTableHeight, width:"1560px"}} className="isotracker__table__table__container">
                                   {/*
                                   {isoControllLineIdGroupBtn}
                                   {uploadBOMBtn}

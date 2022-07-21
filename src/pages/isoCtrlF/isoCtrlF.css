@@ -43,6 +43,12 @@
     margin-top: 20px;
 }
 
+.isotracker__table__container__piping{
+    width: 52.5%;
+    margin-left: 100px;
+    margin-top: 20px;
+}
+
 .isotracker__table__navBar__container{
     background-color: #338DF1;
     columns: 2;

@@ -157,7 +157,7 @@ const NavBar = (props) =>{
 
         if(process.env.REACT_APP_PROGRESS === "1"){
             if(process.env.REACT_APP_SP === "1"){
-                setProgressButtons(<div style={{ marginLeft: "3%", float:"left"}}>
+                setProgressButtons(<div style={{ marginLeft: "2%", float:"left"}}>
                     <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
                         <i className="dropdown__text">Home </i>
                     </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -178,7 +178,7 @@ const NavBar = (props) =>{
                                     <i className="dropdown__text" >IsoTracker </i>
                     </Button></div>)
             }else{
-                setProgressButtons(<div style={{ marginLeft: "3%", float:"left" }}>
+                setProgressButtons(<div style={{ marginLeft: "2%", float:"left" }}>
                     <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
                         <i className="dropdown__text">Home </i>
                     </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>

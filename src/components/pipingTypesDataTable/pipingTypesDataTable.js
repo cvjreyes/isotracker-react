@@ -160,7 +160,7 @@ class PipingTypesDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} style={{ height: '500px' }} dataSource={this.state.displayData} scroll={{y:400}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"
+        <Table className="customTable" bordered = {true} columns={columns} style={{ height: '430px', marginTop: "-30px" }} dataSource={this.state.displayData} scroll={{y:400}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"
          rowClassName= {(record) => record.color.replace('#', '')}/>
         <Table className="filter__table" pagination={{disabled:true}} scroll={{y:400}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           {totalElements}

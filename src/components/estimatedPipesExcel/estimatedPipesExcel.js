@@ -294,7 +294,7 @@ async componentDidUpdate(prevProps, prevState){
                 rowHeights="30px"
                 columnHeaderHeight={30}
                 width="100%"
-                height="520"
+                height="470"
                 settings={settings}
                 manualColumnResize={true}
                 manualRowResize={true}

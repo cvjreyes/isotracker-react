@@ -189,9 +189,6 @@ const Piping = () => {
             history.push("/"+process.env.REACT_APP_PROJECT+"/");
         }
     }, [])
-
-    var dataTableHeight = "540px"
-
     
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     if(currentTab === "" || currentTab === null){
@@ -636,9 +633,9 @@ const Piping = () => {
                             {holdBtn}
                           </th>
                       </tr>
-                      <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>
-                          <td className="disciplines__table__trays">
-                              <div className="trays__container">
+                      <tr className="isotracker__table__tray__and__table__container" style={{height: "470px"}}>
+                          <td className="disciplines__table__trays" >
+                              <div className="trays__container" style={{zoom: 0.85}}>
                               
                               <PipingNavBtns onChange={value => setCurrentTab(value)} currentTab = {currentTab} currentRole = {currentRole}/> 
                                     {/* 
@@ -649,8 +646,8 @@ const Piping = () => {
                                     */}
                               </div>
                           </td>
-                          <td className="discplines__table__table" style={{height: dataTableHeight}} >
-                              <div  style={{height: dataTableHeight, width:"2000px"}} className="isotracker__table__table__container">
+                          <td className="discplines__table__table" style={{height: "440px"}} >
+                              <div  style={{height: "430px", width:"1560px"}} className="isotracker__table__table__container">
                                   {isoControllLineIdGroupBtn}
                                   {uploadBOMBtn}
                                   {table}
@@ -659,7 +656,7 @@ const Piping = () => {
                           
                       </tr>
                   </table>
-                  <center className="actionBtns__container">
+                  <center className="actionBtns__container" style={{marginTop: "40px", zoom: 0.9}}>
                       {actionBtns}
                   </center>
          </body>
