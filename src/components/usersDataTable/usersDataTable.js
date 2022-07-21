@@ -339,7 +339,7 @@ class UsersDataTable extends React.Component{
             title: <div className="dataTable__header__text">Username</div>,
             dataIndex: 'username',
             key: 'username',
-            width: '20%',
+            width: '15%',
             ...this.getColumnSearchProps('username'),
             sorter: {
                 compare: (a, b) => { return a.username.localeCompare(b.username)},
@@ -369,7 +369,7 @@ class UsersDataTable extends React.Component{
         title: <div className="dataTable__header__text">Actions</div>,
         dataIndex: 'actions',
         key: 'actions',
-        width: '250px',
+        width: '180px',
         ...this.getColumnSearchProps('actions'),
       }
     ];
@@ -377,8 +377,8 @@ class UsersDataTable extends React.Component{
     return (
       <div>
         <div className="dataTable__container">
-        <Table className="customTable" bordered = {true} columns={columns} style={{ height: '540px' }} dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
-        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
+        <Table className="customTable" bordered = {true} columns={columns} style={{ height: '430px' }} dataSource={this.state.displayData} scroll={{y:330}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small" rowClassName= {(record) => record.color.replace('#', '')}/>
+        <Table className="filter__table" pagination={{disabled:true}} scroll={{y:400}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/>
           <div style={{position: "absolute", bottom:25, left:0}}>
             <b>Total elements: {this.state.data.length}</b>
           </div>

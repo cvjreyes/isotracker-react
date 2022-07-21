@@ -78,7 +78,7 @@ const PITRequests = () =>{
     }, [])
 
     document.title= process.env.REACT_APP_APP_NAMEPROJ
-    document.body.style.zoom = 0.8
+    
 
     function handleOnIdle(){
         const body = {
@@ -101,7 +101,7 @@ const PITRequests = () =>{
     }
 
     return(
-        <body>
+        <body >
             <IdleTimer
                 timeout={1000 * 60 * 15}
                 onIdle={handleOnIdle}

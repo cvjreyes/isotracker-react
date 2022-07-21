@@ -190,9 +190,9 @@ const Piping = () => {
         }
     }, [])
 
-    var dataTableHeight = "600px"
+    var dataTableHeight = "540px"
 
-    document.body.style.zoom = 0.8
+    
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     if(currentTab === "" || currentTab === null){
         setCurrentTab("Estimated")

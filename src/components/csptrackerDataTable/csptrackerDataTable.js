@@ -1098,7 +1098,7 @@ class CSPTrackerdDataTable extends React.Component{
       <div>
         {this.state.updateData}
         <div className="estimatedDataTable__container" style={{width:"auto"}}>
-        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.displayData} pagination={{disabled:true, defaultPageSize:5000}} size="small"
+        <Table className="customTable" bordered = {true} columns={columns} dataSource={this.state.displayData} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"
          rowClassName= {(record) => record.color.replace('#', '')} scroll={{x:8000, y: 437}}/>
           {totalElements}
         </div>

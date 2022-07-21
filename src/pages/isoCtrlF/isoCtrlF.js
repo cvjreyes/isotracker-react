@@ -57,7 +57,7 @@ import ByPassDataTable from "../../components/byPassDataTable/byPassDataTable"
 
 const IsoCtrlF = () => {
    
-    document.body.style.zoom = 0.8
+    
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentRole, setCurrentRole] = useState();
     const [roles, setRoles] = useState();
@@ -123,7 +123,7 @@ const IsoCtrlF = () => {
 
     const [currentTab, setCurrentTab] = useState("Status") 
 
-    var dataTableHeight = "590px"
+    var dataTableHeight = "500px"
 
     //Componentes de la pagina que varian en funcion del estado
     var uploadButton, actionButtons, tableContent, progressBtn, modelledBtn, myTrayBtn, usersButton, ttButton
@@ -2038,7 +2038,7 @@ const IsoCtrlF = () => {
         actionButtons = <ActionButtons claimClick={claim.bind(this)} verifyClick={verifyClick.bind(this)} unclaimClick={unclaim.bind(this)} transaction={transaction.bind(this)} restoreClick={restore.bind(this)} returnLead={returnLead.bind(this)} returnLeadStress={returnLeadStress.bind(this)} downloadFiles={downloadFiles.bind(this)} forceClaim={forceClaim.bind(this)} issue={issue.bind(this)} newRev={newRev.bind(this)} request={request.bind(this)} returnIso={returnIso.bind(this)} addUser={addUser.bind(this)} success={success.bind(this)} onlyDownload = {true} currentTab = {currentTab} user={currentUser} role = {currentRole} exportModelled={exportModelled.bind(this)} exportNotModelled={exportNotModelled.bind(this)} exportFull={exportFull.bind(this)} exportLineIdGroup={exportLineIdGroup.bind(this)} exportHolds={exportHolds.bind(this)} exportHoldsNoProgress={exportHoldsNoProgress.bind(this)} downloadBOM={downloadBOM.bind(this)} exportTimeTrack={exportTimeTrack.bind(this)} exportByPass={exportByPass.bind(this)} downloadMaster={downloadMaster.bind(this)}/>
     }
     if(currentTab === "Modelled"){
-        actionButtons = <div><button className="action__btn" onClick={()=>downloadModelled()}>Export</button><button className="action__btn" onClick={()=>unlockAll()}>Unlock all</button></div>
+        actionButtons = <div style={{zoom:0.8}}><button className="action__btn" onClick={()=>downloadModelled()}>Export</button><button className="action__btn" onClick={()=>unlockAll()}>Unlock all</button></div>
     }
 
     if(currentRole === "Project"){
@@ -2194,7 +2194,7 @@ const IsoCtrlF = () => {
         
         if(currentTab === "IsoControlFull"){
             isocontrolWeightsComponent = 
-                <button className="isocontrol__weigths" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button>
+                <center><button className="isocontrol__weigths__2" disabled>Modelled: {modelledWeight} t &nbsp;&nbsp;&nbsp;&nbsp;   Not modelled: {notModelledWeight} t  &nbsp;&nbsp;&nbsp;&nbsp; Total: {totalIsocontrolWeight} t</button></center>
     
         }
 
@@ -2203,15 +2203,14 @@ const IsoCtrlF = () => {
 
     if(currentRole === "Design"){
         if(currentTab === "Upload IsoFiles"){
-            uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{backgroundColor:"#99C6F8", width:"120px"}}><img src={UploadIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Upload</p></button>
-        }else{
             uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{width:"120px"}}><img src={UploadIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Upload</p></button>
+        }else{
+            uploadButton = <button className="navBar__button" onClick={()=>setCurrentTab("Upload IsoFiles")} style={{width:"120px"}}><img src={UploadIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p  className="navBar__button__text">Upload</p></button>
         }
     }else{
         uploadButton = null
     }
 
-    
 
     return (       
         <body>
@@ -2336,7 +2335,7 @@ const IsoCtrlF = () => {
                   </div>
                   
               </div>
-              <table className="isotracker__table__container">
+              <table className="isotracker__table__container" >
                       <tr className="isotracker__table__navBar__container">
                           <th  colspan="2" className="isotracker__table__navBar">
                               {recycleBinBtn}
@@ -2351,7 +2350,7 @@ const IsoCtrlF = () => {
                               {usersButton}
                               {ttButton}
                               {uploadButton}
-                              {isocontrolWeightsComponent}
+                              
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: dataTableHeight}}>

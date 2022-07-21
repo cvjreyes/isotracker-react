@@ -495,9 +495,9 @@ class OnHoldTable extends React.Component{
 
     let table = null
     if(process.env.REACT_APP_PROGRESS === "1"){
-      table = <Table className="customTable" bordered = {true} columns={columns} style={{ height: '540px' }}  dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"/>
+      table = <Table className="customTable" bordered = {true} columns={columns} style={{ height: '430px' }}  dataSource={this.state.displayData} scroll={{y:330}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"/>
     }else{
-      table = <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} style={{ height: '540px' }}  dataSource={this.state.displayData} scroll={{y:437}} pagination={{disabled:true, defaultPageSize:5000}} size="small"/>
+      table = <Table className="customTable" bordered = {true} rowSelection={{type: 'checkbox', ...rowSelection}} columns={columns} style={{ height: '430px' }}  dataSource={this.state.displayData} scroll={{y:330}} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"/>
     }
 
     return (
@@ -505,7 +505,7 @@ class OnHoldTable extends React.Component{
         {this.state.updateData}
         <div className="dataTable__container">
           {table}
-          <Table className="filter__table" pagination={{disabled:true}}  scroll={{y:437}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/> 
+          <Table className="filter__table" pagination={{disabled:true}}  scroll={{y:330}} showHeader = {false} bordered = {true} columns={columns} dataSource={this.state.filters} size="small"/> 
           {totalElements}
         </div>
         

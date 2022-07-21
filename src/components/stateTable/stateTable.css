@@ -40,7 +40,8 @@
     
 }
 
-.statusTable__td{    
+.statusTable__td{
+    zoom:0.9;    
     color: rgb(99, 107, 111);
     display: table-cell;
     font-family: 'Quicksand', sans-serif;
