@@ -1157,8 +1157,8 @@ const IsoCtrlF = () => {
             
             json = JSON.parse(json);
             for (let i=0; i<json.length; i++){
-                json[i].created_at = json[i].created_at.substring(0,10);
-                json[i].updated_at = json[i].updated_at.substring(0,10);
+                json[i].created_at = json[i].created_at.substring(3,5) + "/" + json[i].created_at.substring(0,2) + "/" + json[i].created_at.substring(6,10);
+                json[i].updated_at = json[i].updated_at.substring(3,5) + "/" + json[i].updated_at.substring(0,2) + "/" + json[i].updated_at.substring(6,10);
             } 
 
             exportToExcel(json, "Status", headers)
