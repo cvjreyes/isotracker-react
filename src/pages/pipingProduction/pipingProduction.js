@@ -24,7 +24,7 @@ import './pipingProduction.css'
 import SaveIcon from "../../assets/images/save.svg"
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
-import NavBarProdCurve from '../../components/navBarProdCurve/navBarProdCurve';
+import NavBar from '../../components/navBar/navBar';
 import ProductionUserTabs from "../../components/productionUserTabs/productionUserTabs";
 
 import html2canvas from 'html2canvas';
@@ -2265,7 +2265,7 @@ const PITRequests = () =>{
                     onIdle={handleOnIdle}
                     debounce={250}
                 />
-                <NavBarProdCurve/>
+                <NavBar/>
                 <div className={`alert alert-success ${spanAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSpanAlert(false)}>
                     <AlertF type="success" text="Project week span saved!" margin="0px"/>
                 </div>
@@ -2351,7 +2351,7 @@ const PITRequests = () =>{
                     onIdle={handleOnIdle}
                     debounce={250}
                 />
-                <NavBarProdCurve/>
+                <NavBar/>
                 <div className={`alert alert-success ${spanAlert ? 'alert-shown' : 'alert-hidden'}`} onTransitionEnd={() => setSpanAlert(false)}>
                     <AlertF type="success" text="Project week span saved!" margin="0px"/>
                 </div>
@@ -2455,7 +2455,7 @@ const PITRequests = () =>{
                                 <HotTable
                                     data={materials}
                                     colHeaders = {["<b>Materials</b>"]}
-                                    width="450"
+                                    width="452"
                                     height="130"
                                     settings={matSettings} 
                                     manualColumnResize={true}
