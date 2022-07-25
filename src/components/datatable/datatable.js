@@ -111,6 +111,11 @@ class DataTable extends React.Component{
                    = null
                   
                   for(let i = 0; i < json.rows.length; i++){
+
+                    if(json.rows[i].last_update){
+                      json.rows[i].updated_at = json.rows[i].last_update
+                    }
+
                     switch(json.rows[i].spo){
                       case 0:
                         pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
@@ -362,6 +367,9 @@ class DataTable extends React.Component{
                    = null
                   
                   for(let i = 0; i < json.rows.length; i++){
+                    if(json.rows[i].last_update){
+                      json.rows[i].updated_at = json.rows[i].last_update
+                    }
                     switch(json.rows[i].spo){
                       case 0:
                         pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
