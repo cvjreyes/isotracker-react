@@ -278,18 +278,18 @@ async componentDidUpdate(prevProps, prevState){
 
     const settings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: [180, 400, 240, 240, 70, 70, 70, 100, 95, 80, 105, 110, 70, 120],
+        colWidths: [180, 473, 240, 70, 70, 70, 100, 95, 80, 105, 110, 70, 120],
         fontSize: 24
         //... other options
       }
   
 
       return (
-          <div style={{zoom:"0.75"}}>
+          <div style={{zoom:"0.85"}}>
             <div id="hot-app">
               <HotTable
                 data={this.state.data}
-                colHeaders={["<b className='header'>Line reference</b>", "<b>Tag</b>", "<b>Owner IFC</b>", "<b>Owner IsoTracker</b>", "<b>Unit</b>", "<b>Area</b>", "<b>Fluid</b>", "<b>Seq</b>", "<b>Spec</b>", "<b>Type</b>", "<b>Diameter</b>", "<b>Insulation</b>", "<b>Train</b>", "<b>Status</b>"]}
+                colHeaders={["<b className='header'>Line reference</b>", "<b>Tag</b>", "<b>Owner IsoTracker</b>", "<b>Unit</b>", "<b>Area</b>", "<b>Fluid</b>", "<b>Seq</b>", "<b>Spec</b>", "<b>Type</b>", "<b>Diameter</b>", "<b>Insulation</b>", "<b>Train</b>", "<b>Status</b>"]}
                 rowHeaders={true}
                 rowHeights="30px"
                 columnHeaderHeight={30}
@@ -298,7 +298,7 @@ async componentDidUpdate(prevProps, prevState){
                 settings={settings}
                 manualColumnResize={true}
                 manualRowResize={true}
-                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true}, { data: "Tag", type:'text', readOnly: true}, { data: "Owner IFC", type:'dropdown', source: this.state.designers, strict: true}, { data: "Owner IsoTracker", type:'dropdown', source: this.state.designers, strict: true}, { data: "Unit", type:'text', readOnly: true},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text', readOnly: true}, { data: "Seq", type:'text', readOnly: true}, { data: "Spec", type:'text', readOnly: true},  { data: "Type", type:'text', readOnly: true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text', readOnly: true},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'text', readOnly: true}]}
+                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true}, { data: "Tag", type:'text', readOnly: true}, { data: "Owner IsoTracker", type:'dropdown', source: this.state.designers, strict: true}, { data: "Unit", type:'text', readOnly: true},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text', readOnly: true}, { data: "Seq", type:'text', readOnly: true}, { data: "Spec", type:'text', readOnly: true},  { data: "Type", type:'text', readOnly: true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text', readOnly: true},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'text', readOnly: true}]}
                 filters={true}
                 dropdownMenu= {[
                     'make_read_only',
