@@ -311,7 +311,7 @@ const NavBar = (props) =>{
             projectBtn = <Button class="btn nohover" disabled style={{marginRight:"20px", float:"right"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
-            rightButtons = <div style={{width:"28%"}}>
+            rightButtons = <div style={{width:"27%"}}>
                     
                             
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
@@ -337,7 +337,7 @@ const NavBar = (props) =>{
                 projectBtn = <Button class="btn nohover" disabled style={{marginRight:"20px", float:"right"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
-            rightButtons = <div style={{width:"40%"}}>
+            rightButtons = <div style={{width:"39%"}}>
                     
                             
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
@@ -365,7 +365,7 @@ const NavBar = (props) =>{
                 projectBtn = <Button class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
-                rightButtons= <div style={{width:"40%"}}>
+                rightButtons= <div style={{width:"39%"}}>
                         
                             
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
@@ -391,7 +391,7 @@ const NavBar = (props) =>{
                 projectBtn = <Button class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
-                rightButtons= <div style={{width:"46%"}}>
+                rightButtons= <div style={{width:"45%"}}>
                         
                             
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
@@ -423,7 +423,7 @@ const NavBar = (props) =>{
             projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
-        rightButtons= <div style={{width:"76%"}}>
+        rightButtons= <div style={{width:"75%"}}>
                     
                         
             <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
@@ -449,7 +449,7 @@ const NavBar = (props) =>{
                 projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
-            rightButtons= <div style={{width:"80%"}}>
+            rightButtons= <div style={{width:"79%"}}>
                         
                             
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
@@ -480,7 +480,7 @@ const NavBar = (props) =>{
                 </Button>
                 
                 
-                rightButtons= <div style={{width:"80%"}}>
+                rightButtons= <div style={{width:"79%"}}>
                             
                                 
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
@@ -508,7 +508,7 @@ const NavBar = (props) =>{
                 </Button>
                 
                 
-                rightButtons= <div style={{width:"88%"}}>
+                rightButtons= <div style={{width:"87%"}}>
                             
                                 
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>
