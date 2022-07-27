@@ -847,7 +847,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.from.localeCompare(b.from)},
         },
-        width:"200px"
+        width:"100px"
       },
       {
         title: <div className="dataTable__header__text">To</div>,
@@ -916,7 +916,7 @@ class DataTable extends React.Component{
         sorter: {
           compare: (a, b) => { return a.from.localeCompare(b.from)},
         },
-        width:"200px"
+        width:"100px"
       },
       {
         title: <div className="dataTable__header__text">To</div>,
@@ -945,6 +945,16 @@ class DataTable extends React.Component{
         ...this.getColumnSearchProps('actions'),
       },
     ];
+    }
+
+    if(process.env.REACT_APP_PROGRESS === "1"){
+      if(this.props.currentTab === "Issued"){
+        columns[2].width= "190px"
+      }
+    }else{
+      if(this.props.currentTab === "Issued"){
+        columns[1].width= "190px"
+      }
     }
 
     var totalElements = null;
