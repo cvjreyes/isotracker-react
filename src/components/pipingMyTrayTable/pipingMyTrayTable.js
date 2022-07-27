@@ -42,7 +42,8 @@ class PipingMyTrayTable extends React.Component{
       selectedRows: [],
       selectedRowsKeys: [],
       popup: false,
-      filters: []
+      filters: [],
+      ids: []
     };
 
   updateData() {
@@ -72,6 +73,15 @@ class PipingMyTrayTable extends React.Component{
         .then(response => response.json())
         .then(async json => {
             if(json.success){
+              let ids = this.state.ids
+              for(let i = 0; i < ids.length; i++){
+                if(ids[i][0] === id && ids[i][1].indexOf(1) > -1){
+                  ids[i][1].splice(ids[i][1].indexOf(1), 1)
+                }
+              }
+              this.setState({ids: ids})
+              this.props.onChange(ids)
+
               this.props.updateDataMethod()
               this.onSelectChange(this.selectedRowKeys, this.selectedRows);
             }
@@ -95,6 +105,16 @@ class PipingMyTrayTable extends React.Component{
         .then(response => response.json())
         .then(async json => {
             if(json.success){
+
+              let ids = this.state.ids
+              for(let i = 0; i < ids.length; i++){
+                if(ids[i][0] === id && ids[i][1].indexOf(1) > -1){
+                  ids[i][1].splice(ids[i][1].indexOf(1), 1)
+                }
+              }
+              this.setState({ids: ids})
+              this.props.onChange(ids)
+
               this.props.updateDataMethod()
               this.onSelectChange(this.selectedRowKeys, this.selectedRows);
             }
@@ -118,6 +138,16 @@ class PipingMyTrayTable extends React.Component{
         .then(response => response.json())
         .then(async json => {
             if(json.success){
+
+              let ids = this.state.ids
+              for(let i = 0; i < ids.length; i++){
+                if(ids[i][0] === id && ids[i][1].indexOf(1) > -1){
+                  ids[i][1].splice(ids[i][1].indexOf(1), 1)
+                }
+              }
+              this.setState({ids: ids})
+              this.props.onChange(ids)
+              
               this.props.updateDataMethod()
               this.onSelectChange(this.selectedRowKeys, this.selectedRows);
             }
@@ -530,7 +560,8 @@ class PipingMyTrayTable extends React.Component{
         }
         this.setState({
           selectedRowsKeys: selectedRowKeys,
-          selectedRows: selectedRows
+          selectedRows: selectedRows,
+          ids: ids
         })
         this.props.onChange(ids);
       }
