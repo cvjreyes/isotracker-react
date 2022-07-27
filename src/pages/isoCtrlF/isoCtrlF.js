@@ -53,6 +53,7 @@ import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
 import ByPassDataTable from "../../components/byPassDataTable/byPassDataTable"
+import IssuedDataTable from "../../components/issuedDataTable/issuedDataTable"
 
 const IsoCtrlF = () => {
    
@@ -79,6 +80,7 @@ const IsoCtrlF = () => {
     const [navBar, setNavBar] = useState(null)
     const [alreadyOnRev, setAlreadyOnRev] = useState(false)
     const [errorREV, setErrorREV] = useState(false)
+    const [warningCancelRev, setWarningCancelRev] = useState(false)
 
     const [modelledWeight, setModelledWeight] = useState("...")
     const [notModelledWeight, setNotModelledWeight] = useState("...")
@@ -1553,7 +1555,14 @@ const IsoCtrlF = () => {
         }
 
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/cancelRev", options)
-        .then(response => successAlert())
+        .then(response => response.json())
+        .then(json =>{
+            if(json.success){
+                successAlert()
+            }else{
+                setWarningCancelRev(true)
+            }
+        })
 
         
         setUpdateData(!updateData)
@@ -2021,6 +2030,10 @@ const IsoCtrlF = () => {
  
         tableContent = <ByPassDataTable success={success.bind(this)} updateData={updateData} editByPass = {editByPass.bind(this)} deleteByPass={deleteByPass.bind(this)}/>
 
+    }if(currentTab === "Issued"){
+ 
+        tableContent = <IssuedDataTable forceUnclaim = {forceUnclaim.bind(this)} onChange={value=> setSelected(value)} selected = {selected} currentTab = {currentTab} currentRole={currentRole} updateData = {updateData} rename = {rename.bind(this)} sendHold = {sendHold.bind(this)} returnToLOS = {returnToLOS.bind(this)} cancelRev = {cancelRev.bind(this)}/>
+
     }
 
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
@@ -2262,6 +2275,12 @@ const IsoCtrlF = () => {
                         onTransitionEnd={() => setWarningSelected(false)}
                         >
                           <AlertF type="warning" text="Select at least one isometric!" margin="-40px"/>   
+                      </div>
+                      <div
+                        className={`alert alert-success ${warningCancelRev ? 'alert-shown' : 'alert-hidden'}`}
+                        onTransitionEnd={() => setWarningCancelRev(false)}
+                        >
+                          <AlertF type="warning" text="This revision can't be cancelled!" margin="-40px"/>   
                       </div>
                       <div
                         className={`alert alert-success ${alreadyOnRev ? 'alert-shown' : 'alert-hidden'}`}

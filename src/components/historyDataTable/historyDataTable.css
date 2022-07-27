@@ -10,6 +10,11 @@
     margin-top: -57px;
 }
 
+.filter__table_issued{
+    position: flex;
+    margin-top: -2px;
+}
+
 .customTable td{
     font-size: 14px;
   }
