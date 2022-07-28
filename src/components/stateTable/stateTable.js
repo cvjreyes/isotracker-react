@@ -232,7 +232,7 @@ const StateTable = props =>{
     }, [props.updateData, props.currentRole])
 
     useEffect(async ()=>{
-        setTimeout(() => setLoading(true), 2000);
+        setTimeout(() => setLoading(true), 3000);
     }, [])
 
     return (
