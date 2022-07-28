@@ -41,7 +41,6 @@ export default class ManageRolesPopUp extends Component {
     
     async openModal() {      
         
-        console.log(this.props.roles)
         let selectedMain = []
         let selectedLeads = []
         let selectedForeignCheckers = []

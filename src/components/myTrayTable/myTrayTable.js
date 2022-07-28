@@ -378,7 +378,6 @@ class MyTrayTable extends React.Component{
         await this.setState({data : [], displayData: []});
         for(let i = 0; i < json.rows.length; i++){
             uploadButton = <UploadPopUp id = {json.rows[i].filename.split('.').slice(0, -1)} success={this.success.bind(this)} role={this.state.role}  currentUser = {this.state.user}/>
-            console.log(uploadButton)
             if(this.state.role === "Design" || this.state.role === "DesignLead" || this.state.role === "Issuer" || this.state.role === "SpecialityLead"){
               switch(json.rows[i].spo){
                 case 0:

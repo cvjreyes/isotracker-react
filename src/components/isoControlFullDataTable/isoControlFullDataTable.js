@@ -143,7 +143,6 @@ class IsoControlFullDataTable extends React.Component{
   }
 
   async filter(column, value){
-    console.log(column, value)
     let fd = this.state.filterData
     fd[column] = value
     await this.setState({filterData: fd})

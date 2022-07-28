@@ -1032,10 +1032,8 @@ class QTrackerViewDataTable extends React.Component{
           
         }else{
           if(auxDisplayData[i][fil]){
-            console.log(this.state.filterData[column], auxDisplayData[i][fil] )
             if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
               exists = false
-              console.log("A")
             }
           }
           
