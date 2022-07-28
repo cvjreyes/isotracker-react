@@ -163,13 +163,16 @@ class IssuedDataTable extends React.Component{
                         rButton = <button className="btn btn-success" disabled style={{fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
                     }
 
-                    if(this.props.currentRole === "SpecialityLead" && json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
-                      rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"10px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"5px"}}>Return</button>
-                      cancelRevButton = null
-                    }else{
-                      rToLOSButton = null
-                      cancelRevButton = <CancelRevPopUp iso = {json.rows[i].filename} cancelRev={this.cancelRev.bind(this)}/>
+                    if(this.props.currentRole === "SpecialityLead"){
+                      if(json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
+                        rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"10px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"5px"}}>Return</button>
+                        cancelRevButton = null
+                      }else{
+                        rToLOSButton = null
+                        cancelRevButton = <CancelRevPopUp iso = {json.rows[i].filename} cancelRev={this.cancelRev.bind(this)}/>
+                      }
                     }
+                    
 
                     row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {rToLOSButton} {cancelRevButton}</div>}
 
@@ -295,14 +298,15 @@ class IssuedDataTable extends React.Component{
                       }
   
                       
-  
-                      if(this.props.currentRole === "SpecialityLead" && json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
-                        rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"10px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"5px"}}>Return</button>
+                    if(this.props.currentRole === "SpecialityLead"){
+                      if(json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
+                        rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"5px",float:"right", backgroundColor:"#DC143C", color:"white"}}>Return</button>
                         cancelRevButton = null
                       }else{
                         rToLOSButton = null
                         cancelRevButton = <CancelRevPopUp iso = {json.rows[i].filename} cancelRev={this.cancelRev.bind(this)}/>
                       }
+                    }
   
                       row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {rToLOSButton} {cancelRevButton}</div>}
   

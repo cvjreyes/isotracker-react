@@ -2277,7 +2277,7 @@ const IsoCtrlF = () => {
                         className={`alert alert-success ${warningCancelRev ? 'alert-shown' : 'alert-hidden'}`}
                         onTransitionEnd={() => setWarningCancelRev(false)}
                         >
-                          <AlertF type="warning" text="This revision can't be cancelled!" margin="-40px"/>   
+                          <AlertF type="warning" text="This revision can't be cancelled!" />   
                       </div>
                       <div
                         className={`alert alert-success ${alreadyOnRev ? 'alert-shown' : 'alert-hidden'}`}

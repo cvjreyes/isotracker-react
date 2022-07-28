@@ -33,10 +33,10 @@ export default class CancelRevPopUp extends Component {
 
     render() {
         return (
-            <section >
+            <section>
                 <input type="button"  value="Cancel rev" className="btn"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"5px",float:"right", backgroundColor:"#DC143C", color:"white"}} onClick={() => this.openModal()} />
-                <div>
-                    <Modal visible={this.state.visible} width="650" height="160" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                <div style={{zoom: "0.8"}}>
+                    <Modal visible={this.state.visible} width="650" height="190" effect="fadeInUp" onClickAway={() => this.closeModal()}>
 
                     <div className="popUp__container" >
                             <center className="popUp__title"><h3><strong>Are you sure you want to cancel {this.props.iso} new revision?</strong></h3></center>
