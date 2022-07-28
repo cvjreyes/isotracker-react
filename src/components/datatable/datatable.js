@@ -807,7 +807,7 @@ class DataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
-        width:"200px"
+        width:"230px"
       },
       {
         title: <center className="dataTable__header__text">Type</center>,
@@ -886,7 +886,7 @@ class DataTable extends React.Component{
         sorter:{
           compare: (a, b) => a.id.props.children.localeCompare(b.id.props.children),
         },
-        width:"200px"
+        width:"230px"
       },
       {
         title: <center className="dataTable__header__text">Revision</center>,
