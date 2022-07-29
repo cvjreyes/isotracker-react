@@ -322,10 +322,55 @@ class IssuedDataTable extends React.Component{
                      
                       
                       }
-                      const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, to: <div><input type="text" className="filter__input" placeholder="To" onChange={(e) => this.filter(5,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(6,e.target.value)}/></div>, actions: <div><input type="text" className="filter__input" placeholder="Actions" onChange={(e) => this.filter(7,e.target.value)}/></div>}]
                   
-                      this.setState({data : rows, displayData: rows});
-                      await this.setState({filters : filterRow})
+                      await this.setState({data : rows});
+
+                      let auxDisplayData = this.state.data
+                      let resultData = []
+                      let fil, exists = null
+                      for(let i = 0; i < auxDisplayData.length; i++){
+                        exists = true
+                        for(let column = 0; column < Object.keys(auxDisplayData[i]).length-2; column ++){
+                          fil = Object.keys(auxDisplayData[i])[column+1]
+                          if(fil === "id"){
+                            if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].props.children.includes(this.state.filterData[column])){
+                              exists = false
+                            }
+                          }else if(fil === "actions"){
+                            
+                            if(auxDisplayData[i][fil].props.children[5]){
+                              if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "CLAIMED"){
+                                let claimed = "claimed"
+                                if(!claimed.includes(this.state.filterData[column].toLocaleLowerCase())){
+                                  exists = false
+                                }
+                              }else if(this.state.filterData[column] !== "" && this.state.filterData[column] && auxDisplayData[i][fil].props.children[1].props.children === "PENDING"){
+                                let pending = "pending"
+                                if(!pending.includes(this.state.filterData[column].toLocaleLowerCase())){
+                                  exists = false
+                                }
+                              }
+                            }else{
+                              if(this.state.filterData[column] !== "" && this.state.filterData[column]){
+                                exists = false
+                              }
+                            }
+                            
+                          }else{
+                            if(auxDisplayData[i][fil]){
+                              if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+                                exists = false
+                              }
+                            }
+                            
+                          }
+                          
+                        }
+                        if(exists){
+                          resultData.push(auxDisplayData[i])
+                        }
+                      }
+                      await this.setState({displayData: resultData})
                 }
             )
             .catch(error => {
