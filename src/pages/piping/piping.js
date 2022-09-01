@@ -28,6 +28,7 @@ import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLine
 import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 import EstimatedPipesExcel from "../../components/estimatedPipesExcel/estimatedPipesExcel"
 import IsoControlHoldsDataTable from "../../components/isoControlHoldsDataTable/isoControlHoldsDataTable";
+import EstimatedPipesCustomExcel from "../../components/estimatedPipesCustomExcel/estimatedPipesCustomExcel";
 
 const CryptoJS = require("crypto-js");
 const SecureStorage = require("secure-web-storage");
@@ -121,7 +122,7 @@ const Piping = () => {
         }
        
 
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/estimatedPipingWeight", options)
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/estimatedPipingCustomWeight", options)
             .then(response => response.json())
             .then(json => {
                 setWeight(json.weight)
@@ -248,7 +249,12 @@ const Piping = () => {
 
     if(currentTab === "EstimatedPipes"){
         secureStorage.setItem("tab", "EstimatedPipes")
-        table = <EstimatedPipesExcel success={() => setChangesSaved(true)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+        if(process.env.REACT_APP_ISOCONTROL_CUSTOM === "0"){
+            table = <EstimatedPipesExcel success={() => setChangesSaved(true)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+        }else{
+            table = <EstimatedPipesCustomExcel success={() => setChangesSaved(true)} role={secureStorage.getItem("role")} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+        }
+        
     }
 
     if(currentTab === "IsoControlLineIdGroup"){
