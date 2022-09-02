@@ -28,6 +28,7 @@ import IsoControlGroupLineIdDataTable from "../../components/isoControlGroupLine
 import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/uploadBomIsocontrolPopUp"
 import EstimatedPipesExcel from "../../components/estimatedPipesExcel/estimatedPipesExcel"
 import IsoControlHoldsDataTable from "../../components/isoControlHoldsDataTable/isoControlHoldsDataTable";
+import FeedPipesExcel from "../../components/feedPipesExcel/feedPipesExcel";
 
 const CryptoJS = require("crypto-js");
 const SecureStorage = require("secure-web-storage");
@@ -249,6 +250,11 @@ const Piping = () => {
     if(currentTab === "EstimatedPipes"){
         secureStorage.setItem("tab", "EstimatedPipes")
         table = <EstimatedPipesExcel success={() => setChangesSaved(true)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+    }
+
+    if(currentTab === "FeedPipes"){
+        secureStorage.setItem("tab", "FeedPipes")
+        table = <FeedPipesExcel success={() => setChangesSaved(true)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
     }
 
     if(currentTab === "IsoControlLineIdGroup"){
