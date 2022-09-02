@@ -31,7 +31,7 @@ const CryptoJS = require("crypto-js");
 
 const PipingNavBtns = props =>{
     const history = useHistory();
-    var myTrayButton, modelledButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn, prodBtn
+    var myTrayButton, modelledButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn, prodBtn, feedBtn
     if(props.currentTab === "PipingMyTray"){
         secureStorage.setItem("tab", "PipingMyTray")
         myTrayButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}}>My Tray</button>
@@ -95,6 +95,13 @@ const PipingNavBtns = props =>{
         isoControlEstimatedBtn = <button type="button" className="trays__navBtns text-left"  onClick={() =>{props.onChange("EstimatedPipes")}}>Main</button>
     }
 
+    if(props.currentTab === "FeedPipes"){
+        secureStorage.setItem("tab", "FeedPipes")
+        feedBtn = <button type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >LineControl</button>
+    }else{
+        feedBtn = <button type="button" className="trays__navBtns text-left"  onClick={() =>{props.onChange("FeedPipes")}}>LineControl</button>
+    }
+
     if(process.env.REACT_APP_IFC === "0"){
         prodBtn = <button type="button" className="trays__navBtns text-left"  onClick={() => history.push('/'+process.env.REACT_APP_PROJECT+'/pipingProgress')}>Progress</button>
     }else{
@@ -105,7 +112,9 @@ const PipingNavBtns = props =>{
     
     return(
         <div>                                  
-            <p className="isotracker__table__trays__group">Home</p>
+            <p className="isotracker__table__trays__group">Feed</p>
+            {feedBtn}
+            <p className="isotracker__table__trays__group">IsoControl</p>
             {isoControlEstimatedBtn}
             {isoControlFullBtn}
             {myTrayButton}
