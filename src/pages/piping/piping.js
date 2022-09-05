@@ -29,6 +29,7 @@ import UploadBOMIsocontrolPopUp from "../../components/uploadBomIsocontrolPopUp/
 import EstimatedPipesExcel from "../../components/estimatedPipesExcel/estimatedPipesExcel"
 import IsoControlHoldsDataTable from "../../components/isoControlHoldsDataTable/isoControlHoldsDataTable";
 import FeedPipesExcel from "../../components/feedPipesExcel/feedPipesExcel";
+import FeedProgressPlot from "../../components/feedProgressPlot/feedProgressPlot";
 
 const CryptoJS = require("crypto-js");
 const SecureStorage = require("secure-web-storage");
@@ -79,6 +80,7 @@ const Piping = () => {
     const [minTrayWarning, setMinTrayWarning] = useState(false)
     const [unclaimAlert, setUnclaimAlert] = useState(false)
     const [changesSaved, setChangesSaved] = useState(false)
+    const [feedProgress, setFeedProgress] = useState(null)
     const history = useHistory()
 
     useEffect(()=>{
@@ -120,6 +122,12 @@ const Piping = () => {
                 "Content-Type": "application/json"
             },
         }
+
+        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getFeedProgress", options)
+            .then(response => response.json())
+            .then(json => {
+                setFeedProgress(json.progress)
+            })
        
 
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/estimatedPipingWeight", options)
@@ -204,6 +212,7 @@ const Piping = () => {
     let isocontrolWeightsComponent = null
     let isoControllLineIdGroupBtn = null
     let uploadBOMBtn = null
+    let feedProgressButton = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable/>
@@ -255,6 +264,13 @@ const Piping = () => {
     if(currentTab === "FeedPipes"){
         secureStorage.setItem("tab", "FeedPipes")
         table = <FeedPipesExcel success={() => setChangesSaved(true)} updateData={() => setUpdateData(!updateData)} estimatedWarning={() => setEstimatedWarning(true)} estimatedEmpty={() => setEstimatedEmpty(true)}/>
+        feedProgressButton= <p className="navBar__button__text" style={{float:"right", marginRight: "40px", fontWeight: "400"}}>Progress: {feedProgress}%</p>
+    }
+
+    if(currentTab === "FeedProgress"){
+        secureStorage.setItem("tab", "FeedProgress")
+        table = <FeedProgressPlot/>
+        feedProgressButton= <p className="navBar__button__text" style={{float:"right", marginRight: "40px", fontWeight: "400"}}>Progress: {feedProgress}%</p>
     }
 
     if(currentTab === "IsoControlLineIdGroup"){
@@ -637,6 +653,7 @@ const Piping = () => {
                           <th  colspan="2" className="isotracker__table__navBar">
                             {recycleBinBtn}
                             {holdBtn}
+                            {feedProgressButton}
                           </th>
                       </tr>
                       <tr className="isotracker__table__tray__and__table__container" style={{height: "470px"}}>
