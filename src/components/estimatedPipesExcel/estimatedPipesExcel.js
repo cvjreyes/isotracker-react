@@ -204,7 +204,7 @@ async componentDidUpdate(prevProps, prevState){
                   data_aux[row_id].Spec = json.pipe[0].spec_code
                   data_aux[row_id].Insulation = json.pipe[0].insulation
   
-                    if(json.pipe[0].calc_notes !== "NA"){
+                    if(json.pipe[0].calc_notes !== "NA" && json.pipe[0].calc_notes !== "unset"){
                       data_aux[row_id].Type = "TL3"
                     }else if(process.env.NODE_MMDN === "0"){
                       if(data_aux[row_id].Diameter < 2.00){

@@ -391,7 +391,7 @@ const NavBar = (props) =>{
                 projectBtn = <Button class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
-                rightButtons= <div style={{width:"48%"}}>
+                rightButtons= <div style={{width:"46%"}}>
                         
                             
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>

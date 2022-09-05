@@ -200,10 +200,10 @@ async componentDidUpdate(prevProps, prevState){
                   data_aux[row_id].Seq = json.pipe[0].seq
                   data_aux[row_id].Spec = json.pipe[0].spec_code
                   data_aux[row_id].Insulation = json.pipe[0].insulation
-  
-                    if(json.pipe[0].calc_notes !== "NA"){
+                  console.log(json.pipe[0].calc_notes)
+                    if(json.pipe[0].calc_notes !== "NA" && json.pipe[0].calc_notes !== "unset"){
                       data_aux[row_id].Type = "TL3"
-                    }else if(process.env.NODE_MMDN === "0"){
+                    }else if(process.env.REACT_APP_MMDN === "0"){
                       if(data_aux[row_id].Diameter < 2.00){
                         data_aux[row_id].Type = "TL1"
                       }else{
@@ -235,7 +235,7 @@ async componentDidUpdate(prevProps, prevState){
             data_aux[row_id].Status = ""
           }else{
               if(data_aux[row_id].Type !== "TL3"){
-                if(process.env.NODE_MMDN === "0"){
+                if(process.env.REACT_APP_MMDN === "0"){
                   if(data_aux[row_id].Diameter < 2.00){
                     data_aux[row_id].Type = "TL1"
                   }else{
@@ -274,7 +274,7 @@ async componentDidUpdate(prevProps, prevState){
 
     const settings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: [180, 468, 240, 70, 70, 70, 100, 95, 80, 105, 110, 70, 140],
+        colWidths: [170, 448, 240, 70, 100, 70, 100, 95, 80, 105, 110, 70, 140],
         fontSize: 24
         //... other options
       }
@@ -294,7 +294,7 @@ async componentDidUpdate(prevProps, prevState){
                 settings={settings}
                 manualColumnResize={true}
                 manualRowResize={true}
-                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true}, { data: "Tag", type:'text'}, { data: "Owner", type:'dropdown', source: this.state.designers, strict: true}, { data: "Unit", type:'text'},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text'}, { data: "Seq", type:'text'}, { data: "Spec", type:'text'},  { data: "Type", type:'text', readOnly:true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text'},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'dropdown', source:["ESTIMATED", "MODELLED"]}]}
+                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true}, { data: "Tag", type:'text'}, { data: "Owner", type:'dropdown', source: this.state.designers, strict: true}, { data: "Unit", type:'text'},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text'}, { data: "Seq", type:'text'}, { data: "Spec", type:'text'},  { data: "Type", type:'text', readOnly:true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text'},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'dropdown', source:["ESTIMATED", "MODELLING", "MODELLED"]}]}
                 filters={true}
                 dropdownMenu= {[
                     'make_read_only',
