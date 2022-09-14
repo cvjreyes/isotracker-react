@@ -145,11 +145,12 @@ async filter(column, value){
   await this.setState({filterData: fd})
 
   let auxDisplayData = this.state.data
+  let tags = []
   let resultData = []
   let fil, exists = null
   for(let i = 0; i < auxDisplayData.length; i++){
     exists = true
-    for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){  
+    for(let column = 0; column < Object.keys(auxDisplayData[i]).length; column ++){  
       fil = Object.keys(auxDisplayData[i])[column]
       if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
         exists = false    
@@ -157,9 +158,10 @@ async filter(column, value){
     }
     if(exists){
       resultData.push(auxDisplayData[i])
+      tags.push(auxDisplayData[i].Tag)
     }
   }
-  await this.setState({displayData: resultData})
+  await this.setState({displayData: resultData, tags: tags})
 }
 
   addRow(){
@@ -212,19 +214,19 @@ async filter(column, value){
 
   handleChange = async(changes, source) =>{
     if (source !== 'loadData'){
-      let data_aux = this.state.data
+      let data_aux = this.state.displayData
       for(let i = 0; i < changes.length; i+=4){
         if(changes[i][1] === "Owner IFC"){
           let owners = this.state.owners
-          owners.push(["IFC", this.state.data[changes[i][0]].Tag, changes[0][3]])
+          owners.push(["IFC", this.state.displayData[changes[i][0]].Tag, changes[0][3]])
           this.setState({owners: owners})
         }else if(changes[i][1] === "Owner IsoTracker"){
           let owners = this.state.owners
-          owners.push(["ISO",this.state.data[changes[i][0]].Tag, changes[0][3]])
+          owners.push(["ISO",this.state.displayData[changes[i][0]].Tag, changes[0][3]])
           this.setState({owners: owners})
         }else{
           let row_id = changes[i][0]
-          let row = this.state.data[row_id]
+          let row = this.state.displayData[row_id]
           if (changes[i][1] === 'Line reference'){
             const options = {
               method: "GET",
@@ -293,15 +295,16 @@ async filter(column, value){
               }
             
             new_data[row_id] = row
+            console.log(row)
           }
         
           
-          await this.setState({data : data_aux, new_data: new_data})
+          await this.setState({new_data: new_data})
         
           if(!row["Line reference"] && row.id){
             let new_data = this.state.new_data
             new_data[row_id] = {"Line reference": "deleted", id: row.id}
-            await this.setState({data : data_aux, new_data: new_data})
+            await this.setState({new_data: new_data})
           }
         
         }
