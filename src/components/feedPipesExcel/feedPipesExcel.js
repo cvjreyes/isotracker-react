@@ -2,12 +2,15 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { HotTable } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.css';
+import { Table, Input, Button, Space } from 'antd';
 
 class FeedPipesExcel extends React.Component{
   state = {
     searchText: '',
     searchedColumn: '',
     data: [],
+    displayData: [],
+    filterData: ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
     tab: this.props.currentTab,
     selectedRows: [],
     selectedRowsKeys: [],
@@ -89,7 +92,7 @@ class FeedPipesExcel extends React.Component{
       rows.push({"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Owner":json.rows[i].owner, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].sequential, "Spec": json.rows[i].spec, "Type": json.rows[i].type, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id})
       tags.push(json.rows[i].tag)
     }
-    await this.setState({data: rows, tags: tags})
+    await this.setState({data: rows, displayData: rows, tags: tags})
   })
 }
 
@@ -115,9 +118,48 @@ async componentDidUpdate(prevProps, prevState){
         tags.push(json.rows[i].tag)
         }
         await this.setState({data: rows, tags: tags})
+        let auxDisplayData = this.state.data
+        let resultData = []
+        let fil, exists = null
+        for(let i = 0; i < auxDisplayData.length; i++){
+          exists = true
+          for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){  
+            fil = Object.keys(auxDisplayData[i])[column]
+            if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+              exists = false    
+            }
+          }
+          if(exists){
+            resultData.push(auxDisplayData[i])
+          }
+        }
+        await this.setState({displayData: resultData})
     })
   }
 
+}
+
+async filter(column, value){
+  let fd = this.state.filterData
+  fd[column] = value
+  await this.setState({filterData: fd})
+
+  let auxDisplayData = this.state.data
+  let resultData = []
+  let fil, exists = null
+  for(let i = 0; i < auxDisplayData.length; i++){
+    exists = true
+    for(let column = 0; column < Object.keys(auxDisplayData[i]).length-1; column ++){  
+      fil = Object.keys(auxDisplayData[i])[column]
+      if(this.state.filterData[column] !== "" && this.state.filterData[column] && !auxDisplayData[i][fil].includes(this.state.filterData[column])){
+        exists = false    
+      }
+    }
+    if(exists){
+      resultData.push(auxDisplayData[i])
+    }
+  }
+  await this.setState({displayData: resultData})
 }
 
   addRow(){
@@ -272,9 +314,88 @@ async componentDidUpdate(prevProps, prevState){
 
   render() {
 
+    const columns = [
+      {
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Line reference" style={{textAlign:"center"}} onChange={(e) => this.filter(0, e.target.value)}/></center>,
+        key: 'line_reference',
+        align: "center",
+        width: "152px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Tag" style={{textAlign:"center"}} onChange={(e) => this.filter(1, e.target.value)}/></div>,
+        key: 'tag',
+        align: "center",
+        width: "399px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Owner" style={{textAlign:"center"}} onChange={(e) => this.filter(2, e.target.value)}/></div>,
+        key: 'owner',
+        align: "center",
+        width: "209px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Unit" style={{textAlign:"center"}} onChange={(e) => this.filter(3, e.target.value)}/></div>,
+        key: 'unit',
+        align: "center",
+        width: "70px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Area" style={{textAlign:"center"}} onChange={(e) => this.filter(4, e.target.value)}/></div>,
+        key: 'area',
+        align: "center",
+        width: "99px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Fluid" style={{textAlign:"center"}} onChange={(e) => this.filter(5, e.target.value)}/></div>,
+        key: 'fluid',
+        align: "center",
+        width: "70px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Seq" style={{textAlign:"center"}} onChange={(e) => this.filter(6, e.target.value)}/></div>,
+        key: 'seq',
+        align: "center",
+        width: "100px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Spec" style={{textAlign:"center"}} onChange={(e) => this.filter(7, e.target.value)}/></div>,
+        key: 'spec',
+        align: "center",
+        width: "96px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Type" style={{textAlign:"center"}} onChange={(e) => this.filter(8, e.target.value)}/></div>,
+        key: 'type',
+        align: "center",
+        width: "80px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Diameter" style={{textAlign:"center"}} onChange={(e) => this.filter(9, e.target.value)}/></div>,
+        key: 'diameter',
+        align: "center",
+        width: "105px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Insulation" style={{textAlign:"center"}} onChange={(e) => this.filter(10, e.target.value)}/></div>,
+        key: 'insulation',
+        align: "center",
+        width: "110px"
+      },
+      {
+        title: <div className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Train" style={{textAlign:"center"}} onChange={(e) => this.filter(11, e.target.value)}/></div>,
+        key: 'train',
+        align: "center",
+        width: "71px"
+      },
+      {
+        title: <center className="dataTable__header__text"><input  type="text" className="filter__input" placeholder="Status" style={{textAlign:"center"}} onChange={(e) => this.filter(12, e.target.value)}/></center>,
+        key: 'status',
+        align: "center",
+      }]
+
     const settings = {
         licenseKey: 'non-commercial-and-evaluation',
-        colWidths: [170, 448, 240, 70, 100, 70, 100, 95, 80, 105, 110, 70, 140],
+        colWidths: [155, 403, 210, 70, 100, 70, 100, 95, 80, 105, 110, 70, 210],
         fontSize: 24
         //... other options
       }
@@ -283,9 +404,10 @@ async componentDidUpdate(prevProps, prevState){
       return (
           <div style={{zoom:"0.85"}}>
             <div id="hot-app">
+              <Table style={{width:"1772px", marginLeft:"49px"}} className="customTable" bordered = {true} columns={columns} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"
+              rowClassName= {(record) => record.color.replace('#', '')} scroll={{y: 0}}/>
               <HotTable
-                data={this.state.data}
-                colHeaders={["<b className='header'>Line reference</b>", "<b>Tag</b>", "<b>Owner</b>", "<b>Unit</b>", "<b>Area</b>", "<b>Fluid</b>", "<b>Seq</b>", "<b>Spec</b>", "<b>Type</b>", "<b>Diameter</b>", "<b>Insulation</b>", "<b>Train</b>", "<b>Status</b>"]}
+                data={this.state.displayData}
                 rowHeaders={true}
                 rowHeights="30px"
                 columnHeaderHeight={30}
@@ -294,24 +416,8 @@ async componentDidUpdate(prevProps, prevState){
                 settings={settings}
                 manualColumnResize={true}
                 manualRowResize={true}
-                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true}, { data: "Tag", type:'text'}, { data: "Owner", type:'dropdown', source: this.state.designers, strict: true}, { data: "Unit", type:'text'},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text'}, { data: "Seq", type:'text'}, { data: "Spec", type:'text'},  { data: "Type", type:'text', readOnly:true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text'},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'dropdown', source:["ESTIMATED", "MODELLING", "MODELLED"]}]}
-                filters={true}
-                dropdownMenu= {[
-                    'make_read_only',
-                    '---------',
-                    'alignment',
-                    '---------',
-                    'filter_by_condition',
-                    '---------',
-                    'filter_operators',
-                    '---------',
-                    'filter_by_condition2',
-                    '---------',
-                    'filter_by_value',
-                    '---------',
-                    'filter_action_bar',
-                  ]}
-                  afterChange={this.handleChange}
+                columns= {[{ data: "Line reference", type:'dropdown', source: this.state.line_refs, strict: true}, { data: "Tag", type:'text'}, { data: "Owner", type:'dropdown', source: this.state.designers, strict: true}, { data: "Unit", type:'text'},{ data: "Area", type:'dropdown', source: this.state.areas, strict: true }, { data: "Fluid", type:'text'}, { data: "Seq", type:'text'}, { data: "Spec", type:'text'},  { data: "Type", type:'text', readOnly:true}, { data: "Diameter", type:'dropdown', source: this.state.diameters, strict: true}, { data: "Insulation", type:'text'},{ data: "Train", type:'dropdown', source: this.state.trains, strict: true},{ data: "Status", type:'dropdown', source:["ESTIMATED", "MODELLING(50%)", "MODELLED(100%)"]}]}
+                afterChange={this.handleChange}
               />
               <br></br>
               <div style={{marginLeft:"695px"}}>
