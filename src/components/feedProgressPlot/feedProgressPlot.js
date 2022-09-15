@@ -1,6 +1,7 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
+
   export default class FeedProgressPlot extends React.PureComponent {
 	
 	state = {
@@ -23,7 +24,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 			let weeks = []
             if(json.rows){
                 for(let i = 0; i < json.rows.length; i++){
-                    weeks.push({name: "D"+json.rows[i].id, weight: json.rows[i].progress, max_weight: json.rows[i].max_progress})
+                    weeks.push({name: "D"+json.rows[i].id + "(" + (json.rows[i].progress/json.rows[i].max_progress*100).toFixed(2) + "%)", current_weight: json.rows[i].progress, max_weight: json.rows[i].max_progress})
                 }
                 await this.setState({data: weeks})
             }		
@@ -48,10 +49,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 			<CartesianGrid strokeDasharray="3 3" />
 			<XAxis dataKey="name" />
 			<YAxis label={{ value: "Weight", position: "insideLeft", angle: -90,   dy: 30}} />
-			<Tooltip />
+			<Tooltip/>
 			<Legend />
-			<Line type="monotone" dataKey="weight" stroke="blue" activeDot={{ r: 8 }} />
-			<Line type="monotone" dataKey="max_weight" stroke="red" />
+			<Line type="monotone" dataKey="current_weight" stroke="blue" activeDot={{ r: 8 }}/>
+			<Line type="monotone" dataKey="max_weight" stroke="red"/>
 		  </LineChart>
 		</ResponsiveContainer>
 	  );
