@@ -30,6 +30,7 @@ import EstimatedPipesExcel from "../../components/estimatedPipesExcel/estimatedP
 import IsoControlHoldsDataTable from "../../components/isoControlHoldsDataTable/isoControlHoldsDataTable";
 import FeedPipesExcel from "../../components/feedPipesExcel/feedPipesExcel";
 import FeedProgressPlot from "../../components/feedProgressPlot/feedProgressPlot";
+import FeedForecastTable from "../../components/feedForecastTable/feedForecastTable";
 
 const CryptoJS = require("crypto-js");
 const SecureStorage = require("secure-web-storage");
@@ -213,6 +214,7 @@ const Piping = () => {
     let isoControllLineIdGroupBtn = null
     let uploadBOMBtn = null
     let feedProgressButton = null
+    let feedForecastBtn = null
 
     if(currentTab === "Estimated"){
         table = <PipingEstimatedDataTable/>
@@ -271,6 +273,14 @@ const Piping = () => {
         secureStorage.setItem("tab", "FeedProgress")
         table = <FeedProgressPlot/>
         feedProgressButton= <p className="navBar__button__text" style={{float:"right", marginRight: "40px", fontWeight: "400"}}>Progress: {feedProgress}%</p>
+        feedForecastBtn = <button className="isocontrol__lineid__group__button" style={{width: "120px", float:"right"}} onClick={()=> setCurrentTab("FeedForecast")}>Edit Forecast</button>
+    }
+
+    if(currentTab === "FeedForecast"){
+        secureStorage.setItem("tab", "FeedForecast")
+        table = <FeedForecastTable success={() => setChangesSaved(true)}/>
+        feedProgressButton= <p className="navBar__button__text" style={{float:"right", marginRight: "40px", fontWeight: "400"}}>Progress: {feedProgress}%</p>
+        feedForecastBtn = <button className="isocontrol__lineid__group__button" style={{width: "120px", float:"right"}} onClick={()=> setCurrentTab("FeedProgress")}>Back</button>
     }
 
     if(currentTab === "IsoControlLineIdGroup"){
@@ -673,6 +683,7 @@ const Piping = () => {
                               <div  style={{height: "430px", width:"1560px"}} className="isotracker__table__table__container">
                                   {isoControllLineIdGroupBtn}
                                   {uploadBOMBtn}
+                                  {feedForecastBtn}
                                   {table}
                               </div>
                           </td>
