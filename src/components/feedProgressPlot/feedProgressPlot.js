@@ -8,7 +8,6 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 		data: []
 	  };
 
-
 	async componentDidMount (){
 
 		const options = {
@@ -24,7 +23,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 			let weeks = []
             if(json.rows){
                 for(let i = 0; i < json.rows.length; i++){
-                    weeks.push({name: "D"+json.rows[i].id + "(" + (json.rows[i].progress/json.rows[i].max_progress*100).toFixed(2) + "%)", current_weight: json.rows[i].progress, max_weight: json.rows[i].max_progress})
+					console.log()
+                    weeks.push({name: "D"+json.rows[i].id + "(" + (json.rows[i].progress/json.rows[i].max_progress*100).toFixed(2) + "%)", current_weight: json.rows[i].progress, max_weight: json.rows[i].max_progress, forecast: (json.rows[i].max_progress/100)*json.rows[i].estimated})
                 }
                 await this.setState({data: weeks})
             }		
@@ -53,6 +53,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 			<Legend />
 			<Line type="monotone" dataKey="current_weight" stroke="blue" activeDot={{ r: 8 }}/>
 			<Line type="monotone" dataKey="max_weight" stroke="red"/>
+			<Line type="monotone" dataKey="forecast" stroke="green"/>
 		  </LineChart>
 		</ResponsiveContainer>
 	  );
