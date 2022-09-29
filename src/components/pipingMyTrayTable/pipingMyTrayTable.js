@@ -269,6 +269,9 @@ class PipingMyTrayTable extends React.Component{
               }
 
               switch(json.rows[i].next){
+                case "PipingEstimated":
+                  nextStep = "Estimated"
+                  break;
                 case "PipingModelled":
                   nextStep = "Modelled"
                   break;
@@ -289,6 +292,9 @@ class PipingMyTrayTable extends React.Component{
               }
 
               switch(json.rows[i].tray){
+                case "PipingEstimated":
+                  tray = "Estimated"
+                  break;
                 case "PipingModelled":
                   tray = "Modelled"
                   break;
@@ -392,6 +398,12 @@ class PipingMyTrayTable extends React.Component{
                 }
 
                 switch(json.rows[i].next){
+                  case "PipingEstimated":
+                    nextStep = "Estimated"
+                    break;
+                  case "PipingEstimated":
+                    nextStep = "Estimated"
+                    break;
                   case "PipingModelled":
                     nextStep = "Modelled"
                     break;
@@ -412,6 +424,9 @@ class PipingMyTrayTable extends React.Component{
                 }
   
                 switch(json.rows[i].tray){
+                  case "PipingEstimated":
+                    tray = "Estimated"
+                    break;
                   case "PipingModelled":
                     tray = "Modelled"
                     break;
@@ -533,7 +548,9 @@ class PipingMyTrayTable extends React.Component{
           if(selectedRows[i].valves === 0 && selectedRows[i].instruments === 0){
             switch(selectedRows[i].type){
               case "TL1":
-                error.push(1)
+                if(selectedRows[i].status_id === 10){
+                  error.push(1)
+                }
                 break;
               case "TL2":
                 if(selectedRows[i].status_id === 8){

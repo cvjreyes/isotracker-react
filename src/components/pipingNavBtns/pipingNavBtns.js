@@ -31,7 +31,7 @@ const CryptoJS = require("crypto-js");
 
 const PipingNavBtns = props =>{
     const history = useHistory();
-    var myTrayButton, modelledButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn, prodBtn, feedBtn, feedProgressBtn, feedTitle, feedForecastBtn
+    var myTrayButton, modelledButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn, prodBtn, feedBtn, feedProgressBtn, feedTitle
     if(props.currentTab === "PipingMyTray"){
         secureStorage.setItem("tab", "PipingMyTray")
         myTrayButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}}>My Tray</button>
@@ -39,6 +39,7 @@ const PipingNavBtns = props =>{
         myTrayButton = <button  type="button" className="trays__navBtns text-left"  onClick={() => {props.onChange("PipingMyTray")}}>My tray</button>
         
     }
+
     if(props.currentTab === "PipingModelled"){
         secureStorage.setItem("tab", "PipingModelled")
         modelledButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >Modelled</button>

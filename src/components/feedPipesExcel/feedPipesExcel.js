@@ -88,9 +88,17 @@ class FeedPipesExcel extends React.Component{
   .then(async json => {
     let rows = [] 
     let tags = []
+    let row = {}
+    let tag = ""
     for(let i = 0; i < json.rows.length; i++){
-      rows.push({"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Owner":json.rows[i].owner, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].sequential, "Spec": json.rows[i].spec, "Type": json.rows[i].type, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id})
-      tags.push(json.rows[i].tag)
+      row = {"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Owner":json.rows[i].owner, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].sequential, "Spec": json.rows[i].spec, "Type": json.rows[i].type, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id}
+      
+      let tag_order = process.env.REACT_APP_TAG_ORDER.split(/[ -]+/)        
+      tag = row[tag_order[0]] + "-" + row[tag_order[1]] + "-" + row[tag_order[2]] + "-" + row[tag_order[3]] + "-" + row[tag_order[4]] + "-" + row[tag_order[5]] + "-" + row[tag_order[6]] + "_" + row[tag_order[7]]  
+
+      row["Tag"] = tag
+      rows.push(row)
+      tags.push(tag)
     }
     await this.setState({data: rows, displayData: rows, tags: tags})
   })
@@ -113,9 +121,17 @@ async componentDidUpdate(prevProps, prevState){
     .then(async json => {
         let rows = [] 
         let tags = []
+        let row = {}
+        let tag = ""
         for(let i = 0; i < json.rows.length; i++){
-        rows.push({"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Owner":json.rows[i].owner, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].sequential, "Spec": json.rows[i].spec, "Type": json.rows[i].type, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id})
-        tags.push(json.rows[i].tag)
+          row = {"Line reference": json.rows[i].line_reference, "Tag": json.rows[i].tag, "Owner":json.rows[i].owner, "Unit": json.rows[i].unit, "Area": json.rows[i].area, "Fluid": json.rows[i].fluid, "Seq": json.rows[i].sequential, "Spec": json.rows[i].spec, "Type": json.rows[i].type, "Diameter": json.rows[i].diameter, "Insulation": json.rows[i].insulation, "Train": json.rows[i].train, "Status": json.rows[i].status, "id":json.rows[i].id}
+      
+          let tag_order = process.env.REACT_APP_TAG_ORDER.split(/[ -]+/)        
+          tag = row[tag_order[0]] + "-" + row[tag_order[1]] + "-" + row[tag_order[2]] + "-" + row[tag_order[3]] + "-" + row[tag_order[4]] + "-" + row[tag_order[5]] + "-" + row[tag_order[6]] + "_" + row[tag_order[7]]  
+
+          row["Tag"] = tag
+          rows.push(row)
+          tags.push(tag)
         }
         await this.setState({data: rows, tags: tags})
         let auxDisplayData = this.state.data
@@ -165,9 +181,9 @@ async filter(column, value){
 }
 
   addRow(){
-    let rows = this.state.data
+    let rows = this.state.displayData
     rows.push({"Line reference": "", "Tag": "", "Owner": "", "Unit": "", "Area": "", "Fluid": "", "Seq": "", "Spec": "", "Type": "", "Diameter": "", "Insulation": "", "Train": "", "Status": ""})
-    this.setState({data: rows})
+    this.setState({displayData: rows})
   }
   
   async submitChanges(){
@@ -184,7 +200,8 @@ async filter(column, value){
 
     const body = {
       rows: new_rows,
-      owners: this.state.owners
+      owners: this.state.owners,
+      tag_order: process.env.REACT_APP_TAG_ORDER
     }
     const options = {
         method: "POST",
@@ -405,9 +422,10 @@ async filter(column, value){
   
 
       return (
-          <div style={{zoom:"0.85"}}>
+          <div style={{zoom:"0.85"}}                 id="exceltable"
+          >
             <div id="hot-app">
-              <Table style={{width:"1772px", marginLeft:"49px"}} className="customTable" bordered = {true} columns={columns} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"
+              <Table  style={{width:"1772px", marginLeft:"49px"}} className="customTable" bordered = {true} columns={columns} pagination={{disabled:true, defaultPageSize:5000, hideOnSinglePage:true}} size="small"
               rowClassName= {(record) => record.color.replace('#', '')} scroll={{y: 0}}/>
               <HotTable
                 data={this.state.displayData}
