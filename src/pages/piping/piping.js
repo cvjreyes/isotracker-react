@@ -611,7 +611,7 @@ const Piping = () => {
             className={`alert alert-success ${minTrayWarning ? 'alert-shown' : 'alert-hidden'}`}
             onTransitionEnd={() => setMinTrayWarning(false)}
             >
-            <AlertF type="warning" text="Pipes on Modelled can't be returned!" margin="0px"/>   
+            <AlertF type="warning" text="Pipes on Estimated can't be returned!" margin="0px"/>   
             
             </div>
             <div
