@@ -38,7 +38,7 @@ class DragAndDrop extends React.Component{
     nSuccess: 0
   };
 
-  async uploadFile(file) {
+  async uploadFile(file) {//Subida de un archivo al storage
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/upload", {
       // content-type header should not be specified!
       method: 'POST',
@@ -46,7 +46,7 @@ class DragAndDrop extends React.Component{
     })
       .then(response => {
         // Do something with the successful response
-        if (response.status === 200){
+        if (response.status === 200){ //Si se ha subido con exito
           let n = this.state.nSuccess
           this.setState({nSuccess: n+1})
           if(!this.state.success){
@@ -68,12 +68,13 @@ class DragAndDrop extends React.Component{
               cl = true
             }
           }
-          if(extension === "pdf" && !cl){
+          if(extension === "pdf" && !cl){ //Si lo que hemos subido es un master
             let body =  {
               fileName: filename,
               user: this.props.user,
               role: this.props.role
             }
+            //Post del upload
             fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadHis", {
               // content-type header should not be specified!
               method: 'POST',
@@ -84,7 +85,7 @@ class DragAndDrop extends React.Component{
               body: JSON.stringify(body)
             }).catch(error =>console.log(error))
           }
-        }else{
+        }else{ //Si no se ha subido correctamente
           for (let value of file.values()) {
             let joined = this.state.errorAlerts.concat(value.name);
             this.setState({
@@ -97,7 +98,7 @@ class DragAndDrop extends React.Component{
         this.setState({
           max: max
         })
-        if (max === 0){
+        if (max === 0){ //si ya se han subido todas mostramos alerta de success
           this.setState({
             uploaded: true,
             uploading: false
@@ -125,9 +126,9 @@ class DragAndDrop extends React.Component{
     this.props.uploaded()
   }
 
-  async updateFile(file) {
+  async updateFile(file) { //Como upload pero para isos ya existentes
 
-    
+    //Post del update
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/update", {
       // content-type header should not be specified!
       method: 'POST',
@@ -209,13 +210,14 @@ class DragAndDrop extends React.Component{
       nSuccess: 0
     })
 
-    await allFiles.forEach(file => {
+    await allFiles.forEach(file => { //Para cada archivo se hace el upload o update
       const formData  = new FormData(); 
       formData.append('file', file.file);  
       if(this.props.mode === "upload"){
         if(process.env.REACT_APP_PROGRESS === "0"){
           this.uploadFile(formData);
         }else{
+          //Comprobamos que la linea existe en dpipes si el proyecto tiene progreso
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+file.file.name)
           .then(response => response.json())
           .then(async json =>{

@@ -9,6 +9,8 @@ import NewRevPopUp from '../newRevPopUp/newRevPopUp';
 import "./actionBtns.css"
 
 const ActionBtns = props =>{
+
+    //Todas las acciones pasan al padre mediante props, no se ejecutan aqui directamente
     function assignToUser(username){
         props.forceClaim(username)
     }
@@ -70,6 +72,7 @@ const ActionBtns = props =>{
     }
 
     var actionBtn1, actionBtn2, actionBtn3, actionBtn4, actionBtn5, actionBtn6, actionBtn7, actionBtn8, actionBtn9, actionBtn10, actionBtn11, actionBtn12, actionBtn13
+    //Condiciones que controlan que botones se muestran para cada ocasion
     if(props.onlyDownload){
         if(props.role === "SpecialityLead" || props.role === "DesignLead"){
             actionBtn6 = <button className="action__btn" style={{zoom:0.8}} name="destination" value="stress" onClick={() => props.transaction("Recycle bin")}>Delete</button>

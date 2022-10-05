@@ -7,7 +7,7 @@ const CryptoJS = require("crypto-js");
     const SecureStorage = require("secure-web-storage");
     var SECRET_KEY = 'sanud2ha8shd72h';
     
-    var secureStorage = new SecureStorage(localStorage, {
+    var secureStorage = new SecureStorage(localStorage, { 
         hash: function hash(key) {
             key = CryptoJS.SHA256(key, SECRET_KEY);
     
@@ -29,8 +29,10 @@ const CryptoJS = require("crypto-js");
         }
     });
 
-const NavBtns = props =>{
+const NavBtns = props =>{ //Botones de navegacion entre bandejas
     var designButton, stressButton, supportsButton, materialsButton, issuerButton, ldeIsocontrolButton
+
+    //En funciona de si estamos en esa bandeja o no, el boton aparece como seleccionado o como clickable
     if(props.currentTab === "Design"){
         secureStorage.setItem("tab", "Design")
         designButton = <button  type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}}>Design</button>
@@ -71,7 +73,7 @@ const NavBtns = props =>{
         ldeIsocontrolButton = <button  type="button" className="nav__button text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}} >LOS/Isocontrol</button>
     }else{
         ldeIsocontrolButton = <button  type="button" className="nav__button text-left"  onClick={() => {props.onChange("LDE/IsoControl")}}>LOS/Isocontrol</button>
-    }if(props.currentTab === "My Tray"){
+    }if(props.currentTab === "My Tray"){ //Si estamos en mytray sombreamos la bandeja correspondiente al rol del usuario para indicarle donde estan las isos que esta viendo
         switch(props.currentRole){
             case "Design":
                 designButton = <button  type="button" className="nav__button text-left" style={{backgroundColor: "#D1EBF7", color: "black"}} onClick={() => {props.onChange("Design")}}>Design</button>

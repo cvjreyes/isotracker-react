@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import CommentPopUp from '../commentPopUp/commentPopUp';
 import HoldsPopUp from '../holdsPopUp/holdsPopUp';
 
-class OnHoldTable extends React.Component{
+class OnHoldTable extends React.Component{ //Tabla de holds
   state = {
     searchText: '',
     searchedColumn: '',
@@ -39,19 +39,20 @@ class OnHoldTable extends React.Component{
       })
     })
 
-    if(process.env.REACT_APP_PROGRESS === "1"){
+    if(process.env.REACT_APP_PROGRESS === "1"){ //Si el proyecto tiene progreso
       const options = {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
         },
       }
+        //Get de las isos en hold
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/holds", options)
             .then(response => response.json())
             .then(async json => {
                     var rows = []
                    
-                    for(let i = 0; i < json.rows.length; i++){
+                    for(let i = 0; i < json.rows.length; i++){ //Por cada iso creamos la fila en la tabla
                       if(json.rows[i].onhold !== 2){
                         if(json.rows[i].filename){
                           var holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
@@ -93,8 +94,7 @@ class OnHoldTable extends React.Component{
                 console.log(error);
             })  
       }else{
-        
-        
+
         const body ={
           currentTab : this.props.currentTab
         }
@@ -105,6 +105,7 @@ class OnHoldTable extends React.Component{
           },
           body: JSON.stringify(body)
         }
+          //Get de las isos en hold
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
               .then(response => response.json())
               .then(async json => {

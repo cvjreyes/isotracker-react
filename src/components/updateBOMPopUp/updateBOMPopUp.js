@@ -39,7 +39,7 @@ export default class UploadBOMPopUp extends Component {
     async uploadReport(event){
         event.preventDefault()
         this.props.setUploading(true)
-
+        //Subimos el excel de la bom table
         if(this.state.file.name.substring(this.state.file.name.length-4, this.state.file.name.length) === "xlsx"){
             const formData  = new FormData(); 
             formData.append('file', this.state.file, "marian.xlsx");

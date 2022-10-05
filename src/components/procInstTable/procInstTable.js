@@ -31,7 +31,7 @@ const CryptoJS = require("crypto-js");
         }
     });
 
-class procInstTable extends React.Component{
+class procInstTable extends React.Component{ //Datatable de procesos e instrumentacion
   state = {
     searchText: '',
     searchedColumn: '',
@@ -63,10 +63,7 @@ class procInstTable extends React.Component{
         this.setState({
           acronyms: dict
         })
-      })
-
-
-      
+      })      
     
     const body ={
       type : this.props.currentTab
@@ -78,17 +75,18 @@ class procInstTable extends React.Component{
       },
       body: JSON.stringify(body)
   }
+    //Get de las isos en p/i
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/filesProcInst", options)
         .then(response => response.json())
         .then(async json => {
                 var rows = []
                 var row = null
                 for(let i = 0; i < json.rows.length; i++){
-                    if(json.rows[i].spoclaimed === 1 && this.props.currentTab ===  "Process"){ 
+                    if(json.rows[i].spoclaimed === 1 && this.props.currentTab ===  "Process"){ //Si estamos en la tabla de procesos y la iso esta claimed
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].spouser, actions: <div><button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button></div> }
-                    }else if (json.rows[i].sitclaimed === 1 && this.props.currentTab ===  "Instrument"){
+                    }else if (json.rows[i].sitclaimed === 1 && this.props.currentTab ===  "Instrument"){ //Si estamos en la tabla de instrumentos y la iso esta claimed
                       row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].situser, actions: <div><button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button></div>}   
-                    }else{
+                    }else{ //Si esta libre
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: "None", actions:""}
                     }
                     if(row){

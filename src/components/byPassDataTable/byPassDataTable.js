@@ -32,6 +32,7 @@ const CryptoJS = require("crypto-js");
       }
   });
 
+//Tabla de bypass
 class ByPassDataTable extends React.Component{
     state = {
       searchText: '',
@@ -56,7 +57,6 @@ class ByPassDataTable extends React.Component{
     //this.props.successAlert()
   }
 
-
   componentDidMount(){
     const options = {
       method: "GET",
@@ -64,12 +64,14 @@ class ByPassDataTable extends React.Component{
           "Content-Type": "application/json"
       },
     }
+    //Get de los bypass
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getByPassData", options)
         .then(response => response.json())
         .then(async json => {
           let row = {}
           let rows = []
           for(let i = 0; i < json.rows.length; i++){
+            //Creamos la fila
             row = {key:json.rows[i].id, tag: json.rows[i].tag, isoid: json.rows[i].isoid, type: json.rows[i].type, date: json.rows[i].date.toString().substring(0,10) + " "+ json.rows[i].date.toString().substring(11,19), user: json.rows[i].user, notes: json.rows[i].note, comments: json.rows[i].comments, status: json.rows[i].status, actions: null}
             
             if(i % 2 === 0){
@@ -78,9 +80,9 @@ class ByPassDataTable extends React.Component{
               row["color"] = "#eee"
             }
 
-            if(secureStorage.getItem("role") === "ProjectAdmin" && row.status === "Pending"){
+            if(secureStorage.getItem("role") === "ProjectAdmin" && row.status === "Pending"){ //Si el usuario es project admin y el bypass esta pendiente añadimos a la columna actions estos botones
               row.actions = <div style={{display: "flex"}}><button button className="ready__btn btn-sm btn-success" style={{width:"60px", marginRight:"5px"}} onClick={() => this.approve(json.rows[i].id)}>Approve</button><ByPassRejNACommentPopUp type={"Reject"} tag={json.rows[i].tag} id={json.rows[i].id} rejectByPass={this.rejectByPass.bind(this)}/><ByPassRejNACommentPopUp type={"N/A"} tag={json.rows[i].tag} id={json.rows[i].id} naByPass={this.naByPass.bind(this)}/></div>
-            }else if(json.rows[i].email === secureStorage.getItem("user") && row.status === "Pending"){
+            }else if(json.rows[i].email === secureStorage.getItem("user") && row.status === "Pending"){ //Si el bypass pertenece al usuario logeado
               let type = 1
               if(json.rows[i].type === "Equipment"){
                   type = 2
@@ -89,10 +91,11 @@ class ByPassDataTable extends React.Component{
               }else if(json.rows[i].type === "PID"){
                   type = 4
               }
+              //Añadimos estos botones
               row.actions = <div style={{display: "flex"}}><EditByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag} type={type} note={json.rows[i].note} editByPass={(type, notes, id) => this.props.editByPass(type, notes, id)}/><DeleteByPassPopUp deleteByPass={(id) => this.props.deleteByPass(id)} tag={json.rows[i].tag} id={json.rows[i].id}/></div>
-            }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){
+            }else if(json.rows[i].email === secureStorage.getItem("user") && (row.status === "Approved/CODE3" || row.status === "Approved/IFC")){ //Lo mismo pero con otra condicion
               row.actions = <button className="ready__btn btn-sm btn-success"  style={{fontWeight: "bold", marginRight:"5px", width:"60px"}} onClick={() => this.closeByPass(json.rows[i].id)}>Close</button>
-            }else if(json.rows[i].status === "Approved"){
+            }else if(json.rows[i].status === "Approved"){//Lo mismo pero con otra condicion
               row.actions = <div style={{display: "flex"}}><AcceptByPassPopUp success={() => this.props.success()} id={json.rows[i].id} tag={json.rows[i].tag}/></div>
             }
 
@@ -158,7 +161,7 @@ class ByPassDataTable extends React.Component{
   }
 
 
-  async rejectByPass(id, comments){
+  async rejectByPass(id, comments){ //Se rechaza un bypass por parte de project admin
     const body ={
       id : id,
       comments: comments
@@ -170,6 +173,7 @@ class ByPassDataTable extends React.Component{
       },
       body: JSON.stringify(body)
   }
+  //Post del reject
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/rejectByPass", options)
         .then(response => response.json())
         .then(async json => {
@@ -179,7 +183,7 @@ class ByPassDataTable extends React.Component{
         })
   }
 
-  async naByPass(id, comments){
+  async naByPass(id, comments){//Se indica que un bypass no aplica por parte de project admin
     const body ={
       id : id,
       comments: comments
@@ -191,6 +195,7 @@ class ByPassDataTable extends React.Component{
       },
       body: JSON.stringify(body)
   }
+  //Post del n/a
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/naByPass", options)
         .then(response => response.json())
         .then(async json => {
@@ -200,7 +205,7 @@ class ByPassDataTable extends React.Component{
         })
   }  
 
-  async closeByPass(id){
+  async closeByPass(id){ //Se cierra un bypass por parte de project admin
     const body ={
       id : id,
     }
@@ -211,6 +216,7 @@ class ByPassDataTable extends React.Component{
       },
       body: JSON.stringify(body)
   }
+  //Post del cierre
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/closeByPass", options)
         .then(response => response.json())
         .then(async json => {
@@ -220,7 +226,7 @@ class ByPassDataTable extends React.Component{
         })
   }
 
-  async approve(id){
+  async approve(id){ //Se aprueba un bypass por parte de project admin
     const body ={
       id : id,
     }
@@ -231,6 +237,7 @@ class ByPassDataTable extends React.Component{
       },
       body: JSON.stringify(body)
   }
+  //Post del approve
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/acceptByPass", options)
         .then(response => response.json())
         .then(async json => {

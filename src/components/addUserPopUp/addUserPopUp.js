@@ -65,7 +65,9 @@ export default class AddUserPopUp extends Component {
 
     }
 
-    addUser(){
+    addUser(){ //Se añade un usuario nuevo
+
+        //Formamos el username a partir del email introducido
         let username = this.state.email.replace("-", " ")
         username = username.replace(".", " ")
         let splitStr = username.toLowerCase().split(' ');
@@ -74,13 +76,14 @@ export default class AddUserPopUp extends Component {
         }
         username = splitStr.join(' ')
         const email = this.state.email + this.state.selected
-        if(username === "" || username === null){
+
+        if(username === "" || username === null){ //Si el username esta vacio sale un warning
             this.setState({
                 blankFields: true
             })
         }else{
             let roles = []
-
+            //Comprobamos que roles se han seleccionado y los guardamos en un array
             if(this.state.des){
                 roles.push("des")
             }if(this.state.lde){
@@ -113,7 +116,7 @@ export default class AddUserPopUp extends Component {
                 roles.push("pra")
             }
             
-            this.props.addUser(username, email, roles)
+            this.props.addUser(username, email, roles) //Enviamos los datos a isoCtrlF donde se hace la request
             this.closeModal()
         }   
 

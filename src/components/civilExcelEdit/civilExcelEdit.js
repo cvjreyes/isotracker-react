@@ -4,7 +4,7 @@ import { HotTable } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.css';
 
 
-class CivilExcelEdit extends React.Component{
+class CivilExcelEdit extends React.Component{ //Tabla like excel de civiles estimados
   state = {
     searchText: '',
     searchedColumn: '',
@@ -29,11 +29,13 @@ class CivilExcelEdit extends React.Component{
         },
     }
 
+    //Get de los estimados
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civilsEstimatedExcel", options)
     .then(response => response.json())
     .then(json => {
       var rows = []
       var row = null
+      //Creamos la linea
       rows.push({"Area": "Area", "Type": "Type", "Quantity": "Quantity"})
       for(let i = 0; i < json.rows.length; i++){
 
@@ -45,6 +47,7 @@ class CivilExcelEdit extends React.Component{
 
   }) 
 
+  //Areas para rellenar el desplegable de areas
   fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/areas", options)
     .then(response => response.json())
     .then(json => {
@@ -56,6 +59,7 @@ class CivilExcelEdit extends React.Component{
 
   })
 
+  //Tipos para rellenar el desplegable de tipos
   fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/types", options)
     .then(response => response.json())
     .then(json => {
@@ -68,13 +72,13 @@ class CivilExcelEdit extends React.Component{
   })
 }
 
-  addRow(){
+  addRow(){ //Añadir una linea nueva
     let rows = this.state.data
     rows.push({"Area": "", "Type": "", "Quantity": ""})
     this.setState({data: rows})
   }
   
-  submitChanges(){
+  submitChanges(){ //Post de los estimados
     const body = {
       rows: this.state.data,
     }

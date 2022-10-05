@@ -4,7 +4,7 @@ import { Table } from 'antd';
 import { Link } from 'react-router-dom';
 
 
-class TimeTrackDataTable extends React.Component{
+class TimeTrackDataTable extends React.Component{ //Tabla que muestra el tiempo que ha estado cada iso en cada bandeja
   state = {
     searchText: '',
     searchedColumn: '',
@@ -31,6 +31,7 @@ class TimeTrackDataTable extends React.Component{
         },
     }
 
+    //Get de los tiempos por iso
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/timeTrack", options)
       .then(response => response.json())
       .then(async json => {

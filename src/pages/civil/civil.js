@@ -33,6 +33,7 @@ const Civil = () => {
 
     const history = useHistory()
 
+    //Gestiona el cambio de rol
     useEffect(()=>{
         const body = {
             user: currentUser,
@@ -45,15 +46,15 @@ const Civil = () => {
             body: JSON.stringify(body)
         }
        
-
+        //Get de los roles que tiene el usuario
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
             .then(response => response.json())
             .then(json => {
                 setRoles(json.roles);
-                if(secureStorage.getItem('role') !== null){
-                    setCurrentRole(secureStorage.getItem('role'))
+                if(secureStorage.getItem('role') !== null){ //Si el usuario ya tenia algun rol asignado se le reasigna
+                    setCurrentRole(secureStorage.getItem('role')) 
                 }else{
-                    secureStorage.setItem('role', json.roles[0])
+                    secureStorage.setItem('role', json.roles[0]) //Si no se le asigna el primer rol de la lista como rol por defecto
                     setCurrentRole(secureStorage.getItem('role'))
                 }
                 }
@@ -73,7 +74,7 @@ const Civil = () => {
             },
         }
        
-
+        //Get del peso de civil
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/weight", options)
             .then(response => response.json())
             .then(json => {
@@ -85,22 +86,6 @@ const Civil = () => {
                 console.log(error);
             })  
             
-            const body = {
-                user: currentUser,
-            }
-            options = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(body)
-            }
-            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
-                .then(response => response.json())
-                .then(async json => {
-    
-                })
-            
     },[]);
 
     function success(){
@@ -110,7 +95,7 @@ const Civil = () => {
         }, 1000);
     }
 
-    function handleOnIdle(){
+    function handleOnIdle(){ //Handle on idle devuelve al usuario al login si esta inactivo durante 15 minutos
         const body = {
             user: currentUser,
         }
@@ -175,6 +160,7 @@ const Civil = () => {
     let adminBtn = null
 
 
+    //Dependiendo del tab se muestra un contenido u otro
     if(currentTab === "Estimated"){
         table = <CivilEstimatedDataTable/>
     }else if(currentTab === "Modelled"){
@@ -196,6 +182,7 @@ const Civil = () => {
         dataTableHeight = "500px"
     }
     
+    //El rol de project tiene acceso a editar
     if(currentRole === "Project"){
         if(currentTab === "Estimated" || currentTab === "Edit"){
             if(currentTab === "Edit"){
@@ -207,7 +194,7 @@ const Civil = () => {
         }
     }
 
-    async function downloadCivilsModelled(){
+    async function downloadCivilsModelled(){ //reporte de modelados en civil
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadCivilsModelled/")
         .then(response => response.json())

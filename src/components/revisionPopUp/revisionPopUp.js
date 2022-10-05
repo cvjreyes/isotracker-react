@@ -30,6 +30,7 @@ export default class RevisionPopUp extends Component {
             },
         }
 
+        //Get de los datos de revision de la iso
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/revision/"+this.props.fileName, options)
         .then(response => response.json())
         .then(async json => {
@@ -42,12 +43,12 @@ export default class RevisionPopUp extends Component {
                 issuer_appr: json.rows.issuer_appr
             })
             let d = null
-            if(this.state.issuer_date){
+            if(this.state.issuer_date){ //Si ya tiene fecha de issuer la mostramos por defecto
                 d = this.state.issuer_date
                 let date = new Date(d) 
                 d = date.toISOString().substr(0,10)
                 await this.setState({dateText: d})
-            }else{
+            }else{ //Si no tiene, mostramos por defecto today
                 let today = new Date()
                 today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
                 await this.setState({dateText: today})
@@ -139,7 +140,7 @@ export default class RevisionPopUp extends Component {
         });
     }
 
-    async request(){  
+    async request(){  //Guardar datos de la revision
 
         let newdate = new Date()
         if(this.state.issuer_date){
@@ -163,6 +164,7 @@ export default class RevisionPopUp extends Component {
             body: JSON.stringify(body)
         }
 
+        //Post de la revision
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitRevision", options)
             .then(response => response.json())
             .then(json => {
@@ -177,6 +179,7 @@ export default class RevisionPopUp extends Component {
             },
         }
 
+        //Por alguna razon el popup no se refrescaba cuando guardabas los datos asi que aqui vuelvo a hacer un get
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/revision/"+this.props.fileName, options)
         .then(response => response.json())
         .then(async json => {
@@ -212,7 +215,7 @@ export default class RevisionPopUp extends Component {
         let today = new Date()
         today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
         
-        if(this.state.issuer_date && this.state.issuer_designation && this.state.issuer_draw && this.state.issuer_check && this.state.issuer_appr){
+        if(this.state.issuer_date && this.state.issuer_designation && this.state.issuer_draw && this.state.issuer_check && this.state.issuer_appr){ //Si la revision esta lista el boton es verde
             
             button = <input type="button"  value="REV" id="date" name="date" className="btn btn-success"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", borderColor:"#B0E0E6", width:"40px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} />  
             
@@ -225,7 +228,7 @@ export default class RevisionPopUp extends Component {
             shrink: true,
             }}
         />
-        }else{
+        }else{ //Si no es rojo
             datafield = <TextField
             onChange={this.handleDateChange}
             id="date"
@@ -238,6 +241,7 @@ export default class RevisionPopUp extends Component {
             button = <input type="button" id="date" name="date" value="REV" className="btn btn-danger"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", borderColor:"#B0E0E6", width:"40px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} />
         }
 
+        //Se comprueba si cada uno de los parametros tiene valor. Si tiene se muestra, si no se muestra uno por defecto
         let def_designation, def_draw, def_check, def_aprr
         if(this.state.issuer_designation){
             def_designation = this.state.issuer_designation

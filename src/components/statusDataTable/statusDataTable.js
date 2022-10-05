@@ -5,7 +5,7 @@ import './statusDataTable.css'
 import { Link } from 'react-router-dom';
 
 
-class StatusDataTable extends React.Component{
+class StatusDataTable extends React.Component{ //Tabla de status de las isos
   state = {
     searchText: '',
     searchedColumn: '',
@@ -22,13 +22,15 @@ class StatusDataTable extends React.Component{
 
   async componentDidMount(){
 
-    if(process.env.REACT_APP_PROGRESS === "1"){
+    if(process.env.REACT_APP_PROGRESS === "1"){ //Si el proyecto lleva progreso
       const options = {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
         },
       }
+
+      //Get del progreso maximo
       await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaxProgress", options)
       .then(response => response.json())
       .then(json =>{
@@ -37,23 +39,24 @@ class StatusDataTable extends React.Component{
         })
       })
 
+      //Get de todas las isos
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
           .then(response => response.json())
           .then(async json => {
               var rows = []
               var row = null;
               
-              for(let i = 0; i < json.rows.length; i++){
+              for(let i = 0; i < json.rows.length; i++){ //Por cada iso
                 var condition = ""
-                if(json.rows[i].issued === null){
+                if(json.rows[i].issued === null){ //Comprobamos si esta emitida o no
                   condition = "ON GOING R" + json.rows[i].revision + "*"
                 }else{
                   condition = "ISSUED R" + (json.rows[i].revision - 1)
                 }
-                if(json.rows[i].deleted === 1){
+                if(json.rows[i].deleted === 1){ //Comprobamos si esta eliminada
                   condition = "DELETED"
                 }
-                if(json.rows[i].onhold === 1){
+                if(json.rows[i].onhold === 1){ //Comprobamos si esta en hold
                   condition = "ON HOLD"
                 }
                 if(json.rows[i].tpipes_id){
@@ -82,7 +85,7 @@ class StatusDataTable extends React.Component{
           .catch(error => {
               console.log(error);
           })
-    }else{
+    }else{ //Si no hay progreso lo mismo pero sin el get del progreso
       const options = {
         method: "GET",
         headers: {
@@ -90,6 +93,7 @@ class StatusDataTable extends React.Component{
         },
 
       }
+
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/statusFiles", options)
           .then(response => response.json())
           .then(async json => {

@@ -36,9 +36,9 @@ export default class ByPassPopUp extends Component {
         });
     }
 
-    createByPass(){
+    createByPass(){ //Se crea un bypass
         const notes = this.state.note
-        if(notes === "" || notes === null){
+        if(notes === "" || notes === null){ //Si este campo esta vacio sale warning
             this.setState({
                 blankFields: true
             })

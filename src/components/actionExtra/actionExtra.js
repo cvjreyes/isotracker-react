@@ -19,8 +19,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-const ActionExtra = (props) =>{
+const ActionExtra = (props) =>{ //Para incluir el datepicker en la accion en el caso de emitir una iso
 
+    //Fecha y transmittal por defecto
     let today = new Date()
     today = today.getFullYear() + "-" + today.toLocaleString("en-US", { month: "2-digit" }) + "-" + today.toLocaleString("en-US", { day: "2-digit" })
     const [date, setDate] = useState(today);

@@ -1,3 +1,5 @@
+//Se usa isoControlF en vez de esto
+
 import DataTable from "../../components/datatable/datatable"
 import ReportBtns from "../../components/reportBtns/reportBtns"
 import StateTable from "../../components/stateTable/stateTable"

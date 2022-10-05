@@ -38,7 +38,7 @@ export default class UploadPopUp extends Component {
         this.id = props.id;
     }
 
-    async openModal() {  
+    async openModal() {  //Al abrir el modal
         const options = {
             method: "GET",
             headers: {
@@ -48,15 +48,19 @@ export default class UploadPopUp extends Component {
         await this.setState({
             users: []
         })
+
+        //Cogemos los usuarios
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/users/"+secureStorage.getItem("tab"), options)
         .then(response => response.json())
         .then(async json => {
             let usernames = json.usernames
             for(let i = 0; i < json.usernames.length; i++){
+                //De cada usuario cogemos sus roles
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/getroles/"+json.usernames[i], options)
                 .then(response => response.json())
                 .then(async json =>{
                     for(let j = 0; j < json.roles.length; j++){
+                        //Para cada rol hacemos una concatenacion usuario-rol para crear las opciones
                         if(secureStorage.getItem("tab") === "Design" && (json.roles[j] === "DES" || json.roles[j] === "LDE")){
                             let users_array = this.state.users
                             users_array.push(json.roles[j] + " - " + usernames[i])

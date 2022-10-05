@@ -2,6 +2,7 @@ import React from 'react';
 
 require('./chooseFile.css');
 
+//No se usa
 const styles = {
   fontFamily: 'sans-serif',
   textAlign: 'center',

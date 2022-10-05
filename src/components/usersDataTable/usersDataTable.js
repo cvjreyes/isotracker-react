@@ -8,7 +8,7 @@ import ManageRolesPopUp from '../manageRolesPopUp/manageRolesPopUp';
 import DeleteUserConfPopUp from '../deleteUserConfPopUp/deleteUserConfPopUp';
 
 
-class UsersDataTable extends React.Component{
+class UsersDataTable extends React.Component{ //Tabla de ususarios
   state = {
     searchText: '',
     searchedColumn: '',
@@ -30,8 +30,6 @@ class UsersDataTable extends React.Component{
     this.props.deleteUser(id)
   }
   
-  
-
   async componentDidMount(){
     const options = {
       method: "GET",
@@ -41,7 +39,7 @@ class UsersDataTable extends React.Component{
 
   }
 
-
+    //Estos botones se colocan en cada usuario que tenga el rol para indicar que lo tiene
     const rolesBtnsDict = {"Design": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#00FF7F"}}>DES</button>, 
     "DesignLead": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"lightgreen"}}>LDE</button>, 
     "Stress": <button className="btn"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#00BFFF"}}>STR</button>, 
@@ -59,10 +57,12 @@ class UsersDataTable extends React.Component{
     "Project Admin": <button className="btn"  disabled style={{color:"white", fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px", backgroundColor:"#9400D3"}}>PRA</button>}
     
 
+    //Get de los usuarios
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/users", options)
         .then(response => response.json())
         .then(async json => {
-          for(let i = 0; i < json.length; i++){
+          for(let i = 0; i < json.length; i++){ //Por cada user
+              //Creamos la fila
               let row = {user_id: json[i].id, username: json[i].name, email: json[i].email, roles: null, actions: null}
               
               let users = this.state.users
@@ -81,17 +81,18 @@ class UsersDataTable extends React.Component{
                   },
                   body: JSON.stringify(body)
               }
-
+              //Get de los roles del usuario
               await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/user", options)
                   .then(response => response.json())
                   .then(async json => {
+                      //Acciones que se pueden hacer sobre el ususario
                       row["actions"] = <div style={{display:"flex"}}><DeleteUserConfPopUp  deleteUser={this.deleteUser.bind(this)} id={row.user_id} username={row.username}/><ManageRolesPopUp roles={json.roles} id={row.user_id} email={json.email} submitRoles={this.submitRoles.bind(this)}/></div>                  
+                      
+                      //Por cada rol que tiene el usuario añadimos el indicador(boton) a la fila
                       let roles = [rolesBtnsDict[json.roles[0]]]
-                          for(let j = 1; j < json.roles.length; j++){
-                              roles.push(rolesBtnsDict[json.roles[j]])
-
-                          }
-
+                      for(let j = 1; j < json.roles.length; j++){
+                          roles.push(rolesBtnsDict[json.roles[j]])
+                      }
                       
                       row["roles"] = <div> {roles} </div>
                       if(i % 2 === 0){

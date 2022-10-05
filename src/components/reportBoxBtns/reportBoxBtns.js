@@ -11,7 +11,7 @@ import UploadElectricalModelledPopUp from '../uploadElectricalModelledPopUp/uplo
 import UploadPipesEstimatedPopUp from '../uploadPipesEstimatedPopUp/uploadPipesEstimatedPopUp';
 import UploadBOMPopUp from '../updateBOMPopUp/updateBOMPopUp';
 
-export default class ReportBoxBtns extends Component {
+export default class ReportBoxBtns extends Component { //Botones para extraer y subir diferentes reportes
 
     setErrorReport(){
         this.props.setErrorReport();
@@ -29,7 +29,7 @@ export default class ReportBoxBtns extends Component {
 
     render() {
         let adminBtns, modelledBtn, bomBtn = null
-        if(this.props.user === "super@user.com"){
+        if(this.props.user === "super@user.com"){ //Super tiene acceso a subir algunos archivos extra
             adminBtns = <div><button className="btn btn-bg btn-info" style={{float:"left", marginTop:"10px", marginLeft:"10px", height:"150px", width:"150px"}} onClick={() => this.props.downloadStatus3D()}>Status 3D</button>
             <UploadReportPopUp setUploading={this.setUploading.bind(this)} setErrorReport={this.setErrorReport.bind(this)}/>
             <UploadPipesEstimatedPopUp setUploading={this.setUploading.bind(this)} setErrorReport={this.setErrorReport.bind(this)} setErrorReportData={this.setErrorReportData.bind(this)}/>

@@ -28,7 +28,7 @@ export default class AcceptByPassPopUp extends Component {
         });
     }
 
-    async acceptByPass(){
+    async acceptByPass(){ //Aceptar un bypass
         
         const body ={
           id : this.state.id,
@@ -41,6 +41,7 @@ export default class AcceptByPassPopUp extends Component {
           },
           body: JSON.stringify(body)
       }
+      //Post del accept
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/answerByPass", options)
             .then(response => response.json())
             .then(async json => {

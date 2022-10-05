@@ -5,7 +5,7 @@ import Highlighter from 'react-highlight-words';
 import './binTable.css'
 import { Link } from 'react-router-dom';
 
-
+//Tabla de la papelera de reciclaje
 class BinTable extends React.Component{
   state = {
     searchText: '',
@@ -25,7 +25,6 @@ class BinTable extends React.Component{
   
 
   componentDidMount(){
-
     
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/acronyms")
       .then(response => response.json())
@@ -53,16 +52,19 @@ class BinTable extends React.Component{
       },
       body: JSON.stringify(body)
   }
+    //Get de las isos que estan eliminadas
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
         .then(response => response.json())
         .then(async json => {
                 var rows = []
                 for(let i = 0; i < json.rows.length; i++){
+                  //Formamos la fila de la tabla
                     var row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type: json.rows[i].code, revision: "*R" + json.rows[i].revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user}
                  
                     rows.push(row)                
                 }
 
+                //Filtros
                 const filterRow = [{key:0, id: <div><input type="text" className="filter__input" placeholder="ISO ID" onChange={(e) => this.filter(0, e.target.value)}/></div>, type: <div><input type="text" className="filter__input" placeholder="Type" onChange={(e) => this.filter(1, e.target.value)}/></div>, revision: <div><input type="text" className="filter__input" placeholder="Revision" onChange={(e) => this.filter(2,e.target.value)}/></div>, date: <div><input type="text" className="filter__input" placeholder="Date" onChange={(e) => this.filter(3,e.target.value)}/></div>, from: <div><input type="text" className="filter__input" placeholder="From" onChange={(e) => this.filter(4,e.target.value)}/></div>, user: <div><input type="text" className="filter__input" placeholder="User" onChange={(e) => this.filter(5,e.target.value)}/></div>}]
                 
                 this.setState({data : rows, selectedRows: [], displayData: rows});
@@ -170,7 +172,7 @@ class BinTable extends React.Component{
     await this.setState({displayData: resultData})
   }
 
-  getMaster(fileName){
+  getMaster(fileName){ //Descarga del master
 
     const options = {
       method: "GET",

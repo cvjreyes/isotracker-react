@@ -26,7 +26,7 @@ const CryptoJS = require("crypto-js");
         }
     });
 
-const BinBtn = props =>{
+const BinBtn = props =>{ //Boton para enviar a la papelera de reciclaje una iso
     if(props.currentTab === "Recycle bin"){
         secureStorage.setItem("tab", "Recycle bin")
     }

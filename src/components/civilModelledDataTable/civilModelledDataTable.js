@@ -2,7 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Table } from 'antd';
 
-class CivilModelledDataTable extends React.Component{
+class CivilModelledDataTable extends React.Component{ //Tabla de civils modelados
   state = {
     searchText: '',
     searchedColumn: '',
@@ -27,6 +27,7 @@ class CivilModelledDataTable extends React.Component{
         },
     }
 
+    //Get de los modelados
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/modelled", options)
       .then(response => response.json())
       .then(async json => {
@@ -34,7 +35,7 @@ class CivilModelledDataTable extends React.Component{
         var row = null
         
         for(let i = 0; i < json.rows.length; i++){
-
+            //Creamos las filas
             if(i % 2 === 0){
               row = {area: json.rows[i].area, tag: json.rows[i].tag, type: json.rows[i].type, weight: json.rows[i].weight, status: json.rows[i].status, progress: json.rows[i].progress, color: "#fff"}
             }else{

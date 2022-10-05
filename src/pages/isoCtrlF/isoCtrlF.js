@@ -55,8 +55,7 @@ import {useHistory} from "react-router";
 import ByPassDataTable from "../../components/byPassDataTable/byPassDataTable"
 import IssuedDataTable from "../../components/issuedDataTable/issuedDataTable"
 
-const IsoCtrlF = () => {
-   
+const IsoCtrlF = () => {   
     
     document.title= process.env.REACT_APP_APP_NAMEPROJ
     const [currentRole, setCurrentRole] = useState();
@@ -135,7 +134,7 @@ const IsoCtrlF = () => {
 
     useEffect(() =>{
 
-        if(process.env.REACT_APP_PROGRESS === "0"){
+        if(process.env.REACT_APP_PROGRESS === "0"){ //Si el proyecto tiene progreso mostramos la pantalla de carga de 3dtracker
 
             setContent(<div className="content">
             <LoadingScreen progress={"25"}/>
@@ -154,7 +153,7 @@ const IsoCtrlF = () => {
                 setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
                 setContent(null)            
             }, 2300);
-        }else{
+        }else{ //Si no simplemente isotracker
             setNavBar(<NavBar onChange={value => setCurrentTab(value)}/>)
             setContent(null)   
         }
@@ -165,6 +164,7 @@ const IsoCtrlF = () => {
                 "Content-Type": "application/json"
             },
         }
+        //Cogemos los datos de isocontrol
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolWeights", options)
             .then(response => response.json())
             .then(async json => {
@@ -172,14 +172,9 @@ const IsoCtrlF = () => {
                 await setNotModelledWeight((json.notModelledWeight/1000).toFixed(2))
                 await setTotalIsocontrolWeight(((json.modelledWeight/1000) + (json.notModelledWeight/1000)).toFixed(2))
             })
-          
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
-            .then(response => response.json())
-            .then(async json => {
-
-            })
     }, [])
     
+    //Cambio de rol
     useEffect(()=>{
         const body = {
             user: currentUser,
@@ -205,7 +200,9 @@ const IsoCtrlF = () => {
             )
             .catch(error => {
                 console.log(error);
-            })       
+            })      
+            
+            //Eliminamos todas las posibles alertas
             setErrorPI(false)
             setErrorUnclaimR(false)
             setErrorCL(false)
@@ -221,7 +218,7 @@ const IsoCtrlF = () => {
             
     },[currentRole]);
 
-    useEffect(()=>{
+    useEffect(()=>{ //Cada vez que cambiamos de tab tambien eliminamos las alertas
         setErrorUnclaimR(false)
         setErrorPI(false);
         setErrorCL(false)
@@ -250,6 +247,7 @@ const IsoCtrlF = () => {
 
     }
 
+    //Claim de isometricas
     const claim = async(event) => {
         setErrorUnclaimR(false)
         setErrorReports(false)
@@ -262,11 +260,11 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
-            localStorage.setItem("update", true)
-            if(currentTab === "Process"){
-                for (let i = 0; i < selected.length; i++){
+            localStorage.setItem("update", true) //Indicamos que va a ver un update en los datos
+            if(currentTab === "Process"){ //Si estamos en procesos
+                for (let i = 0; i < selected.length; i++){ //Por cada iso seleccionada
                 
                     const body ={
                         user : currentUser,
@@ -280,9 +278,10 @@ const IsoCtrlF = () => {
                         },
                         body: JSON.stringify(body)
                     }
+                    //Hacemos el claim
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/claimProc", options)
                 }
-            }else if(currentTab === "Instrument"){
+            }else if(currentTab === "Instrument"){ //Lo mismo que con procesos
                 for (let i = 0; i < selected.length; i++){
                 
                     const body ={
@@ -300,7 +299,7 @@ const IsoCtrlF = () => {
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/claimInst", options)
                 }
             }else{
-                for (let i = 0; i < selected.length; i++){
+                for (let i = 0; i < selected.length; i++){ //Lo mismo otra vez
                 
                     const body ={
                         user : currentUser,
@@ -340,7 +339,7 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si al menos hay una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -357,6 +356,7 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+                //Hacemos el force claim
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/forceClaim", options)
             }
             setUpdateData(!updateData)
@@ -377,10 +377,10 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si al menos hay una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
-            if (currentRole === "Process"){
+            if (currentRole === "Process"){ //Si estamos en procesos
                 for (let i = 0; i < selected.length; i++){
                     const body ={
                         user : currentUser,
@@ -394,9 +394,10 @@ const IsoCtrlF = () => {
                         },
                         body: JSON.stringify(body)
                     }
+                    //Hacemos el unclaim
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unclaimProc", options)
                 }
-            }else if(currentRole === "Instrument"){
+            }else if(currentRole === "Instrument"){ //Lo mismo que para instrumentos
                 for (let i = 0; i < selected.length; i++){
                     const body ={
                         user : currentUser,
@@ -412,7 +413,7 @@ const IsoCtrlF = () => {
                     }
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unclaimInst", options)
                 }
-            }else{
+            }else{ //Lo mismo otrav vez
                 for (let i = 0; i < selected.length; i++){
                     const body ={
                         user : currentUser,
@@ -448,7 +449,7 @@ const IsoCtrlF = () => {
         
     }
 
-    async function forceUnclaim(fileName){
+    async function forceUnclaim(fileName){ //El force unclaim es individual y va por filename
         setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorCL(false)
@@ -474,6 +475,7 @@ const IsoCtrlF = () => {
             },
             body: JSON.stringify(body)
         }
+        //Post del force unclaim
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/forceUnclaim", options)
         await setUpdateData(!updateData)
         setLoading(false)
@@ -493,7 +495,7 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Por cada iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -510,6 +512,7 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+                //Post del verify
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/verify", options)
             }
             await setUpdateData(!updateData)
@@ -520,7 +523,7 @@ const IsoCtrlF = () => {
         }
     }
 
-    async function cancelVerifyClick(filename){
+    async function cancelVerifyClick(filename){ //Cancelar la verificacion es individual y va por filename
         setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorUnclaim(false)
@@ -552,9 +555,9 @@ const IsoCtrlF = () => {
         setSelected([])
     }
 
-    async function transaction(destiny, comments){
+    async function transaction(destiny, comments){ //Requiere la bandeja de destino y puede llevar comentarios
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si hay al menos una iso seleccionada
             setErrorUnclaimR(false)
             setWarningSelected(false)
             setErrorReports(false)
@@ -567,11 +570,11 @@ const IsoCtrlF = () => {
             setBlocked(false)
             setErrorDeleteUser(false)
             
-            if(destiny === "Design"){
+            if(destiny === "Design"){ //Si va a diseño
                 if(comment.length > 1){
                     setComment(" ")
                     localStorage.setItem("update", true)
-                    for (let i = 0; i < selected.length; i++){
+                    for (let i = 0; i < selected.length; i++){ //Por cada iso
                         const body ={
                             user : currentUser,
                             fileName: selected[i],
@@ -588,6 +591,7 @@ const IsoCtrlF = () => {
                             },
                             body: JSON.stringify(body)
                         }
+                        //Post de la transaccion
                         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                         .then(response => response.json())
                         .then(json =>{
@@ -601,7 +605,7 @@ const IsoCtrlF = () => {
                     }
                 }else{
                 }
-            }else if (destiny === "LDE/Isocontrol"){
+            }else if (destiny === "LDE/Isocontrol"){ //Si va a LOS
                 for (let i = 0; i < selected.length; i++){
                     const options = {
                         method: "GET",
@@ -609,6 +613,7 @@ const IsoCtrlF = () => {
                             "Content-Type": "application/json"
                         },
                     }
+                    //Se hace la comprobacion de que si ha pasado por p/i ya se ha cerrado y no queda nada pendiente
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/piStatus/"+selected[i], options)
                     .then(response => response.json())
                     .then(async json =>{
@@ -636,6 +641,7 @@ const IsoCtrlF = () => {
                                 },
                                 body: JSON.stringify(body)
                             }
+                            //Se hace el post de la transaccion
                             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                             .then(response => response.json())
                             .then(async json=>{
@@ -656,18 +662,12 @@ const IsoCtrlF = () => {
                 }
                 await setUpdateData(!updateData)
                 setLoading(false)
-            }else if(destiny === "On hold"){
+            }else if(destiny === "On hold"){ //Si va a hold (solo pasa si no hay progreso)
                 localStorage.setItem("update", true)
-                let deleted, hold = 0
-
-                if(destiny === "Recycle bin"){
-                    deleted = 1
-                }
-
-                if(destiny === "On hold"){
-                    hold = 1
-                }
-                for (let i = 0; i < selected.length; i++){
+                let deleted = 0
+                let hold = 1
+            
+                for (let i = 0; i < selected.length; i++){//Por cada iso
                     
                     const body ={
                         user : currentUser,
@@ -676,7 +676,7 @@ const IsoCtrlF = () => {
                         role: secureStorage.getItem("role"),
                         comment: comments,
                         deleted: deleted,
-                        onhold: hold
+                        onhold: hold //En este caso hold = 1
                     }
                     const options = {
                         method: "POST",
@@ -685,6 +685,7 @@ const IsoCtrlF = () => {
                         },
                         body: JSON.stringify(body)
                     }
+                    //Hacemos el post de la transaccion
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                     .then(response => response.json())
                         .then(json =>{
@@ -699,13 +700,10 @@ const IsoCtrlF = () => {
                 localStorage.setItem("update", true)
                 let deleted, hold = 0
 
-                if(destiny === "Recycle bin"){
+                if(destiny === "Recycle bin"){ //Si se elimina
                     deleted = 1
                 }
 
-                if(destiny === "On hold"){
-                    hold = 1
-                }
                 for (let i = 0; i < selected.length; i++){
                     
                     const body ={
@@ -724,6 +722,7 @@ const IsoCtrlF = () => {
                         },
                         body: JSON.stringify(body)
                     }
+                    //Se hace el post de la transaccion
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/transaction", options)
                     .then(response => response.json())
                         .then(json =>{
@@ -756,7 +755,7 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -774,6 +773,7 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+                //Se hace el post del retorno al lider
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLead", options)
                 .then(response => response.json())
                         .then(json =>{
@@ -805,7 +805,7 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -822,6 +822,7 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+                //Post del retorno 
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/returnLeadStress", options)
                 .then(response => response.json())
                 .then(json =>{
@@ -853,7 +854,7 @@ const IsoCtrlF = () => {
         setBlocked(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
             for (let i = 0; i < selected.length; i++){
@@ -871,6 +872,7 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+                //Post del restore
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/restore", options)
                 successAlert()
             }
@@ -883,7 +885,7 @@ const IsoCtrlF = () => {
         }
     }
 
-    async function sendProcessClick(fileName){
+    async function sendProcessClick(fileName){ //Enviar a procesos es individual
         setErrorUnclaimR(false)
         setErrorReports(false)
         setErrorUnclaim(false)
@@ -909,6 +911,7 @@ const IsoCtrlF = () => {
                 },
                 body: JSON.stringify(body)
             }
+            //Post del envio a procesos
             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/process", options)
         
         await setUpdateData(!updateData)
@@ -916,7 +919,7 @@ const IsoCtrlF = () => {
         setSelected([])
     }
 
-    async function sendInstrumentClick(fileName){
+    async function sendInstrumentClick(fileName){ //Lo mismo que el anterior
         setErrorReports(false)
         setErrorUnclaim(false)
         setErrorUnclaimR(false)
@@ -949,7 +952,7 @@ const IsoCtrlF = () => {
         setSelected([])
     }
 
-    async function sendCancelProcessClick(fileName){
+    async function sendCancelProcessClick(fileName){ //Lo mismo pero para cancelar
         setErrorReports(false)
         setErrorUnclaim(false)
         setErrorUnclaimR(false)
@@ -982,7 +985,7 @@ const IsoCtrlF = () => {
         setSelected([])
     }
 
-    async function sendCancelInstrumentClick(fileName){
+    async function sendCancelInstrumentClick(fileName){ //Lo mismo pero para instrumentacion
         setErrorReports(false)
         setErrorUnclaim(false)
         setErrorUnclaimR(false)
@@ -1029,11 +1032,11 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)    
     
-            for (let i = 0; i < selected.length; i++){
+            for (let i = 0; i < selected.length; i++){//Por cada iso
 
                 const options = {
                     method: "GET",
@@ -1042,17 +1045,21 @@ const IsoCtrlF = () => {
                     }
                 }
                 
+                //Cogemos los attach
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getAttach/"+selected[i], options)
                 .then(response => response.json())
                 .then(async json => {
+                    //Cogemos el master de la iso
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
                     .then(res => res.blob())
                     .then( async response =>{
+                        //Lo metemos en un zip
                         setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
-                        for(let i = 0; i < json.length; i++){
+                        for(let i = 0; i < json.length; i++){ //Por cada attach
                             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+json[i], options)
                             .then(res => res.blob())
                             .then(response =>{
+                                //Lo agregamos al zip
                                 setDownloadzip(downloadZip.file(json[i], new Blob([response]),{binary:true}))   
                             })
                         }
@@ -1064,11 +1071,13 @@ const IsoCtrlF = () => {
                 
         
             }
+            //Renombramos el zip
             const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
             downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
                 saveAs(blob,  zipname)
             })  
             
+            //Descargamos el zip
             await setDownloadzip(new JSZip())   
             //await setAttachFiles(null)
             await setUpdateData(!updateData)
@@ -1090,11 +1099,11 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if(selected.length > 0){
+        if(selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)    
     
-            for (let i = 0; i < selected.length; i++){
+            for (let i = 0; i < selected.length; i++){//Por cada iso
 
                 const options = {
                     method: "GET",
@@ -1103,20 +1112,23 @@ const IsoCtrlF = () => {
                     }
                 }
                 
-                
+                //Cogemos el master
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/download/"+selected[i], options)
                 .then(res => res.blob())
                 .then( async response =>{
+                    //Lo añadimos al zip
                     setDownloadzip(downloadZip.file(selected[i], new Blob([response]),{binary:true}))   
                     
                 })
         
             }
+            //Lo renombramos
             const zipname = String(Date().toLocaleString().replace(/\s/g, '-').split('-G').slice(0, -1))
             downloadZip.generateAsync({type:"blob"}).then(function (blob) { // 1) generate the zip file
                 saveAs(blob,  zipname)
             })  
             
+            //Se descarga
             await setDownloadzip(new JSZip())   
             //await setAttachFiles(null)
             await setUpdateData(!updateData)
@@ -1127,22 +1139,25 @@ const IsoCtrlF = () => {
         }
     }
 
+    //Se aplica a cualquier reporte
     async function downloadHistory(){
         setErrorReports(false)
 
+        //Cogemos los datos para el reporte
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadHistory/")
         .then(response => response.json())
         .then(json => {
             json = JSON.parse(json)
-            const headers = ["ISO_ID", "FROM", "TO", "DATE", "COMMENT", "USER"]
-            for (let i=0; i<json.length; i++){
+            const headers = ["ISO_ID", "FROM", "TO", "DATE", "COMMENT", "USER"] //Columnas que tendra el excel
+            for (let i=0; i<json.length; i++){ //Recorremos las filas
                 json[i].created_at = json[i].created_at.substring(8,10) + "/" + json[i].created_at.substring(5,7) + "/" + json[i].created_at.substring(0,4);
             } 
+            //Lo exportamos como excel
             exportToExcel(json, "Comments", headers)
         })
     }
 
-    async function downloadStatus(){
+    async function downloadStatus(){ 
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadStatus/")
@@ -1229,24 +1244,28 @@ const IsoCtrlF = () => {
         })
     }
 
+    //Este metodo convierte los datos en un excel
     const exportToExcel = (apiData, fileName, headers) => {
 
         setErrorReports(false)
         const fileType =
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"; //Tipo de archivo
+          //Columnas por defecto
         const header_cells = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1', 'W1']
         const fileExtension = ".xlsx";
 
         let wscols = []
-        for(let i = 0; i < headers.length; i++){
+        for(let i = 0; i < headers.length; i++){ //Declaramos el ancho de la columnas
             wscols.push({width:35})
         }
 
         const ws = XLSX.utils.json_to_sheet(apiData);   
         ws["!cols"] = wscols
-        for(let i = 0; i < headers.length; i++){
+        for(let i = 0; i < headers.length; i++){ //Sustituimos las columnas por defecto por las correspondientes a cada reporte
             ws[header_cells[i]].v = headers[i]
         }
+
+        //Creamos el excel y lo descargamos
         const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
         const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         const data = new Blob([excelBuffer], { type: fileType });
@@ -1267,7 +1286,7 @@ const IsoCtrlF = () => {
         setErrorReports(true)
     }
 
-    async function issue(transmittal, date){
+    async function issue(transmittal, date){ //Emision de una iso
         setErrorUnclaimR(false)
         setErrorReports(false)
         setTransactionSuccess(false);
@@ -1278,10 +1297,10 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if (selected.length > 0){
+        if (selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
-            for (let i = 0; i < selected.length; i++){
+            for (let i = 0; i < selected.length; i++){ //Por cada iso
                 const body ={
                     user : currentUser,
                     file: selected[i],
@@ -1296,6 +1315,8 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+
+                //post de la emision
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/toIssue", options)
                 .then(response => response.json())
                 .then(json =>{
@@ -1324,10 +1345,10 @@ const IsoCtrlF = () => {
         setBlocked(false)
         setErrorDeleteUser(false)
         
-        if (selected.length > 0){
+        if (selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
-            for (let i = 0; i < selected.length; i++){
+            for (let i = 0; i < selected.length; i++){ //Por cada iso
                 const body ={
                     user : currentUser,
                     file: selected[i],
@@ -1341,6 +1362,7 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+                //Post de la nueva revision
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/newRev", options)
                 .then(response => response.json())
                 .then(json =>{
@@ -1361,7 +1383,7 @@ const IsoCtrlF = () => {
         }
     }
 
-    async function request() {
+    async function request() { //Request por parte de design para crear una nueva revision
         setErrorUnclaimR(false)
         setErrorReports(false)
         setTransactionSuccess(false);
@@ -1372,10 +1394,10 @@ const IsoCtrlF = () => {
         setErrorReportD(false)
         setErrorDeleteUser(false)
         
-        if (selected.length > 0){
+        if (selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
-            for (let i = 0; i < selected.length; i++){
+            for (let i = 0; i < selected.length; i++){ //Por cada iso
                 const body ={
                     user : currentUser,
                     file: selected[i],
@@ -1388,6 +1410,7 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+                //Post de la request
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/request", options)
                 
             }
@@ -1409,13 +1432,13 @@ const IsoCtrlF = () => {
         setBlocked(false)
         setErrorDeleteUser(false)
         
-        if (selected.length > 0){
+        if (selected.length > 0){ //Si hay al menos una iso seleccionada
             setLoading(true)
             localStorage.setItem("update", true)
             if(comments.length < 1){
                 comments = comment
             }
-            for (let i = 0; i < selected.length; i++){
+            for (let i = 0; i < selected.length; i++){ //Por cada iso
                 const body ={
                     user : currentUser,
                     file: selected[i],
@@ -1431,6 +1454,7 @@ const IsoCtrlF = () => {
                     },
                     body: JSON.stringify(body)
                 }
+                //Post del retorno
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/returnIso", options)
                 .then(response => response.json())
                 .then(json =>{
@@ -1455,7 +1479,7 @@ const IsoCtrlF = () => {
         successAlert()
     }
 
-    async function unlock(isoid){
+    async function unlock(isoid){ //Individual por cada iso
 
         setErrorUnclaimR(false)
         setErrorReports(false)
@@ -1481,6 +1505,7 @@ const IsoCtrlF = () => {
               body: JSON.stringify(body)
           }
       
+          //Post del desbloqueo
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/unlock", options)
           .then(response => {
             setTransactionSuccess(true)
@@ -1489,7 +1514,7 @@ const IsoCtrlF = () => {
           setUpdateData(!updateData)
     }
 
-    async function rename(newName, oldName){
+    async function rename(newName, oldName){ //Individual por cada iso
 
         setErrorUnclaimR(false)
         setErrorReports(false)
@@ -1515,7 +1540,8 @@ const IsoCtrlF = () => {
             },
             body: JSON.stringify(body)
         }
-
+        
+        //Post del renombrado
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/rename", options)
         .then(response => console.log("Cambiado"))
 
@@ -1524,7 +1550,7 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
-    async function cancelRev(filename){
+    async function cancelRev(filename){ //Individual por cada iso
 
         setErrorUnclaimR(false)
         setErrorReports(false)
@@ -1551,6 +1577,7 @@ const IsoCtrlF = () => {
             body: JSON.stringify(body)
         }
 
+        //Post del cancel
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/cancelRev", options)
         .then(response => response.json())
         .then(json =>{
@@ -1569,7 +1596,7 @@ const IsoCtrlF = () => {
         setErrorReportD(true)
     }
 
-    async function addUser(username, email, roles){
+    async function addUser(username, email, roles){ //se agreaga un user con esta informacion
 
         setErrorUnclaimR(false)
         setErrorReports(false)
@@ -1597,6 +1624,7 @@ const IsoCtrlF = () => {
             body: JSON.stringify(body)
         }
 
+        //Post del nuevo user
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/createUser", options)
         .then(response => response.json())
         .then(json =>{
@@ -1608,7 +1636,7 @@ const IsoCtrlF = () => {
         
     }
 
-    async function deleteUser(id){
+    async function deleteUser(id){ //Se elimina un user por su id
 
         setErrorUnclaimR(false)
         setErrorReports(false)
@@ -1630,6 +1658,7 @@ const IsoCtrlF = () => {
             }
         }
 
+        //Post del delete
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/user/"+id, options)
         .then(response => response.json())
         .then(json =>{
@@ -1644,7 +1673,7 @@ const IsoCtrlF = () => {
 
     }
 
-    async function submitRoles(id, roles){
+    async function submitRoles(id, roles){ //Actualizacion de los roles de un user
         setErrorUnclaimR(false)
         setErrorReports(false)
         setTransactionSuccess(false);
@@ -1670,6 +1699,7 @@ const IsoCtrlF = () => {
             body: JSON.stringify(body)
         }
 
+        //Post de los roles
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/users/manageRoles", options)
         .then(response => response.json())
         .then(json =>{
@@ -1699,7 +1729,8 @@ const IsoCtrlF = () => {
         secureStorage.clear()
         history.push("/" + process.env.REACT_APP_PROJECT)
     }
-    async function exportModelled(){
+
+    async function exportModelled(){ //Otro reporte
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportModelled/")
@@ -1710,7 +1741,7 @@ const IsoCtrlF = () => {
         })
     }
 
-    async function exportNotModelled(){
+    async function exportNotModelled(){ //otro reporte
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportNotModelled/")
@@ -1722,7 +1753,7 @@ const IsoCtrlF = () => {
         })
     }
 
-    async function exportFull(){
+    async function exportFull(){ //Otro reporte (de modeladas y no modeladas)
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportFull/")
@@ -1733,7 +1764,7 @@ const IsoCtrlF = () => {
         })
     }
 
-    async function exportLineIdGroup(){
+    async function exportLineIdGroup(){ //Otro reporte
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportLineIdGroup/")
@@ -1745,7 +1776,7 @@ const IsoCtrlF = () => {
         })
     }
 
-    async function exportHolds(){
+    async function exportHolds(){ //Porque hay tantos reportes
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportHolds/")
@@ -1757,7 +1788,7 @@ const IsoCtrlF = () => {
         })
     }
 
-    async function exportHoldsNoProgress(){
+    async function exportHoldsNoProgress(){ //No paran
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportHoldsNoProgress/")
@@ -1772,7 +1803,7 @@ const IsoCtrlF = () => {
         })
     }
 
-    async function downloadBOM(){
+    async function downloadBOM(){ //Descarga de la bom table actual del proyecto
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/downloadBOM/")
         .then(res => res.blob())
         .then(response => {
@@ -1798,7 +1829,7 @@ const IsoCtrlF = () => {
         });
   }
 
-    async function exportTimeTrack(){
+    async function exportTimeTrack(){ //He programado mas reportes que otra cosa
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportTimeTrack")
@@ -1810,7 +1841,7 @@ const IsoCtrlF = () => {
         })
     }
 
-    async function exportByPass(){
+    async function exportByPass(){ // :(
         setErrorReports(false)
 
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exportByPass")
@@ -1825,7 +1856,7 @@ const IsoCtrlF = () => {
         })
     }
 
-    async function sendHold(fileName){
+    async function sendHold(fileName){ //Individual por cada iso
         const body ={
             fileName : fileName
           }
@@ -1837,18 +1868,20 @@ const IsoCtrlF = () => {
             },
             body: JSON.stringify(body)
         }
+        //Post el hold
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/sendHold", options)
           await setUpdateData(!updateData)
           await setTransactionSuccess(true)
     }
 
-    async function excludeHold(fileName){
+    async function excludeHold(fileName){ //Individual por cada iso
         const options = {
             method: "GET",
             headers: {
                 "Content-Type": "application/pdf"
             }
           }
+          //Post de la exclusion
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/excludeHold/"+fileName, options)
           await setUpdateData(!updateData)
           await setTransactionSuccess(true)
@@ -1870,6 +1903,7 @@ const IsoCtrlF = () => {
             body: JSON.stringify(body)
         }
 
+        //Post del retorno
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/returnToLOS", options)
         .then(response => response.json())
         .then(json =>{
@@ -1880,7 +1914,7 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
-    async function unlockAll(){
+    async function unlockAll(){ //Desbloqueo de todas las isos bloqueadas
         const options = {
             method: "POST",
             headers: {
@@ -1899,7 +1933,7 @@ const IsoCtrlF = () => {
 
     }
 
-    async function createByPass(type, notes, id){
+    async function createByPass(type, notes, id){ //Nuevo bypass con esta info
         const body = {
             type: type,
             notes: notes,
@@ -1915,6 +1949,7 @@ const IsoCtrlF = () => {
             body: JSON.stringify(body)
         }
 
+        //Post del bypass
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/createByPass", options)
         .then(response => response.json())
         .then(json =>{
@@ -1925,7 +1960,7 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
-    async function editByPass(type, notes, id){
+    async function editByPass(type, notes, id){ //Editamos un bypass ya existente
         const body = {
             type: type,
             notes: notes,
@@ -1940,6 +1975,7 @@ const IsoCtrlF = () => {
             body: JSON.stringify(body)
         }
 
+        //Post del edit
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/editByPass", options)
         .then(response => response.json())
         .then(json =>{
@@ -1950,7 +1986,7 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
-    async function deleteByPass(id){
+    async function deleteByPass(id){ //Eliminamos bypass por id
         const body = {
             id: id
         }
@@ -1973,6 +2009,7 @@ const IsoCtrlF = () => {
         setUpdateData(!updateData)
     }
 
+    //Dependiendo del currentTab (un useState que controla donde estamos dentro de isotracker) se muestra un contenido diferente
     if(currentTab === "Upload IsoFiles"){
         secureStorage.setItem("tab", "Upload IsoFiles")
         tableContent = <DragAndDrop mode={"upload"} role={currentRole} user={currentUser}  uploaded={getProgress.bind(this)}/>
@@ -2002,7 +2039,7 @@ const IsoCtrlF = () => {
         tableContent = <ModelledDataTable role={currentRole} unlock = {unlock.bind(this)}></ModelledDataTable>
     }if(currentRole !== "Review"){
         myTrayBtn = <MyTrayBtn onChange={value => setCurrentTab(value)} currentTab = {currentTab}/>
-    }if(currentRole === "SpecialityLead"){
+    }if(currentRole === "SpecialityLead"){ //En funcion del rol tambien puede variar apareciendo mas opciones
         if (currentTab === "Users"){
             usersButton = <button className="navBar__button" onClick={()=>setCurrentTab("Users")} style={{width:"100px"}}><img src={UsersIcon} alt="hold" className="navBar__icon" style={{marginRight:"0px"}}></img><p className="navBar__button__text">Users</p></button>
             secureStorage.setItem("tab", "Users")
@@ -2033,6 +2070,8 @@ const IsoCtrlF = () => {
 
     }
 
+    //Esto es un if que se ha ido haciendo mas grande con el tiempo y sirve para gestionar que botones de accion(los de abajo)
+    //aparecen dependiendo del rol del user y la bandeja en la que esta
     if(((currentRole === "Design" || currentRole === "DesignLead") && currentTab === "Design") || 
     ((currentRole === "Stress" || currentRole === "StressLead") && currentTab === "Stress") ||
     ((currentRole === "Supports" || currentRole === "SupportsLead") && currentTab === "Supports") ||
@@ -2055,6 +2094,7 @@ const IsoCtrlF = () => {
         actionButtons = null
     }
 
+    //Tambien hay algunos botones extra que dependen de la bandeja
     let recycleBinBtn, onHoldBtn, issuedBtn, reportsBtn, processBtn, instrumentationBtn, byPassBtn = null
 
     if(currentTab === "Recycle bin"){
@@ -2145,6 +2185,7 @@ const IsoCtrlF = () => {
     let editCustomBtn = null
     let uploadBOMBtn = null
 
+    //Mas posibles opciones de contenido, en este caso para la parte de isocontrol (se dejara de usar cuando se implemente el nuevo)
     if(process.env.REACT_APP_ISOCONTROL === "1" && currentRole === "SpecialityLead"){
         
         if(currentTab === "IsoControl"){

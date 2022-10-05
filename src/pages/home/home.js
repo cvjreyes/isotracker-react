@@ -51,6 +51,7 @@ const Home = () =>{
         }
     }, [])
 
+    //Simulacion de pantalla de carga (queda guay xd)
     useEffect(() =>{
 
         setContent(<LoadingScreen3D progress={"25"}/>)
@@ -60,29 +61,12 @@ const Home = () =>{
         setTimeout(() => {
             setContent(<LoadingScreen3D progress={"100"}/>)
         }, 2000)
-        setTimeout(() => {
+        setTimeout(() => { //Cuando acaba muestra la navbar y el menu principal
             setNavBar(<NavBar/>)
-            setContent(<MenuList/>)    
+            setContent(<MenuList/>) 
             setCircles(<div><img src={GreenCircle} alt="greenCircle" className="greenCircle__image"/>
             <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/></div>)        
         }, 2300);
-
-        const body = {
-            user: secureStorage.getItem("user"),
-        }
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body)
-        }
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
-            .then(response => response.json())
-            .then(async json => {
-
-            })
-
           
     }, [])
 

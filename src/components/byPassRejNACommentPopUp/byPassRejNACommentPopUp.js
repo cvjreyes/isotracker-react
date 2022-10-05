@@ -18,7 +18,7 @@ export default class ByPassRejNACommentPopUp extends Component {
     }
 
     componentDidMount(){
-        if(this.state.type === "Reject"){
+        if(this.state.type === "Reject"){ //El pop up puede abrirse en modo reject o N/A
             this.setState({button: <button className="csp__cancel__btn btn-sm btn-danger" style={{marginRight:"5px", width:"60px", height:"27px"}} onClick={() => this.openModal()}>Reject</button>})
         }else{
             this.setState({button: <button button className="ready__btn btn-sm btn-info" style={{backgroundColor:"#66A9F4", width:"60px", height:"27px"}} onClick={() => this.openModal()}>N/A</button>})     
@@ -39,7 +39,7 @@ export default class ByPassRejNACommentPopUp extends Component {
         });
     }
 
-    async rejectByPass(){
+    async rejectByPass(){ //Aunque se llama rejectByPass, dependiendo del modo llama a reject o n/a
         if(this.state.type === "Reject"){
             this.props.rejectByPass(this.state.id, this.state.comments)
         }else{

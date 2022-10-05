@@ -20,8 +20,9 @@ export default class Alert extends Component {
 
     componentDidMount(){
         let alertComponent = null
-        if(this.state.type === "success"){
+        if(this.state.type === "success"){ //Si la alerta es de tipo success
             if(this.state.change){
+                //Se construye la alerta a partir de la info recibida desde el padre
                 alertComponent = <div className="alert__success">
                                     
                 <img src={SuccessIcon} className="alert__icon" alt="success"></img>
@@ -43,8 +44,9 @@ export default class Alert extends Component {
                                 </div>
             }
             this.setState({alert: alertComponent})
-        }else if(this.state.type === "error"){
+        }else if(this.state.type === "error"){ //Si es de error
             if(this.state.change){
+                //Lo mismo pero incluye un campo de subtexto
                 alertComponent = <div className="alert__error">
                                     
                 <img src={ErrorIcon} className="alert__icon" alt="error"></img>
@@ -68,7 +70,7 @@ export default class Alert extends Component {
                                 </div>
             }
             this.setState({alert: alertComponent})
-        }else if(this.state.type==="qtracker"){
+        }else if(this.state.type==="qtracker"){ //Si la alerta es de pit(ya no se usa excepto por FMC)
             alertComponent = <div className="alert__qtracker">
                                     
                                     <img src={SuccessIcon} className="alert__icon" alt="success"></img>
@@ -79,8 +81,8 @@ export default class Alert extends Component {
                                 
                                 </div>
              this.setState({alert: alertComponent})
-        }else{
-            if(this.state.popUp){
+        }else{ //En caso contrario es un warning
+            if(this.state.popUp){ //Si es una alerta dentro de un popup los margenes son distintos
                 alertComponent = <div className="alert__warning" style={{marginTop:"-200px"}}>
                                     
                                     <img src={WarningIcon} className="alert__icon" alt="warning"></img>

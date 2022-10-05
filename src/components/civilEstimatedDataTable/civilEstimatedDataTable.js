@@ -28,7 +28,7 @@ class CivilEstimatedDataTable extends React.Component{
         },
     }
 
-
+    //Recogemos los steps de civils para este proyecto (columnas de porcentages)
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/steps", options)
     .then(response => response.json())
     .then(async json => {
@@ -39,7 +39,7 @@ class CivilEstimatedDataTable extends React.Component{
       await this.setState({steps : percentages});
     }) 
 
-
+    //Get de civiles estimados
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/estimated", options)
       .then(response => response.json())
       .then(async json => {
@@ -51,6 +51,7 @@ class CivilEstimatedDataTable extends React.Component{
             if(json.rows[i].modelled){
               mod = json.rows[i].modelled
             }
+            //Creamos las filas de la tabla
             if(i % 2 === 0){
               row = {area: json.rows[i].area, type: json.rows[i].type, quantity: json.rows[i].quantity, modelled: mod, color: "#fff"}
             }else{

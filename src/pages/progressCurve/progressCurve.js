@@ -6,6 +6,8 @@ import ProgressPlotCurve from "../../components/progressPlotCurve/progressPlotCu
 import IdleTimer from 'react-idle-timer'
 import {useHistory} from "react-router";
 
+//Curva de progreso de isotracker
+
 const Civil = () => {
 
     const CryptoJS = require("crypto-js");
@@ -44,24 +46,6 @@ const Civil = () => {
             })       
             
     },[currentRole]);
-
-    useEffect(()=>{
-        const body = {
-            user: currentUser,
-        }
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body)
-        }
-        fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/exitEditCSP", options)
-            .then(response => response.json())
-            .then(async json => {
-
-            })
-    },[])
 
     function handleOnIdle(){
         const body = {

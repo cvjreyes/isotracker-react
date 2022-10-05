@@ -52,6 +52,8 @@ class DataTable extends React.Component{
     cancellable: false
   };
 
+  //Metodos que van a isoctrlsF
+
   unlock(filename){
     this.props.unlock(filename)
   }
@@ -71,7 +73,7 @@ class DataTable extends React.Component{
 
   componentDidMount(){
 
-    
+    //Get de los roles
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/roles/acronyms")
       .then(response => response.json())
       .then(json => {
@@ -102,6 +104,7 @@ class DataTable extends React.Component{
         },
         body: JSON.stringify(body)
     }
+      //Get de los isometricos en funcion de las bandejas
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/files", options)
           .then(response => response.json())
           .then(async json => {
@@ -110,13 +113,13 @@ class DataTable extends React.Component{
                   let pButton, iButton, rButton, bButton, cButton, retButton, excludeHoldButton, rToLOSButton, cancelRevButton
                    = null
                   
-                  for(let i = 0; i < json.rows.length; i++){
+                  for(let i = 0; i < json.rows.length; i++){ //Por cada iso
 
                     if(json.rows[i].last_update){
                       json.rows[i].updated_at = json.rows[i].last_update
                     }
 
-                    switch(json.rows[i].spo){
+                    switch(json.rows[i].spo){ //Comprobamos el estado de spo para saber que boton poner en actions
                       case 0:
                         pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
                         break;
@@ -138,7 +141,7 @@ class DataTable extends React.Component{
                       default:  
                         pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>      
                     }
-                    switch(json.rows[i].sit){
+                    switch(json.rows[i].sit){ //Lo mismo para sit
                       case 0:
                         iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
                         break;
@@ -162,19 +165,20 @@ class DataTable extends React.Component{
                     }
                     
                     let revision = ""
-                    if(this.props.currentTab === "Issued"){
+                    if(this.props.currentTab === "Issued"){ //Miramos si la iso esta emitida
                       revision = "R" + String(json.rows[i].revision - 1) + " - " + json.rows[i].transmittal + "/" + json.rows[i].issued_date
                     }else{
                       revision = "*R" + json.rows[i].revision
                     }
 
-                    if(this.props.currentTab === "Issued" && json.rows[i].requested === 2 && this.props.currentRole === "SpecialityLead"){
+                    if(this.props.currentTab === "Issued" && json.rows[i].requested === 2 && this.props.currentRole === "SpecialityLead"){ //En caso de estar en la bandeja de emitidas con rol LOS
                       const optionsD = {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/pdf"
                         }
                       }
+                      //Comprobamos si la iso es cancelable
                       await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isCancellable/" + json.rows[i].filename, optionsD)
                       .then(response => response.json())
                       .then(async json => {
@@ -184,7 +188,7 @@ class DataTable extends React.Component{
                       })
                     }
 
-                    if(json.rows[i].requested === 1){
+                    if(json.rows[i].requested === 1){ //Comprobamos si la iso ha sido solicitada para nueva revision
                       rButton = <button className="btn btn-danger" disabled style={{backgroundColor:"yellow", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
                     }else if(json.rows[i].requested !== 1 && json.rows[i].requested !== 2){
                       rButton = <button className="btn btn-warning" disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
@@ -192,7 +196,7 @@ class DataTable extends React.Component{
                       rButton = <button className="btn btn-success" disabled style={{fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
                     }
 
-                    if(json.rows[i].blocked === 1){
+                    if(json.rows[i].blocked === 1){ //Comprobamos si esta bloqueada
                       if(json.rows[i].revision === 0 && json.rows[i].issued !== 1){
                         if(secureStorage.getItem('user') === "super@user.com"){
                           bButton =  <RenamePopUp filename={json.rows[i].filename} rename={this.rename.bind(this)} />
@@ -211,24 +215,25 @@ class DataTable extends React.Component{
                       bButton = null
                     }
 
-                    if(json.rows[i].returned === 1){
+                    if(json.rows[i].returned === 1){ //Comprobamos si ha sido retornada
                       retButton = <button className="btn btn-danger" disabled style={{fontSize:"10px", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
                     }else{
                       retButton = null
                     }
 
-                    if(json.rows[i].comments){
+                    if(json.rows[i].comments){ //Comrpbamos si tiene comentarios
                       cButton = <CommentPopUp comments={json.rows[i].comments} filename={json.rows[i].filename} updated={json.rows[i].updated_at}/>
                     }else{
                       cButton = null
                     }
 
-                    if(json.rows[i].onhold === 2){
+                    if(json.rows[i].onhold === 2){ //Comprobamos si se ha enviado a hold
                       excludeHoldButton = <button className="btn btn-warning" onClick={() => this.sendHold(json.rows[i].filename)} style={{fontSize:"10px", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>H</button>
                     }else{
                       excludeHoldButton = null
                     }
 
+                    //Comprobamos si se puede enviar de vuelta a LOS
                     if(this.props.currentRole === "SpecialityLead" && json.rows[i].requested !== 2 && json.rows[i].issued !== 0 && this.state.tab === "Issued"){
                       rToLOSButton = <button className="btn btn-danger" onClick={() => this.returnToLOS(json.rows[i].filename)} style={{fontSize:"10px", padding:"2px 5px 2px 5px", width:"75px", marginLeft:"5px"}}>Return</button>
                     }else{
@@ -242,29 +247,30 @@ class DataTable extends React.Component{
                     }
 
                     if(!json.rows[i].updated_at){
-                      if(json.rows[i].claimed === 1){
+                      if(json.rows[i].claimed === 1){ //Comprobamos si esta claimeada
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else{
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:"None", revision: "None", date: "None", from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton}</div>}
                       }
                     }else{
 
-                    if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){
+                      //A partir de aqui creamos la fila en funciona de unas ultimas condiciones
+                    if(json.rows[i].verifydesign === 1 && json.rows[i].user !== "None"){ //Si se ha enviado a verificar y esta claimed
                       if(this.props.currentRole === "SpecialityLead"){
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> <button className="btn btn-danger" style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>F. UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }else{
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }
-                    }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){
+                    }else if(json.rows[i].verifydesign === 1 && json.rows[i].user === "None"){ //Si se ha enviado a verificar y no esta claimed
                       row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> <button disabled className="btn btn-sm btn-warning" style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight:"5px"}}>PENDING</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
-                    }else if(json.rows[i].claimed === 1){
-                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
+                    }else if(json.rows[i].claimed === 1){ //Si la iso esta claimeada
+                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){ //Si esta emitida y estamos en la bandeja de emitidas
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code,  revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
-                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
+                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){ //Si no esta emitida y estamos en LOS
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> ,type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
-                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
+                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){ //Si estamos en la bandeja de LOS y la iso no esta emitida
                         row = null
-                      }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
+                      }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){ //Si estamos en la bandeja de issued y la iso no esta emitida
                         row = null
                       }else{
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
@@ -272,25 +278,25 @@ class DataTable extends React.Component{
                           row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> <button className="btn btn-success"  disabled style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button> <button className="btn btn-danger" style={{fontSize:"10px", padding:"2px 5px 2px 5px", marginRight: "5px"}} onClick={() => this.props.forceUnclaim(json.rows[i].filename)}>F. UNCLAIM</button> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                         }
                       }
-                    }else if(json.rows[i].user !== "None"){           
-                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
+                    }else if(json.rows[i].user !== "None"){ //Si no esta claimed
+                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){ //Si esta emitida y estamos en issued
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
-                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
+                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){ //Si no esta emitida y estamos en LOS
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
-                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
+                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){ //Caso contrario
                         row = null
-                      }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
+                      }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){ 
                         row = null
                       }else{
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: this.state.acronyms[json.rows[i].role] + " - " + json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
                       }
 
                     }else{                
-                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){
+                      if(json.rows[i].issued === 1 && this.props.currentTab === "Issued"){ //Si esta emitida y estamos en la bandeja de emitidas
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {rButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
-                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){
+                      }else if (json.rows[i].issued !== 1 && this.props.currentTab === "LDE/IsoControl"){ //Si no esta emitida y estamos en LOS
                         row = {key:i, id: <Link onClick={() => this.getMaster(json.rows[i].filename)}>{json.rows[i].filename}</Link> , type:json.rows[i].code, revision: revision, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), from: json.rows[i].from, to: json.rows[i].to, user: json.rows[i].user, actions: <div style={{display:"flex"}}> {pButton} {iButton} {bButton} {retButton} {excludeHoldButton} {cButton} {rToLOSButton} {cancelRevButton}</div>}
-                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){
+                      }else if(this.props.currentTab === "LDE/IsoControl" && json.rows[i].issued === 1){ //Caso contrario
                         row = null
                       }else if(this.props.currentTab === "Issued" && json.rows[i].issued !== 1){
                         row = null

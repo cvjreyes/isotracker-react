@@ -1,4 +1,4 @@
-//Tabla de la sección de CHECK_IN. Componente igual que el resto de datatables pero con diferentes columnas
+//No se usa
 
 import React from 'react';
 import 'antd/dist/antd.css';

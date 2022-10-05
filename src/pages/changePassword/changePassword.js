@@ -57,6 +57,7 @@ const ChangePasswordPage = () =>{
     const [successful, setSuccessful] = useState(false);
     const history = useHistory();
 
+    //Cambio de contraseña de un usuario
     const handelChangePassword = async() =>{
         setWrongPassError(false)
         setBlankError(false)
@@ -72,15 +73,18 @@ const ChangePasswordPage = () =>{
             },
             body: JSON.stringify(body)
         }
+
+        //Comprobamos que todos los inputs se han rellenado
         if(password === null || newPassword === null || confPassword === null || password === "" || newPassword === "" || confPassword === ""){
-            setBlankError(true)
+            setBlankError(true) //Alerta de warning si no
         }else{
+            //Comprobamos que la contraseña anterior es correcta
             await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/user/getPassword", options)
             .then(response => response.json())
             .then(async json =>{
                 if(json.password === "incorrect"){
-                    setWrongPassError(true)
-                }else{
+                    setWrongPassError(true) //Si es incorrecta se muestra warning
+                }else{ //Si es correcta pasamos a comprobar que la contraseña nueva coincide en los dos campos
                     if(newPassword === confPassword){
                         const body = {
                             email: secureStorage.getItem('user'),
@@ -93,11 +97,12 @@ const ChangePasswordPage = () =>{
                             },
                             body: JSON.stringify(body)
                         }
+                        //Enviamos un post con el cambio
                         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/user/changePassword", options)
                         .then(async response => {
-                            await setSuccessful(true)
+                            await setSuccessful(true) //Alerta success
                             await localStorage.clear();
-                            setTimeout(()=> {history.replace("/"+process.env.REACT_APP_PROJECT+"/")}, 2000)
+                            setTimeout(()=> {history.replace("/"+process.env.REACT_APP_PROJECT+"/")}, 2000) //Reenvio a login
                         })
                         .catch(err=> console.log(err))
                     }else{
@@ -109,6 +114,7 @@ const ChangePasswordPage = () =>{
 
     }
 
+    //Mostrar o no la contraseña que se esta introduciendo
     const togglePassword1 = () => {
         setPasswordShown1(!passwordShown1);
     };
@@ -121,6 +127,7 @@ const ChangePasswordPage = () =>{
         setPasswordShown3(!passwordShown3);
     };
 
+    //Se cancela el cambio y se vuelve a la pagina anterior
     const cancel = async() =>{
         history.goBack()
     }

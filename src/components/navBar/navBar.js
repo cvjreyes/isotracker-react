@@ -70,6 +70,8 @@ const NavBar = (props) =>{
     const [bellImage, setBellImage] = useState()
     const [emptyNotifications, setEmptyNotifications] = useState()
 
+
+    //Controladores de los clicks de la navbar
     const handleClickUser = (event) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -119,7 +121,7 @@ const NavBar = (props) =>{
     }
      
 
-    useEffect(() => {
+    useEffect(() => { //Menu de usuario
         const checkIfClickedOutside = e => {
           // If the menu is open and the clicked target is not within the menu,
           // then close the menu
@@ -155,6 +157,7 @@ const NavBar = (props) =>{
             setUsername(json.name);
         })
 
+        //En funcion de las caracteristicas del proyecto la navbar se construye de forma distinta
         if(process.env.REACT_APP_PROGRESS === "1"){
             if(process.env.REACT_APP_SP === "1"){
                 setProgressButtons(<div style={{ marginLeft: "3%", float:"left"}}>

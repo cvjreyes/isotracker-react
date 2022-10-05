@@ -33,7 +33,7 @@ const CryptoJS = require("crypto-js");
         }
     });
 
-class IssuedDataTable extends React.Component{
+class IssuedDataTable extends React.Component{ //Bandeja de emitidas
   state = {
     searchText: '',
     searchedColumn: '',
@@ -89,6 +89,7 @@ class IssuedDataTable extends React.Component{
             "Content-Type": "application/json"
         },
     }
+      //Get de emitidas
       fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/issuedFiles", options)
           .then(response => response.json())
           .then(async json => {
@@ -103,7 +104,7 @@ class IssuedDataTable extends React.Component{
                       json.rows[i].updated_at = json.rows[i].last_update
                     }
 
-                    switch(json.rows[i].spo){
+                    switch(json.rows[i].spo){ //Estado del spo
                       case 0:
                         pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>
                         break;
@@ -125,7 +126,7 @@ class IssuedDataTable extends React.Component{
                       default:  
                         pButton = <button className="btn btn-warning" onClick={() => this.props.sendProcessClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>P</button>      
                     }
-                    switch(json.rows[i].sit){
+                    switch(json.rows[i].sit){ //Estado del sit
                       case 0:
                         iButton = <button className="btn btn-warning" onClick={() => this.props.sendInstrumentClick(json.rows[i].filename)} disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>I</button>
                         break;
@@ -149,13 +150,13 @@ class IssuedDataTable extends React.Component{
                     }
                     
                     let revision = ""
-                    if(this.props.currentTab === "Issued"){
+                    if(this.props.currentTab === "Issued"){ //Si esta emitida o no cambia la revision
                       revision = "R" + String(json.rows[i].revision - 1) + " - " + json.rows[i].transmittal + "/" + json.rows[i].issued_date
                     }else{
                       revision = "*R" + json.rows[i].revision
                     }
 
-                    if(json.rows[i].requested === 1){
+                    if(json.rows[i].requested === 1){ //Boton de retornar en funcion de si esta enviada a nueva revision o pedida
                         rButton = <button className="btn btn-danger" disabled style={{backgroundColor:"yellow", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>
                     }else if(json.rows[i].requested !== 1 && json.rows[i].requested !== 2){
                         rButton = <button className="btn btn-warning" disabled style={{backgroundColor:"white", fontSize:"10px", borderColor:"black", padding:"2px 5px 2px 5px", width:"30px", marginRight:"5px"}}>R</button>

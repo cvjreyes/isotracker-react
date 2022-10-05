@@ -2,7 +2,7 @@ import React from 'react';
 import Login from '../../components/login/login';
 
 import './login.css';
-//Página de home con el menú para ir a las aplicaciones de isotracker
+//No se usa, se usa welcomeloginF
 
 const LoginPage = () =>{
     document.title= process.env.REACT_APP_APP_NAMEPROJ

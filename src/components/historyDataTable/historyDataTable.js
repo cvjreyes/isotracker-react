@@ -48,8 +48,6 @@ class HistoryDataTable extends React.Component{
     filters: []
   };
 
-  
-
   componentDidMount(){
 
     
@@ -72,6 +70,7 @@ class HistoryDataTable extends React.Component{
           "Content-Type": "application/json"
       },
   }
+    //Get de los datos del historial
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/historyFiles", options)
         .then(response => response.json())
         .then(async json => {

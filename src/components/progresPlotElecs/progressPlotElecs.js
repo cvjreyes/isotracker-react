@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-  export default class ProgressPlotElecs extends React.PureComponent {
+  export default class ProgressPlotElecs extends React.PureComponent { //Grafica de progeso de electricidad
 	static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
 	
 	state = {
@@ -18,6 +18,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 			}
 		}
 
+		//Get del progreso
 		await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/gelecs", options)
 		.then(response => response.json())
 		.then(async json=>{
@@ -31,6 +32,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 	
 
 	render() {
+		//Monatamos la grafica con recharts
 	  return (
 		<ResponsiveContainer width="100%" height="90%">
 		  <LineChart

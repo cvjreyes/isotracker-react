@@ -21,7 +21,7 @@ require('dotenv').config();
 
 
 
-function App() {
+function App() { //Aqui se declaran las rutas con sus paginas correspondientes
   return (
     <div className="App">
       <Router>

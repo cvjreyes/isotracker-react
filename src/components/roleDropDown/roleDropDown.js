@@ -58,9 +58,9 @@ const RoleDropDown = (props) => {
   }
 
   useEffect(()=>{
-    if (options.indexOf(secureStorage.getItem('role')) !== -1){
+    if (options.indexOf(secureStorage.getItem('role')) !== -1){ //Si hay un rol seleccionado se muestra como seleccionado en el desplegable de roles
       setSelectedIndex(options.indexOf(secureStorage.getItem('role')))
-    }else{
+    }else{ //Si no hay un rol seleccionado se muestra como seleccionado el primer rol
       setSelectedIndex(0)
     }
     // eslint-disable-next-line

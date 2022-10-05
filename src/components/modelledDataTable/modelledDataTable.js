@@ -32,6 +32,7 @@ class ModelledDataTable extends React.Component{
         },
     }
 
+    //Get de las modeladas
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/modelled", options)
       .then(response => response.json())
       .then(async json => {

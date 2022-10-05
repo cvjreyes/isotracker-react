@@ -3,8 +3,9 @@
 import "./stateTable.css"
 import React, { useState , useEffect} from 'react'
 
-const StateTable = props =>{
+const StateTable = props =>{ //Tabla del estado del proyecto donde se ven las isos por bandeja y revision
 
+    //Cada state corresponde a uno de los valores de la tabla
     const [designR0, setDesignR0] = useState(0)
     const [designR1, setDesignR1] = useState(0)
     const [designR2, setDesignR2] = useState(0)
@@ -57,7 +58,7 @@ const StateTable = props =>{
     const [progress, setProgress] = useState(0)
     const [progressIso, setProgressIso] = useState(0)
     
-
+    //Estos estados sirven para mostrar mas o menos columnas de la tabla, ya que varia en funcion del rol del usuario y el progreso del proyecto
     const [realProgressTD, setRealProgressTD] = useState()
     const [realProgressIsoTD, setRealProgressIsoTD] = useState()
     const [realProgressTDValue, setRealProgressTDValue] = useState()
@@ -75,7 +76,8 @@ const StateTable = props =>{
 
     useEffect(async ()=>{
         if(loading){
-            if(process.env.REACT_APP_PROGRESS === "0"){
+            if(process.env.REACT_APP_PROGRESS === "0"){ //Si el proyecto no tiene progreso
+                //Get del state del proyecto
                 fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
                 .then(response => response.json())
                 .then(json => {
@@ -132,7 +134,8 @@ const StateTable = props =>{
 
                     setLoading(false)
                 }) 
-            }else{
+            }else{ //Si el proyecto tiene progreso
+                //Get del state del proyecto
                 fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/updateStatus")
                     .then(response => response.json())
                     .then(json => {
@@ -188,18 +191,20 @@ const StateTable = props =>{
                     const options = {
                         method: "GET",
                     }
+                    //Get del progreso ISO
                     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgressISO", options)
                     .then(response => response.json())
                     .then(async json =>{
                          await setProgressIso([json.progressISO, json.realprogressISO])
                     })
                     
+                    //Get del progreso real
                     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/currentProgress", options)
                     .then(response => response.json())
                     .then(async json =>{
                          await setProgress([json.progress, json.realprogress])
                     })
-                    if(props.currentRole === "SpecialityLead"){
+                    if(props.currentRole === "SpecialityLead"){ //Si el rol es LOS mostramos tambien estas columnas
                         await setRealProgressTD(<td  className="statusTable__header" style={{backgroundColor:"#0070ed"}}>R.P.</td>)
                         await setRealProgressIsoTD(<td  className="statusTable__header" style={{backgroundColor:"#0070ed", borderRadius:"0 1em 0 0"}}>R.P. ISO</td>)
                         await setRealProgressTDValue(<td rowSpan="6" className="statusTable__state">{progress[1]}%</td>)

@@ -48,6 +48,8 @@ export default class ManageRolesPopUp extends Component {
 
         /* Grupo Main */
 
+        //Al abrir el modal comrpobamos cuales de los roles tiene el usuario y los marcamos por defecto
+
         if(this.props.roles.indexOf("Design") > -1){
             await this.setState({des: true})
             selectedMain.push(<div className="checkbox">
@@ -288,6 +290,7 @@ export default class ManageRolesPopUp extends Component {
     submitRoles(){
         let roles = []
 
+        //Comprobamos que roles estan seleccionados y los guardamos en un array
         if(this.state.des){
             roles.push("des")
         }if(this.state.lde){

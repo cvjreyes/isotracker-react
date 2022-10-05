@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-awesome-modal';
 import './cancelIso.css'
 
-export default class CancelIso extends Component {
+export default class CancelIso extends Component { //PopUp de retorno de isometricas
     constructor(props) {
         super(props);
         this.state = {
@@ -24,7 +24,7 @@ export default class CancelIso extends Component {
         });
     }
 
-    return(){
+    return(){ //return a una bandeja anterior con comentarios
         const tray = document.getElementById("tray").value
         const comments = document.getElementById("comments").value
         this.props.returnIso(tray, comments)
@@ -34,6 +34,7 @@ export default class CancelIso extends Component {
     render() {
         var trayHeader, traySelect
         trayHeader = <div className="cancel__header__tray">Tray</div>
+        //Ya que solo se puede retornar a bandejas anteriores, dependiendo de la bandeja actual las opciones cambian
         if(this.props.role === "SpecialityLead"){
             traySelect = <select className="destination__select__return" id="tray" ><option value="Design" selected="selected">Design</option><option value="Stress">Stress</option><option value="Supports">Supports</option><option value="Materials">Materials</option><option value="Issuer">Issuer</option></select>
         }else if(this.props.role === "Supports"){

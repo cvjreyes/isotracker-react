@@ -4,7 +4,7 @@ import { HotTable } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.css';
 
 
-class CivilExcel extends React.Component{
+class CivilExcel extends React.Component{ //Tablas de edicion de keyparams civils
   state = {
     searchText: '',
     searchedColumn: '',
@@ -29,6 +29,7 @@ class CivilExcel extends React.Component{
         },
     }
 
+    //Get de los tipos de civiles
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/types", options)
     .then(response => response.json())
     .then(json => {
@@ -36,7 +37,7 @@ class CivilExcel extends React.Component{
       var row = null
       rows.push({"Code": "Code", "Name": "Name", "Weight": "Weight"})
       for(let i = 0; i < json.rows.length; i++){
-
+        //Creamos las filas
           row = {"Code": json.rows[i].code, "Name": json.rows[i].name, "Weight": json.rows[i].weight, id: json.rows[i].id}
 
           for(let j = 0; j < this.state.steps.length; j++){
@@ -48,12 +49,13 @@ class CivilExcel extends React.Component{
       this.setState({typesData : rows, selectedRows: []});
 
   }) 
-
+  //Get de los steps
   fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/civils/steps", options)
     .then(response => response.json())
     .then(json => {
       var rows = []
       var row = null
+      //Creamos la fila
       rows.push({"Name":"Name", "Percentage":"Percentage"})
       for(let i = 0; i < json.rows.length; i++){
           row = {"Name": json.rows[i].name, "Percentage": json.rows[i].percentage, id: json.rows[i].id}
@@ -63,12 +65,13 @@ class CivilExcel extends React.Component{
       this.setState({stepsData : rows, selectedRows: []});
 
   })
-
+  //Get del progreso 
   fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/gcivils", options)
     .then(response => response.json())
     .then(json => {
       var rows = []
       var row = null
+      //Creamos la fila
       rows.push({"Week": "Week", "Estimated": "Estimated"})
       for(let i = 0; i < json.rows.length; i++){
           row = {"Week": json.rows[i].week, "Estimated": json.rows[i].estimated, id: json.rows[i].id}
@@ -80,13 +83,13 @@ class CivilExcel extends React.Component{
   })
   }
 
-  addRowTypes(){
+  addRowTypes(){ //Metodo para añadir una nueva fila a los tipos
     let rows = this.state.typesData
     rows.push({"Code": "", "Name":"", "Weight": ""})
     this.setState({typesData: rows})
   }
   
-  submitChangesTypes(){
+  submitChangesTypes(){ //Guardamos los tipos
     const body = {
       rows: this.state.typesData,
     }
@@ -97,6 +100,7 @@ class CivilExcel extends React.Component{
         },
         body: JSON.stringify(body)
     }
+    //Post de los tipos
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submit/civils/types", options)
     .then(response => response.json())
     .then(json =>{
@@ -105,6 +109,7 @@ class CivilExcel extends React.Component{
     this.props.success()
   }
 
+  //Lo mismo para steps
   addRowSteps(){
     let rows = this.state.stepsData
     rows.push({"Name": "", "Percentage":""})
@@ -130,6 +135,7 @@ class CivilExcel extends React.Component{
     this.props.success()
   }
 
+  //Lo mismo para el progreso
   addRowProgress(){
     let rows = this.state.progressData
     rows.push({"Week": "", "Estimated": ""})
@@ -154,10 +160,6 @@ class CivilExcel extends React.Component{
     })
     this.props.success()
   }
-
-  
-
- 
 
   render() {
 

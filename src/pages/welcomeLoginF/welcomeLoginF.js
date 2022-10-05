@@ -47,7 +47,7 @@ const WelcomeLoginF = () =>{
     const [error, setError] = useState(false);
     const history = useHistory();
 
-    const togglePassword = () => {
+    const togglePassword = () => { //Si se muestra la contraseña o no
         setPasswordShown(!passwordShown);
     };
 
@@ -56,7 +56,7 @@ const WelcomeLoginF = () =>{
         password: password
     }
 
-    const handleLogin = () => {
+    const handleLogin = () => { //Control de login
         
         const options = {
             method: "POST",
@@ -65,10 +65,12 @@ const WelcomeLoginF = () =>{
             },
             body: JSON.stringify(body)
         }
+        //Post del login
         fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/login", options)
             .then(response => response.json())
             .then(json => {
-                if(process.env.REACT_APP_PROGRESS === "1"){
+                if(process.env.REACT_APP_PROGRESS === "1"){ 
+                    //Si hay progreso se inicializan estas variables en el local storage para estbelcer la bandeja por defecto de cada pagina 
                     localStorage.setItem('token', json.token);
                     secureStorage.setItem('user', json.user)
                     secureStorage.setItem('tab', "Status")   
@@ -77,9 +79,11 @@ const WelcomeLoginF = () =>{
                     secureStorage.setItem("civ_tab", "Estimated")  
                     secureStorage.setItem("elec_tab", "Estimated")  
                     secureStorage.setItem("piping_tab", "Estimated")
+
+                    //Se redirige al home
                     history.replace('/'+process.env.REACT_APP_PROJECT+'/home');
                     window.location.reload(false);
-                }else{
+                }else{ //Si no tiene progreso se redirige a isotracker
                     localStorage.setItem('token', json.token);
                     secureStorage.setItem('user', json.user)
                     secureStorage.setItem('tab', "Status")   
