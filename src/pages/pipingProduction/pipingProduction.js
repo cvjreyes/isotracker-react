@@ -108,6 +108,8 @@ const PITRequests = () =>{
     const [realOverall, setRealOverall] = useState([])
     const [estimatedProgressOverall, setEstimatedProgressOverall] = useState([])
     const [realProgressOverall, setRealProgressOverall] = useState([])
+
+    //Array de colores que corresponderan a cada material
     const colors = ["#4169E1", "#B0E0E6", "#00BFFF", "#008000", "#7CFC00", "#98FB98", "#FF8C00", "#FFD700", "#FF0000", "#FF1493", "#FF69B4", "#FFC0CB", "#708090", "#A9A9A9", "#DCDCDC", "#20B2AA", "#00CED1", "#AFEEEE"]
 
     
@@ -152,8 +154,8 @@ const PITRequests = () =>{
     }
 
     useEffect(async() =>{   
-        const table_class = ["mat1-table", "mat2-table", "mat3-table", "mat4-table", "mat5-table", "mat6-table"]
-        const weight_table_class = ["wmat1-table", "wmat2-table", "wmat3-table", "wmat4-table", "wmat5-table", "wmat6-table"]
+        const table_class = ["mat1-table", "mat2-table", "mat3-table", "mat4-table", "mat5-table", "mat6-table"] //Array de clases de css de materiales
+        const weight_table_class = ["wmat1-table", "wmat2-table", "wmat3-table", "wmat4-table", "wmat5-table", "wmat6-table"] //Array de clases de css de materiales por peso
         
         await setLoading(true)
 
@@ -163,6 +165,8 @@ const PITRequests = () =>{
                 "Content-Type": "application/json"
             },
         }
+
+        //Get de las piping class
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaterialsPipingClass", options)
             .then(response => response.json())
             .then(async json => {
@@ -175,6 +179,7 @@ const PITRequests = () =>{
                 await setPiping(piping)
         })
 
+        //Get del project span del proyecto
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getProjectSpan", options)
             .then(response => response.json())
             .then(async json => {
@@ -187,7 +192,7 @@ const PITRequests = () =>{
                 
             })
 
-
+        //Get de las estimaciones por material
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getEstimatedByMaterial", options)
             .then(response => response.json())
             .then(async json => {
@@ -197,33 +202,37 @@ const PITRequests = () =>{
                 }
                 await setEstimatedMaterialData(est)
             })
-
+        
+        //Get de los materiales
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getMaterials", options)
             .then(response => response.json())
             .then(async json => {
                 const materials = json.materials
-                let mat = []
-                let matList = []
-                let matIDList = []
-                for(let i = 0; i < materials.length; i++){
+                let mat = [] //Lista de objetos id-material
+                let matList = [] //Lista con los nombres de los materiales
+                let matIDList = [] //List de ids de los materiales
+                for(let i = 0; i < materials.length; i++){ //Por cada material guardamos sus datos en estos arrays
                     mat.push({"id": materials[i].id, "Material": materials[i].name})
                     matList.push(materials[i].name)
                     matIDList.push(materials[i].id)
                 }
+
                 await setMaterialsIDList(matIDList)
                 await setMaterials(mat)
                 await setMaterialsList(matList)
 
-                if(tab === "prod"){
+                if(tab === "prod"){ //Si estamos en la tab de produccion
                     setTabBtns(<div style={{width: "140px"}}>
                         <button className="reporting__tab__button" style={{backgroundColor:"#338DF1"}}>P</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("weight")}>W</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setTab("users")}>U</button>
                     </div>)
+                    //Get de las emisiones por semana
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIssuedByMatWeek", options)
                     .then(response => response.json())
                     .then(async json => {
                         const issued = json.issued
+                        //Get de las estimadas por semana
                         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getEstimatedMatWeek", options)
                             .then(response => response.json())
                             .then(async json => {
@@ -232,6 +241,7 @@ const PITRequests = () =>{
                                 await setWeeksYDiff(estimated[0].weekY - 1)
                                 const weekYdiff = estimated[0].weekY - 1
                                 if(estimated.length > 0){
+                                //Get del forecast por semana
                                 fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getForecastMatWeek", options)
                                     .then(response => response.json())
                                     .then(async json => {
@@ -245,6 +255,7 @@ const PITRequests = () =>{
                                             //... other options
                                         }
 
+                                        //Diccionarios y arrays para ir guardando los datos y crear despues las tablas y graficas
                                         let weeks = []                                        
                                         let graphData = []
                                         let est = {}
@@ -261,26 +272,29 @@ const PITRequests = () =>{
                                         let col = []
                                         let sumEstCells = []
 
+                                        //Por cada estimacion
                                         for(let i = 0; i < estimated.length; i++){
-                                            if(estimated[i].material_id === material){
-                                                weeks.push(estimated[i].week.toString())
-                                                est[estimated[i].week.toString()] = estimated[i].estimated
-                                                forc[forecast[i].week.toString()] = forecast[i].estimated
-                                                countForc += forecast[i].estimated
-                                                countEst += estimated[i].estimated
-                                                sumEst[estimated[i].week.toString()] = countEst
-                                                if(issued[material]){
-                                                    if(issued[material][estimated[i].week]){
-                                                        countReal += issued[material][estimated[i].week]
+                                            if(estimated[i].material_id === material){ //Si el material al que corresponde la estimacion es igual al de la estimacion anterior
+                                                weeks.push(estimated[i].week.toString()) //Creamos la semana
+                                                est[estimated[i].week.toString()] = estimated[i].estimated //Guardamos el valor de la estimacion
+                                                forc[forecast[i].week.toString()] = forecast[i].estimated //Guardamos el valor del forecast
+                                                countForc += forecast[i].estimated //Sumamos al contador
+                                                countEst += estimated[i].estimated //Sumamos al contador 
+                                                sumEst[estimated[i].week.toString()] = countEst //Creamos el progreso de la estimacion de esa semana
+                                                if(issued[material]){ //Si hay alguna emitida de este material esta semana
+                                                    if(issued[material][estimated[i].week]){ //Creamos la emision
+                                                        countReal += issued[material][estimated[i].week] //Sumamos al contador
                                                     }
                                                 }
-                                                sumReal[estimated[i].week.toString()] = countReal
-                                                sumForc[estimated[i].week.toString()] = countForc
-                                                col.push({ data: estimated[i].week.toString(), type: "numeric"})
-                                                sumEstCells.push({row: 1, col: i, readOnly:true})
+                                                sumReal[estimated[i].week.toString()] = countReal //Guardamos el valor real total hasta esta semana
+                                                sumForc[estimated[i].week.toString()] = countForc //Guardamos el valor del forecast total hasta esta semana
+                                                col.push({ data: estimated[i].week.toString(), type: "numeric"}) //Guardamos la columna de la semana para crear mas tarde la tabla
+                                                //Las filas 1, 3 y 4 no son editables (corresponde a la fila Real, Estimated Progress y Real Progress)
+                                                sumEstCells.push({row: 1, col: i, readOnly:true}) 
                                                 sumEstCells.push({row: 3, col: i, readOnly:true})
                                                 sumEstCells.push({row: 4, col: i, readOnly:true})
-                                            }else{
+                                            }else{ //Si es un material nuevo
+                                                //Guardamos todos los arrays con la info del material
                                                 let estData = estimatedData
                                                 estData[material] = est
                                                 await setEstimatedData(estData)
@@ -300,10 +314,11 @@ const PITRequests = () =>{
                                                 if(!totalEst){
                                                     totalEst = 0
                                                 }
+                                                //Si hay mas estimadas que lineas creadas en la tabla de estimacion
                                                 let diff = countEst - totalEst
                                                 let warning = null
                                                 if(totalEst < countEst){
-                                                    warning = <text className="warning__text">*Estimated exceeded by {diff}!</text>
+                                                    warning = <text className="warning__text">*Estimated exceeded by {diff}!</text> //Mensaje de warning
                                                 }
                                                 if(!totalEst){
                                                     totalEst = "(0 estimated)"
@@ -311,7 +326,8 @@ const PITRequests = () =>{
                                                     totalEst = "(" + totalEst.toString() + " estimated)"
                                                 }
 
-                                                let t_class = table_class[matIDList.indexOf(material)]
+                                                let t_class = table_class[matIDList.indexOf(material)] //Le pasamos a la tabla que vamos a crear una clase(depende del orden)
+                                                //Creamos la tabla like excel de este material
                                                 await tables.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1750px", paddingBottom:"30px", marginTop:"20px"}}><div style={{display:"flex"}}><text className="materials__title">{estimated[i-1].name.toUpperCase()} Isometrics <text style={{fontSize:"17px"}}>{totalEst}</text> {warning}</text><button className="save__button" onClick={()=> submitEstimatedForecast(estimated[i-1].material_id)}><img src={SaveIcon} alt="save" className="save__icon"></img></button></div>
                                                 <div style={{marginTop:"10px"}}><HotTable
                                                 data={[est, issued[material], forc, sumEst, sumReal]}
@@ -328,6 +344,7 @@ const PITRequests = () =>{
                                                 className={t_class}
                                             /></div></div>)
 
+                                            //Guardamos en un array las estimaciones, emitidas y forecast
                                             Object.keys(sumEst).map(function(key, index) {
                                                 sumEstGraph.push(sumEst[key])
                                             });
@@ -340,8 +357,9 @@ const PITRequests = () =>{
                                                 sumForcGraph.push(sumForc[key])
                                             });
 
-                                            let color_index = ((matIDList.indexOf(material)) * 3)
+                                            let color_index = ((matIDList.indexOf(material)) * 3) //El material recibe un color en funcion de su id
                                             
+                                            //Guardamos las lineas de la grafica en un array para luego pasarlos a la grafica
                                             graphData.push({
                                                 label: 'Estimated ' + estimated[i-1].name,
                                                 fill: false,
@@ -372,6 +390,7 @@ const PITRequests = () =>{
                                                 data: sumRealGraph
                                             })
                 
+                                            //Cuando hemos acabado y hemos guardado la tabla y las lineas de la grafica lo inicializamos todo a 0 de nuevo
                                             weeks = [estimated[i].week.toString()]
                                             est = {}
                                             forc = {}
@@ -412,6 +431,7 @@ const PITRequests = () =>{
                                             material = estimated[i].material_id
                                             }
                                         }
+                                        //Cuando salimos del bucle quiere decir que solo nos falta por crear la tabla y la grafica del ultimo material, asi que hacemos lo mismo que antes pero para este ultimo material
                                         let estData = estimatedData
                                         estData[material] = est
                                         await setEstimatedData(estData)
@@ -506,7 +526,8 @@ const PITRequests = () =>{
                                             data: sumRealGraph
                                         })
 
-                                    
+                                        //Una vez guardado el ultimo material pasamos a crear la tabla y grafica del overall (la suma de todos los materiales)
+
                                         let overallTable = []
                                         let totalEstimated = 0
 
@@ -524,7 +545,7 @@ const PITRequests = () =>{
                                             totalEstimated += estimatedMaterialData[key]
                                         });
 
-                                        Object.keys(issued).map(function(key, index) {
+                                        Object.keys(issued).map(function(key, index) { //Calculamos el valor real overall
                                             Object.keys(issued[key]).map(function(k, index) {
                                                 if(realOverall[k]){
                                                     realOverall[k] += issued[key][k]
@@ -534,7 +555,7 @@ const PITRequests = () =>{
                                             })
                                         });
 
-                                        Object.keys(estimated).map(function(key, index) {
+                                        Object.keys(estimated).map(function(key, index) { //Calculamos el valor estimado overall
                                             if(estimatedOverall[estimated[key].week]){
                                                 estimatedOverall[estimated[key].week] += estimated[key].estimated
                                             }else{
@@ -545,22 +566,24 @@ const PITRequests = () =>{
                                         let labels = []
                                         let overallCells = []
                                         console.log(estimatedOverall)
-                                        await Object.keys(estimatedOverall).map(function(key, index) {
+                                        await Object.keys(estimatedOverall).map(function(key, index) { //Por cada valor del overall
                                             if(realOverall[key]){
                                                 realOverallCount += realOverall[key]
                                             }
+                                            //Guardamos el real estimado, progreso estimado, estimado y real 
                                             realOverallSum[key] = realOverallCount
                                             estimatedOverallCount += estimatedOverall[key]
                                             esimatedOverallSum[key] = estimatedOverallCount
                                             estimatedOverallGraph.push(estimatedOverallCount)
                                             realOverallGraph.push(realOverallCount)
 
-                                            overallCells.push({row: 2, col: index, className: "overallCell__estSum"})
+                                            overallCells.push({row: 2, col: index, className: "overallCell__estSum"}) //Las celdas de las filas estimated y real tienen sus estilos
                                             overallCells.push({row: 3, col: index, className: "overallCell__realSum"})
 
                                             labels.push("w" + key.toString() + " / w" + (parseInt(key) + weekYdiff))
                                         });
 
+                                        //lineas de estimated overall y real overall de la grafica
                                         graphData.push({
                                             label: 'Estimated Overall',
                                             fill: false,
@@ -585,6 +608,8 @@ const PITRequests = () =>{
                                         if(totalEstimated < estimatedOverallCount){
                                             warning = <text className="warning__text">*Estimated exceeded by {estimatedOverallCount-totalEstimated}!</text>
                                         }
+
+                                        //Creamos la tabla excel del overall
                                         await overallTable.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", borderTop:"1px solid lightgray", width:"1750px", paddingBottom:"30px", paddingTop:"30px", marginTop:"20px"}}><text className="materials__title">OVERALL Isometrics <text style={{fontSize:"17px"}}>({totalEstimated} estimated)</text> {warning}</text>
                                         <div style={{marginTop:"10px"}}><HotTable
                                                 data={[estimatedOverall, realOverall, esimatedOverallSum, realOverallSum]}
@@ -602,6 +627,7 @@ const PITRequests = () =>{
                                                 
                                             /></div></div>)
 
+                                            //Finalmente creamos la grafica con todas las lineas (materiales y overall)
                                         await setEstimatedOverall(estimatedOverall)
                                         await setRealOverall(realOverall)
                                         await setEstimatedProgressOverall(esimatedOverallSum)
@@ -645,7 +671,7 @@ const PITRequests = () =>{
                                 }
                             })
                     })  
-                }else if(tab === "weight"){
+                }else if(tab === "weight"){ //Lo mismo que prod pero en vez de por unidades se ve por peso
                     setTabBtns(<div style={{width: "140px"}}>
                         <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px",backgroundColor:"#338DF1"}}>W</button>
@@ -911,8 +937,8 @@ const PITRequests = () =>{
                                 }
                             })
                     })  
-                }else if(tab === "users"){
-                    if(usersType === "iso"){
+                }else if(tab === "users"){ //Si estamos en la tab de users
+                    if(usersType === "iso"){ //Dentro de useres tab de iso
                         await setUserEffTitle(<center style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"-10px", marginLeft:"-200px"}}>USER ISOMETRICS EFFICIENCY</center>)
                         await setTabBtns(<div style={{width: "90px"}}>
                         <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
@@ -921,7 +947,7 @@ const PITRequests = () =>{
                         <button className="reporting__tab__button" style={{marginTop:"10px", backgroundColor:"#338DF1"}}>I</button>
                         <button className="reporting__tab__button" style={{marginTop:"10px"}} onClick={async() => await setUsersType("weight")}>W</button>
                         </div>)
-                    }else if(usersType === "weight"){
+                    }else if(usersType === "weight"){ //Dentro de useres tab de peso
                         await setUserEffTitle(<center style={{fontSize:"22px", fontWeight:"bold", color:"gray", marginTop:"-10px", marginLeft:"-200px"}}>USER WEIGHT EFFICIENCY</center>)
                         await setTabBtns(<div style={{width: "90px"}}>
                         <button className="reporting__tab__button" onClick={() => setTab("prod")}>P</button>
@@ -936,6 +962,7 @@ const PITRequests = () =>{
                     await setTables([])
                     await setLineChart(null)
                     await setOverallTable([])
+                    //get de estimacion y forecast para conseguir las semanas
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getEstimatedForecastWeight", options)
                     .then(response => response.json())
                     .then(async json => {
@@ -950,25 +977,27 @@ const PITRequests = () =>{
                         let col = []
                         if(estimated.length > 0){
                             for(let i = 0; i < estimated.length; i++){
-                                weeks.push(estimated[i].week.toString())
-                                col.push({ data: estimated[i].week.toString(), type: "numeric"})
+                                weeks.push(estimated[i].week.toString()) //Creamos la semana
+                                col.push({ data: estimated[i].week.toString(), type: "numeric"}) //Creamos la columna en la tabla
                             }
-                            if(usersType === "iso"){
+                            if(usersType === "iso"){ //Si estamos en la vista de isometricas
+                                //Get de cuantas isos libres hay por bandeja
                                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/trayCount", options)
                                 .then(response => response.json())
                                 .then(async json => {
                                     const trayCount = json.isoCount
-
+                                    //Get de las isos por semana de los diseñadores
                                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsosByUserWeekDesign", options)
                                     .then(response => response.json())
                                     .then(async json => {
-                                        const design_isos = json.design_isos
+                                        const design_isos = json.design_isos //Lo guardamos aqui
                                         await setUsersData(design_isos)
-                                        console.log(design_isos)
+                                        //Get de las isos por semana del resto de roles
                                         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsosByUserWeek", options)
                                         .then(response => response.json())
                                         .then(async json => {
                                             const user_isos = json.user_isos
+                                            //arrays de cada rol
                                             let design = []
                                             let designLead = []
                                             let stress = []
@@ -978,9 +1007,8 @@ const PITRequests = () =>{
                                             let materials = []
                                             let issuer = []
 
-                                            if(design_isos){
-                                                console.log(design_isos)
-                                                Object.keys(design_isos).map(async function(user, index) {
+                                            if(design_isos){ //Si hay diseñadores
+                                                Object.keys(design_isos).map(async function(user, index) { //Creamos una tabla para cada diseñador
                                                     await design.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[design_isos[user]["assigned"], design_isos[user]["sent"], design_isos[user]["returned"], design_isos[user]["remaining"]]}
@@ -999,7 +1027,8 @@ const PITRequests = () =>{
                                                     /></div></div>)
                                                 });
                                             }
-                                            if(user_isos["DesignLead"]){
+                                            //Lo mismo para todos los roles
+                                            if(user_isos["DesignLead"]){ 
                                                 Object.keys(user_isos["DesignLead"]).map(async function(user, index) {
                                                     await designLead.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
@@ -1019,8 +1048,8 @@ const PITRequests = () =>{
                                                     /></div></div>)
                                                 });
                                             }
-                                            if(user_isos["Stress"]){
-                                                Object.keys(user_isos["Stress"]).map(async function(user, index) {
+                                            if(user_isos["Stress"]){ 
+                                                Object.keys(user_isos["Stress"]).map(async function(user, index) { 
                                                     await stress.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", width:"1590px", paddingBottom:"10px", marginTop:"10px"}}><div style={{display:"flex"}}><text className="materials__title">{user.toUpperCase()}<text style={{fontSize:"17px"}}></text></text></div>
                                                     <div style={{marginTop:"10px"}}><HotTable
                                                             data={[user_isos["Stress"][user]["claimed"], user_isos["Stress"][user]["sent"], user_isos["Stress"][user]["returned"], user_isos["Stress"][user]["remaining"]]}
@@ -1140,6 +1169,7 @@ const PITRequests = () =>{
                                                 });
                                             }
 
+                                            //Creamos los componentes con las tabs y las isos restantes
                                             await setTables(<div><ProductionUserTabs>
                                                     <div label="Design">
                                                         <div className="user__productivity__tables__container">
@@ -1195,7 +1225,7 @@ const PITRequests = () =>{
                                     })
                                 })
                                 
-                            }else if(usersType === "weight"){
+                            }else if(usersType === "weight"){ //Si estamos en la vista por peso es lo mismo pero multiplicando las unidades por su peso
                                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getWeightByUserWeekDesign", options)
                                 .then(response => response.json())
                                 .then(async json => {
@@ -1432,7 +1462,7 @@ const PITRequests = () =>{
             await setLoading(false)
     }, [updateData, tab, usersType])
 
-    async function printDocument() {
+    async function printDocument() { //Descarga de una imagen de las graficas
         const input = document.getElementById('graph');
         if(tab === "prod"){
             html2canvas(input, {scrollY: -window.scrollY})
@@ -1458,6 +1488,7 @@ const PITRequests = () =>{
         
       }
 
+      //Metodos para crear nuevas filas
     async function addRowMaterials(){
         let m = materials
         m.push({"id": "", "Material": ""})
@@ -1472,7 +1503,7 @@ const PITRequests = () =>{
         await setUpdateRows(!updateRows)
     }
 
-    async function submitChangesMaterials(){
+    async function submitChangesMaterials(){ //Submit de los materiales
         const body ={
             materials : materials
         }
@@ -1494,7 +1525,7 @@ const PITRequests = () =>{
         })
     }
 
-    async function submitChangesPiping(){
+    async function submitChangesPiping(){ //Submit de las piping class
         const body ={
             piping : piping
         }
@@ -1516,7 +1547,7 @@ const PITRequests = () =>{
         })
     }
 
-    async function submitManagement(){
+    async function submitManagement(){ //Submit del project span
         const body ={
             span : management
         }
@@ -1538,7 +1569,7 @@ const PITRequests = () =>{
         })
     }
 
-    async function submitEstimatedForecast(material_id){
+    async function submitEstimatedForecast(material_id){ //Submit de los cambios en la estimacion y forecast de un material
         const body ={
             material_id : material_id,
             estimated: estimatedData[material_id],
@@ -1552,6 +1583,7 @@ const PITRequests = () =>{
             },
             body: JSON.stringify(body)
         }
+        //Post
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitEstimatedForecast", options)
         .then(response => response.json())
         .then(async json => {
@@ -1562,7 +1594,7 @@ const PITRequests = () =>{
         })        
     }
 
-    async function submitWeight(estimatedOverall, forecastOverall){
+    async function submitWeight(estimatedOverall, forecastOverall){  //Submit de los cambios en el peso de la estimacion y forecast overall 
         const body ={
             estimated: estimatedOverall,
             forecast: forecastOverall
@@ -1585,16 +1617,16 @@ const PITRequests = () =>{
         })        
     }
 
-    async function exportPiping(){
+    async function exportPiping(){ //reportes
 
-        if(tab === "prod"){
+        if(tab === "prod"){ //Produccion en cuanto a isos
             let weeks = {0: "WEEK"}
             let estAll = estimatedOverall
             let realAll = realOverall
             let estProgressAll = estimatedProgressOverall
             let realProgressAll = realProgressOverall
     
-            Object.keys(estAll).map(function(key, index) {
+            Object.keys(estAll).map(function(key, index) { //Columnas con las semanas
                 weeks[key] = "W" + key
                 if(!estAll[key]){
                     estAll[key] = " "
@@ -1603,16 +1635,18 @@ const PITRequests = () =>{
                     realAll[key] = " "
                 }
             });
-    
+            
+            //Nombres de las filas
             estAll[0] = "Estimated"
             realAll[0] = "Real"
             estProgressAll[0] = "Estimated Progress"
             realProgressAll[0] = "Real Progress"
             weeks[0] = "Week"
-    
+            
+            //Datos de la tabla overall
             let apiData = [{},{0:"Piping production curves"}, {}, {}, {0: "OVERALL Isometrics"}, weeks, estAll, realAll, estProgressAll, realProgressAll]
     
-            for(let i = 0; i < materials.length; i++){
+            for(let i = 0; i < materials.length; i++){ //Datos divididos por materiales
                 apiData.push({})
                 apiData.push({})
                 apiData.push({0:materials[i].Material}) 
@@ -1659,7 +1693,7 @@ const PITRequests = () =>{
             const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
             let ws = XLSX.utils.json_to_sheet(apiData, {skipHeader: 1}); 
            
-            Object.keys(ws).map(function(i, index) {
+            Object.keys(ws).map(function(i, index) { //Formateo del excel para agreagarle colores y bordes
                
                 if (typeof(ws[i]) != "string"){
                     if(index === 0){

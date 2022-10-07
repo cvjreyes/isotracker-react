@@ -32,6 +32,7 @@ const CryptoJS = require("crypto-js");
 const PipingNavBtns = props =>{
     const history = useHistory();
     var myTrayButton, modelledButton, sStressButton, rStressButton, stressButton, supportsButton, sDesignButtn, isoControlFullBtn, isoControlEstimatedBtn, prodBtn, feedBtn, feedProgressBtn
+    //En funcion del abandeja los botones de navegacion cambian entre estar disponibles o aparecer como marcados con un sombreado azul
     if(props.currentTab === "PipingMyTray"){
         secureStorage.setItem("tab", "PipingMyTray")
         myTrayButton = <button  type="button" className="trays__navBtns text-left" style={{backgroundColor:"#99C6F8", color:"black", fontWeight:"bold"}}>My Tray</button>

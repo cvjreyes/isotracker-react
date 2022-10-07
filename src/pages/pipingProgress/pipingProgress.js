@@ -89,7 +89,7 @@ const PipingProgress = () =>{
         history.push("/" + process.env.REACT_APP_PROJECT)
     }
 
-    async function submitEstimatedForecastIFD(){
+    async function submitEstimatedForecastIFD(){ //Submit del forecast de isocontrol
         const body ={
             estimated: estimatedData,
             forecast: forecastData
@@ -126,6 +126,8 @@ const PipingProgress = () =>{
                 "Content-Type": "application/json"
             },
         }
+
+        //Obtenemos el project span
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getProjectSpan", options)
             .then(response => response.json())
             .then(async json => {
@@ -135,13 +137,16 @@ const PipingProgress = () =>{
                 }else{
                     await setManagement({"Starting date": "", "Finishing date": ""})
                 }
-                await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolProgress", options)
+
+            //Obtenemos el progreso de isocontrol
+            await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolProgress", options)
             .then(response => response.json())
             .then(async json => {
                 const progress = json.progress
                 let p = []
                 let pw = []
                 let p_table = []
+                //Rellenamos los arrays con los datos del progreso con los que montaremos la tabla y la grafica
                 for(let i = 0; i < progress.length; i++){
                     p.push(progress[i].progress)
                     if(progress[i].progress){
@@ -151,6 +156,7 @@ const PipingProgress = () =>{
                     }
                     pw.push("w" + progress[i].week)
                 }
+                //Lo mismo para las estimadas
                 await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolEstimated", options)
                 .then(response => response.json())
                 .then(async json => {
@@ -173,6 +179,7 @@ const PipingProgress = () =>{
                         ew.push("w" + estimated[i].week)
                         cells.push({row: 0, col: i, readOnly:true})
                     }
+                    //Y lo mismo para el forecast
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/isocontrolForecast", options)
                     .then(response => response.json())
                     .then(async json => {
@@ -214,6 +221,7 @@ const PipingProgress = () =>{
                         await setForecastData(f_table)
                         await setCells(cells)
                         await setTimeout(async function () {
+                            //Generamos la tabla de overall
                             await overallTable.push(<div id="hot-app" style={{borderBottom:"1px solid lightgray", borderTop:"1px solid lightgray", width:"1750px", paddingBottom:"30px", paddingTop:"30px", marginTop:"20px"}}><div style={{display: "flex"}}><text className="materials__title">Progress</text><button className="save__button" onClick={()=> submitEstimatedForecastIFD()}><img src={SaveIcon} alt="save" className="save__icon"></img></button></div>
                         <div style={{marginTop:"10px"}}><HotTable
                                 data={[p_table, e_table, f_table]}
@@ -232,6 +240,7 @@ const PipingProgress = () =>{
                         await setOverallTable(overallTable)
                         }, 1000);
                         
+                        //Creamos la grafica de progreso con el progreso real, estimado y forecast
                         await setLineChart(<Line
                             data={{
                                 labels: labels,
@@ -301,7 +310,7 @@ const PipingProgress = () =>{
 
     
 
-    async function submitManagement(){
+    async function submitManagement(){ //Submit del span del proyecto
         const body ={
             span : management
         }
