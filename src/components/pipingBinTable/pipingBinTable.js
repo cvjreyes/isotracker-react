@@ -26,6 +26,7 @@ class PipingBinTable extends React.Component{
             "Content-Type": "application/json"
         },
     }
+    //get de las lineas eliminadas
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getDeletedPipes", options)
         .then(response => response.json())
         .then(async json => {

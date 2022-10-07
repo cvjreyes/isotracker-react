@@ -29,7 +29,7 @@ const CryptoJS = require("crypto-js");
       }
   });
 
-class PipingMyTrayTable extends React.Component{
+class PipingMyTrayTable extends React.Component{ //Tabla mytray de lineas
     state = {
       searchText: '',
       searchedColumn: '',
@@ -55,7 +55,7 @@ class PipingMyTrayTable extends React.Component{
     //this.props.successAlert()
   }
 
-  async vClick(id){
+  async vClick(id){ //Click en el boton de valvulas
 
     const body = {
       id: id
@@ -69,6 +69,7 @@ class PipingMyTrayTable extends React.Component{
       body: JSON.stringify(body)
     }
 
+    //Post de valvulas
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/sendValves", options)
         .then(response => response.json())
         .then(async json => {
@@ -88,7 +89,7 @@ class PipingMyTrayTable extends React.Component{
         })
   }
 
-  async iClick(id){
+  async iClick(id){ //Click en el boton de instrumentos
     const body = {
       id: id
     }
@@ -101,6 +102,7 @@ class PipingMyTrayTable extends React.Component{
       body: JSON.stringify(body)
     }
 
+    //Post de instrumentos
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/sendInstruments", options)
         .then(response => response.json())
         .then(async json => {
@@ -120,8 +122,8 @@ class PipingMyTrayTable extends React.Component{
             }
         })
   }
-
-  async naClick(id){
+  
+  async naClick(id){ //Click en el boton de N/A
     const body = {
       id: id
     }
@@ -133,7 +135,7 @@ class PipingMyTrayTable extends React.Component{
       },
       body: JSON.stringify(body)
     }
-
+    //Post
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/sendNA", options)
         .then(response => response.json())
         .then(async json => {
@@ -154,6 +156,7 @@ class PipingMyTrayTable extends React.Component{
         })
   }
 
+  //Lo mismo que los anteriores pero para cancelar
   async vCancelClick(id){
     const body = {
       id: id
@@ -232,6 +235,7 @@ class PipingMyTrayTable extends React.Component{
       }
     }
 
+    //Get de las lineas de un usuario
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/pipingMyTray/"+secureStorage.getItem("user"), options)
         .then(response => response.json())
         .then(async json => {
@@ -239,20 +243,20 @@ class PipingMyTrayTable extends React.Component{
             var row = null;
             let vButton, iButton, tray, nextStep, naButton, notInSDesignButton;
 
-            for(let i = 0; i < json.rows.length; i++){
-              if(json.rows[i].valves === 1){
+            for(let i = 0; i < json.rows.length; i++){//Por cada linea
+              if(json.rows[i].valves === 1){ //Comprobamos si tiene valvulas
                 vButton = <button className="btn btn-success" onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>V</button>            
               }else{
                 vButton = <button className="btn btn-warning" onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>V</button>
               }
 
-              if(json.rows[i].instruments === 1){
+              if(json.rows[i].instruments === 1){ //Comprobamos si tiene instrumentos
                 iButton = <button className="btn btn-success" onClick={() => this.iCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>I</button>
               }else{
                 iButton = <button className="btn btn-warning" onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>I</button>
               }
 
-              if(json.rows[i].valves === 1 || json.rows[i].instruments === 1){
+              if(json.rows[i].valves === 1 || json.rows[i].instruments === 1){ //Comprobamos si tiene N/A
                 naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
               }else if(json.rows[i].valves === 0 && json.rows[i].instruments === 0){
                 naButton = <button className="btn btn-success" onClick={() => this.naClick(json.rows[i].id)} style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>N/A</button>
@@ -262,13 +266,13 @@ class PipingMyTrayTable extends React.Component{
                 vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", color: "black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"60px"}}>V</button>
               }
 
-              if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
+              if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){ //Comprobamos si esta en isotracker
                 notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
               }else{
                 notInSDesignButton = null
               }
 
-              switch(json.rows[i].next){
+              switch(json.rows[i].next){ //Obtenemos cual sera la siguietne bandeja de la linea
                 case "PipingEstimated":
                   nextStep = "Estimated"
                   break;
@@ -315,9 +319,10 @@ class PipingMyTrayTable extends React.Component{
                   nextStep = null
               }
               
+              //Creamos la fila de la tabla
               row = {key: json.rows[i].id, id: json.rows[i].id, status_id: json.rows[i].status_id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), tray: tray, next: nextStep, actions: <div>{vButton} {iButton} {naButton} {notInSDesignButton}</div>, isotracker: json.rows[i].isotracker, valves: json.rows[i].valves, instruments: json.rows[i].instruments}
               
-              if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && row.tray !== "S-Design"){
+              if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && row.tray !== "S-Design"){ //Obtenemos el progreso por el que va la linea
                 if(row.type === "TL1"){
                   row.progress = json.rows[i].progress + 33 + "% (" + (json.rows[i].stage1 + 1) + ")"
                 }else if(row.type === "TL2"){

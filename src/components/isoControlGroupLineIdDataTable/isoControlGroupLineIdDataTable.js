@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import { Table, Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-class IsoControlGroupLineIdDataTable extends React.Component{
+class IsoControlGroupLineIdDataTable extends React.Component{ //talla general de isocontrol pero con las lineas agrupadas por line id
   state = {
     searchText: '',
     searchedColumn: '',

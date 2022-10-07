@@ -4,7 +4,7 @@ import { Table } from 'antd';
 import warningIT from "../../assets/images/warningIT.png"
 import "./pipingDataTable.css"
 
-class PipingDataTable extends React.Component{
+class PipingDataTable extends React.Component{ //Tabla de lineas modeladas tipo isotracker
   state = {
     searchText: '',
     searchedColumn: '',
@@ -29,6 +29,7 @@ class PipingDataTable extends React.Component{
             "Content-Type": "application/json"
         },
     }
+    //Get de las lineas en funcion del tab
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getPipesByStatus/" + this.props.currentTab, options)
         .then(response => response.json())
         .then(async json => {
@@ -36,37 +37,37 @@ class PipingDataTable extends React.Component{
             if(json.rows){
               for(let i = 0; i < json.rows.length; i++){
                 let iButton, vButton, naButton, claimedBtn, notInSDesignButton;
-                if(json.rows[i].valves === 1){
+                if(json.rows[i].valves === 1){ //Comprobamos si tiene valvulas
                   vButton = <button className="btn btn-success" disabled onClick={() => this.vCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
                 }else{
                   vButton = <button className="btn btn-warning" disabled onClick={() => this.vClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>V</button>
                 }
 
-                if(json.rows[i].instruments === 1){
+                if(json.rows[i].instruments === 1){ //Comprobamos si tiene instrumentos
                   iButton = <button className="btn btn-success" disabled onClick={() => this.iCancelClick(json.rows[i].id)}style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
                 }else{
                   iButton = <button className="btn btn-warning" disabled onClick={() => this.iClick(json.rows[i].id)}style={{backgroundColor:"white", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>I</button>
                 }
 
-                if(json.rows[i].instruments === 2){
+                if(json.rows[i].instruments === 2){ //Comprobamos si tiene n/a
                   naButton = <button className="btn btn-success" disabled style={{fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
                 }else{
                   naButton = <button className="btn btn-success" disabled style={{backgroundColor:"white", color:"black", fontSize:"12px", borderColor:"black", padding:"2px 5px 2px 5px", width:"40px"}}>N/A</button>
                 }
 
-                if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){
+                if(json.rows[i].isotracker === "In IsoTracker" && json.rows[i].progress !== 100){ //Comprobamos si la iso correspondiente a la linea se ha subido a isotracker
                   notInSDesignButton = <img src={warningIT} alt="warning" className="warningIT__image" />
                 }else{
                   notInSDesignButton = null
                 }
 
-                if(json.rows[i].name){
+                if(json.rows[i].name){ //Miramos si esta reclamada
                   claimedBtn = <button className="btn btn-success"  disabled style={{fontSize:"12px", padding:"2px 5px 2px 5px", marginRight: "5px"}}>CLAIMED</button>
                 }
 
                 let row = {key: json.rows[i].id, id: json.rows[i].id, tag: json.rows[i].tag, type: json.rows[i].code, date: json.rows[i].updated_at.toString().substring(0,10) + " "+ json.rows[i].updated_at.toString().substring(11,19), user: json.rows[i].name, isotracker: json.rows[i].isotracker, actions: <div>{claimedBtn} {vButton} {iButton} {naButton} {notInSDesignButton}</div>}
                 
-                if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){
+                if((json.rows[i].valves !== 0 || json.rows[i].instruments !== 0) && this.state.tab !== "PipingSDesign"){ //Indicamos el progreso de la linea
                   if(row.type === "TL1"){
                     row.progress = json.rows[i].progress + 33 + "% (" + (json.rows[i].stage1 + 1) + ")"
                   }else if(row.type === "TL2"){

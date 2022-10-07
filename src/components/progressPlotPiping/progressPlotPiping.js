@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-  export default class ProgressPlotPiping extends React.PureComponent {
+  export default class ProgressPlotPiping extends React.PureComponent { 
 	static demoUrl = 'https://codesandbox.io/s/simple-line-chart-kec3v';
 	
 	state = {

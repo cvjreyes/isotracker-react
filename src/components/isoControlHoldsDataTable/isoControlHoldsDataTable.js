@@ -35,6 +35,7 @@ class IsoControlHoldsDataTable extends React.Component{
         },
     }
 
+    //Get de los holds de isocontrol
     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/modelledEstimatedHolds", options)
     .then(response => response.json())
     .then(async json => {

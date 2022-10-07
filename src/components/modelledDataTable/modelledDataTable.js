@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import { Table } from 'antd';
 
 
-class ModelledDataTable extends React.Component{
+class ModelledDataTable extends React.Component{ //Tabla de las lineas modeladas
   state = {
     searchText: '',
     searchedColumn: '',
@@ -32,6 +32,7 @@ class ModelledDataTable extends React.Component{
         },
     }
 
+    //Get de las lineas modeladas
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/api/modelled", options)
       .then(response => response.json())
       .then(async json => {

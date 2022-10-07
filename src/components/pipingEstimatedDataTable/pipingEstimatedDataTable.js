@@ -4,7 +4,7 @@ import { Table } from 'antd';
 
 
 
-class PipingEstimatedDataTable extends React.Component{
+class PipingEstimatedDataTable extends React.Component{ //Tabla de lineas estimadas
   state = {
     searchText: '',
     searchedColumn: '',
@@ -30,8 +30,7 @@ class PipingEstimatedDataTable extends React.Component{
         },
     }
 
-
-
+    //Get de las lineas estimadas
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/piping/estimated", options)
       .then(response => response.json())
       .then(async json => {
