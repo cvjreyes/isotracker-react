@@ -5,7 +5,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import HoldsPopUp from '../holdsPopUp/holdsPopUp';
 
 
-class IsoControlFullDataTable extends React.Component{
+class IsoControlFullDataTable extends React.Component{ //tabla general de isocontrol
   state = {
     searchText: '',
     searchedColumn: '',
@@ -38,16 +38,17 @@ class IsoControlFullDataTable extends React.Component{
             "Content-Type": "application/json"
         }
     }
+    //Get de todas las lineas
     fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getIsocontrolFull", options)
     .then(response => response.json())
     .then(json =>{
         let rows = []
         for(let i = 0; i < json.rows.length; i++){
 
-            if(json.rows[i].LDL === "In LDL"){
+            if(json.rows[i].LDL === "In LDL"){ //Si viene de la lista de lineas creamos estos campos a partir de otros
               json.rows[i].line = json.rows[i].fluid + json.rows[i].seq
               json.rows[i].line_id = json.rows[i].unit + "-" + json.rows[i].fluid + "-" + json.rows[i].seq
-            }else{
+            }else{ //Si viene de dpipes creamos estos otros
               json.rows[i].unit = json.rows[i].bom_unit
               json.rows[i].area = json.rows[i].bom_area
               json.rows[i].spec_code = json.rows[i].bom_spec_code
@@ -114,12 +115,12 @@ class IsoControlFullDataTable extends React.Component{
               json.rows[i].total_weight = ""
             }
 
-            if(!json.rows[i].tray){
+            if(!json.rows[i].tray){ //Comprobamos si esta en isotracker
               json.rows[i].to = "Not in ISOTRACKER"
               json.rows[i].progress = "Not in ISOTRACKER"
             }
 
-            if(json.rows[i].hold1){
+            if(json.rows[i].hold1){ //Miramos si tiene holds
               let holds = [json.rows[i].hold1, json.rows[i].hold2, json.rows[i].hold3, json.rows[i].hold4, json.rows[i].hold5, json.rows[i].hold6, json.rows[i].hold7, json.rows[i].hold8, json.rows[i].hold9, json.rows[i].hold10]
               let descriptions = [json.rows[i].description1, json.rows[i].description2, json.rows[i].description3, json.rows[i].description4, json.rows[i].description5, json.rows[i].description6, json.rows[i].description7, json.rows[i].description8, json.rows[i].description9, json.rows[i].description10]
               json.rows[i].holds = <HoldsPopUp isoid={json.rows[i].iso_id} holds = {holds} descriptions = {descriptions}/>

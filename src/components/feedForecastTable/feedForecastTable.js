@@ -2,7 +2,7 @@ import React from 'react';
 import { HotTable } from '@handsontable/react';
 import './feedForecastTable.css'
 
-export default class FeedForecastTable extends React.PureComponent {
+export default class FeedForecastTable extends React.PureComponent { //Tabla del forecast del feed de isocontrol
 
     state = {
         estimated:{},
@@ -20,15 +20,16 @@ export default class FeedForecastTable extends React.PureComponent {
             }
         }
 
+        //Get de los datos del feed
         await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/getFeedForecast", options)
         .then(response => response.json())
         .then(async json => {
-            let f = {}
-            let c = []
-            let d = []
+            let f = {} //Diccionario dia-estimacion
+            let c = [] //Array de datos
+            let d = [] //Array de labels
 
             for(let i = 0; i < json.forecast.length; i++){
-                f["D"+json.forecast[i].day] = json.forecast[i].estimated
+                f["D"+json.forecast[i].day] = json.forecast[i].estimated 
                 c.push({data: "D"+json.forecast[i].day, type: "numeric"})
                 d.push("D" + json.forecast[i].day)
             }
@@ -36,18 +37,18 @@ export default class FeedForecastTable extends React.PureComponent {
         })
     }
 
-    async addDay(){
+    async addDay(){ //Para añadir un nuevo dia al forecast
 
         let estimated = this.state.estimated
-        estimated["D" + (this.state.days.length+1)] = ""
+        estimated["D" + (this.state.days.length+1)] = "" //Nuevo elemento en el diccionario
         await this.setState({estimated: estimated})
 
-        let columns = this.state.columns
-        columns.push({data: "D" + (this.state.days.length+1), type: "numeric"})
+        let columns = this.state.columns 
+        columns.push({data: "D" + (this.state.days.length+1), type: "numeric"}) //Nuevo dia para introducir el forecast
         await this.setState({columns: columns})
 
         let days = this.state.days
-        days.push("D" + (this.state.days.length+1))
+        days.push("D" + (this.state.days.length+1)) //Nueva label
         await this.setState({days: days, updated: !this.state.updated})
 
     }
@@ -63,6 +64,7 @@ export default class FeedForecastTable extends React.PureComponent {
             },
             body: JSON.stringify(body)
         }
+        //Post del forecast
           fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/submitFeedForecast", options)
               .then(response => response.json())
               .then(async json => {

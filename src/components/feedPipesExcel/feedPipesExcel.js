@@ -4,7 +4,7 @@ import { HotTable } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.css';
 import { Table, Input, Button, Space } from 'antd';
 
-class FeedPipesExcel extends React.Component{
+class FeedPipesExcel extends React.Component{ //Tabla del feed de isocontrol. Funciona igual que estimatedPipesExcel
   state = {
     searchText: '',
     searchedColumn: '',
