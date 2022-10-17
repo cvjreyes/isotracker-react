@@ -131,78 +131,86 @@ const MenuList = () =>{
         if(process.env.REACT_APP_PROGRESS === "1"){
             setProgressButtons(<div>
                 <div className="panel__content__container">
-            <div>
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/3dprogress"} style={{textDecoration: "none"}}>
-                    <h4  className="panel__icon__container" onMouseEnter={() => setProgIsShown(true)} onMouseLeave={() => setProgIsShown(false)}><img src={ChartColorIcon} alt="chart" className="panel__icon"/>&nbsp;&nbsp;&nbsp;3D Progress (Weight: {pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight} | 100%)</h4>
-                </a>
-                <div class="progress" style={{height: "30px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: ((pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * pipesProgress + (equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * equisProgress + (civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * civilsProgress + (instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * instsProgress + (elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * elecsProgress).toFixed(2)+"%", backgroundColor: "#94dcaa",textAlign: "center"}}>
-                        <span class="sr-only"></span><strong>{(pipesProgress*(pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + equisProgress*(equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + instsProgress*(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + civilsProgress*(civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + elecsProgress*(elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight))).toFixed(2)}%</strong>                                         
+                    <div>
+                        <a href={"/"+process.env.REACT_APP_PROJECT+"/3dprogress"} style={{textDecoration: "none"}}>
+                            <h4  className="panel__icon__container" onMouseEnter={() => setProgIsShown(true)} onMouseLeave={() => setProgIsShown(false)}><img src={ChartColorIcon} alt="chart" className="panel__icon"/>&nbsp;&nbsp;&nbsp;3D Progress (Weight: {pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight} | 100%)</h4>
+                        </a>
+                        <div class="progress" style={{height: "30px"}}>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: ((pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * pipesProgress + (equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * equisProgress + (civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * civilsProgress + (instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * instsProgress + (elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) * elecsProgress).toFixed(2)+"%", backgroundColor: "#94dcaa",textAlign: "center"}}>
+                                <span class="sr-only"></span><strong>{(pipesProgress*(pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + equisProgress*(equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + instsProgress*(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + civilsProgress*(civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)) + elecsProgress*(elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight))).toFixed(2)}%</strong>                                         
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div className="panel__content__container">
-            <div>
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/piping"} style={{textDecoration: "none"}}>
-                    <h4 className="panel__icon__container" onMouseEnter={() => setPipeIsShown(true)} onMouseLeave={() => setPipeIsShown(false)}><img src={PipeIcon} alt="pipe" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Piping (Weight: {pipesWeight} | {(pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>        
-                </a>
-                <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: pipesProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
-                        <span class="sr-only"></span><strong>{pipesProgress}%</strong>                                       
-                    </div>
-                </div>          
-            </div>
-        </div>
-        <div className="panel__content__container">
-            <div>
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/equipments"}style={{textDecoration: "none"}}>
-                    <h4 className="panel__icon__container" onMouseEnter={() => setEquipIsShown(true)} onMouseLeave={() => setEquipIsShown(false)}><img src={EquiIcon} alt="equi" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Equipment (Weight: {equisWeight} | {(equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>                   
-                </a>
-                <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: equisProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
-                        <span class="sr-only"></span><strong>{equisProgress}%</strong>                                         
+                <div className="panel__content__container">
+                    <div>
+                        <a href={"/"+process.env.REACT_APP_PROJECT+"/piping"} style={{textDecoration: "none"}}>
+                            <h4 className="panel__icon__container" onMouseEnter={() => setPipeIsShown(true)} onMouseLeave={() => setPipeIsShown(false)}><img src={PipeIcon} alt="pipe" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Piping (Weight: {pipesWeight} | {(pipesWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>        
+                        </a>
+                        <div class="progress" style={{height: "25px"}}>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: pipesProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
+                                <span class="sr-only"></span><strong>{pipesProgress}%</strong>                                       
+                            </div>
+                        </div>          
                     </div>
                 </div>
-            </div>
-        </div>
-        <div className="panel__content__container">
-            <div>
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/civil"}style={{textDecoration: "none"}}>
-                    <h4  className="panel__icon__container" onMouseEnter={() => setCivIsShown(true)} onMouseLeave={() => setCivIsShown(false)}><img src={StruIcon} alt="stru" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Civil (Weight: {civilsWeight} | {(civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4> 
-                </a>
-                <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: civilsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
-                        <span class="sr-only"></span><strong>{civilsProgress}%</strong>                                        
-                    </div>
-                </div>         
-            </div>
-        </div>
-        <div className="panel__content__container">
-            <div >
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/instrumentation"}style={{textDecoration: "none"}} className="panel__content__link">
-                    <h4 className="panel__icon__container" onMouseEnter={() => setInstIsShown(true)} onMouseLeave={() => setInstIsShown(false)}><img src={InstIcon} alt= "inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Instrumentation (Weight: {instsWeight} | {(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>         
-                </a>
-                <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: instsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
-                        <span class="sr-only"></span><strong>{instsProgress}%</strong>                                         
-                    </div>
-                </div>   
-            </div>
-        </div>
-        <div className="panel__content__container">
-            <div>
-                <a href={"/"+process.env.REACT_APP_PROJECT+"/electrical"} style={{textDecoration: "none"}} className="panel__content__link">
-                    <h4 className="panel__icon__container" onMouseEnter={() => setElecIsShown(true)} onMouseLeave={() => setElecIsShown(false)}><img src={ElecIcon} alt="inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Electrical (Weight: {elecsWeight} | {(elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>
-                </a>
-                <div class="progress" style={{height: "25px"}}>
-                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: elecsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
-                        <span class="sr-only"></span><strong>{elecsProgress}%</strong>                                         
+                <div className="panel__content__container">
+                    <div>
+                        <a href={"/"+process.env.REACT_APP_PROJECT+"/equipments"}style={{textDecoration: "none"}}>
+                            <h4 className="panel__icon__container" onMouseEnter={() => setEquipIsShown(true)} onMouseLeave={() => setEquipIsShown(false)}><img src={EquiIcon} alt="equi" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Equipment (Weight: {equisWeight} | {(equisWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>                   
+                        </a>
+                        <div class="progress" style={{height: "25px"}}>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: equisProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
+                                <span class="sr-only"></span><strong>{equisProgress}%</strong>                                         
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-            </div>
-        </div>   </div>)
+                <div className="panel__content__container">
+                    <div>
+                        <a href={"/"+process.env.REACT_APP_PROJECT+"/civil"}style={{textDecoration: "none"}}>
+                            <h4  className="panel__icon__container" onMouseEnter={() => setCivIsShown(true)} onMouseLeave={() => setCivIsShown(false)}><img src={StruIcon} alt="stru" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Civil (Weight: {civilsWeight} | {(civilsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4> 
+                        </a>
+                        <div class="progress" style={{height: "25px"}}>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: civilsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
+                                <span class="sr-only"></span><strong>{civilsProgress}%</strong>                                        
+                            </div>
+                        </div>         
+                    </div>
+                </div>
+                <div className="panel__content__container">
+                    <div >
+                        <a href={"/"+process.env.REACT_APP_PROJECT+"/instrumentation"}style={{textDecoration: "none"}} className="panel__content__link">
+                            <h4 className="panel__icon__container" onMouseEnter={() => setInstIsShown(true)} onMouseLeave={() => setInstIsShown(false)}><img src={InstIcon} alt= "inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Instrumentation (Weight: {instsWeight} | {(instsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>         
+                        </a>
+                        <div class="progress" style={{height: "25px"}}>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: instsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
+                                <span class="sr-only"></span><strong>{instsProgress}%</strong>                                         
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                <div className="panel__content__container">
+                    <div>
+                        <a href={"/"+process.env.REACT_APP_PROJECT+"/electrical"} style={{textDecoration: "none"}} className="panel__content__link">
+                            <h4 className="panel__icon__container" onMouseEnter={() => setElecIsShown(true)} onMouseLeave={() => setElecIsShown(false)}><img src={ElecIcon} alt="inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Electrical (Weight: {elecsWeight} | {(elecsWeight/(pipesWeight + equisWeight + instsWeight + civilsWeight + elecsWeight)*100).toFixed(2)}%)</h4>
+                        </a>
+                        <div class="progress" style={{height: "25px"}}>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style={{color: "black", fontSize: "15px", width: elecsProgressWidth, backgroundColor: "#94dcaa",textAlign: "center"}}>
+                                <span class="sr-only"></span><strong>{elecsProgress}%</strong>                                         
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div className="panel__content__container">
+                    <div>
+                        <a href={"/"+process.env.REACT_APP_PROJECT+"/isoCtrlButtons"} style={{textDecoration: "none"}} className="panel__content__link">
+                            <h4 className="panel__icon__container" onMouseEnter={() => setElecIsShown(true)} onMouseLeave={() => setElecIsShown(false)}><img src={ElecIcon} alt="inst" className="panel__icon"/>&nbsp;&nbsp;&nbsp;Iso Control Images</h4>
+                        </a>
+                    </div>
+                </div> 
+            </div>)
         }else{
             setProgressButtons(<div className="panel__content__container">
             <div>

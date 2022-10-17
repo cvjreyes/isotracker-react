@@ -1,8 +1,7 @@
 import NavBar from '../../components/navBar/navBar';
-import MenuList from '../../components/menuList/menuList';
+import IsoControlButtons from '../../components/isoControlButtons/isoControlButtons';
 import React, { useState , useEffect} from 'react'
-import './home.css'
-import LoadingScreen3D from '../../components/loadingScreen3D/loadingScreen3D';
+import './isoCtrlButtons.css'
 import GreenCircle from "../../assets/images/green_circle.png"
 import BlueCircle from "../../assets/images/blue_circle.png"
 
@@ -11,7 +10,7 @@ import {useHistory} from "react-router";
 
 //Página de home con el menú para ir a las aplicaciones de isotracker
 
-const Home = () =>{
+const IsoCtrlButtons = () =>{
 
     const [content, setContent] = useState();
     const [navBar, setNavBar] = useState(null);
@@ -51,22 +50,12 @@ const Home = () =>{
         }
     }, [])
 
-    //Simulacion de pantalla de carga (queda guay xd)
     useEffect(() =>{
-
-        setContent(<LoadingScreen3D style={{zoom: "0.9"}} progress={"25"}/>)
-        setTimeout(() => {
-            setContent(<LoadingScreen3D style={{zoom: "0.9"}} progress={"75"}/>)
-        }, 1000)
-        setTimeout(() => {
-            setContent(<LoadingScreen3D style={{zoom: "0.9"}} progress={"100"}/>)
-        }, 2000)
-        setTimeout(() => { //Cuando acaba muestra la navbar y el menu principal
-            setNavBar(<NavBar/>)
-            setContent(<MenuList/>) 
-            setCircles(<div><img src={GreenCircle} alt="greenCircle" className="greenCircle__image"/>
-            <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/></div>)        
-        }, 2300);
+        
+        setNavBar(<NavBar/>)
+        setContent(<IsoControlButtons/>) 
+        setCircles(<div><img src={GreenCircle} alt="greenCircle" className="greenCircle__image"/>
+        <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/></div>)        
           
     }, [])
 
@@ -103,10 +92,12 @@ const Home = () =>{
             {circles}
             <div>
                 {navBar}
+            </div>
+            <div>
                 {content}
             </div>
         </body>
     );
 };
 
-export default Home;
+export default IsoCtrlButtons;

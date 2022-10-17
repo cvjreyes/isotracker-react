@@ -17,6 +17,8 @@ import IsoCtrlF from './pages/isoCtrlF/isoCtrlF';
 import CSPTracker from './pages/sptracker/sptracker';
 import PITRequests from './pages/pitrequests/pitrequests';
 import PitRequestView from './pages/pitRequestView/pitRequestView';
+import IsoCtrlButtons from './pages/isoCtrlButtons/isoCtrlButtons';
+
 require('dotenv').config();
 
 
@@ -41,6 +43,7 @@ function App() { //Aqui se declaran las rutas con sus paginas correspondientes
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/csptracker"} component={CSPTracker}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/pitrequests"} component={PITRequests}></Route>
             <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/pitrequestsview"} component={PitRequestView}></Route>
+            <Route exact path={"/"+process.env.REACT_APP_PROJECT+"/isoCtrlButtons"} component={IsoCtrlButtons}></Route>
 
         </Switch>
       </Router>
