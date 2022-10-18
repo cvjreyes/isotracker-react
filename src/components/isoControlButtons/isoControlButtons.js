@@ -58,6 +58,11 @@ const IsoControlButtons = () => {
                 {/* <div class="progress">
                     <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
                 </div> */}
+                <div className='container__progress'>
+                    <div className="progress__images">
+                        <div className="progress__value__images"><p className='percentage__progress'>75%</p></div>
+                    </div>
+                </div>
             </div>
         </div>
     )

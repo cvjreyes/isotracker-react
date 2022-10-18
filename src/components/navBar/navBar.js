@@ -311,7 +311,7 @@ const NavBar = (props) =>{
     if(process.env.REACT_APP_PROGRESS === "1"){
         if(process.env.REACT_APP_SP === "1"){
             if(process.env.REACT_APP_PIT === "1"){
-            projectBtn = <Button class="btn nohover" disabled style={{marginRight:"20px", float:"right"}}>
+            projectBtn = <Button class="btn nohover button__user" disabled style={{marginRight:"20px", float:"right"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
             rightButtons = <div style={{width:"27%"}}>
@@ -337,7 +337,7 @@ const NavBar = (props) =>{
                 {projectBtn}
             </div>
             }else{
-                projectBtn = <Button class="btn nohover" disabled style={{marginRight:"20px", float:"right"}}>
+                projectBtn = <Button class="btn nohover button__user" disabled style={{marginRight:"20px", float:"right"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
             rightButtons = <div style={{width:"39%"}}>
@@ -365,7 +365,7 @@ const NavBar = (props) =>{
             }
         }else{
             if(process.env.REACT_APP_PIT === "1"){
-                projectBtn = <Button class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
+                projectBtn = <Button class="btn nohover button__user" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
                 rightButtons= <div style={{width:"39%"}}>
@@ -391,7 +391,7 @@ const NavBar = (props) =>{
                 {projectBtn}
             </div>
             }else{
-                projectBtn = <Button class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
+                projectBtn = <Button class="btn nohover button__user" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
                 rightButtons= <div style={{width:"45%"}}>
@@ -423,7 +423,7 @@ const NavBar = (props) =>{
     }else{
         if(process.env.REACT_APP_SP === "1"){
             if(process.env.REACT_APP_PIT === "1"){
-            projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
+            projectBtn = <Button classes={{label: classes.label2}} class="btn nohover button__user" disabled style={{float:"right", marginRight:"20px"}}>
             <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
         </Button>
         rightButtons= <div style={{width:"75%"}}>
@@ -449,7 +449,7 @@ const NavBar = (props) =>{
             {projectBtn}
         </div>
             }else{
-                projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
+                projectBtn = <Button classes={{label: classes.label2}} class="btn nohover button__user" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
             rightButtons= <div style={{width:"79%"}}>
@@ -478,7 +478,7 @@ const NavBar = (props) =>{
         
         }else{
             if(process.env.REACT_APP_PIT === "1"){
-                projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
+                projectBtn = <Button classes={{label: classes.label2}} class="btn nohover button__user" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
                 </Button>
                 
@@ -506,7 +506,7 @@ const NavBar = (props) =>{
                 {projectBtn}
             </div>
             }else{
-                projectBtn = <Button classes={{label: classes.label2}} class="btn nohover" disabled style={{float:"right", marginRight:"20px"}}>
+                projectBtn = <Button classes={{label: classes.label2}} class="btn nohover button__user" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
                 </Button>
                 

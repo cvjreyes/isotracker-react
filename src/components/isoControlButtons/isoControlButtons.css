@@ -37,6 +37,8 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
     border-radius: 16px;
 
+    text-decoration: none;
+
 }
 
 .button__iso__ctrl:hover{
@@ -148,4 +150,46 @@
     /* Secondary/Black 80% */
 
     color: #606060; 
+}
+
+.container__progress{
+    justify-content: center;
+    align-items: center;
+    background: white;
+    display: flex;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+.progress__images{
+    background: rgba(255,255,255,0.1);
+    justify-content: flex-start;
+    border-radius: 100px;
+    align-items: center;
+    position: relative;
+    padding: 0 5px;
+    display: flex;
+    height: 40px;
+    width: 780px;
+}
+
+.progress__value__images{
+    animation: load 3s normal forwards;
+    box-shadow: 0 10px 40px -10px blue;
+    border-radius: 100px;
+    background: linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%);
+    height: 40px;
+    width: 0;
+    color: #FFFFFF;
+}
+
+@keyframes load {
+    0% { width: 0; }
+    100% { width: 50%; }
+}
+
+.percentage__progress{
+    margin-top: 5px;
+    font-size: large;
 }
