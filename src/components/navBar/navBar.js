@@ -160,7 +160,7 @@ const NavBar = (props) =>{
         //En funcion de las caracteristicas del proyecto la navbar se construye de forma distinta
         if(process.env.REACT_APP_PROGRESS === "1"){
             if(process.env.REACT_APP_SP === "1"){
-                setProgressButtons(<div style={{ marginLeft: "3%", float:"left"}}>
+                setProgressButtons(<div style={{ marginLeft: "2%", float:"left"}}>
                     <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
                         <i className="dropdown__text">Home </i>
                     </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -181,7 +181,7 @@ const NavBar = (props) =>{
                                     <i className="dropdown__text" >IsoTracker </i>
                     </Button></div>)
             }else{
-                setProgressButtons(<div style={{ marginLeft: "3%", float:"left" }}>
+                setProgressButtons(<div style={{ marginLeft: "2%", float:"left" }}>
                     <Button class="btn nohover" onClick={handleClickHome} style={{marginRight:"50px"}}>
                         <i className="dropdown__text">Home </i>
                     </Button><Button class="btn nohover" onClick={handleClickPiping} style={{marginRight:"50px"}}>
@@ -394,7 +394,7 @@ const NavBar = (props) =>{
                 projectBtn = <Button class="btn nohover button__user" disabled style={{float:"right", marginRight:"20px"}}>
                 <i className="dropdown__text__projectname" >{process.env.REACT_APP_APP_NAMEPROJ}</i>
             </Button>
-                rightButtons= <div style={{width:"45%"}}>
+                rightButtons= <div style={{width:"42%"}}>
                         
                             
                 <button style={{float:"right", marginLeft:"20px", marginTop:"4px", border:"none", background:"none"}} onClick={()=>setIsMenuOpen(!isMenuOpen)}>{bellImage}</button>

@@ -108,45 +108,45 @@ const WelcomeLoginF = () =>{
     }
 
     return(
-        <body>
-        <div className="background">
-            <img src={TechnipLogo} alt="technipLogo" className="technipLogo__image"/>
-            <img src={GreenCircle} alt="greenCircle" className="greenCircle__image"/>
-            <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/>
-            
-            <div className="login__form">
-                <img src={logo} alt="isoTrackerLogo" className="isoTrackerLogo__image"/>
-                <text className="welcome__text">Welcome</text>
-                <text className="enter__text">Please, enter your e-mail account and password.</text>
-                <text className="email__label">E-mail</text>
-                <input type="text" className="email__input" onChange={(e) => setEmail(e.target.value)} onKeyPress={event => {
-                        if (event.key === 'Enter') {
-                        handleLogin()
-                        }
-                    }}></input>
-                <text className="password__label">Password</text>
-                <div>
-                    <input className="password__input" type={passwordShown ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}
-                    onKeyPress={event => {
-                        if (event.key === 'Enter') {
-                        handleLogin()
-                        }
-                    }}/>
-                    <img onClick={togglePassword} src={Eye} alt="eye" className="eye__image"></img>
-                </div>
-                <div className="login__buttons">
-                    <button className="login__button" onClick={handleLogin}>Log In</button>
-                    {error && <p className="error__message" style={{color: "red", position:"absolute"}}>Email or password incorrect. Try again.</p>}
-                   
-                    <button className="guide__button" onClick={(e) =>  window.open("http://wks-fr.exnet.technip.com/sites/GLOBALBPMS/EMIA/ML-380-01%20Isotracker%20QuickUsersGuide.pdf", "_blank")}>Download QuickUser'sGuide</button>
+        <div>
+            <div className="background">
+                <img src={TechnipLogo} alt="technipLogo" className="technipLogo__image"/>
+                <img src={GreenCircle} alt="greenCircle" className="greenCircle__image"/>
+                <img src={BlueCircle} alt="blueCircle" className="blueCircle__image"/>
+                
+                <div className="login__form">
+                    <img src={logo} alt="isoTrackerLogo" className="isoTrackerLogo__image"/>
+                    <p className="welcome__text">Welcome</p>
+                    <p className="enter__text">Please, enter your e-mail account and password.</p>
+                    <p className="email__label">E-mail</p>
+                    <input type="text" className="email__input" onChange={(e) => setEmail(e.target.value)} onKeyPress={event => {
+                            if (event.key === 'Enter') {
+                            handleLogin()
+                            }
+                        }}></input>
+                    <p className="password__label">Password</p>
+                    <div>
+                        <input className="password__input" type={passwordShown ? "text" : "password"} onChange={(e) => setPassword(e.target.value)}
+                        onKeyPress={event => {
+                            if (event.key === 'Enter') {
+                            handleLogin()
+                            }
+                        }}/>
+                        <img onClick={togglePassword} src={Eye} alt="eye" className="eye__image"></img>
+                    </div>
+                    <div className="login__buttons">
+                        <button className="login__button" onClick={handleLogin}>Log In</button>
+                        {error && <p className="error__message" style={{color: "red", position:"absolute"}}>Email or password incorrect. Try again.</p>}
+                    
+                        <button className="guide__button" onClick={(e) =>  window.open("http://wks-fr.exnet.technip.com/sites/GLOBALBPMS/EMIA/ML-380-01%20Isotracker%20QuickUsersGuide.pdf", "_blank")}>Download QuickUser'sGuide</button>
 
-                    <text className="navis__text">Or you can access to NavisattSelect</text>
-                    <button className="navis__button" onClick={(e) => history.push("/"+process.env.REACT_APP_PROJECT+"/navis")}>NAVISATTSELECT</button>
+                        <p className="navis__text">Or you can access to NavisattSelect</p>
+                        <button className="navis__button" onClick={(e) => history.push("/"+process.env.REACT_APP_PROJECT+"/navis")}>NAVISATTSELECT</button>
+                </div>
+                </div>
+                
             </div>
-            </div>
-            
         </div>
-        </body>
     );
 };
 

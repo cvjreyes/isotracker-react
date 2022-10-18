@@ -234,7 +234,7 @@ const MenuList = () =>{
         <div class="panel__container">
             <div className="panel__heading__container">
                 <h4>
-                    <text className="panel__heading__text"><strong style={{fontWeight:"700"}}>3D</strong>Tracker</text>
+                    <p className="panel__heading__text"><strong style={{fontWeight:"700"}}>3D</strong>Tracker</p>
                 </h4>
             </div>
 
@@ -243,7 +243,7 @@ const MenuList = () =>{
                     <div className="panel__content__container__title">
                     <a href={"/"+process.env.REACT_APP_PROJECT+"/isotracker"} style={{textDecoration: "none"}}>
                         <h4 className="click__text">Click here to open</h4>
-                        <h4 className="iso__title__menu">ISO<text style={{fontWeight:"100"}}>Tracker</text></h4>
+                        <h4 className="iso__title__menu">ISO<p style={{fontWeight:"100", display:"inline"}}>Tracker</p></h4>
                         </a>
                     </div>
                         

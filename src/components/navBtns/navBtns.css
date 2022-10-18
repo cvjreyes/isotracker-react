@@ -12,6 +12,7 @@
     background-color: white;
     padding-left: 10px;
     height: 36px;
+    text-align: left;
 }
 
 .nav__button:hover{

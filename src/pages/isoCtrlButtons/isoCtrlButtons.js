@@ -83,7 +83,7 @@ const IsoCtrlButtons = () =>{
     }
 
     return(
-        <body>
+        <div>
             <IdleTimer
                 timeout={1000 * 60 * 15}
                 onIdle={handleOnIdle}
@@ -96,7 +96,7 @@ const IsoCtrlButtons = () =>{
             <div>
                 {content}
             </div>
-        </body>
+        </div>
     );
 };
 

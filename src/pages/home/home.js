@@ -94,7 +94,7 @@ const Home = () =>{
     }
 
     return(
-        <body>
+        <div>
             <IdleTimer
                 timeout={1000 * 60 * 15}
                 onIdle={handleOnIdle}
@@ -105,7 +105,7 @@ const Home = () =>{
                 {navBar}
                 {content}
             </div>
-        </body>
+        </div>
     );
 };
 
