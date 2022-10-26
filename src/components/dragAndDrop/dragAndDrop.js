@@ -35,7 +35,8 @@ class DragAndDrop extends React.Component{
     max: 0,
     uploadingPreview: false,
     uploading: false,
-    nSuccess: 0
+    nSuccess: 0,
+    puntosExtra: false,
   };
 
   async uploadFile(file) {//Subida de un archivo al storage
@@ -46,6 +47,8 @@ class DragAndDrop extends React.Component{
     })
       .then(response => {
         // Do something with the successful response
+        //let fileNoExtension = value.name.split('.')
+        // console.log("Archivos: " + JSON.stringify(file.values().name));
         if (response.status === 200){ //Si se ha subido con exito
           let n = this.state.nSuccess
           this.setState({nSuccess: n+1})
@@ -56,9 +59,11 @@ class DragAndDrop extends React.Component{
           }
 
           let filename = null;
-          for (let value of file.values()){
+          for (let value of file.values()){          
+            console.log("NOmbre archivo sin puntos: " + value.name);
             filename = value.name
           }
+
           let extension = "";
           let i = filename.lastIndexOf('.');
           let cl = false
@@ -87,11 +92,22 @@ class DragAndDrop extends React.Component{
           }
         }else{ //Si no se ha subido correctamente
           for (let value of file.values()) {
-            let joined = this.state.errorAlerts.concat(value.name);
-            this.setState({
-              errorAlerts : joined,
-              error: true
-            })
+            let fileNoExtension = value.name.split('.')
+            if(fileNoExtension.length > 2){
+              let joined = this.state.errorAlerts.concat(fileNoExtension[0] + ".pdf");
+              this.setState({
+                errorAlerts : joined,
+                error: true,
+                puntosExtra: true,
+              })
+            } else {
+              let joined = this.state.errorAlerts.concat(value.name);
+              this.setState({
+                errorAlerts : joined,
+                error: true,
+                puntosExtra: false,
+              })
+            }
           }
         }
         let max = this.state.max - 1
@@ -207,40 +223,75 @@ class DragAndDrop extends React.Component{
       counter: 0,
       max: files.length,
       uploading: true,
-      nSuccess: 0
+      nSuccess: 0,
+      puntosExtra: false,
     })
 
     await allFiles.forEach(file => { //Para cada archivo se hace el upload o update
       const formData  = new FormData(); 
       formData.append('file', file.file);  
+      let fileNoExtension = file.file.name.split('.')
       if(this.props.mode === "upload"){
         if(process.env.REACT_APP_PROGRESS === "0"){
           this.uploadFile(formData);
         }else{
-          //Comprobamos que la linea existe en dpipes si el proyecto tiene progreso
-          fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+file.file.name)
-          .then(response => response.json())
-          .then(async json =>{
-            if(json.exists){
-              this.uploadFile(formData);
-            }else{
-              let joined = this.state.pipeErrorAlerts.concat(file.file.name);
-              this.setState({
-                pipeErrorAlerts : joined,
-                pipeError: true
-              })
-              let max = this.state.max - 1
-              this.setState({
-                max: max
-              })
-              if (max === 0){
+          if(fileNoExtension.length > 2){
+            this.setState({
+              puntosExtra: true
+            })
+            //Comprobamos que la linea existe en dpipes si el proyecto tiene progreso
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+fileNoExtension[0]+".pdf")
+            .then(response => response.json())
+            .then(async json =>{
+              if(json.exists){
+                this.uploadFile(formData);
+              }else{
+                let joined = this.state.pipeErrorAlerts.concat(file.file.name);
                 this.setState({
-                  uploaded: true,
-                  uploading: false
+                  pipeErrorAlerts : joined,
+                  pipeError: true
                 })
+                let max = this.state.max - 1
+                this.setState({
+                  max: max
+                })
+                if (max === 0){
+                  this.setState({
+                    uploaded: true,
+                    uploading: false,
+                  })
+                }
               }
-            }
-          })
+            })
+          } else {
+            this.setState({
+              puntosExtra: false
+            })
+            //Comprobamos que la linea existe en dpipes si el proyecto tiene progreso
+            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+file.file.name)
+            .then(response => response.json())
+            .then(async json =>{
+              if(json.exists){
+                this.uploadFile(formData);
+              }else{
+                let joined = this.state.pipeErrorAlerts.concat(file.file.name);
+                this.setState({
+                  pipeErrorAlerts : joined,
+                  pipeError: true
+                })
+                let max = this.state.max - 1
+                this.setState({
+                  max: max
+                })
+                if (max === 0){
+                  this.setState({
+                    uploaded: true,
+                    uploading: false,
+                  })
+                }
+              }
+            })
+          }
         }
         
       }else{
@@ -278,11 +329,20 @@ class DragAndDrop extends React.Component{
       for(let i = 0; i < errorAlerts.length; i++){
         
         if (this.props.mode === "upload"){
-          errors.push(<Alert severity="error"
-          >
-            The file {errorAlerts[i]} already exists!
+          console.log("puntos Extra: " + this.state.puntosExtra);
+          if (this.state.puntosExtra === true){
+            errors.push(<Alert severity="error"
+            >
+              The file {errorAlerts[i]} has special characters that are not allowed!
 
-          </Alert>)
+            </Alert>)
+          }else {
+            errors.push(<Alert severity="error"
+            >
+              The file {errorAlerts[i]} already exists or other!
+
+            </Alert>)
+          }
         }else{
           errors.push(<Alert severity="error"
           >
