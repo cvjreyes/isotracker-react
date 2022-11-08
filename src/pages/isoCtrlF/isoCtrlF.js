@@ -313,6 +313,7 @@ const IsoCtrlF = () => {
                         },
                         body: JSON.stringify(body)
                     }
+                    console.log("Body claim: " + JSON.stringify(body));
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/claim", options)
                 }
             

@@ -192,15 +192,49 @@ export default class UploadProcInst extends Component {
 
     render() {
         return (
-            <section>
-                <input type="button"  value="UPLOAD" className="btn btn-warning"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"#B0E0E6", borderColor:"#B0E0E6", width:"100px", float:"left", marginRight:"5px"}} onClick={() => this.openModal()} />
+            // <section>
+            //     <input type="button"  value="UPLOAD" className="btn btn-warning"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"#B0E0E6", borderColor:"#B0E0E6", width:"100px", float:"left", marginRight:"5px"}} onClick={() => this.openModal()} />
+            //     <div>
+            //         <Modal visible={this.state.visible} width="650" height="430" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+            //         <button onClick={() => this.closeModal()} style={{marginTop:"5px", fontSize:"16px", position:"absolute", right:"10px", backgroundColor:"transparent", border:"None"}}>X</button>
+
+            //             <div className="popUpP__container" >
+
+            //                 <center className="popUpP__title"><h1>{this.id}</h1></center>
+            //                 <form>
+            //                     <div class="form-group">
+            //                         <center>
+            //                             <input type="file" onChange={this.onFileChange} className="inputFile__container" id="exampleFormControlFile1"></input>
+            //                             <Collapse in={this.state.error}>
+            //                                 <Alert severity="error" style={{left: "180px",position: "absolute"}}
+            //                                 >
+            //                                 The file doesn't match the isometric!
+
+            //                                 </Alert>
+            //                             </Collapse>
+            //                         </center>
+            //                     </div>
+            //                 </form>
+            //             </div>
+            //             <center className="popUpP__warning__title">***WARNING!*** This action may replace the current appended file. Take appropiate cautions.</center>
+            //             <center className="popUpP__warning__subtitle">If you are not sure of this action, click cancel and contact your supervisor.</center>
+                        // <div className="popUpP__buttons__container">
+                        //     <button class="btn btn-sm btn-success" onClick={() => this.accept()} style={{marginRight:"40px", fontSize:"16px", width:"200px"}}>Accept</button>
+                        //     <button class="btn btn-sm btn-danger" onClick={() => this.deny()} style={{marginRight:"5px", fontSize:"16px", width:"200px"}}>Deny</button>
+                        // </div>
+            //         </Modal>
+            //     </div>
+            // </section>
+
+            <section >
+                <input type="button"  value="UPLOAD" className="btn btn-warning"  style={{fontSize:"12px", padding:"2px 5px 2px 5px", backgroundColor:"#B0E0E6", borderColor:"#B0E0E6", width:"100px", float:"left", marginRight: "5px", marginTop:"3px"}} onClick={() => this.openModal()} />
                 <div>
-                    <Modal visible={this.state.visible} width="650" height="430" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                    <button onClick={() => this.closeModal()} style={{marginTop:"5px", fontSize:"16px", position:"absolute", right:"10px", backgroundColor:"transparent", border:"None"}}>X</button>
-
-                        <div className="popUpP__container" >
-
-                            <center className="popUpP__title"><h1>{this.id}</h1></center>
+                    <Modal visible={this.state.visible} width="650" height="500" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                        <div className="popUp__container" >
+                            <center className="popUp__title">{this.id}</center>
+                                
+                        </div>
+                        <div className="popUpP__container">
                             <form>
                                 <div class="form-group">
                                     <center>
@@ -215,9 +249,11 @@ export default class UploadProcInst extends Component {
                                     </center>
                                 </div>
                             </form>
+                        </div> 
+                        <div className="popUp__warning__container">
+                            <center className="popUp__warning__title">***WARNING!*** This action will replace the current(s) file(s). Take appropiate cautions.</center>
+                            <center className="popUp__warning__subtitle__2">If you are not sure of this action, click cancel and contact your supervisor.</center>
                         </div>
-                        <center className="popUpP__warning__title">***WARNING!*** This action may replace the current appended file. Take appropiate cautions.</center>
-                        <center className="popUpP__warning__subtitle">If you are not sure of this action, click cancel and contact your supervisor.</center>
                         <div className="popUpP__buttons__container">
                             <button class="btn btn-sm btn-success" onClick={() => this.accept()} style={{marginRight:"40px", fontSize:"16px", width:"200px"}}>Accept</button>
                             <button class="btn btn-sm btn-danger" onClick={() => this.deny()} style={{marginRight:"5px", fontSize:"16px", width:"200px"}}>Deny</button>
