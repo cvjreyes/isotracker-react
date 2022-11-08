@@ -9,6 +9,8 @@ export default class UploadProcInst extends Component {
         super(props);
         this.state = {
             visible : false,
+            visibleAccept: false,
+            visibleDenied: false,
             file : null,
             role: this.props.role,
             user: this.props.currentUser,
@@ -190,6 +192,30 @@ export default class UploadProcInst extends Component {
         });
     }
 
+    openModalSeguroAccept() {      
+        this.setState({
+            visibleAccept : true,
+        });
+    }
+
+    closeModalSeguroAccept() {
+        this.setState({
+            visibleAccept : false,
+        });
+    }
+
+    openModalSeguroDenied() {      
+        this.setState({
+            visibleDenied : true,
+        });
+    }
+
+    closeModalSeguroDenied() {
+        this.setState({
+            visibleDenied : false,
+        });
+    }
+
     render() {
         return (
             // <section>
@@ -239,13 +265,13 @@ export default class UploadProcInst extends Component {
                                 <div class="form-group">
                                     <center>
                                         <input type="file" onChange={this.onFileChange} className="inputFile__container" id="exampleFormControlFile1"></input>
-                                        <Collapse in={this.state.error}>
+                                        {/* <Collapse in={this.state.error}>
                                             <Alert severity="error" style={{left: "180px",position: "absolute"}}
                                             >
                                             The file doesn't match the isometric!
 
                                             </Alert>
-                                        </Collapse>
+                                        </Collapse> */}
                                     </center>
                                 </div>
                             </form>
@@ -255,9 +281,49 @@ export default class UploadProcInst extends Component {
                             <center className="popUp__warning__subtitle__2">If you are not sure of this action, click cancel and contact your supervisor.</center>
                         </div>
                         <div className="popUpP__buttons__container">
-                            <button class="btn btn-sm btn-success" onClick={() => this.accept()} style={{marginRight:"40px", fontSize:"16px", width:"200px"}}>Accept</button>
-                            <button class="btn btn-sm btn-danger" onClick={() => this.deny()} style={{marginRight:"5px", fontSize:"16px", width:"200px"}}>Deny</button>
+                            <button class="btn__create__bypass" onClick={() => this.openModalSeguroAccept()} style={{marginRight:"40px", fontSize:"16px", width:"200px"}}>Accept</button>
+                            <button class="btn__cancel__bypass" onClick={() => this.openModalSeguroDenied()} style={{marginRight:"5px", fontSize:"16px", width:"200px"}}>Deny</button>
                         </div>
+                    </Modal>
+                </div>
+                <div>
+                    <Modal visible={this.state.visibleAccept} width="500" height="280" effect="fadeInUp" onClickAway={() => this.closeModalSeguroAccept()}>
+                        <div className='popUp__container'>
+                            <label className="popUp__title">Are you sure you want to Accept?</label>
+                        </div>
+                        <div className="popUpP__buttons__container">
+                            <button class="btn__create__bypass" onClick={() => this.accept()} >Yes</button>
+                            <button class="btn__cancel__bypass" onClick={() => this.closeModalSeguroAccept()} >No</button>
+                        </div>
+                        <center style={{marginTop: "2%"}}>
+                            <Collapse in={this.state.error}>
+                                <Alert severity="error" style={{left: "100px",position: "absolute"}}
+                                >
+                                The file doesn't match the isometric!
+
+                                </Alert>
+                            </Collapse>
+                        </center>
+                    </Modal>
+                </div>
+                <div>
+                    <Modal visible={this.state.visibleDenied} width="500" height="280" effect="fadeInUp" onClickAway={() => this.closeModalSeguroDenied()}>
+                        <div className='popUp__container'>
+                            <label className="popUp__title">Are you sure you want to Deny?</label>
+                        </div>
+                        <div className="popUpP__buttons__container">
+                            <button class="btn__create__bypass" onClick={() => this.deny()} >Yes</button>
+                            <button class="btn__cancel__bypass" onClick={() => this.closeModalSeguroDenied()} >No</button>
+                        </div>
+                        <center style={{marginTop: "2%"}}>
+                            <Collapse in={this.state.error}>
+                                <Alert severity="error" style={{left: "100px", position: "absolute"}}
+                                >
+                                The file doesn't match the isometric!
+
+                                </Alert>
+                            </Collapse>
+                        </center>
                     </Modal>
                 </div>
             </section>
