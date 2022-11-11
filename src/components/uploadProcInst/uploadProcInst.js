@@ -14,7 +14,8 @@ export default class UploadProcInst extends Component {
             file : null,
             role: this.props.role,
             user: this.props.currentUser,
-            error: false
+            error: false,
+            validFile: false
         }
         this.id = props.id;
 
@@ -22,22 +23,37 @@ export default class UploadProcInst extends Component {
    
     onFileChange = event => {
 
+        console.log("Nombre del archivo: " + event.target.files[0].name);
+        console.log("Nombre del titulo del modal: " + this.id[0] + '.pdf');
+        if(event.target.files[0].name === this.id[0] + '.pdf'){
+            this.setState({
+                validFile: true,
+                file: event.target.files[0],
+                error: false
+            })
+        } else {
+            this.setState({
+                validFile: false,
+                error: true
+            })
+        }
+        console.log("Validez: " + this.state.validFile);
         this.setState({ file: event.target.files[0]});
     };
 
     async accept(){
         if(this.state.file){
             if(this.id[0] + '.pdf' === this.state.file.name){
+                
                 const file  = new FormData(); 
                 file.append('file', this.state.file); 
-                
                 const body = {
                     file: this.state.file.name,
                     action: "accept",
                     user: this.state.user,
                     role: this.state.role
                 }
-    
+                
                 const options = {
                     method: "POST",
                     headers: {
@@ -45,7 +61,8 @@ export default class UploadProcInst extends Component {
                     },
                     body: JSON.stringify(body)
                 }
-
+                console.log("Datos del Archivo: " + JSON.stringify(options));
+                
                 if(this.state.role === "Process"){
                     await fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/uploadProc", {
                     // content-type header should not be specified!
@@ -189,6 +206,7 @@ export default class UploadProcInst extends Component {
     closeModal() {
         this.setState({
             visible : false,
+            error: false
         });
     }
 
@@ -201,6 +219,7 @@ export default class UploadProcInst extends Component {
     closeModalSeguroAccept() {
         this.setState({
             visibleAccept : false,
+            error: false
         });
     }
 
@@ -213,6 +232,7 @@ export default class UploadProcInst extends Component {
     closeModalSeguroDenied() {
         this.setState({
             visibleDenied : false,
+            error: false
         });
     }
 
@@ -265,13 +285,13 @@ export default class UploadProcInst extends Component {
                                 <div class="form-group">
                                     <center>
                                         <input type="file" onChange={this.onFileChange} className="inputFile__container" id="exampleFormControlFile1"></input>
-                                        {/* <Collapse in={this.state.error}>
-                                            <Alert severity="error" style={{left: "180px",position: "absolute"}}
+                                        <Collapse in={this.state.error}>
+                                            <Alert severity="error" style={{left: "180px",position: "absolute", top: "70px"}}
                                             >
                                             The file doesn't match the isometric!
 
                                             </Alert>
-                                        </Collapse> */}
+                                        </Collapse>
                                     </center>
                                 </div>
                             </form>
@@ -281,19 +301,19 @@ export default class UploadProcInst extends Component {
                             <center className="popUp__warning__subtitle__2">If you are not sure of this action, click cancel and contact your supervisor.</center>
                         </div>
                         <div className="popUpP__buttons__container">
-                            <button class="btn__create__bypass" onClick={() => this.openModalSeguroAccept()} style={{marginRight:"40px", fontSize:"16px", width:"200px"}}>Accept</button>
-                            <button class="btn__cancel__bypass" onClick={() => this.openModalSeguroDenied()} style={{marginRight:"5px", fontSize:"16px", width:"200px"}}>Deny</button>
+                            <button className={`btn__accept ${this.state.validFile ? "" : "disabled"}`} onClick={() => this.openModalSeguroAccept()} style={{marginRight:"40px", fontSize:"16px", width:"200px"}}>Accept</button>
+                            <button className={`btn__deny ${this.state.validFile ? "" : "disabled"}`} onClick={() => this.openModalSeguroDenied()} style={{marginRight:"5px", fontSize:"16px", width:"200px"}}>Deny</button>
                         </div>
                     </Modal>
                 </div>
                 <div>
-                    <Modal visible={this.state.visibleAccept} width="500" height="280" effect="fadeInUp" onClickAway={() => this.closeModalSeguroAccept()}>
+                    <Modal visible={this.state.visibleAccept} width="500" height="180" effect="fadeInUp" onClickAway={() => this.closeModalSeguroAccept()}>
                         <div className='popUp__container'>
-                            <label className="popUp__title">Are you sure you want to Accept?</label>
+                            <label className="popUp__title" style={{fontSize: "25px", marginLeft: "20px"}}>Are you sure you want to <b>Accept</b>?</label>
                         </div>
                         <div className="popUpP__buttons__container">
-                            <button class="btn__create__bypass" onClick={() => this.accept()} >Yes</button>
-                            <button class="btn__cancel__bypass" onClick={() => this.closeModalSeguroAccept()} >No</button>
+                            <button className="btn__create__bypass" style={{fontSize: "18px"}} onClick={() => this.accept()} >Yes</button>
+                            <button className="btn__cancel__bypass" style={{fontSize: "18px"}} onClick={() => this.closeModalSeguroAccept()} >No</button>
                         </div>
                         <center style={{marginTop: "2%"}}>
                             <Collapse in={this.state.error}>
@@ -307,13 +327,13 @@ export default class UploadProcInst extends Component {
                     </Modal>
                 </div>
                 <div>
-                    <Modal visible={this.state.visibleDenied} width="500" height="280" effect="fadeInUp" onClickAway={() => this.closeModalSeguroDenied()}>
+                    <Modal visible={this.state.visibleDenied} width="500" height="180" effect="fadeInUp" onClickAway={() => this.closeModalSeguroDenied()}>
                         <div className='popUp__container'>
-                            <label className="popUp__title">Are you sure you want to Deny?</label>
+                            <label className="popUp__title" style={{fontSize: "25px", marginLeft: "25px"}}>Are you sure you want to <b>Deny</b>?</label>
                         </div>
                         <div className="popUpP__buttons__container">
-                            <button class="btn__create__bypass" onClick={() => this.deny()} >Yes</button>
-                            <button class="btn__cancel__bypass" onClick={() => this.closeModalSeguroDenied()} >No</button>
+                            <button className="btn__create__bypass" style={{fontSize: "18px"}} onClick={() => this.deny()} >Yes</button>
+                            <button className="btn__cancel__bypass" style={{fontSize: "18px"}} onClick={() => this.closeModalSeguroDenied()} >No</button>
                         </div>
                         <center style={{marginTop: "2%"}}>
                             <Collapse in={this.state.error}>
