@@ -22,6 +22,9 @@ const Layout = ({ input, previews, submitButton, dropzoneProps, files, extra: { 
   )
 }
 
+const validIsometricPdf = new RegExp("^[a-zA-Z0-9_-]+.(pdf)$")
+const validIsometric = new RegExp("^[a-zA-Z0-9_-]+")
+
 class DragAndDrop extends React.Component{
 
   state = {
@@ -32,11 +35,12 @@ class DragAndDrop extends React.Component{
     uploaded: false,
     errorAlerts: [],
     pipeErrorAlerts: [],
+    caracterError: false,
+    caracterErrorAlert: [],
     max: 0,
     uploadingPreview: false,
     uploading: false,
     nSuccess: 0,
-    puntosExtra: false,
   };
 
   async uploadFile(file) {//Subida de un archivo al storage
@@ -47,8 +51,6 @@ class DragAndDrop extends React.Component{
     })
       .then(response => {
         // Do something with the successful response
-        //let fileNoExtension = value.name.split('.')
-        // console.log("Archivos: " + JSON.stringify(file.values().name));
         if (response.status === 200){ //Si se ha subido con exito
           let n = this.state.nSuccess
           this.setState({nSuccess: n+1})
@@ -92,20 +94,19 @@ class DragAndDrop extends React.Component{
           }
         }else{ //Si no se ha subido correctamente
           for (let value of file.values()) {
-            let fileNoExtension = value.name.split('.')
-            if(fileNoExtension.length > 2){
-              let joined = this.state.errorAlerts.concat(fileNoExtension[0] + ".pdf");
+            if(validIsometricPdf.test(value.name) === false){
+              let joined = this.state.caracterErrorAlert.concat(value.name);
               this.setState({
-                errorAlerts : joined,
-                error: true,
-                puntosExtra: true,
+                caracterErrorAlert : joined,
+                //error: false,
+                caracterError: true,
               })
             } else {
               let joined = this.state.errorAlerts.concat(value.name);
               this.setState({
                 errorAlerts : joined,
                 error: true,
-                puntosExtra: false,
+                //caracterError: false,
               })
             }
           }
@@ -186,11 +187,21 @@ class DragAndDrop extends React.Component{
           }
         }else{
           for (let value of file.values()) {
-            let joined = this.state.errorAlerts.concat(value.name);
-            this.setState({
-              errorAlerts : joined,
-              error: true
-            })
+            if(validIsometricPdf.test(value.name) === false){
+              let joined = this.state.caracterErrorAlert.concat(value.name);
+              this.setState({
+                caracterErrorAlert : joined,
+                //error: false,
+                caracterError: true,
+              })
+            } else {
+              let joined = this.state.errorAlerts.concat(value.name);
+              this.setState({
+                errorAlerts : joined,
+                error: true,
+                //caracterError: false,
+              })
+            }
           }
         }
         let max = this.state.max - 1
@@ -220,53 +231,43 @@ class DragAndDrop extends React.Component{
       pipeError: false,
       errorAlerts: [],
       pipeErrorAlerts: [],
+      caracterError: false,
+      caracterErrorAlert:[],
       counter: 0,
       max: files.length,
       uploading: true,
       nSuccess: 0,
-      puntosExtra: false,
     })
 
     await allFiles.forEach(file => { //Para cada archivo se hace el upload o update
       const formData  = new FormData(); 
       formData.append('file', file.file);  
-      let fileNoExtension = file.file.name.split('.')
       if(this.props.mode === "upload"){
         if(process.env.REACT_APP_PROGRESS === "0"){
           this.uploadFile(formData);
         }else{
-          if(fileNoExtension.length > 2){
+          if(validIsometricPdf.test(file.file.name) === false){
+            let joinedCaracter = this.state.caracterErrorAlert.concat(file.file.name);
+            console.log("Entra 1: " + this.state.caracterErrorAlert.concat(file.file.name));
+            console.log("Joined caracter: " + joinedCaracter);
             this.setState({
-              puntosExtra: true
+              caracterErrorAlert: joinedCaracter,
+              //error: false,
+              caracterError: true,
+              uploading: false
             })
-            //Comprobamos que la linea existe en dpipes si el proyecto tiene progreso
-            fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+fileNoExtension[0]+".pdf")
-            .then(response => response.json())
-            .then(async json =>{
-              if(json.exists){
-                this.uploadFile(formData);
-              }else{
-                let joined = this.state.pipeErrorAlerts.concat(file.file.name);
-                this.setState({
-                  pipeErrorAlerts : joined,
-                  pipeError: true
-                })
-                let max = this.state.max - 1
-                this.setState({
-                  max: max
-                })
-                if (max === 0){
-                  this.setState({
-                    uploaded: true,
-                    uploading: false,
-                  })
-                }
-              }
+            console.log("Caracter error alert: " + this.state.caracterErrorAlert);
+            let max = this.state.max - 1
+            this.setState({
+              max: max
             })
+            if (max === 0){
+              this.setState({
+                uploaded: true,
+                uploading: false,
+              })
+            }
           } else {
-            this.setState({
-              puntosExtra: false
-            })
             //Comprobamos que la linea existe en dpipes si el proyecto tiene progreso
             fetch("http://"+process.env.REACT_APP_SERVER+":"+process.env.REACT_APP_NODE_PORT+"/checkPipe/"+file.file.name)
             .then(response => response.json())
@@ -274,11 +275,26 @@ class DragAndDrop extends React.Component{
               if(json.exists){
                 this.uploadFile(formData);
               }else{
-                let joined = this.state.pipeErrorAlerts.concat(file.file.name);
-                this.setState({
-                  pipeErrorAlerts : joined,
-                  pipeError: true
-                })
+                if(validIsometricPdf.test(file.file.name) === false){
+                  let joined = this.state.caracterErrorAlert.concat(file.file.name);
+                  console.log("Entra 2: " + joined);
+                  this.setState({
+                    caracterErrorAlert : joined,
+                    //pipeError: false,
+                    caracterError: true,
+                    uploading: false
+                  })
+                } else {
+                  let joined = this.state.pipeErrorAlerts.concat(file.file.name);
+                  console.log("Entra 3: " + joined);
+                  this.setState({
+                    pipeErrorAlerts : joined,
+                    pipeError: true,
+                    //caracterError: false,
+                    uploading: false
+                  })
+                  console.log("Pipe error alert: " + this.state.pipeErrorAlerts);
+                }
                 let max = this.state.max - 1
                 this.setState({
                   max: max
@@ -299,12 +315,23 @@ class DragAndDrop extends React.Component{
            String(this.props.iso+'-CL').trim() === String(file.file.name.split('.').slice(0, -1)).trim() ){
           this.updateFile(formData);
         }else{
-          let joined = this.state.errorAlerts.concat(file.file.name);
+          if(validIsometricPdf.test(file.file.name) === false){
+            let joined = this.state.caracterErrorAlert.concat(file.file.name);
             this.setState({
-              errorAlerts : joined,
-              error: true,
-              uploading: false
+              caracterErrorAlert : joined,
+              //pipeError: false,
+              caracterError: true,
+              uploading: false,
             })
+          } else {
+            let joined = this.state.errorAlerts.concat(file.file.name);
+              this.setState({
+                errorAlerts : joined,
+                error: true,
+                //caracterError: false,
+                uploading: false,
+              })
+          }
         }
       }
       file.remove();
@@ -323,47 +350,53 @@ class DragAndDrop extends React.Component{
 
     const errorAlerts = this.state.errorAlerts;
     const pipeErrorAlerts = this.state.pipeErrorAlerts;
+    const caracterErrorAlert = this.state.caracterErrorAlert
+
     let errors = []
     let pipeErrors = []
+    let caracterError = []
+
     if(errorAlerts.length > 0){
       for(let i = 0; i < errorAlerts.length; i++){
-        
         if (this.props.mode === "upload"){
-          console.log("puntos Extra: " + this.state.puntosExtra);
-          if (this.state.puntosExtra === true){
-            errors.push(<Alert severity="error"
-            >
-              The file {errorAlerts[i]} has special characters that are not allowed!
-
-            </Alert>)
-          }else {
-            errors.push(<Alert severity="error"
-            >
-              The file {errorAlerts[i]} already exists or other!
-
-            </Alert>)
-          }
+          
+          errors.push(<Alert severity="error">
+                        The file {errorAlerts[i]} already exists!
+                      </Alert>)
+          
         }else{
-          errors.push(<Alert severity="error"
-          >
-            The file {errorAlerts[i]} doesn't belong to this isometric!
-
-          </Alert>)
+          
+          errors.push(<Alert severity="error">
+                        The file {errorAlerts[i]} doesn't belong to this isometric!
+                      </Alert>)
+          
         }
       }
     }
 
+    console.log("pipeErrorAlerts: " + pipeErrorAlerts);
     if(pipeErrorAlerts.length > 0){
       for(let i = 0; i < pipeErrorAlerts.length; i++){
+      
+        pipeErrors.push(<Alert severity="error">
+                          The file {pipeErrorAlerts[i]} doesn't belong to this project!
+                        </Alert>)
         
-          pipeErrors.push(<Alert severity="error"
-          >
-            The file {pipeErrorAlerts[i]} doesn't belong to this project!
-
-          </Alert>)
       }
+      console.log("For pipe: " + pipeErrors);
     }
     
+    console.log("caracterErrorAlert: " + caracterErrorAlert);
+    if(caracterErrorAlert.length > 0){
+      for(let i = 0; i < caracterErrorAlert.length; i++){
+      
+        caracterError.push(<Alert severity="error">
+                          The file {caracterErrorAlert[i]} has special caracters not allowed!
+                        </Alert>)
+        
+      }
+      console.log("For caracter: " + caracterError);
+    }
 
     let inputContent = null
     let styles = null
@@ -401,10 +434,8 @@ class DragAndDrop extends React.Component{
 
         <Collapse in={this.state.success}>
           <Collapse in={this.state.uploaded}>
-            <Alert
-            >
+            <Alert>
               The files have been uploaded!
-
             </Alert>
           </Collapse>
         </Collapse>
@@ -413,20 +444,24 @@ class DragAndDrop extends React.Component{
           <Collapse in={this.state.uploaded}>
             {errors}
           </Collapse>
-          
         </Collapse>
+
         <Collapse in={this.state.pipeError}>
           <Collapse in={this.state.uploaded}>
             {pipeErrors}
           </Collapse>
-          
         </Collapse>
-        <Collapse in={this.state.uploading}>
-          <Alert severity="info"
-            >
-              The files are uploading...
 
-            </Alert>
+        <Collapse in={this.state.caracterError}>
+          <Collapse in={this.state.uploaded}>
+            {caracterError}
+          </Collapse>
+        </Collapse>
+
+        <Collapse in={this.state.uploading}>
+          <Alert severity="info">
+            The files are uploading...
+          </Alert>
         </Collapse>
         
       </div>
