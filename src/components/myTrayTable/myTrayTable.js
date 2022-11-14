@@ -823,7 +823,7 @@ class MyTrayTable extends React.Component{ //Tabla de mytray propia a cada usuar
           title: <div className="dataTable__header__text">Date</div>,
           dataIndex: 'date',
           key: 'date',
-          width: '20%',
+          width: '10%',
           ...this.getColumnSearchProps('date'),
           sorter: {
             compare: (a, b) => a.date.replace(/\D/g,'') - b.date.replace(/\D/g,''),
@@ -852,7 +852,7 @@ class MyTrayTable extends React.Component{ //Tabla de mytray propia a cada usuar
           title: <div className="dataTable__header__text">Actions</div>,
           dataIndex: 'actions',
           key: 'actions',
-          width:'20%',
+          width:'23%',
           ...this.getColumnSearchProps('actions'),
           sorter: {
             compare: (a, b) => a.actions.props.type - b.actions.props.type,
