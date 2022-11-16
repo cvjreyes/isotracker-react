@@ -94,7 +94,6 @@
 }
 
 .text__alert__container{
-    zoom: 0.8;
     float: left;
     height: 50px;
     margin-left: 100px;
@@ -103,15 +102,14 @@
 }
 
 .alert__subtext{
-    zoom: 0.8;
     float:left;
-    width: 400px;
+    width: 600px;
     height: 14.01px;
     margin-top: -10px;
 
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 14px;
 
     /* Primary white */
@@ -120,12 +118,11 @@
 }
 
 .alert__error__text{
-    zoom: 0.8;
     float:left;
     width: 200px;
     height: 28.01px;
     margin-top:7px;
-    margin-left:0px;
+    margin-left:-30px;
 
     font-style: normal;
     font-weight: bold;
